@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 import "./utils/StrUtil.sol";
 
-abstract contract IRole {
+abstract contract IMGNRolesCfg {
     function hasAdminRole(address account) public view returns (bool) {}
 }
 
@@ -35,41 +35,39 @@ abstract contract IERC20 {
     function approve(address spender, uint256 amount) external returns (bool) {}
 }
 
-abstract contract ISpaceLocation {
-    struct SpaceLocation {
-        uint256 spaceTypeId; //空间分类ID
-        uint256 coordinate; //场景坐标编号
-        bool isMint; //是否已经铸造
+abstract contract IWorldMap {
+    struct WorldMap {
+        uint256 spaceTVLId;
+        uint256 coordinate;
+        bool isMint;
     }
 
-    function getSpaceLocation(
-        uint256 id
-    ) public view returns (SpaceLocation memory) {}
+    function getWorldMap(uint256 id) public view returns (WorldMap memory) {}
 
     function updateMintStatus(uint256 coordinate, bool isMint) public {}
 }
 
-abstract contract ISpaceType {
-    struct SpaceType {
-        uint256 id; //资源分类ID
-        uint256 orderNum; //资源分类排序
-        string name; //分类名称
-        string coverImage; //封面图片
-        string remark; //描述
-        uint256 payPrice; //支付价格
-        uint256 pledgePrice; //抵押价格
-        uint256 airdropPrice; //空投价格
+abstract contract ISpaceTVL {
+    struct SpaceTVL {
+        uint256 id;
+        uint256 orderNum;
+        string name;
+        string coverImage;
+        string remark;
+        uint256 payPrice;
+        uint256 pledgePrice;
+        uint256 airdropPrice;
     }
 
-    function getSpaceType(uint256 id) public view returns (SpaceType memory) {}
+    function getSpaceTVL(uint256 id) public view returns (SpaceTVL memory) {}
 }
 
 contract MGN_Space is Ownable {
     Counters.Counter private _index;
-    address public _roleAddress;
+    address public _rolesCfgAddress;
     address public _spaceNftAddress;
-    address public _spaceLocationAddress;
-    address public _spaceTypeAddress;
+    address public _worldMapAddress;
+    address public _spaceTVLAddress;
     address public _settlementAddress;
     address public _erc20Address;
 
@@ -97,32 +95,32 @@ contract MGN_Space is Ownable {
     string public fileHash;
 
     struct SpaceEditInfo {
-        uint256 id; //空间ID
-        string name; //空间名称
-        string coverImage; //封面图片
-        string file; //空间关卡文件
-        string fileHash; //空间文件哈希
+        uint256 id;
+        string name;
+        string coverImage;
+        string file;
+        string fileHash;
     }
 
     struct SpacePayInfo {
-        uint256 id; //空间ID
-        uint8 payType; //支付类型 1：支付 2：抵押
-        uint256 payPrice; //支付价格
-        uint256 airdropPrice; //空投价格
+        uint256 id;
+        uint8 payType;
+        uint256 payPrice;
+        uint256 airdropPrice;
     }
 
     struct SpaceContractAddress {
-        uint256 id; //空间ID
-        address erc721Address; //721 NFT地址
-        address erc1155Address; //1155 NFT地址
+        uint256 id;
+        address erc721Address;
+        address erc1155Address;
     }
 
     struct Space {
-        uint256 id; //空间ID
-        uint256 spaceTypeId; //空间分类ID
-        bytes32 sid; //空间编号
-        uint256 tokenId; //NFT Token ID
-        uint256 coordinate; //场景坐标位置编号
+        uint256 id;
+        uint256 spaceTypeId;
+        bytes32 sid;
+        uint256 tokenId;
+        uint256 coordinate;
     }
 
     event eveAdd(
@@ -160,22 +158,20 @@ contract MGN_Space is Ownable {
         fileHash = _fileHash;
     }
 
-    function setRoleAddress(address roleAddress) public onlyOwner {
-        _roleAddress = roleAddress;
+    function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
+        _rolesCfgAddress = rolesCfgAddress;
     }
 
     function setSpaceNftAddress(address spaceNftAddress) public onlyOwner {
         _spaceNftAddress = spaceNftAddress;
     }
 
-    function setSpaceLocationAddress(
-        address spaceLocationAddress
-    ) public onlyOwner {
-        _spaceLocationAddress = spaceLocationAddress;
+    function setWorldMapAddress(address worldMapAddress) public onlyOwner {
+        _worldMapAddress = worldMapAddress;
     }
 
-    function setSpaceTypeAddress(address spaceTypeAddress) public onlyOwner {
-        _spaceTypeAddress = spaceTypeAddress;
+    function setSpaceTVLAddress(address spaceTVLAddress) public onlyOwner {
+        _spaceTVLAddress = spaceTVLAddress;
     }
 
     function settlementAddress(address settlementAddress) public onlyOwner {
@@ -187,38 +183,38 @@ contract MGN_Space is Ownable {
     }
 
     function mint(
-        uint256 spaceTypeId,
+        uint256 spaceTVLId,
         uint256 coordinate,
         uint8 payType
     ) public {
-        updateSpaceLocation(coordinate, spaceTypeId);
+        updateSpaceLocation(coordinate, spaceTVLId);
 
         IERC20 erc20 = IERC20(_erc20Address);
 
         uint256 amount = erc20.allowance(msg.sender, address(this));
 
-        uint256[] memory spaceTypePrice = getPayPrice(spaceTypeId, payType);
+        uint256[] memory spaceTVLPrice = getPayPrice(spaceTVLId, payType);
 
-        require(amount >= spaceTypePrice[0], "Insufficient authorized amount");
+        require(amount >= spaceTVLPrice[0], "Insufficient authorized amount");
 
-        erc20.transferFrom(msg.sender, _settlementAddress, spaceTypePrice[0]);
-        if (spaceTypePrice[1] > 0) {
+        erc20.transferFrom(msg.sender, _settlementAddress, spaceTVLPrice[0]);
+        if (spaceTVLPrice[1] > 0) {
             erc20.transferFrom(
                 _settlementAddress,
                 msg.sender,
-                spaceTypePrice[1]
+                spaceTVLPrice[1]
             );
         }
 
         IERC721 erc721Address = IERC721(_spaceNftAddress);
 
-        require(_spaceNFTTokenURI[spaceTypeId].length > 0, "No NFT Token URI");
+        require(_spaceNFTTokenURI[spaceTVLId].length > 0, "No NFT Token URI");
 
-        string memory tokenURI = _spaceNFTTokenURI[spaceTypeId][0];
+        string memory tokenURI = _spaceNFTTokenURI[spaceTVLId][0];
 
         uint256 tokenId = erc721Address.safeMint(msg.sender, tokenURI);
 
-        delSpaceNFTTokenURI(spaceTypeId, tokenURI);
+        delSpaceNFTTokenURI(spaceTVLId, tokenURI);
 
         _index.increment();
 
@@ -229,15 +225,15 @@ contract MGN_Space is Ownable {
         _id.increment();
 
         _spaces.push(
-            Space(_id.current(), spaceTypeId, sid, tokenId, coordinate)
+            Space(_id.current(), spaceTVLId, sid, tokenId, coordinate)
         );
 
         _spacePayInfos.push(
             SpacePayInfo(
                 _id.current(),
                 payType,
-                spaceTypePrice[0],
-                spaceTypePrice[1]
+                spaceTVLPrice[0],
+                spaceTVLPrice[1]
             )
         );
 
@@ -257,13 +253,13 @@ contract MGN_Space is Ownable {
 
         emit eveAdd(
             _id.current(),
-            spaceTypeId,
+            spaceTVLId,
             sid,
             tokenId,
             coordinate,
             payType,
-            spaceTypePrice[0],
-            spaceTypePrice[1]
+            spaceTVLPrice[0],
+            spaceTVLPrice[1]
         );
 
         emit eveUpdate(
@@ -276,49 +272,46 @@ contract MGN_Space is Ownable {
     }
 
     function getPayPrice(
-        uint256 spaceTypeId,
+        uint256 spaceTVLId,
         uint8 payType
     ) private view returns (uint256[] memory) {
-        ISpaceType spaceTypeAddress = ISpaceType(_spaceTypeAddress);
+        ISpaceTVL spaceTVLAddress = ISpaceTVL(_spaceTVLAddress);
 
-        ISpaceType.SpaceType memory spaceType = spaceTypeAddress.getSpaceType(
-            spaceTypeId
+        ISpaceTVL.SpaceTVL memory spaceTVL = spaceTVLAddress.getSpaceTVL(
+            spaceTVLId
         );
 
-        require(spaceType.id > 0, "Space type does not exist");
+        require(spaceTVL.id > 0, "Space type does not exist");
 
         uint256 price;
 
         if (payType == 1) {
-            price = spaceType.payPrice;
+            price = spaceTVL.payPrice;
         } else if (payType == 2) {
-            price = spaceType.pledgePrice;
+            price = spaceTVL.pledgePrice;
         } else {
             revert("Pay type error");
         }
 
         uint256[] memory result = new uint256[](2);
         result[0] = price;
-        result[1] = spaceType.airdropPrice;
+        result[1] = spaceTVL.airdropPrice;
 
         return result;
     }
 
-    function updateSpaceLocation(uint256 id, uint256 spaceTypeId) private {
-        ISpaceLocation spaceLocationAddress = ISpaceLocation(
-            _spaceLocationAddress
-        );
+    function updateSpaceLocation(uint256 id, uint256 spaceTVLId) private {
+        IWorldMap worldMapAddress = IWorldMap(_worldMapAddress);
 
-        ISpaceLocation.SpaceLocation memory spaceLocation = spaceLocationAddress
-            .getSpaceLocation(id);
+        IWorldMap.WorldMap memory worldMap = worldMapAddress.getWorldMap(id);
 
-        if (spaceLocation.isMint) {
+        if (worldMap.isMint) {
             revert("Space already exists");
         }
 
-        require(spaceLocation.spaceTypeId == spaceTypeId, "Space type error");
+        require(worldMap.spaceTVLId == spaceTVLId, "Space type error");
 
-        spaceLocationAddress.updateMintStatus(id, true);
+        worldMapAddress.updateMintStatus(id, true);
     }
 
     function update(
@@ -434,8 +427,10 @@ contract MGN_Space is Ownable {
         uint256 spaceTypeId,
         string[] memory tokenURIs
     ) public {
-        IRole role = IRole(_roleAddress);
-        require(role.hasAdminRole(msg.sender), "not admin role");
+        require(
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
+        );
 
         for (uint i = 0; i < tokenURIs.length; i++) {
             require(
@@ -483,9 +478,10 @@ contract MGN_Space is Ownable {
         uint256 spaceTypeId,
         string[] memory tokenURIs
     ) public {
-        IRole role = IRole(_roleAddress);
-        require(role.hasAdminRole(msg.sender), "not admin role");
-
+        require(
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
+        );
         for (uint i = 0; i < tokenURIs.length; i++) {
             _spaceNFTTokenURIExists[tokenURIs[i]] = false;
 

@@ -6,11 +6,11 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 import "./utils/StrUtil.sol";
 
-contract MGN_Role is Ownable {
+contract MGN_Roles_Cfg is Ownable {
     using Strings for *;
     using StrUtil for *;
 
-    mapping(address => bool) _adminRoleIndex;
+    mapping(address => bool) public _adminRoleIndex;
 
     constructor() {
         _adminRoleIndex[msg.sender] = true;

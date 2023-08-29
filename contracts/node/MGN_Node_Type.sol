@@ -8,30 +8,30 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 import "./utils/StrUtil.sol";
 
-abstract contract IRole {
+abstract contract IMGNRolesCfg {
     function hasAdminRole(address account) public view returns (bool) {}
 }
 
-contract MGN_Resource_Type is Ownable {
-    address _roleAddress;
+contract MGN_Node_Type is Ownable {
+    address public _rolesCfgAddress;
 
     using Counters for Counters.Counter;
     Counters.Counter private _id;
     using Strings for *;
     using StrUtil for *;
 
-    struct ResourceType {
-        uint256 id; //资源分类ID
-        uint256 orderNum; //资源分类排序
-        string name; //资源分类名称
-        uint256 cpuNum; //CPU核心数量
-        uint256 memoryNum; //内存大小
-        uint256 diskNum; //硬盘大小
-        uint256 cudaNum; //cuda核心数量
-        uint256 videoMemory; //显存大小
-        string coverImage; //封面图片
-        string frameRate; //帧率范围
-        string remark; //描述
+    struct NodeType {
+        uint256 id;
+        uint256 orderNum;
+        string name;
+        uint256 cpuNum;
+        uint256 memoryNum;
+        uint256 diskNum;
+        uint256 cudaNum;
+        uint256 videoMemory;
+        string coverImage;
+        string frameRate;
+        string remark;
     }
 
     event eveAdd(
@@ -64,13 +64,13 @@ contract MGN_Resource_Type is Ownable {
 
     event eveDelete(uint256 id);
 
-    ResourceType[] public _resourceTypes;
+    NodeType[] public _nodeTypes;
 
-    function setRoleAddress(address roleAddress) public onlyOwner {
-        _roleAddress = roleAddress;
+    function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
+        _rolesCfgAddress = rolesCfgAddress;
     }
 
-    function addResourceType(
+    function addNodeType(
         uint256 orderNum,
         string memory name,
         uint256 cpuNum,
@@ -78,17 +78,19 @@ contract MGN_Resource_Type is Ownable {
         uint256 diskNum,
         uint256 cudaNum,
         uint256 videoMemory,
-        string memory coverImage, //封面图片
-        string memory frameRate, //帧率范围
-        string memory remark //描述
+        string memory coverImage,
+        string memory frameRate,
+        string memory remark
     ) public returns (uint256) {
-        IRole role = IRole(_roleAddress);
-        require(role.hasAdminRole(msg.sender), "not admin role");
+        require(
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
+        );
 
         _id.increment();
         uint256 id = _id.current();
 
-        ResourceType memory resourceType = ResourceType(
+        NodeType memory nodeType = NodeType(
             id,
             orderNum,
             name,
@@ -102,7 +104,7 @@ contract MGN_Resource_Type is Ownable {
             remark
         );
 
-        _resourceTypes.push(resourceType);
+        _nodeTypes.push(nodeType);
 
         emit eveAdd(
             id,
@@ -120,7 +122,7 @@ contract MGN_Resource_Type is Ownable {
         return id;
     }
 
-    function updateResourceType(
+    function updateNodeType(
         uint256 id,
         uint256 orderNum,
         string memory name,
@@ -133,18 +135,20 @@ contract MGN_Resource_Type is Ownable {
         string memory frameRate, //帧率范围
         string memory remark //描述
     ) public {
-        IRole role = IRole(_roleAddress);
-        require(role.hasAdminRole(msg.sender), "not admin role");
+        require(
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
+        );
 
-        for (uint256 i = 0; i < _resourceTypes.length; i++) {
-            if (_resourceTypes[i].id == id) {
-                _resourceTypes[i].orderNum = orderNum;
-                _resourceTypes[i].name = name;
-                _resourceTypes[i].cpuNum = cpuNum;
-                _resourceTypes[i].memoryNum = memoryNum;
-                _resourceTypes[i].diskNum = diskNum;
-                _resourceTypes[i].cudaNum = cudaNum;
-                _resourceTypes[i].videoMemory = videoMemory;
+        for (uint256 i = 0; i < _nodeTypes.length; i++) {
+            if (_nodeTypes[i].id == id) {
+                _nodeTypes[i].orderNum = orderNum;
+                _nodeTypes[i].name = name;
+                _nodeTypes[i].cpuNum = cpuNum;
+                _nodeTypes[i].memoryNum = memoryNum;
+                _nodeTypes[i].diskNum = diskNum;
+                _nodeTypes[i].cudaNum = cudaNum;
+                _nodeTypes[i].videoMemory = videoMemory;
                 break;
             }
         }
@@ -164,33 +168,36 @@ contract MGN_Resource_Type is Ownable {
         );
     }
 
-    function deleteResourceType(uint256 id) public {
-        require(IRole(_roleAddress).hasAdminRole(msg.sender), "not admin role");
+    function deleteNodeType(uint256 id) public {
+        require(
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
+        );
 
         uint256 index = 0;
 
-        for (uint i = 0; i < _resourceTypes.length; i++) {
-            if (_resourceTypes[i].id == id) {
+        for (uint i = 0; i < _nodeTypes.length; i++) {
+            if (_nodeTypes[i].id == id) {
                 index = i + 1;
                 break;
             }
         }
 
         require(index > 0, "not found");
-        _resourceTypes[index - 1] = _resourceTypes[_resourceTypes.length - 1];
-        _resourceTypes.pop();
+        _nodeTypes[index - 1] = _nodeTypes[_nodeTypes.length - 1];
+        _nodeTypes.pop();
 
         emit eveDelete(id);
     }
 
-    function getResourceTypeId(
+    function getNodeTypeId(
         uint256 cpuNum,
         uint256 memoryNum,
         uint256 diskNum,
         uint256 cudaNum,
         uint256 videoMemory
     ) public view returns (uint256) {
-        ResourceType[] memory sortedData = _resourceTypes;
+        NodeType[] memory sortedData = _nodeTypes;
         uint n = sortedData.length;
 
         if (n > 1) {
@@ -210,16 +217,16 @@ contract MGN_Resource_Type is Ownable {
         uint256 min = 0;
 
         for (uint i = 0; i < n; i++) {
-            ResourceType memory resourceType = sortedData[i];
+            NodeType memory nodeType = sortedData[i];
 
             if (
-                cpuNum >= resourceType.cpuNum &&
-                memoryNum >= resourceType.memoryNum &&
-                diskNum >= resourceType.diskNum &&
-                cudaNum >= resourceType.cudaNum &&
-                videoMemory >= resourceType.videoMemory
+                cpuNum >= nodeType.cpuNum &&
+                memoryNum >= nodeType.memoryNum &&
+                diskNum >= nodeType.diskNum &&
+                cudaNum >= nodeType.cudaNum &&
+                videoMemory >= nodeType.videoMemory
             ) {
-                min = resourceType.id;
+                min = nodeType.id;
 
                 break;
             }

@@ -1,15 +1,15 @@
 pragma solidity ^0.8.0;
 
-abstract contract IMinerNodeCheck {
+abstract contract IMGNNodeCheckIn {
     function check(address incomeAddress) public view returns (bool) {}
 }
 
-abstract contract IRole {
+abstract contract IMGNRolesCfg {
     function hasAdminRole(address account) public view returns (bool) {}
 }
 
-abstract contract IResourceType {
-    function getResourceTypeId(
+abstract contract INodeType {
+    function getNodeTypeId(
         uint256 cpuNum,
         uint256 memoryNum,
         uint256 diskNum,
@@ -26,31 +26,31 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 import {StrUtil} from "./utils/StrUtil.sol";
 
-contract MGN_Miner_Node is Ownable {
+contract MGN_Node_Mgr is Ownable {
     using Strings for *;
     using StrUtil for *;
 
     using Counters for Counters.Counter;
     Counters.Counter private _nodeIds;
 
-    MinerNode[] public _minerNodes;
+    Node[] public _nodes;
 
-    address _minerNodeCheckAddress;
-    address _roleAddress;
-    address _resourceTypeAddress;
+    address public _nodeCheckInAddress;
+    address public _rolesCfgAddress;
+    address public _nodeTypeAddress;
 
-    struct MinerNode {
-        address incomeAddress; //收益钱包地址
-        string ip; //节点公网IP
-        string status; //状态：0 未使用  -1：限制使用  1：使用中
-        uint256 nodeType; //节点资源等级
-        uint256 price; //服务单价
-        uint256 id;
-        uint256 cpuNum; //CPU核心数量
-        uint256 memoryNum; //内存大小
-        uint256 diskNum; //硬盘大小
-        uint256 cudaNum; //cuda核心数量
-        uint256 videoMemory; //显存大小
+    struct Node {
+        address incomeAddress;
+        string ip; //Node public network IP
+        string status; //Status: 0 unused -1: limited use 1: in use
+        uint256 nodeType; //Node resource level
+        uint256 price; //Price
+        uint256 id; //Node ID
+        uint256 cpuNum; //CPUS
+        uint256 memoryNum; //memory size
+        uint256 diskNum; //HDD size
+        uint256 cudaNum; //Number of CUDA Cores
+        uint256 videoMemory; //Memory Size
     }
 
     event eveAdd(
@@ -73,46 +73,42 @@ contract MGN_Miner_Node is Ownable {
 
     event eveDelete(uint256 id);
 
-    function setMinerNodeCheckAddress(
-        address minerNodeCheckAddress
+    function setNodeCheckInAddress(
+        address nodeCheckInAddress
     ) public onlyOwner {
-        _minerNodeCheckAddress = minerNodeCheckAddress;
+        _nodeCheckInAddress = nodeCheckInAddress;
     }
 
-    function setRoleAddress(address roleAddress) public onlyOwner {
-        _roleAddress = roleAddress;
+    function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
+        _rolesCfgAddress = rolesCfgAddress;
     }
 
-    function setResourceTypeAddress(
-        address resourceTypeAddress
-    ) public onlyOwner {
-        _resourceTypeAddress = resourceTypeAddress;
+    function setNodeTypeAddress(address nodeTypeAddress) public onlyOwner {
+        _nodeTypeAddress = nodeTypeAddress;
     }
 
-    function addMinerNode(
+    function addNode(
         address incomeAddress,
         string memory ip,
         uint256 price,
         uint256[] memory hardwareInfos
     ) public returns (uint256) {
-        IResourceType resourceType = IResourceType(_resourceTypeAddress);
+        INodeType nodeType = INodeType(_nodeTypeAddress);
 
-        for (uint256 i = 0; i < _minerNodes.length; i++) {
-            if (StrUtil.equals(_minerNodes[i].ip.toSlice(), ip.toSlice())) {
+        for (uint256 i = 0; i < _nodes.length; i++) {
+            if (StrUtil.equals(_nodes[i].ip.toSlice(), ip.toSlice())) {
                 revert("ip already exists");
             }
         }
 
-        IMinerNodeCheck minerNodeCheck = IMinerNodeCheck(
-            _minerNodeCheckAddress
-        );
+        IMGNNodeCheckIn minerNodeCheck = IMGNNodeCheckIn(_nodeCheckInAddress);
 
         require(
             minerNodeCheck.check(msg.sender),
             "Registration requirements not met"
         );
 
-        uint256 resourceTypeId = resourceType.getResourceTypeId(
+        uint256 nodeTypeId = nodeType.getNodeTypeId(
             hardwareInfos[0],
             hardwareInfos[1],
             hardwareInfos[2],
@@ -120,7 +116,7 @@ contract MGN_Miner_Node is Ownable {
             hardwareInfos[4]
         );
 
-        require(resourceTypeId > 0, "not found resource type");
+        require(nodeTypeId > 0, "not found node type");
 
         string memory status = "0";
 
@@ -130,7 +126,7 @@ contract MGN_Miner_Node is Ownable {
 
         add(
             nodeId,
-            resourceTypeId,
+            nodeTypeId,
             incomeAddress,
             status,
             ip,
@@ -150,7 +146,7 @@ contract MGN_Miner_Node is Ownable {
         uint256 price,
         uint256[] memory hardwareInfos
     ) private {
-        MinerNode memory minerNode = MinerNode(
+        Node memory node = Node(
             incomeAddress,
             ip,
             status,
@@ -164,7 +160,7 @@ contract MGN_Miner_Node is Ownable {
             hardwareInfos[4]
         );
 
-        _minerNodes.push(minerNode);
+        _nodes.push(node);
 
         emit eveAdd(
             incomeAddress,
@@ -181,34 +177,31 @@ contract MGN_Miner_Node is Ownable {
         );
     }
 
-    function getMinerNodeById(
-        uint256 id
-    ) public view returns (MinerNode memory) {
-        for (uint i = 0; i < _minerNodes.length; i++) {
-            if (_minerNodes[i].id == id) {
-                return _minerNodes[i];
+    function getNodeById(uint256 id) public view returns (Node memory) {
+        for (uint i = 0; i < _nodes.length; i++) {
+            if (_nodes[i].id == id) {
+                return _nodes[i];
             }
         }
     }
 
-    function getMinerNodeByIp(
-        string memory ip
-    ) public view returns (MinerNode memory) {
-        for (uint i = 0; i < _minerNodes.length; i++) {
-            if (StrUtil.equals(_minerNodes[i].ip.toSlice(), ip.toSlice())) {
-                return _minerNodes[i];
+    function getNodeByIp(string memory ip) public view returns (Node memory) {
+        for (uint i = 0; i < _nodes.length; i++) {
+            if (StrUtil.equals(_nodes[i].ip.toSlice(), ip.toSlice())) {
+                return _nodes[i];
             }
         }
     }
 
     function updateStatus(uint256 nodeId, string memory status) public {
-        IRole role = IRole(_roleAddress);
+        require(
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
+        );
 
-        require(role.hasAdminRole(msg.sender), "No permission");
-
-        for (uint256 i = 0; i < _minerNodes.length; i++) {
-            if (_minerNodes[i].id == nodeId) {
-                _minerNodes[i].status = status;
+        for (uint256 i = 0; i < _nodes.length; i++) {
+            if (_nodes[i].id == nodeId) {
+                _nodes[i].status = status;
                 break;
             }
         }
@@ -217,17 +210,10 @@ contract MGN_Miner_Node is Ownable {
     }
 
     function updatePrice(uint256 id, uint256 price) public {
-        IRole role = IRole(_roleAddress);
-
-        for (uint256 i = 0; i < _minerNodes.length; i++) {
-            if (_minerNodes[i].id == id) {
-                require(
-                    role.hasAdminRole(msg.sender) ||
-                        _minerNodes[i].incomeAddress == msg.sender,
-                    "No permission"
-                );
-
-                _minerNodes[i].price = price;
+        for (uint256 i = 0; i < _nodes.length; i++) {
+            if (_nodes[i].id == id) {
+                require(_nodes[i].incomeAddress == msg.sender, "No permission");
+                _nodes[i].price = price;
                 break;
             }
         }
@@ -236,20 +222,19 @@ contract MGN_Miner_Node is Ownable {
     }
 
     function deleteMinerNode(uint256 id) public {
-        IRole role = IRole(_roleAddress);
-
+        IMGNRolesCfg role = IMGNRolesCfg(_rolesCfgAddress);
         uint256 index = 0;
 
-        for (uint256 i = 0; i < _minerNodes.length; i++) {
-            if (_minerNodes[i].id == id) {
+        for (uint256 i = 0; i < _nodes.length; i++) {
+            if (_nodes[i].id == id) {
                 require(
                     role.hasAdminRole(msg.sender) ||
-                        _minerNodes[i].incomeAddress == msg.sender,
+                        _nodes[i].incomeAddress == msg.sender,
                     "No permission"
                 );
 
-                _minerNodes[i] = _minerNodes[_minerNodes.length - 1];
-                _minerNodes.pop();
+                _nodes[i] = _nodes[_nodes.length - 1];
+                _nodes.pop();
 
                 emit eveDelete(id);
 

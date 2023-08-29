@@ -17,36 +17,34 @@ abstract contract IERC20 {
     function approve(address spender, uint256 amount) external returns (bool) {}
 }
 
-abstract contract IMinerNode {
-    function getMinerNodeById(
-        uint256 id
-    ) public view returns (MinerNode memory) {}
+abstract contract IMGNNodeMgr {
+    function getNodeById(uint256 id) public view returns (Node memory) {}
 
     function updateStatus(uint256 nodeId, string memory status) public {}
 
-    struct MinerNode {
-        address incomeAddress; //收益钱包地址
-        string ip; //节点公网IP
-        string status; //状态：0 未使用  -1：限制使用  1：使用中
-        uint256 nodeType; //节点资源等级
-        uint256 price; //服务单价
+    struct Node {
+        address incomeAddress;
+        string ip;
+        string status;
+        uint256 nodeType;
+        uint256 price;
         uint256 id;
-        uint256 cpuNum; //CPU核心数量
-        uint256 memoryNum; //内存大小
-        uint256 diskNum; //硬盘大小
-        uint256 cudaNum; //cuda核心数量
-        uint256 videoMemory; //显存大小
+        uint256 cpuNum;
+        uint256 memoryNum;
+        uint256 diskNum;
+        uint256 cudaNum;
+        uint256 videoMemory;
     }
 }
 
-abstract contract IRole {
+abstract contract IMGNRolesCfg {
     function hasAdminRole(address account) public view returns (bool) {}
 }
 
 abstract contract ISettlementRules {
     struct SettlementRules {
-        address settlementAddress; //结算地址
-        uint256 settlementRatio; //结算比例
+        address settlementAddress;
+        uint256 settlementRatio;
     }
 
     function getSettlementRules()
@@ -64,28 +62,29 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 import {StrUtil} from "./utils/StrUtil.sol";
 
-contract MGN_Order is Ownable {
+contract MGN_Render_Transcition is Ownable {
     using Strings for *;
     using StrUtil for *;
 
     using Counters for Counters.Counter;
     Counters.Counter private _orderIds;
-    address public _roleAddress;
-    address public _minerNodeAddress;
+    address public _rolesCfgAddress;
+    address public _nodeAddress;
     address public _erc20Address;
     address public _settlementRulesAddress;
+    address public _nodeMgrAddress;
 
     struct Order {
-        address serviceAccount; //服务账号
-        address account; //购买账号
-        string status; //订单状态（1：进行中 -1：订单异常  2：已完成）
-        uint256 time; //服务时长
-        uint256 price; //服务单价
-        uint256 amount; //订单总价
-        uint256 id; //订单ID
-        uint256 createTime; //订单创建时间
-        uint256 minerNodeId; //矿机节点ID
-        uint256 endTime; //订单结束时间
+        address serviceAccount;
+        address account;
+        string status;
+        uint256 time;
+        uint256 price;
+        uint256 amount;
+        uint256 id;
+        uint256 createTime;
+        uint256 nodeId;
+        uint256 endTime;
     }
 
     event eveAdd(
@@ -97,7 +96,7 @@ contract MGN_Order is Ownable {
         uint256 amount,
         uint256 id,
         uint256 createTime,
-        uint256 minerNodeId,
+        uint256 nodeId,
         uint256 endTime
     );
 
@@ -111,16 +110,12 @@ contract MGN_Order is Ownable {
 
     Order[] public _orders;
 
-    function setRoleAddress(address roleAddress) public onlyOwner {
-        _roleAddress = roleAddress;
-    }
-
     function setErc20Address(address erc20Address) public onlyOwner {
         _erc20Address = erc20Address;
     }
 
-    function setMinerNodeAddress(address minerNodeAddress) public onlyOwner {
-        _minerNodeAddress = minerNodeAddress;
+    function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
+        _rolesCfgAddress = rolesCfgAddress;
     }
 
     function setSettlementRulesAddress(
@@ -130,17 +125,15 @@ contract MGN_Order is Ownable {
     }
 
     function createOrder(
-        uint256 minerNodeId,
+        uint256 nodeId,
         uint256 time
     ) public returns (uint256) {
-        IMinerNode _minerNode = IMinerNode(_minerNodeAddress);
+        IMGNNodeMgr _nodeMgr = IMGNNodeMgr(_nodeAddress);
 
-        IMinerNode.MinerNode memory minerNode = _minerNode.getMinerNodeById(
-            minerNodeId
-        );
+        IMGNNodeMgr.Node memory node = _nodeMgr.getNodeById(nodeId);
 
         require(
-            StrUtil.equals(minerNode.status.toSlice(), "0".toSlice()),
+            StrUtil.equals(node.status.toSlice(), "0".toSlice()),
             "The miner node is not available"
         );
 
@@ -148,44 +141,41 @@ contract MGN_Order is Ownable {
 
         uint256 amount = erc20.allowance(msg.sender, address(this));
 
-        require(
-            amount >= minerNode.price * time,
-            "Insufficient authorized amount"
-        );
+        require(amount >= node.price * time, "Insufficient authorized amount");
 
-        erc20.transferFrom(msg.sender, address(this), minerNode.price * time);
+        erc20.transferFrom(msg.sender, address(this), node.price * time);
 
-        _minerNode.updateStatus(minerNodeId, "1");
+        _nodeMgr.updateStatus(nodeId, "1");
         _orderIds.increment();
 
         uint256 createTime = block.timestamp;
         uint256 endTime = createTime + time * 60;
 
         Order memory order = Order(
-            minerNode.incomeAddress,
+            node.incomeAddress,
             msg.sender,
             "1",
             time,
-            minerNode.price,
-            minerNode.price * time,
+            node.price,
+            node.price * time,
             _orderIds.current(),
             createTime,
-            minerNodeId,
+            nodeId,
             endTime
         );
 
         _orders.push(order);
 
         emit eveAdd(
-            minerNode.incomeAddress,
+            node.incomeAddress,
             msg.sender,
             "1",
             time,
-            minerNode.price,
-            minerNode.price * time,
+            node.price,
+            node.price * time,
             _orderIds.current(),
             createTime,
-            order.minerNodeId,
+            order.nodeId,
             endTime
         );
 
@@ -193,8 +183,10 @@ contract MGN_Order is Ownable {
     }
 
     function settlementOrder(uint256 orderId) public {
-        IRole role = IRole(_roleAddress);
-        require(role.hasAdminRole(msg.sender), "not admin role");
+        require(
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
+        );
 
         Order memory order;
 
@@ -264,10 +256,10 @@ contract MGN_Order is Ownable {
         settlementAmounts[settlementRulesList.length] = amount;
         settlementRatios[settlementRulesList.length] = totalRatio;
 
-        IMinerNode _minerNode = IMinerNode(_minerNodeAddress);
+        IMGNNodeMgr _nodeMgr = IMGNNodeMgr(_nodeAddress);
 
         erc20.transferFrom(address(this), order.serviceAccount, amount);
-        _minerNode.updateStatus(order.minerNodeId, "0");
+        _nodeMgr.updateStatus(order.nodeId, "0");
 
         emit eveSettlement(
             "2",

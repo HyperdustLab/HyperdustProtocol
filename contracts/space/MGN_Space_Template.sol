@@ -8,12 +8,12 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 import "./utils/StrUtil.sol";
 
-abstract contract IRole {
+abstract contract IMGNRolesCfg {
     function hasAdminRole(address account) public view returns (bool) {}
 }
 
 contract MGN_Space_Template is Ownable {
-    address public _roleAddress;
+    address public _rolesCfgAddress;
 
     SpaceTemplate[] public _spaceTemplate;
 
@@ -23,12 +23,12 @@ contract MGN_Space_Template is Ownable {
     using StrUtil for *;
 
     struct SpaceTemplate {
-        uint256 id; //模板ID
-        string name; //模板名称
-        string coverImage; //封面图片
-        string file; //模板文件
-        uint256 spaceTypeId; //所属空间分类ID
-        string fileHash; //文件hash
+        uint256 id;
+        string name;
+        string coverImage;
+        string file;
+        uint256 spaceTypeId;
+        string fileHash;
     }
 
     event eveDelete(uint256 id);
@@ -51,8 +51,8 @@ contract MGN_Space_Template is Ownable {
         string fileHash
     );
 
-    function setRoleAddress(address roleAddress) public onlyOwner {
-        _roleAddress = roleAddress;
+    function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
+        _rolesCfgAddress = rolesCfgAddress;
     }
 
     function add(
@@ -63,8 +63,8 @@ contract MGN_Space_Template is Ownable {
         string memory fileHash
     ) public {
         require(
-            IRole(_roleAddress).hasAdminRole(msg.sender),
-            "Does not have admin role"
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
         );
         _id.increment();
         uint256 id = _id.current();
@@ -90,8 +90,8 @@ contract MGN_Space_Template is Ownable {
         string memory fileHash
     ) public {
         require(
-            IRole(_roleAddress).hasAdminRole(msg.sender),
-            "Does not have admin role"
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
         );
         bool isUpdate = false;
         for (uint256 i = 0; i < _spaceTemplate.length; i++) {
@@ -110,7 +110,10 @@ contract MGN_Space_Template is Ownable {
     }
 
     function deleteSpaceTemplate(uint256 id) public {
-        require(IRole(_roleAddress).hasAdminRole(msg.sender), "not admin role");
+        require(
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
+        );
 
         uint256 index = 0;
 

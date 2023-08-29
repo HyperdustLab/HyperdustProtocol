@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 import "./utils/StrUtil.sol";
 
-contract MGN_Miner_Node_Check is Ownable {
+contract MGN_Node_CheckIn is Ownable {
     using Strings for *;
     using StrUtil for *;
 

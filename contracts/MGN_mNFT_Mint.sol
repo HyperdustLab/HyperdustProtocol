@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 import "./utils/StrUtil.sol";
 
-abstract contract IRole {
+abstract contract IMGNRolesCfg {
     function hasAdminRole(address account) public view returns (bool) {}
 }
 
@@ -45,7 +45,7 @@ abstract contract IERC1155 {
     ) public virtual {}
 }
 
-contract MGN_Mint is Ownable {
+contract MGN_mNFT_Mint is Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _id;
 
@@ -53,18 +53,18 @@ contract MGN_Mint is Ownable {
     using StrUtil for *;
 
     address public _settlementAddress;
-    address public _roleAddress;
+    address public _rolesCfgAddress;
     address public _erc20Address;
 
-    struct NFT {
-        uint256 id; //铸造NFT商品ID
-        string tokenURI; //tokenURI
-        uint256 price; //铸造价格
-        address contractAddress; //合约地址
-        uint256 tokenId; //token ID
-        uint8 contractType; //合约类型(1:721 2:1155)
-        uint256 mintNum; //已铸造的梳理
-        uint256 allowNum; //允许铸造的数量
+    struct MintInfo {
+        uint256 id;
+        string tokenURI;
+        uint256 price;
+        address contractAddress;
+        uint256 tokenId;
+        uint8 contractType;
+        uint256 mintNum;
+        uint256 allowNum;
     }
 
     event eveAdd(
@@ -99,21 +99,17 @@ contract MGN_Mint is Ownable {
 
     event eveDelete(uint256 id);
 
-    NFT[] public _nfts;
+    MintInfo[] public _mintInfos;
 
-    function setSettlementAddress(address settlementAddress) public onlyOwner {
-        _settlementAddress = settlementAddress;
-    }
-
-    function setRoleAddress(address roleAddress) public onlyOwner {
-        _roleAddress = roleAddress;
+    function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
+        _rolesCfgAddress = rolesCfgAddress;
     }
 
     function setErc20Address(address erc20Address) public onlyOwner {
         _erc20Address = erc20Address;
     }
 
-    function addNFT(
+    function addMintInfo(
         string memory tokenURI,
         uint256 price,
         address contractAddress,
@@ -122,13 +118,13 @@ contract MGN_Mint is Ownable {
         uint256 allowNum
     ) public {
         require(
-            IRole(_roleAddress).hasAdminRole(msg.sender),
-            "Does not have admin role"
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
         );
         _id.increment();
         uint256 id = _id.current();
-        _nfts.push(
-            NFT(
+        _mintInfos.push(
+            MintInfo(
                 id,
                 tokenURI,
                 price,
@@ -161,17 +157,17 @@ contract MGN_Mint is Ownable {
         uint256 allowNum
     ) public {
         require(
-            IRole(_roleAddress).hasAdminRole(msg.sender),
-            "Does not have admin role"
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
         );
-        for (uint256 i = 0; i < _nfts.length; i++) {
-            if (_nfts[i].id == id) {
-                _nfts[i].tokenURI = tokenURI;
-                _nfts[i].price = price;
-                _nfts[i].contractAddress = contractAddress;
-                _nfts[i].tokenId = tokenId;
-                _nfts[i].contractType = contractType;
-                _nfts[i].allowNum = allowNum;
+        for (uint256 i = 0; i < _mintInfos.length; i++) {
+            if (_mintInfos[i].id == id) {
+                _mintInfos[i].tokenURI = tokenURI;
+                _mintInfos[i].price = price;
+                _mintInfos[i].contractAddress = contractAddress;
+                _mintInfos[i].tokenId = tokenId;
+                _mintInfos[i].contractType = contractType;
+                _mintInfos[i].allowNum = allowNum;
 
                 emit eveUpdate(
                     id,
@@ -190,25 +186,24 @@ contract MGN_Mint is Ownable {
         revert("NFT does not exist");
     }
 
-    function getNFT(uint256 id) public view returns (NFT memory) {
-        for (uint256 i = 0; i < _nfts.length; i++) {
-            if (_nfts[i].id == id) {
-                return _nfts[i];
+    function getMintInfo(uint256 id) public view returns (MintInfo memory) {
+        for (uint256 i = 0; i < _mintInfos.length; i++) {
+            if (_mintInfos[i].id == id) {
+                return _mintInfos[i];
             }
         }
         revert("NFT does not exist");
     }
 
-    function deleteNFT(uint256 id) public {
+    function deleteMintInfo(uint256 id) public {
         require(
-            IRole(_roleAddress).hasAdminRole(msg.sender),
-            "Does not have admin role"
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
         );
-
-        for (uint256 i = 0; i < _nfts.length; i++) {
-            if (_nfts[i].id == id) {
-                _nfts[i] = _nfts[_nfts.length - 1];
-                _nfts.pop();
+        for (uint256 i = 0; i < _mintInfos.length; i++) {
+            if (_mintInfos[i].id == id) {
+                _mintInfos[i] = _mintInfos[_mintInfos.length - 1];
+                _mintInfos.pop();
                 emit eveDelete(id);
                 return;
             }
@@ -220,41 +215,54 @@ contract MGN_Mint is Ownable {
     function mint(uint256 id, uint256 num) public {
         IERC20 erc20 = IERC20(_erc20Address);
 
-        NFT memory nft = getNFT(id);
+        MintInfo memory mintInfo = getMintInfo(id);
 
         uint256 amount = erc20.allowance(msg.sender, address(this));
 
-        require(amount >= nft.price * num, "Insufficient authorized amount");
+        require(
+            amount >= mintInfo.price * num,
+            "Insufficient authorized amount"
+        );
 
-        require(nft.allowNum >= nft.mintNum + num, "Insufficient inventory");
+        require(
+            mintInfo.allowNum >= mintInfo.mintNum + num,
+            "Insufficient inventory"
+        );
 
-        erc20.transferFrom(msg.sender, _settlementAddress, nft.price * num);
+        erc20.transferFrom(
+            msg.sender,
+            _settlementAddress,
+            mintInfo.price * num
+        );
 
-        if (nft.contractType == 1) {
+        if (mintInfo.contractType == 1) {
             for (uint i = 0; i < num; i++) {
-                IERC721(nft.contractAddress).safeMint(msg.sender, nft.tokenURI);
+                IERC721(mintInfo.contractAddress).safeMint(
+                    msg.sender,
+                    mintInfo.tokenURI
+                );
             }
-        } else if (nft.contractType == 2) {
-            IERC1155(nft.contractAddress).mint(
+        } else if (mintInfo.contractType == 2) {
+            IERC1155(mintInfo.contractAddress).mint(
                 msg.sender,
-                nft.tokenId,
+                mintInfo.tokenId,
                 num,
-                nft.tokenURI,
+                mintInfo.tokenURI,
                 ""
             );
         } else {
             revert("invalid contract type");
         }
 
-        for (uint256 i = 0; i < _nfts.length; i++) {
-            if (_nfts[i].id == id) {
-                _nfts[i].mintNum += num;
+        for (uint256 i = 0; i < _mintInfos.length; i++) {
+            if (_mintInfos[i].id == id) {
+                _mintInfos[i].mintNum += num;
                 break;
             }
         }
 
-        emit eveUpdateMintNum(id, nft.mintNum + num);
+        emit eveUpdateMintNum(id, mintInfo.mintNum + num);
 
-        emit eveMint(id, msg.sender, num, nft.price, amount);
+        emit eveMint(id, msg.sender, num, mintInfo.price, amount);
     }
 }

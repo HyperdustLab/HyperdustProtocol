@@ -8,49 +8,49 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 import "./utils/StrUtil.sol";
 
-abstract contract IRole {
+abstract contract IMGNRolesCfg {
     function hasAdminRole(address account) public view returns (bool) {}
 }
 
-contract MGN_Space_Location is Ownable {
-    address _roleAddress;
+contract MGN_World_Map is Ownable {
+    address _rolesCfgAddress;
 
     using Counters for Counters.Counter;
     using Strings for *;
     using StrUtil for *;
 
-    SpaceLocation[] public _spaceLocations;
+    WorldMap[] public _worldMaps;
 
     mapping(uint256 => bool) public _coordinateMap;
 
-    struct SpaceLocation {
-        uint256 spaceTypeId; //空间分类ID
-        uint256 coordinate; //场景坐标编号
-        bool isMint; //是否已经铸造
+    struct WorldMap {
+        uint256 spaceTVLId;
+        uint256 coordinate;
+        bool isMint;
     }
 
-    event eveAdd(uint256[] spaceTypeIds, uint256[] coordinates, bool[] isMints);
+    event eveAdd(uint256[] spaceTVLIds, uint256[] coordinates, bool[] isMints);
 
     event eveDelete(uint256[] coordinates);
 
     event eveUpdate(uint256 coordinate, bool isMint);
 
-    function setRoleAddress(address roleAddress) public onlyOwner {
-        _roleAddress = roleAddress;
+    function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
+        _rolesCfgAddress = rolesCfgAddress;
     }
 
     function add(
-        uint256[] memory spaceTypeIds,
+        uint256[] memory spaceTVLIds,
         uint256[] memory coordinates
     ) public {
         require(
-            IRole(_roleAddress).hasAdminRole(msg.sender),
-            "Does not have admin role"
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
         );
 
-        bool[] memory isMints = new bool[](spaceTypeIds.length);
+        bool[] memory isMints = new bool[](spaceTVLIds.length);
 
-        for (uint256 i = 0; i < spaceTypeIds.length; i++) {
+        for (uint256 i = 0; i < spaceTVLIds.length; i++) {
             if (_coordinateMap[coordinates[i]]) {
                 revert(
                     coordinates[i].toString().toSlice().concat(
@@ -59,21 +59,19 @@ contract MGN_Space_Location is Ownable {
                 );
             }
 
-            _spaceLocations.push(
-                SpaceLocation(spaceTypeIds[i], coordinates[i], false)
-            );
+            _worldMaps.push(WorldMap(spaceTVLIds[i], coordinates[i], false));
             _coordinateMap[coordinates[i]] = true;
 
             isMints[i] = false;
         }
 
-        emit eveAdd(spaceTypeIds, coordinates, isMints);
+        emit eveAdd(spaceTVLIds, coordinates, isMints);
     }
 
     function del(uint256[] memory coordinates) public {
         require(
-            IRole(_roleAddress).hasAdminRole(msg.sender),
-            "Does not have admin role"
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
         );
 
         for (uint256 i = 0; i < coordinates.length; i++) {
@@ -84,12 +82,10 @@ contract MGN_Space_Location is Ownable {
                 )
             );
 
-            for (uint256 j = 0; j < _spaceLocations.length; j++) {
-                if (_spaceLocations[j].coordinate == coordinates[i]) {
-                    _spaceLocations[i] = _spaceLocations[
-                        _spaceLocations.length - 1
-                    ];
-                    _spaceLocations.pop();
+            for (uint256 j = 0; j < _worldMaps.length; j++) {
+                if (_worldMaps[j].coordinate == coordinates[i]) {
+                    _worldMaps[i] = _worldMaps[_worldMaps.length - 1];
+                    _worldMaps.pop();
                     _coordinateMap[coordinates[i]] = false;
                 }
             }
@@ -99,8 +95,8 @@ contract MGN_Space_Location is Ownable {
 
     function updateMintStatus(uint256 coordinate, bool isMint) public {
         require(
-            IRole(_roleAddress).hasAdminRole(msg.sender),
-            "Does not have admin role"
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
         );
 
         require(
@@ -110,24 +106,22 @@ contract MGN_Space_Location is Ownable {
             )
         );
 
-        for (uint256 i = 0; i < _spaceLocations.length; i++) {
+        for (uint256 i = 0; i < _worldMaps.length; i++) {
             if (
-                keccak256(abi.encodePacked(_spaceLocations[i].coordinate)) ==
+                keccak256(abi.encodePacked(_worldMaps[i].coordinate)) ==
                 keccak256(abi.encodePacked(coordinate))
             ) {
-                _spaceLocations[i].isMint = isMint;
+                _worldMaps[i].isMint = isMint;
             }
         }
 
         emit eveUpdate(coordinate, isMint);
     }
 
-    function getSpaceLocation(
-        uint256 id
-    ) public view returns (SpaceLocation memory) {
-        for (uint256 i = 0; i < _spaceLocations.length; i++) {
-            if (_spaceLocations[i].coordinate == id) {
-                return _spaceLocations[i];
+    function getWorldMap(uint256 id) public view returns (WorldMap memory) {
+        for (uint256 i = 0; i < _worldMaps.length; i++) {
+            if (_worldMaps[i].coordinate == id) {
+                return _worldMaps[i];
             }
         }
 

@@ -8,29 +8,29 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 import "./utils/StrUtil.sol";
 
-abstract contract IRole {
+abstract contract IMGNRolesCfg {
     function hasAdminRole(address account) public view returns (bool) {}
 }
 
-contract MGN_Space_Type is Ownable {
-    address public _roleAddress;
+contract MGN_Space_TVL is Ownable {
+    address public _rolesCfgAddress;
 
     using Counters for Counters.Counter;
     Counters.Counter private _id;
     using Strings for *;
     using StrUtil for *;
 
-    SpaceType[] public _spaceTypes;
+    SpaceTVL[] public _spaceTVLs;
 
-    struct SpaceType {
-        uint256 id; //资源分类ID
-        uint256 orderNum; //资源分类排序
-        string name; //分类名称
-        string coverImage; //封面图片
-        string remark; //描述
-        uint256 payPrice; //支付价格
-        uint256 pledgePrice; //抵押价格
-        uint256 airdropPrice; //空投价格
+    struct SpaceTVL {
+        uint256 id;
+        uint256 orderNum;
+        string name;
+        string coverImage;
+        string remark;
+        uint256 payPrice;
+        uint256 pledgePrice;
+        uint256 airdropPrice;
     }
 
     event eveAdd(
@@ -57,8 +57,8 @@ contract MGN_Space_Type is Ownable {
 
     event eveDelete(uint256 id);
 
-    function setRoleAddress(address roleAddress) public onlyOwner {
-        _roleAddress = roleAddress;
+    function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
+        _rolesCfgAddress = rolesCfgAddress;
     }
 
     function add(
@@ -71,13 +71,13 @@ contract MGN_Space_Type is Ownable {
         uint256 airdropPrice
     ) public {
         require(
-            IRole(_roleAddress).hasAdminRole(msg.sender),
-            "Does not have admin role"
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
         );
         _id.increment();
         uint256 id = _id.current();
-        _spaceTypes.push(
-            SpaceType({
+        _spaceTVLs.push(
+            SpaceTVL({
                 id: id,
                 orderNum: orderNum,
                 name: name,
@@ -111,18 +111,18 @@ contract MGN_Space_Type is Ownable {
         uint256 airdropPrice
     ) public {
         require(
-            IRole(_roleAddress).hasAdminRole(msg.sender),
-            "Does not have admin role"
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
         );
-        for (uint256 i = 0; i < _spaceTypes.length; i++) {
-            if (_spaceTypes[i].id == id) {
-                _spaceTypes[i].orderNum = orderNum;
-                _spaceTypes[i].name = name;
-                _spaceTypes[i].coverImage = coverImage;
-                _spaceTypes[i].remark = remark;
-                _spaceTypes[i].payPrice = payPrice;
-                _spaceTypes[i].pledgePrice = pledgePrice;
-                _spaceTypes[i].airdropPrice = airdropPrice;
+        for (uint256 i = 0; i < _spaceTVLs.length; i++) {
+            if (_spaceTVLs[i].id == id) {
+                _spaceTVLs[i].orderNum = orderNum;
+                _spaceTVLs[i].name = name;
+                _spaceTVLs[i].coverImage = coverImage;
+                _spaceTVLs[i].remark = remark;
+                _spaceTVLs[i].payPrice = payPrice;
+                _spaceTVLs[i].pledgePrice = pledgePrice;
+                _spaceTVLs[i].airdropPrice = airdropPrice;
                 break;
             }
         }
@@ -138,29 +138,32 @@ contract MGN_Space_Type is Ownable {
         );
     }
 
-    function deleteSpaceType(uint256 id) public {
-        require(IRole(_roleAddress).hasAdminRole(msg.sender), "not admin role");
+    function deleteSpaceTVL(uint256 id) public {
+        require(
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
+        );
 
         uint256 index = 0;
 
-        for (uint i = 0; i < _spaceTypes.length; i++) {
-            if (_spaceTypes[i].id == id) {
+        for (uint i = 0; i < _spaceTVLs.length; i++) {
+            if (_spaceTVLs[i].id == id) {
                 index = i + 1;
                 break;
             }
         }
 
         require(index > 0, "not found");
-        _spaceTypes[index - 1] = _spaceTypes[_spaceTypes.length - 1];
-        _spaceTypes.pop();
+        _spaceTVLs[index - 1] = _spaceTVLs[_spaceTVLs.length - 1];
+        _spaceTVLs.pop();
 
         emit eveDelete(id);
     }
 
-    function getSpaceType(uint256 id) public view returns (SpaceType memory) {
-        for (uint256 i = 0; i < _spaceTypes.length; i++) {
-            if (_spaceTypes[i].id == id) {
-                return _spaceTypes[i];
+    function getSpaceTVL(uint256 id) public view returns (SpaceTVL memory) {
+        for (uint256 i = 0; i < _spaceTVLs.length; i++) {
+            if (_spaceTVLs[i].id == id) {
+                return _spaceTVLs[i];
             }
         }
     }
