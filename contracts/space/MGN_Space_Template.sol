@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-import "./utils/StrUtil.sol";
+import "../utils/StrUtil.sol";
 
 abstract contract IMGNRolesCfg {
     function hasAdminRole(address account) public view returns (bool) {}

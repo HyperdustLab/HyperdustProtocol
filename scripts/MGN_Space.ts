@@ -20,21 +20,21 @@ async function main() {
     )
   ).wait();
 
-  await (await contract.setRoleAddress("0x6357bDa1F1dE5e94Bd5f7E379F4737580e775837")).wait();
+  await (await contract.setRolesCfgAddress("0xB05c1453486195DD7bd572571ce7131707DA9411")).wait();
 
-  await (await contract.setSpaceLocationAddress("0x24d30240883ac86c6d0b2475839aeDA38085B498")).wait();
+  await (await contract.setWorldMapAddress("0x1EA5DE1B85F25a1D05BC9F1E53129e745Dc3741D")).wait();
 
   await (await contract.setSpaceNftAddress("0xeA1BAd6CDa7f314B687DFD247f2F80EF92a3BcbF")).wait();
 
-  (await contract.setSpaceTypeAddress("0xfFeB583D2AAc8Faf258CA546DF65aa7A46ad3D2c")).wait();
+  (await contract.setSpaceTVLAddress("0x9DcC0Da86B85291333C96C4d098E050b519e3870")).wait();
 
   await (await contract.settlementAddress(accounts[0].getAddress())).wait();
 
-  const MOSSAI_ERC_721 = await ethers.getContractAt("MOSSAI_ERC_721", "0xeA1BAd6CDa7f314B687DFD247f2F80EF92a3BcbF");
+  const MOSSAI_ERC_721 = await ethers.getContractAt("MGN_721", "0x7ef19c984D9dEF9C212DfbbD9993d5793BE30bfD");
 
   await (await MOSSAI_ERC_721.grantRole("0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6", contract.address)).wait();
 
-  const MGN_Role = await ethers.getContractAt("MGN_Role", "0x6357bDa1F1dE5e94Bd5f7E379F4737580e775837");
+  const MGN_Role = await ethers.getContractAt("MGN_Roles_Cfg", "0xB05c1453486195DD7bd572571ce7131707DA9411");
 
   await (
     await MGN_Role.addAdmin(contract.address)
@@ -42,11 +42,13 @@ async function main() {
 
   console.info("contractFactory address:", contract.address);
 
-  await run("verify:verify", {
-    address: contract.address,
-    contract: "contracts/MGN_Space.sol:MGN_Space",
-    constructorArguments: [],
-  });
+  setTimeout(async () => {
+    await run("verify:verify", {
+      address: contract.address,
+      contract: "contracts/MGN_Space.sol:MGN_Space",
+      constructorArguments: [],
+    });
+  }, 5000);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

@@ -9,15 +9,17 @@ async function main() {
   const contract = await factory.deployed();
   await contract.deployed();
 
-  await (await contract.setRoleAddress("0x6357bDa1F1dE5e94Bd5f7E379F4737580e775837")).wait();
+  await (await contract.setRolesCfgAddress("0xB05c1453486195DD7bd572571ce7131707DA9411")).wait();
 
   console.info("contractFactory address:", contract.address);
 
-  await run("verify:verify", {
-    address: contract.address,
-    contract: "contracts/MGN_Space_Template.sol:MGN_Space_Template",
-    constructorArguments: [],
-  });
+  setTimeout(async () => {
+    await run("verify:verify", {
+      address: contract.address,
+      contract: "contracts/space/MGN_Space_Template.sol:MGN_Space_Template",
+      constructorArguments: [],
+    });
+  }, 5000);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

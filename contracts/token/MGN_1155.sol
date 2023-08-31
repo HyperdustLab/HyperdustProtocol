@@ -8,7 +8,7 @@ import "@confluxfans/contracts/token/CRC1155/extensions/CRC1155Enumerable.sol";
 import "@confluxfans/contracts/token/CRC1155/extensions/CRC1155Metadata.sol";
 import "@confluxfans/contracts/InternalContracts/InternalContractsHandler.sol";
 
-contract MOSSAI_1155_NFT is
+contract MGN_1155 is
     AccessControlEnumerable,
     CRC1155Enumerable,
     CRC1155Metadata,

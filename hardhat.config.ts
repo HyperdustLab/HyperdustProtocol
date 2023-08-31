@@ -7,7 +7,15 @@ const proxyAgent = new ProxyAgent("http://127.0.0.1:10809");
 setGlobalDispatcher(proxyAgent);
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.1",
+  solidity: {
+    version: "0.8.1",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
+      },
+    },
+  },
   networks: {
     dev: {
       url: "HTTP://127.0.0.1:7545",
@@ -22,6 +30,8 @@ const config: HardhatUserConfig = {
     sepolia: {
       url: "https://eth-sepolia.g.alchemy.com/v2/8Ia31q08r5SELcMy3EYU8ZUrDHh_iuoF",
       accounts: ["144c29e35cb6d579fc739249eadd4c1d6ff3cbc8cc32798b32788bf615fedf74"],
+      loggingEnabled: true,
+      gas: 10000000,
     },
   },
   etherscan: {

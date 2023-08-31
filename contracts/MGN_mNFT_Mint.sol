@@ -109,6 +109,10 @@ contract MGN_mNFT_Mint is Ownable {
         _erc20Address = erc20Address;
     }
 
+    function setSettlementAddress(address settlementAddress) public onlyOwner {
+        _settlementAddress = settlementAddress;
+    }
+
     function addMintInfo(
         string memory tokenURI,
         uint256 price,

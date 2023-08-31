@@ -18,7 +18,10 @@ contract Space_721 is ERC721, ERC721URIStorage, ERC721Burnable, AccessControl {
         _grantRole(MINTER_ROLE, msg.sender);
     }
 
-    function safeMint(address to, string memory uri) public onlyRole(MINTER_ROLE) {
+    function safeMint(
+        address to,
+        string memory uri
+    ) public onlyRole(MINTER_ROLE) {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
@@ -27,20 +30,21 @@ contract Space_721 is ERC721, ERC721URIStorage, ERC721Burnable, AccessControl {
 
     // The following functions are overrides required by Solidity.
 
-    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+    function _burn(
+        uint256 tokenId
+    ) internal override(ERC721, ERC721URIStorage) {
         super._burn(tokenId);
     }
 
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        override(ERC721, ERC721URIStorage)
-        returns (string memory)
-    {
+    function tokenURI(
+        uint256 tokenId
+    ) public view override(ERC721, ERC721URIStorage) returns (string memory) {
         return super.tokenURI(tokenId);
     }
 
-    function supportsInterface(bytes4 interfaceId)
+    function supportsInterface(
+        bytes4 interfaceId
+    )
         public
         view
         override(ERC721, ERC721URIStorage, AccessControl)

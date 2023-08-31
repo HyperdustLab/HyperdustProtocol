@@ -3,20 +3,24 @@
 import { ethers, run } from "hardhat";
 
 async function main() {
-  const contractFactory = await ethers.getContractFactory("MGN_Settlement_Rules");
+  const contractFactory = await ethers.getContractFactory("MGN_mNFT_Mint");
+
+  const accounts = await ethers.getSigners();
 
   const factory = await contractFactory.deploy();
   const contract = await factory.deployed();
   await contract.deployed();
 
   await (await contract.setRolesCfgAddress("0xB05c1453486195DD7bd572571ce7131707DA9411")).wait();
+  await (await contract.setSettlementAddress(accounts[0].getAddress())).wait();
+  await (await contract.setErc20Address("0x7a798E8eC045f911684dAa28B38a54b883b9523C")).wait();
 
   console.info("contractFactory address:", contract.address);
 
   setTimeout(async () => {
     await run("verify:verify", {
       address: contract.address,
-      contract: "contracts/MGN_Settlement_Rules.sol:MGN_Settlement_Rules",
+      contract: "contracts/MGN_mNFT_Mint.sol:MGN_mNFT_Mint",
       constructorArguments: [],
     });
   }, 5000);

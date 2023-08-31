@@ -24,7 +24,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-import {StrUtil} from "./utils/StrUtil.sol";
+import {StrUtil} from "../utils/StrUtil.sol";
 
 contract MGN_Node_Mgr is Ownable {
     using Strings for *;

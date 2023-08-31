@@ -4,7 +4,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-import "./utils/StrUtil.sol";
+import "../utils/StrUtil.sol";
 
 contract MGN_Node_CheckIn is Ownable {
     using Strings for *;

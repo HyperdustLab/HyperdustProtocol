@@ -8,14 +8,14 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 import {StrUtil} from "./utils/StrUtil.sol";
 
-abstract contract IRole {
+abstract contract IMGNRolesCfg {
     function hasAdminRole(address account) public view returns (bool) {}
 }
 
 contract MGN_Settlement_Rules is Ownable {
     SettlementRules[] public _settlementRules;
 
-    address public _roleAddress;
+    address public _rolesCfgAddress;
 
     struct SettlementRules {
         address settlementAddress; //结算地址
@@ -29,8 +29,10 @@ contract MGN_Settlement_Rules is Ownable {
     event eveDelete(address settlementAddress);
 
     function add(address settlementAddress, uint256 settlementRatio) public {
-        IRole role = IRole(_roleAddress);
-        require(role.hasAdminRole(msg.sender), "not admin role");
+        require(
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
+        );
 
         for (uint256 i = 0; i < _settlementRules.length; i++) {
             require(
@@ -58,9 +60,10 @@ contract MGN_Settlement_Rules is Ownable {
     }
 
     function update(address settlementAddress, uint256 settlementRatio) public {
-        IRole role = IRole(_roleAddress);
-        require(role.hasAdminRole(msg.sender), "not admin role");
-
+        require(
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
+        );
         for (uint256 i = 0; i < _settlementRules.length; i++) {
             if (_settlementRules[i].settlementAddress == settlementAddress) {
                 _settlementRules[i].settlementRatio = settlementRatio;
@@ -79,8 +82,10 @@ contract MGN_Settlement_Rules is Ownable {
     }
 
     function del(address settlementAddress) public {
-        IRole role = IRole(_roleAddress);
-        require(role.hasAdminRole(msg.sender), "not admin role");
+        require(
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
+        );
 
         for (uint256 i = 0; i < _settlementRules.length; i++) {
             if (_settlementRules[i].settlementAddress == settlementAddress) {
@@ -95,8 +100,8 @@ contract MGN_Settlement_Rules is Ownable {
         }
     }
 
-    function setRoleAddress(address roleAddress) public onlyOwner {
-        _roleAddress = roleAddress;
+    function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
+        _rolesCfgAddress = rolesCfgAddress;
     }
 
     function getSettlementRules()

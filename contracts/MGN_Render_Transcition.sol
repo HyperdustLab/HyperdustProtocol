@@ -124,6 +124,10 @@ contract MGN_Render_Transcition is Ownable {
         _settlementRulesAddress = settlementRulesAddress;
     }
 
+    function setNodeAddress(address nodeAddress) public onlyOwner {
+        _nodeAddress = nodeAddress;
+    }
+
     function createOrder(
         uint256 nodeId,
         uint256 time
