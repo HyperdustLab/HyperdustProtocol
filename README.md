@@ -7,3 +7,7 @@ In traditional business,  metaverse/games need to pay the service to the cloud c
 Although a few projects claimed they could provide cloud rendering service in web3 business model, i.e. tokenization of 3D rendering power.  The absence of cloud real time rendering is still  in the field. Only still scene or video offline rendering available in Web3 industry.
 
 Decentralization of metaverse/games requires a more sustainable business model for massive aggregate computation, such as real time 3D/XR rendering to prosper. 
+
+
+![image](https://github.com/HyperdustLab/MGN/assets/85720482/4e5e3e2c-a299-4dca-bd57-0564af3bab84)
+
