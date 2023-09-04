@@ -1,19 +1,18 @@
 /** @format */
 
+import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
+import { expect } from "chai";
 import { ethers } from "hardhat";
+const { describe, it } = require("mocha");
 
-async function main() {
-  const contractFactory = await ethers.getContractFactory("MGN_Test");
+describe("MGN_Order", () => {
+  describe("Add", () => {
+    it("Test1", async function () {
+      const MGN_Render_Transcition = await ethers.getContractAt("MGN_Render_Transcition", "0x4da6cA983Dd36c239177e419979FB502AE9e1c28");
 
-  const factory = await contractFactory.deploy();
-  const contract = await factory.deployed();
+      const tx = await (await MGN_Render_Transcition.settlementOrder(1)).wait();
 
-  console.info(contract);
-}
-
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
+      console.info(tx);
+    });
+  });
 });

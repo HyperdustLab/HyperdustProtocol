@@ -11,13 +11,17 @@ async function main() {
 
   await (await contract.setRolesCfgAddress("0xB05c1453486195DD7bd572571ce7131707DA9411")).wait();
   await (await contract.setErc20Address("0x7a798E8eC045f911684dAa28B38a54b883b9523C")).wait();
-  await (await contract.setNodeAddress("0x7423928ad6FAfD4653DCC221510EB16cC2b40E8D")).wait();
+  await (await contract.setNodeMgrAddress("0x7423928ad6FAfD4653DCC221510EB16cC2b40E8D")).wait();
   await (await contract.setSettlementRulesAddress("0x7423928ad6FAfD4653DCC221510EB16cC2b40E8D")).wait();
 
   const MGN_Role = await ethers.getContractAt("MGN_Roles_Cfg", "0xB05c1453486195DD7bd572571ce7131707DA9411");
   await (
     await MGN_Role.addAdmin(contract.address)
   ).wait;
+
+  const MGNToken = await ethers.getContractAt("MGN_20", "0x7a798E8eC045f911684dAa28B38a54b883b9523C");
+
+  await MGNToken.approve(contract.address, 100000000000000000000);
 
   console.info("contractFactory address:", contract.address);
 

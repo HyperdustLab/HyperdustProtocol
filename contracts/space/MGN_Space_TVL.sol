@@ -29,7 +29,6 @@ contract MGN_Space_TVL is Ownable {
         string coverImage;
         string remark;
         uint256 payPrice;
-        uint256 pledgePrice;
         uint256 airdropPrice;
     }
 
@@ -40,7 +39,6 @@ contract MGN_Space_TVL is Ownable {
         string coverImage,
         string remark,
         uint256 payPrice,
-        uint256 pledgePrice,
         uint256 airdropPrice
     );
 
@@ -51,7 +49,6 @@ contract MGN_Space_TVL is Ownable {
         string coverImage,
         string remark,
         uint payPrice,
-        uint pledgePrice,
         uint256 airdropPrice
     );
 
@@ -67,7 +64,6 @@ contract MGN_Space_TVL is Ownable {
         string memory coverImage,
         string memory remark,
         uint256 payPrice,
-        uint256 pledgePrice,
         uint256 airdropPrice
     ) public {
         require(
@@ -84,7 +80,6 @@ contract MGN_Space_TVL is Ownable {
                 coverImage: coverImage,
                 remark: remark,
                 payPrice: payPrice,
-                pledgePrice: pledgePrice,
                 airdropPrice: airdropPrice
             })
         );
@@ -95,7 +90,6 @@ contract MGN_Space_TVL is Ownable {
             coverImage,
             remark,
             payPrice,
-            pledgePrice,
             airdropPrice
         );
     }
@@ -107,7 +101,6 @@ contract MGN_Space_TVL is Ownable {
         string memory coverImage,
         string memory remark,
         uint256 payPrice,
-        uint256 pledgePrice,
         uint256 airdropPrice
     ) public {
         require(
@@ -121,7 +114,6 @@ contract MGN_Space_TVL is Ownable {
                 _spaceTVLs[i].coverImage = coverImage;
                 _spaceTVLs[i].remark = remark;
                 _spaceTVLs[i].payPrice = payPrice;
-                _spaceTVLs[i].pledgePrice = pledgePrice;
                 _spaceTVLs[i].airdropPrice = airdropPrice;
                 break;
             }
@@ -133,7 +125,6 @@ contract MGN_Space_TVL is Ownable {
             coverImage,
             remark,
             payPrice,
-            pledgePrice,
             airdropPrice
         );
     }

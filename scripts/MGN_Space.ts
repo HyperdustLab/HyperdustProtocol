@@ -24,7 +24,7 @@ async function main() {
 
   await (await contract.setWorldMapAddress("0x1EA5DE1B85F25a1D05BC9F1E53129e745Dc3741D")).wait();
 
-  await (await contract.setSpaceNftAddress("0xeA1BAd6CDa7f314B687DFD247f2F80EF92a3BcbF")).wait();
+  await (await contract.setSpaceNftAddress("0x7ef19c984D9dEF9C212DfbbD9993d5793BE30bfD")).wait();
 
   (await contract.setSpaceTVLAddress("0x9DcC0Da86B85291333C96C4d098E050b519e3870")).wait();
 

@@ -69,7 +69,6 @@ contract MGN_Render_Transcition is Ownable {
     using Counters for Counters.Counter;
     Counters.Counter private _orderIds;
     address public _rolesCfgAddress;
-    address public _nodeAddress;
     address public _erc20Address;
     address public _settlementRulesAddress;
     address public _nodeMgrAddress;
@@ -124,15 +123,15 @@ contract MGN_Render_Transcition is Ownable {
         _settlementRulesAddress = settlementRulesAddress;
     }
 
-    function setNodeAddress(address nodeAddress) public onlyOwner {
-        _nodeAddress = nodeAddress;
+    function setNodeMgrAddress(address nodeMgrAddress) public onlyOwner {
+        _nodeMgrAddress = nodeMgrAddress;
     }
 
     function createOrder(
         uint256 nodeId,
         uint256 time
     ) public returns (uint256) {
-        IMGNNodeMgr _nodeMgr = IMGNNodeMgr(_nodeAddress);
+        IMGNNodeMgr _nodeMgr = IMGNNodeMgr(_nodeMgrAddress);
 
         IMGNNodeMgr.Node memory node = _nodeMgr.getNodeById(nodeId);
 
@@ -209,7 +208,7 @@ contract MGN_Render_Transcition is Ownable {
             "order status error"
         );
 
-        require(block.timestamp >= order.endTime, "The order has not expired");
+        // require(block.timestamp >= order.endTime, "The order has not expired");
 
         ISettlementRules settlementRulesAddress = ISettlementRules(
             _settlementRulesAddress
@@ -260,7 +259,7 @@ contract MGN_Render_Transcition is Ownable {
         settlementAmounts[settlementRulesList.length] = amount;
         settlementRatios[settlementRulesList.length] = totalRatio;
 
-        IMGNNodeMgr _nodeMgr = IMGNNodeMgr(_nodeAddress);
+        IMGNNodeMgr _nodeMgr = IMGNNodeMgr(_nodeMgrAddress);
 
         erc20.transferFrom(address(this), order.serviceAccount, amount);
         _nodeMgr.updateStatus(order.nodeId, "0");
