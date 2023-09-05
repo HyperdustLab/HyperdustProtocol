@@ -56,6 +56,12 @@ abstract contract IUniswapV3PositionsNFTV1 {
             uint128 tokensOwed1
         )
     {}
+
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public virtual {}
 }
 
 abstract contract IERC20 {
@@ -150,6 +156,7 @@ contract MGN_Space is Ownable {
         uint256 payPrice;
         uint256 liquidity;
         uint256 airdropPrice;
+        uint256 uniswapNFTId;
     }
 
     struct SpaceContractAddress {
@@ -160,7 +167,7 @@ contract MGN_Space is Ownable {
 
     struct Space {
         uint256 id;
-        uint256 spaceTypeId;
+        uint256 spaceTVLId;
         bytes32 sid;
         uint256 tokenId;
         uint256 coordinate;
@@ -238,183 +245,117 @@ contract MGN_Space is Ownable {
         _uniswapV3PositionsNFTV1Address = uniswapV3PositionsNFTV1Address;
     }
 
-    function setSpaceAirdropAddress(address spaceAirdropAddress) onlyOwner {
+    function setSpaceAirdropAddress(
+        address spaceAirdropAddress
+    ) public onlyOwner {
         _spaceAirdropAddress = spaceAirdropAddress;
     }
 
-    // function pay(uint256 coordinate) public {
-    //     updateSpaceLocation(coordinate);
+    function pledge(uint256 coordinate, uint256 tokenId) public {
+        IUniswapV3PositionsNFTV1 uniswapV3PositionsNFTV1 = IUniswapV3PositionsNFTV1(
+                _uniswapV3PositionsNFTV1Address
+            );
+        (
+            ,
+            ,
+            address token0,
+            address token1,
+            ,
+            ,
+            ,
+            uint128 liquidity,
+            ,
+            ,
+            ,
 
-    //     IERC20 erc20 = IERC20(_erc20Address);
+        ) = uniswapV3PositionsNFTV1.positions(tokenId);
+        uint256 spaceTVLId = updateSpaceLocation(coordinate);
+        IUniswapLiquidityCfg uniswapLiquidityCfg = IUniswapLiquidityCfg(
+            _transactionProceduresCfgAddres
+        );
+        if (token0 != _erc20Address && token1 != _erc20Address) {
+            revert("Invalid pledge token");
+        }
+        IUniswapLiquidityCfg.LiquidityCfg[]
+            memory liquidityCfgs = uniswapLiquidityCfg.getLiquidityCfgList(
+                _erc20Address
+            );
+        require(liquidityCfgs.length > 0, "Invalid pledge token");
+        IERC20 erc20 = IERC20(_erc20Address);
+        uint256 airdropNum = 0;
+        for (uint i = 0; i < liquidityCfgs.length; i++) {
+            if (liquidityCfgs[i].liquidity <= liquidity) {
+                erc20.transferFrom(
+                    _settlementAddress,
+                    msg.sender,
+                    liquidityCfgs[i].airdropNum
+                );
+                airdropNum = liquidityCfgs[i].airdropNum;
+                break;
+            }
+        }
+        require(airdropNum > 0, "Your liquidity does not meet the conditions");
 
-    //     uint256 amount = erc20.allowance(msg.sender, address(this));
+        uniswapV3PositionsNFTV1.safeTransferFrom(
+            msg.sender,
+            address(this),
+            tokenId
+        );
 
-    //     uint256[] memory spaceTVLPrice = getPayPrice(spaceTVLId, payType);
+        IERC721 erc721Address = IERC721(_spaceNftAddress);
+        require(_spaceNFTTokenURI[spaceTVLId].length > 0, "No NFT Token URI");
+        string memory tokenURI = _spaceNFTTokenURI[spaceTVLId][0];
+        uint256 spaceTokenId = erc721Address.safeMint(msg.sender, tokenURI);
+        delSpaceNFTTokenURI(spaceTVLId, tokenURI);
+        _index.increment();
+        bytes32 sid = generateHash(
+            (block.timestamp + _index.current()).toString()
+        );
+        _id.increment();
 
-    //     require(amount >= spaceTVLPrice[0], "Insufficient authorized amount");
+        Space memory space = Space({
+            id: _id.current(),
+            spaceTVLId: spaceTVLId,
+            sid: sid,
+            tokenId: spaceTokenId,
+            coordinate: coordinate
+        });
 
-    //     erc20.transferFrom(msg.sender, _settlementAddress, spaceTVLPrice[0]);
-    //     if (spaceTVLPrice[1] > 0) {
-    //         erc20.transferFrom(
-    //             _settlementAddress,
-    //             msg.sender,
-    //             spaceTVLPrice[1]
-    //         );
-    //     }
+        SpaceEditInfo memory spaceEditInfo = SpaceEditInfo({
+            id: space.id,
+            name: msg.sender.toHexString(),
+            coverImage: defCoverImage,
+            file: defFile,
+            fileHash: fileHash
+        });
+    }
 
-    //     IERC721 erc721Address = IERC721(_spaceNftAddress);
-
-    //     require(_spaceNFTTokenURI[spaceTVLId].length > 0, "No NFT Token URI");
-
-    //     string memory tokenURI = _spaceNFTTokenURI[spaceTVLId][0];
-
-    //     uint256 tokenId = erc721Address.safeMint(msg.sender, tokenURI);
-
-    //     delSpaceNFTTokenURI(spaceTVLId, tokenURI);
-
-    //     _index.increment();
-
-    //     bytes32 sid = generateHash(
-    //         (block.timestamp + _index.current()).toString()
-    //     );
-
-    //     _id.increment();
-
-    //     _spaces.push(
-    //         Space(_id.current(), spaceTVLId, sid, tokenId, coordinate)
-    //     );
-
-    //     _spacePayInfos.push(
-    //         SpacePayInfo(
-    //             _id.current(),
-    //             payType,
-    //             spaceTVLPrice[0],
-    //             spaceTVLPrice[1]
-    //         )
-    //     );
-
-    //     SpaceEditInfo memory spaceEditInfo = SpaceEditInfo(
-    //         _id.current(),
-    //         msg.sender.toHexString(),
-    //         defCoverImage,
-    //         defFile,
-    //         fileHash
-    //     );
-
-    //     _spaceEditInfos.push(spaceEditInfo);
-
-    //     _spaceContractAddresses.push(
-    //         SpaceContractAddress(_id.current(), address(0), address(0))
-    //     );
-
-    //     emit eveAdd(
-    //         _id.current(),
-    //         spaceTVLId,
-    //         sid,
-    //         tokenId,
-    //         coordinate,
-    //         payType,
-    //         spaceTVLPrice[0],
-    //         spaceTVLPrice[1]
-    //     );
-
-    //     emit eveUpdate(
-    //         spaceEditInfo.id,
-    //         spaceEditInfo.name,
-    //         spaceEditInfo.coverImage,
-    //         spaceEditInfo.file,
-    //         spaceEditInfo.fileHash
-    //     );
-    // }
-
-    function pledge(uint256 coordinate, uint256 tokenId) {
-        // IUniswapV3PositionsNFTV1 uniswapV3PositionsNFTV1 = IUniswapV3PositionsNFTV1(
-        //         _uniswapV3PositionsNFTV1Address
-        //     );
-        // (
-        //     ,
-        //     ,
-        //     address token0,
-        //     address token1,
-        //     ,
-        //     ,
-        //     ,
-        //     uint128 liquidity,
-        //     ,
-        //     ,
-        //     ,
-        // ) = uniswapV3PositionsNFTV1.positions(tokenId);
-        // uint256 spaceTVLId = updateSpaceLocation(coordinate);
-        // IUniswapLiquidityCfg uniswapLiquidityCfg = IUniswapLiquidityCfg(
-        //     _transactionProceduresCfgAddres
-        // );
-        // if (token0 != _erc20Address && token1 != _erc20Address) {
-        //     revert("Invalid pledge token");
-        // }
-        // IUniswapLiquidityCfg.LiquidityCfg[]
-        //     memory liquidityCfgs = uniswapLiquidityCfg.getLiquidityCfgList(
-        //         _erc20Address
-        //     );
-        // require(liquidityCfgs.length > 0, "Invalid pledge token");
-        // IERC20 erc20 = IERC20(_erc20Address);
-        // uint256 airdropNum = 0;
-        // for (uint i = 0; i < liquidityCfgs.length; i++) {
-        //     if (liquidityCfgs[i].liquidity <= liquidity) {
-        //         erc20.transferFrom(
-        //             _settlementAddress,
-        //             msg.sender,
-        //             liquidityCfgs[i].airdropNum
-        //         );
-        //         airdropNum = liquidityCfgs[i].airdropNum;
-        //         break;
-        //     }
-        // }
-        // require(airdropNum > 0, "Your liquidity does not meet the conditions");
-        // IERC721 erc721Address = IERC721(_spaceNftAddress);
-        // require(_spaceNFTTokenURI[spaceTVLId].length > 0, "No NFT Token URI");
-        // string memory tokenURI = _spaceNFTTokenURI[spaceTVLId][0];
-        // uint256 tokenId = erc721Address.safeMint(msg.sender, tokenURI);
-        // delSpaceNFTTokenURI(spaceTVLId, tokenURI);
-        // _index.increment();
-        // bytes32 sid = generateHash(
-        //     (block.timestamp + _index.current()).toString()
-        // );
-        // _id.increment();
-        // _spaces.push(
-        //     Space(_id.current(), spaceTVLId, sid, tokenId, coordinate)
-        // );
-        // _spacePayInfos.push(
-        //     SpacePayInfo(_id.current(), 2, 0, liquidity, airdropNum)
-        // );
-        // SpaceEditInfo memory spaceEditInfo = SpaceEditInfo(
-        //     _id.current(),
-        //     msg.sender.toHexString(),
-        //     defCoverImage,
-        //     defFile,
-        //     fileHash
-        // );
-        // _spaceEditInfos.push(spaceEditInfo);
-        // _spaceContractAddresses.push(
-        //     SpaceContractAddress(_id.current(), address(0), address(0))
-        // );
-        // emit eveAdd(
-        //     _id.current(),
-        //     spaceTVLId,
-        //     sid,
-        //     tokenId,
-        //     coordinate,
-        //     2,
-        //     0,
-        //     liquidity,
-        //     airdropNum
-        // );
-        // emit eveUpdate(
-        //     spaceEditInfo.id,
-        //     spaceEditInfo.name,
-        //     spaceEditInfo.coverImage,
-        //     spaceEditInfo.file,
-        //     spaceEditInfo.fileHash
-        // );
+    function saveSpace(
+        Space memory space,
+        SpaceEditInfo memory spaceEditInfo,
+        SpacePayInfo memory spacePayInfo
+    ) private {
+        _spaces.push(space);
+        _spacePayInfos.push(spacePayInfo);
+        _spaceEditInfos.push(spaceEditInfo);
+        emit eveAdd(
+            space.id,
+            space.spaceTVLId,
+            space.sid,
+            space.tokenId,
+            space.coordinate,
+            spacePayInfo.payType,
+            spacePayInfo.payPrice,
+            spacePayInfo.liquidity,
+            spacePayInfo.airdropPrice
+        );
+        emit eveUpdate(
+            spaceEditInfo.id,
+            spaceEditInfo.name,
+            spaceEditInfo.coverImage,
+            spaceEditInfo.file,
+            spaceEditInfo.fileHash
+        );
     }
 
     // function getPayPrice(
