@@ -9,7 +9,7 @@ async function main() {
   const contract = await factory.deployed();
   await contract.deployed();
 
-  await (await contract.setRolesCfgAddress("0xB05c1453486195DD7bd572571ce7131707DA9411")).wait();
+  await (await contract.setRolesCfgAddress("0x57B938452f79959d59e843118C502D995eb1418B")).wait();
 
   console.info("contractFactory address:", contract.address);
 

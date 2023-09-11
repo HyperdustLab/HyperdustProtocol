@@ -11,6 +11,9 @@ abstract contract IMGNRolesCfg {
 }
 
 contract MGN_Wallet_Account is Ownable {
+    using Strings for *;
+    using StrUtil for *;
+
     AmountConfInfo[] public _amountConfInfos;
     address public _erc20Address;
 

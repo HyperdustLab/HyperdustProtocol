@@ -8,11 +8,11 @@ const { describe, it } = require("mocha");
 describe("MGN_Order", () => {
   describe("Add", () => {
     it("Test1", async function () {
-      const MGN_Render_Transcition = await ethers.getContractAt("MGN_Render_Transcition", "0x4da6cA983Dd36c239177e419979FB502AE9e1c28");
+      const MGN_Space = await ethers.getContractAt("MGN_Space", "0xAAE79f7739C9AFBb72A197B89463EC7360c5498c");
 
-      const tx = await (await MGN_Render_Transcition.settlementOrder(1)).wait();
+      const data = await MGN_Space.getSpace(1);
 
-      console.info(tx);
+      console.info(data);
     });
   });
 });

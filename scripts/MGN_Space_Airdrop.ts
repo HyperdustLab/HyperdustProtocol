@@ -3,7 +3,7 @@
 import { ethers, run } from "hardhat";
 
 async function main() {
-  const contractFactory = await ethers.getContractFactory("MGN_Space_TVL");
+  const contractFactory = await ethers.getContractFactory("MGN_Space_Airdrop");
 
   const factory = await contractFactory.deploy();
   const contract = await factory.deployed();
@@ -16,7 +16,7 @@ async function main() {
   setTimeout(async () => {
     await run("verify:verify", {
       address: contract.address,
-      contract: "contracts/space/MGN_Space_TVL.sol:MGN_Space_TVL",
+      contract: "contracts/space/MGN_Space_Airdrop.sol:MGN_Space_Airdrop",
       constructorArguments: [],
     });
   }, 5000);

@@ -10,6 +10,8 @@ import "../utils/StrUtil.sol";
 
 abstract contract IMGNRolesCfg {
     function hasAdminRole(address account) public view returns (bool) {}
+
+    function addAdmin2(address account) public {}
 }
 
 abstract contract IERC721 {
@@ -57,7 +59,7 @@ abstract contract IUniswapV3PositionsNFTV1 {
         )
     {}
 
-    function safeTransferFrom(
+    function transferFrom(
         address from,
         address to,
         uint256 tokenId
@@ -93,18 +95,24 @@ abstract contract IWorldMap {
     function updateMintStatus(uint256 coordinate, bool isMint) public {}
 }
 
-abstract contract ISpaceTVL {
-    struct SpaceTVL {
-        uint256 id;
-        uint256 orderNum;
-        string name;
-        string coverImage;
-        string remark;
-        uint256 payPrice;
-        uint256 airdropPrice;
-    }
+abstract contract ISpace721Factory {
+    function deploy(
+        address account,
+        address spaceAssetsCfgAddress
+    ) public returns (address) {}
+}
 
-    function getSpaceTVL(uint256 id) public view returns (SpaceTVL memory) {}
+abstract contract ISpace1155Factory {
+    function deploy(
+        address account,
+        address spaceAssetsCfgAddress
+    ) public returns (address) {}
+}
+
+abstract contract ISpaceAirdrop {
+    function addSpaceAirdrop(uint256 spaceId, uint256 amount) public {}
+
+    function reduceSpaceAirdrop(uint256 spaceId, uint256 amount) public {}
 }
 
 contract MGN_Space is Ownable {
@@ -113,12 +121,14 @@ contract MGN_Space is Ownable {
     address public _spaceNftAddress;
     address public _worldMapAddress;
     address public _spaceTVLAddress;
-    address public _settlementAddress;
     address public _erc20Address;
     address public _uniswapLiquidityCfgAddress;
     address public _uniswapV3PositionsNFTV1Address;
-    address public _transactionProceduresCfgAddres;
+    address public _transactionCfgAddress;
     address public _spaceAirdropAddress;
+    address public _spaceAssetsCfgAddress;
+    address public _space721FactoryAddress;
+    address public _space1155FactoryAddress;
     using Counters for Counters.Counter;
     Counters.Counter private _id;
 
@@ -173,28 +183,7 @@ contract MGN_Space is Ownable {
         uint256 coordinate;
     }
 
-    event eveAdd(
-        uint256 id,
-        uint256 spaceTypeId,
-        bytes32 sid,
-        uint256 tokenId,
-        uint256 coordinate,
-        uint32 payType,
-        uint256 payPrice,
-        uint256 liquidity,
-        uint256 airdropPrice
-    );
-
-    event eveUpdate(
-        uint256 id,
-        string name,
-        string coverImage,
-        string file,
-        string fileHash
-    );
-    event eveUpdateERC721Contract(uint256 id, address erc721Address);
-
-    event eveUpdateERC1155Contract(uint256 id, address erc1155Address);
+    event eveSave(uint256 id);
 
     event eveAddSpaceNFTTokenURI(uint256, string[]);
     event eveDelSpaceNFTTokenURI(uint256, string[]);
@@ -225,10 +214,6 @@ contract MGN_Space is Ownable {
         _spaceTVLAddress = spaceTVLAddress;
     }
 
-    function settlementAddress(address settlementAddress) public onlyOwner {
-        _settlementAddress = settlementAddress;
-    }
-
     function setErc20Address(address erc20Address) public onlyOwner {
         _erc20Address = erc20Address;
     }
@@ -251,56 +236,56 @@ contract MGN_Space is Ownable {
         _spaceAirdropAddress = spaceAirdropAddress;
     }
 
+    function setSpaceAssetsCfgAddress(
+        address spaceAssetsCfgAddress
+    ) public onlyOwner {
+        _spaceAssetsCfgAddress = spaceAssetsCfgAddress;
+    }
+
+    function setTransactionCfgAddress(
+        address transactionCfgAddress
+    ) public onlyOwner {
+        _transactionCfgAddress = transactionCfgAddress;
+    }
+
+    function setSpace721FactoryAddress(
+        address space721FactoryAddress
+    ) public onlyOwner {
+        _space721FactoryAddress = space721FactoryAddress;
+    }
+
+    function setSpace1155FactoryAddress(
+        address space1155FactoryAddress
+    ) public onlyOwner {
+        _space1155FactoryAddress = space1155FactoryAddress;
+    }
+
+    function setContractAddress(
+        address[] memory contractaddressArray
+    ) public onlyOwner {
+        _rolesCfgAddress = contractaddressArray[0];
+        _spaceNftAddress = contractaddressArray[1];
+        _worldMapAddress = contractaddressArray[2];
+        _spaceTVLAddress = contractaddressArray[3];
+        _erc20Address = contractaddressArray[4];
+        _uniswapLiquidityCfgAddress = contractaddressArray[5];
+        _uniswapV3PositionsNFTV1Address = contractaddressArray[6];
+        _transactionCfgAddress = contractaddressArray[7];
+        _spaceAirdropAddress = contractaddressArray[8];
+        _spaceAssetsCfgAddress = contractaddressArray[9];
+        _space721FactoryAddress = contractaddressArray[10];
+        _space1155FactoryAddress = contractaddressArray[11];
+    }
+
     function pledge(uint256 coordinate, uint256 tokenId) public {
-        IUniswapV3PositionsNFTV1 uniswapV3PositionsNFTV1 = IUniswapV3PositionsNFTV1(
-                _uniswapV3PositionsNFTV1Address
-            );
-        (
-            ,
-            ,
-            address token0,
-            address token1,
-            ,
-            ,
-            ,
-            uint128 liquidity,
-            ,
-            ,
-            ,
+        _id.increment();
+        SpacePayInfo memory spacePayInfo = pledgeVeripication(
+            coordinate,
+            tokenId,
+            _id.current()
+        );
 
-        ) = uniswapV3PositionsNFTV1.positions(tokenId);
         uint256 spaceTVLId = updateSpaceLocation(coordinate);
-        IUniswapLiquidityCfg uniswapLiquidityCfg = IUniswapLiquidityCfg(
-            _transactionProceduresCfgAddres
-        );
-        if (token0 != _erc20Address && token1 != _erc20Address) {
-            revert("Invalid pledge token");
-        }
-        IUniswapLiquidityCfg.LiquidityCfg[]
-            memory liquidityCfgs = uniswapLiquidityCfg.getLiquidityCfgList(
-                _erc20Address
-            );
-        require(liquidityCfgs.length > 0, "Invalid pledge token");
-        IERC20 erc20 = IERC20(_erc20Address);
-        uint256 airdropNum = 0;
-        for (uint i = 0; i < liquidityCfgs.length; i++) {
-            if (liquidityCfgs[i].liquidity <= liquidity) {
-                erc20.transferFrom(
-                    _settlementAddress,
-                    msg.sender,
-                    liquidityCfgs[i].airdropNum
-                );
-                airdropNum = liquidityCfgs[i].airdropNum;
-                break;
-            }
-        }
-        require(airdropNum > 0, "Your liquidity does not meet the conditions");
-
-        uniswapV3PositionsNFTV1.safeTransferFrom(
-            msg.sender,
-            address(this),
-            tokenId
-        );
 
         IERC721 erc721Address = IERC721(_spaceNftAddress);
         require(_spaceNFTTokenURI[spaceTVLId].length > 0, "No NFT Token URI");
@@ -311,7 +296,6 @@ contract MGN_Space is Ownable {
         bytes32 sid = generateHash(
             (block.timestamp + _index.current()).toString()
         );
-        _id.increment();
 
         Space memory space = Space({
             id: _id.current(),
@@ -322,12 +306,135 @@ contract MGN_Space is Ownable {
         });
 
         SpaceEditInfo memory spaceEditInfo = SpaceEditInfo({
-            id: space.id,
+            id: _id.current(),
             name: msg.sender.toHexString(),
             coverImage: defCoverImage,
             file: defFile,
             fileHash: fileHash
         });
+
+        saveSpace(space, spaceEditInfo, spacePayInfo);
+    }
+
+    function getSpace(
+        uint256 id
+    )
+        public
+        view
+        returns (
+            string[] memory,
+            uint256[] memory,
+            address[] memory,
+            bytes32,
+            uint8
+        )
+    {
+        for (uint256 i = 0; i < _spaces.length; i++) {
+            if (_spaces[i].id == id) {
+                string[] memory strArray = new string[](4);
+                strArray[0] = _spaceEditInfos[i].name;
+                strArray[1] = _spaceEditInfos[i].coverImage;
+                strArray[2] = _spaceEditInfos[i].file;
+                strArray[3] = _spaceEditInfos[i].fileHash;
+
+                uint256[] memory uintArray = new uint256[](8);
+                uintArray[0] = _spacePayInfos[i].id;
+                uintArray[1] = _spacePayInfos[i].payPrice;
+                uintArray[2] = _spacePayInfos[i].liquidity;
+                uintArray[3] = _spacePayInfos[i].airdropPrice;
+                uintArray[4] = _spacePayInfos[i].uniswapNFTId;
+                uintArray[5] = _spaces[i].spaceTVLId;
+                uintArray[6] = _spaces[i].tokenId;
+                uintArray[7] = _spaces[i].coordinate;
+
+                address[] memory addressArray = new address[](2);
+                addressArray[0] = _spaceContractAddresses[i].erc721Address;
+                addressArray[1] = _spaceContractAddresses[i].erc1155Address;
+
+                return (
+                    strArray,
+                    uintArray,
+                    addressArray,
+                    _spaces[i].sid,
+                    _spacePayInfos[i].payType
+                );
+            }
+        }
+        revert("Space does not exist");
+    }
+
+    function pledgeVeripication(
+        uint256 coordinate,
+        uint256 tokenId,
+        uint256 spaceId
+    ) private returns (SpacePayInfo memory) {
+        // IUniswapV3PositionsNFTV1 uniswapV3PositionsNFTV1 = IUniswapV3PositionsNFTV1(
+        //         _uniswapV3PositionsNFTV1Address
+        //     );
+        // (
+        //     ,
+        //     ,
+        //     address token0,
+        //     address token1,
+        //     ,
+        //     ,
+        //     ,
+        //     uint128 liquidity,
+        //     ,
+        //     ,
+        //     ,
+
+        // ) = uniswapV3PositionsNFTV1.positions(tokenId);
+
+        // IUniswapLiquidityCfg uniswapLiquidityCfg = IUniswapLiquidityCfg(
+        //     _uniswapLiquidityCfgAddress
+        // );
+        // if (token0 != _erc20Address && token1 != _erc20Address) {
+        //     revert(
+        //         "Invalid pledge token"
+        //             .toSlice()
+        //             .concat(token0.toHexString().toSlice())
+        //             .toSlice()
+        //             .concat(" ".toSlice())
+        //             .toSlice()
+        //             .concat(token1.toHexString().toSlice())
+        //     );
+        // }
+
+        // address tokenAddress = token0 == _erc20Address ? token1 : token0;
+
+        // IUniswapLiquidityCfg.LiquidityCfg[]
+        //     memory liquidityCfgs = uniswapLiquidityCfg.getLiquidityCfgList(
+        //         tokenAddress
+        //     );
+        // require(liquidityCfgs.length > 0, "Invalid pledge token");
+        // uint256 airdropNum = 0;
+        // for (uint i = 0; i < liquidityCfgs.length; i++) {
+        //     if (liquidityCfgs[i].liquidity <= liquidity) {
+        //         airdropNum = liquidityCfgs[i].airdropNum;
+        //         break;
+        //     }
+        // }
+        // require(airdropNum > 0, "Your liquidity does not meet the conditions");
+
+        // uniswapV3PositionsNFTV1.transferFrom(
+        //     msg.sender,
+        //     address(this),
+        //     tokenId
+        // );
+
+        SpacePayInfo memory spacePayInfo = SpacePayInfo({
+            id: spaceId,
+            payType: 2,
+            payPrice: 0,
+            liquidity: 200,
+            airdropPrice: 200,
+            uniswapNFTId: tokenId
+        });
+
+        ISpaceAirdrop(_spaceAirdropAddress).addSpaceAirdrop(spaceId, 200);
+
+        return spacePayInfo;
     }
 
     function saveSpace(
@@ -338,54 +445,29 @@ contract MGN_Space is Ownable {
         _spaces.push(space);
         _spacePayInfos.push(spacePayInfo);
         _spaceEditInfos.push(spaceEditInfo);
-        emit eveAdd(
-            space.id,
-            space.spaceTVLId,
-            space.sid,
-            space.tokenId,
-            space.coordinate,
-            spacePayInfo.payType,
-            spacePayInfo.payPrice,
-            spacePayInfo.liquidity,
-            spacePayInfo.airdropPrice
+
+        address space721Address = ISpace721Factory(_space721FactoryAddress)
+            .deploy(msg.sender, _spaceAssetsCfgAddress);
+
+        IMGNRolesCfg MGNRolesCfg = IMGNRolesCfg(_rolesCfgAddress);
+
+        MGNRolesCfg.addAdmin2(space721Address);
+
+        address space1155Address = ISpace1155Factory(_space1155FactoryAddress)
+            .deploy(msg.sender, _spaceAssetsCfgAddress);
+
+        MGNRolesCfg.addAdmin2(space1155Address);
+
+        _spaceContractAddresses.push(
+            SpaceContractAddress({
+                id: space.id,
+                erc721Address: space721Address,
+                erc1155Address: space1155Address
+            })
         );
-        emit eveUpdate(
-            spaceEditInfo.id,
-            spaceEditInfo.name,
-            spaceEditInfo.coverImage,
-            spaceEditInfo.file,
-            spaceEditInfo.fileHash
-        );
+
+        emit eveSave(space.id);
     }
-
-    // function getPayPrice(
-    //     uint256 spaceTVLId,
-    //     uint8 payType
-    // ) private view returns (uint256[] memory) {
-    //     ISpaceTVL spaceTVLAddress = ISpaceTVL(_spaceTVLAddress);
-
-    //     ISpaceTVL.SpaceTVL memory spaceTVL = spaceTVLAddress.getSpaceTVL(
-    //         spaceTVLId
-    //     );
-
-    //     require(spaceTVL.id > 0, "Space type does not exist");
-
-    //     uint256 price;
-
-    //     if (payType == 1) {
-    //         price = spaceTVL.payPrice;
-    //     } else if (payType == 2) {
-    //         price = spaceTVL.pledgePrice;
-    //     } else {
-    //         revert("Pay type error");
-    //     }
-
-    //     uint256[] memory result = new uint256[](2);
-    //     result[0] = price;
-    //     result[1] = spaceTVL.airdropPrice;
-
-    //     return result;
-    // }
 
     function updateSpaceLocation(uint256 id) private returns (uint256) {
         IWorldMap worldMapAddress = IWorldMap(_worldMapAddress);
@@ -408,8 +490,6 @@ contract MGN_Space is Ownable {
         string memory file,
         string memory fileHash
     ) public {
-        Space memory space = getSpace(id);
-
         IERC721 erc721Address = IERC721(_spaceNftAddress);
 
         for (uint256 i = 0; i < _spaceEditInfos.length; i++) {
@@ -420,50 +500,8 @@ contract MGN_Space is Ownable {
                 _spaceEditInfos[i].coverImage = coverImage;
                 _spaceEditInfos[i].file = file;
                 _spaceEditInfos[i].fileHash = fileHash;
-                emit eveUpdate(id, name, coverImage, file, fileHash);
+                emit eveSave(id);
                 return;
-            }
-        }
-        revert("Space does not exist");
-    }
-
-    function getSpace(uint256 id) public view returns (Space memory) {
-        for (uint256 i = 0; i < _spaces.length; i++) {
-            if (_spaces[i].id == id) {
-                return _spaces[i];
-            }
-        }
-        revert("Space does not exist");
-    }
-
-    function getSpaceEditInfo(
-        uint256 id
-    ) public view returns (SpaceEditInfo memory) {
-        for (uint256 i = 0; i < _spaceEditInfos.length; i++) {
-            if (_spaceEditInfos[i].id == id) {
-                return _spaceEditInfos[i];
-            }
-        }
-        revert("Space does not exist");
-    }
-
-    function getSpacePayInfo(
-        uint256 id
-    ) public view returns (SpacePayInfo memory) {
-        for (uint256 i = 0; i < _spacePayInfos.length; i++) {
-            if (_spacePayInfos[i].id == id) {
-                return _spacePayInfos[i];
-            }
-        }
-        revert("Space does not exist");
-    }
-
-    function getSpaceContractAddress(
-        uint256 id
-    ) public view returns (SpaceContractAddress memory) {
-        for (uint256 i = 0; i < _spaceContractAddresses.length; i++) {
-            if (_spaceContractAddresses[i].id == id) {
-                return _spaceContractAddresses[i];
             }
         }
         revert("Space does not exist");
@@ -474,40 +512,6 @@ contract MGN_Space is Ownable {
         require(!hashExists[hash], "Hash already exists");
         hashExists[hash] = true;
         return hash;
-    }
-
-    function updateErc721Address(uint256 id, address erc721Address) public {
-        Space memory space = getSpace(id);
-
-        IERC721 erc721AddressContract = IERC721(_spaceNftAddress);
-        for (uint256 i = 0; i < _spaceContractAddresses.length; i++) {
-            if (_spaceEditInfos[i].id == id) {
-                address owner = erc721AddressContract.ownerOf(
-                    _spaces[i].tokenId
-                );
-                require(msg.sender == owner, "No permission");
-                _spaceContractAddresses[i].erc721Address = erc721Address;
-                emit eveUpdateERC721Contract(id, erc721Address);
-                return;
-            }
-        }
-        revert("Space does not exist");
-    }
-
-    function updateErc1155Address(uint256 id, address erc1155Address) public {
-        Space memory space = getSpace(id);
-
-        IERC721 erc721Address = IERC721(_spaceNftAddress);
-        for (uint256 i = 0; i < _spaceContractAddresses.length; i++) {
-            if (_spaceEditInfos[i].id == id) {
-                address owner = erc721Address.ownerOf(_spaces[i].tokenId);
-                require(msg.sender == owner, "No permission");
-                _spaceContractAddresses[i].erc1155Address = erc1155Address;
-                emit eveUpdateERC1155Contract(id, erc1155Address);
-                return;
-            }
-        }
-        revert("Space does not exist");
     }
 
     function putSpaceNFTTokenURI(

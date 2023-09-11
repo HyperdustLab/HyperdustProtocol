@@ -10,22 +10,34 @@ contract MGN_Roles_Cfg is Ownable {
     using Strings for *;
     using StrUtil for *;
 
-    mapping(address => bool) public _adminRoleIndex;
+    mapping(address => bool) public _adminRole;
+    mapping(address => bool) public _superAsdminRole;
 
     constructor() {
-        _adminRoleIndex[msg.sender] = true;
+        _adminRole[msg.sender] = true;
     }
 
     function addAdmin(address account) public onlyOwner {
-        require(!_adminRoleIndex[account], "administrator already exists");
-        _adminRoleIndex[account] = true;
+        require(!_adminRole[account], "administrator already exists");
+        _adminRole[account] = true;
+    }
+
+    function addSuperAdmin(address account) public onlyOwner {
+        require(!_superAsdminRole[account], "administrator already exists");
+        _superAsdminRole[account] = true;
+    }
+
+    function addAdmin2(address account) public {
+        require(_superAsdminRole[msg.sender], "not super admin role");
+        require(!_adminRole[account], "administrator already exists");
+        _adminRole[account] = true;
     }
 
     function hasAdminRole(address account) public view returns (bool) {
-        return _adminRoleIndex[account];
+        return _adminRole[account];
     }
 
     function deleteAdmin(address account) public onlyOwner {
-        _adminRoleIndex[account] = false;
+        _adminRole[account] = false;
     }
 }

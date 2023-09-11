@@ -32,25 +32,7 @@ contract MGN_Space_TVL is Ownable {
         uint256 airdropPrice;
     }
 
-    event eveAdd(
-        uint256 id,
-        uint256 orderNum,
-        string name,
-        string coverImage,
-        string remark,
-        uint256 payPrice,
-        uint256 airdropPrice
-    );
-
-    event eveUpdate(
-        uint256 id,
-        uint256 orderNum,
-        string name,
-        string coverImage,
-        string remark,
-        uint payPrice,
-        uint256 airdropPrice
-    );
+    event eveSave(uint256 id);
 
     event eveDelete(uint256 id);
 
@@ -83,15 +65,7 @@ contract MGN_Space_TVL is Ownable {
                 airdropPrice: airdropPrice
             })
         );
-        emit eveAdd(
-            id,
-            orderNum,
-            name,
-            coverImage,
-            remark,
-            payPrice,
-            airdropPrice
-        );
+        emit eveSave(id);
     }
 
     function update(
@@ -118,15 +92,7 @@ contract MGN_Space_TVL is Ownable {
                 break;
             }
         }
-        emit eveUpdate(
-            id,
-            orderNum,
-            name,
-            coverImage,
-            remark,
-            payPrice,
-            airdropPrice
-        );
+        emit eveSave(id);
     }
 
     function deleteSpaceTVL(uint256 id) public {
@@ -151,10 +117,34 @@ contract MGN_Space_TVL is Ownable {
         emit eveDelete(id);
     }
 
-    function getSpaceTVL(uint256 id) public view returns (SpaceTVL memory) {
+    function getSpaceTVL(
+        uint256 id
+    )
+        public
+        view
+        returns (
+            uint256,
+            uint256,
+            string memory,
+            string memory,
+            string memory,
+            uint256,
+            uint256
+        )
+    {
         for (uint256 i = 0; i < _spaceTVLs.length; i++) {
             if (_spaceTVLs[i].id == id) {
-                return _spaceTVLs[i];
+                SpaceTVL memory spaceTVL = _spaceTVLs[i];
+
+                return (
+                    spaceTVL.id,
+                    spaceTVL.orderNum,
+                    spaceTVL.name,
+                    spaceTVL.coverImage,
+                    spaceTVL.remark,
+                    spaceTVL.payPrice,
+                    spaceTVL.airdropPrice
+                );
             }
         }
     }

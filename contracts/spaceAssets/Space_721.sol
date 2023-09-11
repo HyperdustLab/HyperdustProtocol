@@ -8,12 +8,27 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+import "../utils/StrUtil.sol";
+
 abstract contract ITransactionCfg {
     function get(string memory func) public view returns (uint256) {}
 }
 
 abstract contract IWalletAccount {
     function addAmount(uint256 amount) public {}
+}
+
+abstract contract ISpaceAssetsCfg {
+    function getAddressConfList()
+        public
+        view
+        returns (
+            address _transactionCfgAddress,
+            address _erc20Address,
+            address _walletAccountAddres,
+            address _rolesCfgAddress
+        )
+    {}
 }
 
 abstract contract IERC20 {
@@ -42,35 +57,37 @@ contract Space_721 is
 {
     using Counters for Counters.Counter;
 
-    address public _transactionCfgAddress;
+    using Strings for *;
+    using StrUtil for *;
 
-    address public _erc20Address;
-
-    address public _walletAccountAddres;
+    address public _spaceAssetsCfgAddress;
 
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     Counters.Counter private _tokenIdCounter;
 
-    constructor(
-        address transactionCfgAddress,
-        address erc20Address,
-        address walletAccountAddres
-    ) ERC721("Space_721", "Space") {
+    constructor(address spaceAssetsCfgAddress) ERC721("Space_721", "Space") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(MINTER_ROLE, msg.sender);
-        _transactionCfgAddress = transactionCfgAddress;
-        _erc20Address = erc20Address;
-        _walletAccountAddres = walletAccountAddres;
+        _spaceAssetsCfgAddress = spaceAssetsCfgAddress;
     }
 
     function safeMint(
         address to,
         string memory uri
     ) public onlyRole(MINTER_ROLE) {
+        (
+            address _transactionCfgAddress,
+            address _erc20Address,
+            address _walletAccountAddres,
+            address _rolesCfgAddress
+        ) = ISpaceAssetsCfg(_spaceAssetsCfgAddress).getAddressConfList();
+
         ITransactionCfg transactionCfg = ITransactionCfg(
             _transactionCfgAddress
         );
+
         IERC20 erc20 = IERC20(_erc20Address);
+
         uint256 amount = erc20.allowance(msg.sender, address(this));
 
         uint256 mintNFTAmount = transactionCfg.get("mintNFT");
@@ -82,7 +99,9 @@ contract Space_721 is
         IWalletAccount walletAccountAddress = IWalletAccount(
             _walletAccountAddres
         );
+
         walletAccountAddress.addAmount(mintNFTAmount);
+
         uint256 tokenId = _tokenIdCounter.current() + 1;
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);

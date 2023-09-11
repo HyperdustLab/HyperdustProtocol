@@ -7,6 +7,45 @@ import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 import "@confluxfans/contracts/token/CRC1155/extensions/CRC1155Enumerable.sol";
 import "@confluxfans/contracts/token/CRC1155/extensions/CRC1155Metadata.sol";
 import "@confluxfans/contracts/InternalContracts/InternalContractsHandler.sol";
+import "../utils/StrUtil.sol";
+
+abstract contract ITransactionCfg {
+    function get(string memory func) public view returns (uint256) {}
+}
+
+abstract contract IWalletAccount {
+    function addAmount(uint256 amount) public {}
+}
+
+abstract contract ISpaceAssetsCfg {
+    function getAddressConfList()
+        public
+        view
+        returns (
+            address _transactionCfgAddress,
+            address _erc20Address,
+            address _walletAccountAddres,
+            address _rolesCfgAddress
+        )
+    {}
+}
+
+abstract contract IERC20 {
+    function transferFrom(
+        address from,
+        address to,
+        uint256 amount
+    ) public returns (bool) {}
+
+    function allowance(
+        address owner,
+        address spender
+    ) external view returns (uint256) {}
+
+    function balanceOf(address account) external view returns (uint256) {}
+
+    function approve(address spender, uint256 amount) external returns (bool) {}
+}
 
 contract Space_1155 is
     AccessControlEnumerable,
@@ -16,23 +55,27 @@ contract Space_1155 is
 {
     using Strings for uint256;
 
+    using StrUtil for *;
+
+    address public _spaceAssetsCfgAddress;
+
     //tokenId => FeatureCode, the Feature code is generally md5 code for resource files such as images or videos.
     mapping(uint256 => uint256) public tokenFeatureCode;
 
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant URI_SETTER_ROLE = keccak256("URI_SETTER_ROLE");
-    //tokenID对应的元数据URL地址
+
     mapping(uint256 => string) private _tokenURIs;
-    //tokenId对应的mint总数
-    mapping(uint256 => uint256) private _mintNums;
 
     constructor(
-    ) CRC1155Metadata("Space_721", "Space") ERC1155("") {
+        address spaceAssetsCfgAddress
+    ) CRC1155Metadata("Space_1155", "Space") ERC1155("") {
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
         _setupRole(MINTER_ROLE, _msgSender());
         _setupRole(URI_SETTER_ROLE, _msgSender());
         _setupRole(PAUSER_ROLE, _msgSender());
+        _spaceAssetsCfgAddress = spaceAssetsCfgAddress;
     }
 
     /**
@@ -72,20 +115,6 @@ contract Space_1155 is
         return _tokenURIs[tokenId];
     }
 
-    //获取tokenId总共铸造数量
-    function getMintNum(uint256 tokenId) public view virtual returns (uint256) {
-        return _mintNums[tokenId];
-    }
-
-    //设置tokenId对应的元数据URI
-    function setTokenURI(uint256 tokenId, string memory newuri) public virtual {
-        require(
-            hasRole(URI_SETTER_ROLE, _msgSender()),
-            "CRC1155NatureAutoId: must have admin role to set URI"
-        );
-        _tokenURIs[tokenId] = newuri;
-    }
-
     /**
      * @dev Creates `amount` new tokens for `to`, of token type `id`.
      *
@@ -106,32 +135,43 @@ contract Space_1155 is
             hasRole(MINTER_ROLE, _msgSender()),
             "CRC1155NatureAutoId: must have minter role to mint"
         );
-        _tokenURIs[id] = tokenURI;
-        _mintNums[id] += amount;
+
+        pay();
+
+        if (_tokenURIs[id].toSlice().empty()) {
+            _tokenURIs[id] = tokenURI;
+        }
 
         _mint(to, id, amount, data);
     }
 
-    /**
-     * @dev xref:ROOT:erc1155.adoc#batch-operations[Batched] variant of {mint}.
-     */
-    function mintBatch(
-        address to,
-        uint256[] memory ids,
-        uint256[] memory amounts,
-        string[] memory tokenURIs,
-        bytes calldata data
-    ) public virtual {
-        require(
-            hasRole(MINTER_ROLE, _msgSender()),
-            "CRC1155NatureAutoId: must have minter role to mint"
+    function pay() private {
+        (
+            address _transactionCfgAddress,
+            address _erc20Address,
+            address _walletAccountAddres,
+            address _rolesCfgAddress
+        ) = ISpaceAssetsCfg(_spaceAssetsCfgAddress).getAddressConfList();
+
+        ITransactionCfg transactionCfg = ITransactionCfg(
+            _transactionCfgAddress
         );
 
-        for (uint256 i = 0; i < tokenURIs.length; i++) {
-            _tokenURIs[ids[i]] = tokenURIs[i];
-        }
+        IERC20 erc20 = IERC20(_erc20Address);
 
-        _mintBatch(to, ids, amounts, "");
+        uint256 amount = erc20.allowance(msg.sender, address(this));
+
+        uint256 mintNFTAmount = transactionCfg.get("mintNFT");
+
+        require(amount >= mintNFTAmount, "Insufficient authorized amount");
+
+        erc20.transferFrom(msg.sender, _walletAccountAddres, mintNFTAmount);
+
+        IWalletAccount walletAccountAddress = IWalletAccount(
+            _walletAccountAddres
+        );
+
+        walletAccountAddress.addAmount(mintNFTAmount);
     }
 
     //Optional functions：The feature code can only be set once for each id, and then it can never be change again。

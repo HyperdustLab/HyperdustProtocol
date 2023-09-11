@@ -18,7 +18,7 @@ const config: HardhatUserConfig = {
   },
   networks: {
     dev: {
-      url: "HTTP://127.0.0.1:7545",
+      url: "HTTP://127.0.0.1:8545",
     },
     test1: {
       url: "https://evmtestnet.confluxrpc.com",
@@ -31,7 +31,6 @@ const config: HardhatUserConfig = {
       url: "https://eth-sepolia.g.alchemy.com/v2/8Ia31q08r5SELcMy3EYU8ZUrDHh_iuoF",
       accounts: ["144c29e35cb6d579fc739249eadd4c1d6ff3cbc8cc32798b32788bf615fedf74"],
       loggingEnabled: true,
-      gas: 10000000,
     },
   },
   etherscan: {
