@@ -28,6 +28,7 @@
     "ethers": "^5.7.2",
     "fs": "^0.0.1-security",
     "keccak256": "^1.0.6",
+    "node-xlsx": "^0.23.0",
     "truffle-contract": "^4.0.31",
     "truffle-contract-size": "^2.0.1",
     "web3": "^4.0.2"

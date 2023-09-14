@@ -52,8 +52,11 @@ describe("MGN_Render_Transcition", () => {
       await (await MGN_Render_Transcition.setNodeMgrAddress(MGN_Node_Mgr.address)).wait();
       await (await MGN_Render_Transcition.setSettlementRulesAddress(MGN_Settlement_Rules.address)).wait();
       await (await MGN_Render_Transcition.createOrder(1, 1)).wait();
-      const tx = await (await MGN_Render_Transcition.settlementOrder(1)).wait();
-      console.info(tx);
+      await (await MGN_Render_Transcition.settlementOrder(1)).wait();
+
+      const res = await MGN_Render_Transcition.getOrder(1);
+
+      console.info(res);
     });
   });
 });

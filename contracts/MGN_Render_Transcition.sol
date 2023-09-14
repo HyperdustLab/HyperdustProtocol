@@ -86,18 +86,7 @@ contract MGN_Render_Transcition is Ownable {
         uint256 endTime;
     }
 
-    event eveAdd(
-        address serviceAccount,
-        address account,
-        string status,
-        uint256 time,
-        uint256 price,
-        uint256 amount,
-        uint256 id,
-        uint256 createTime,
-        uint256 nodeId,
-        uint256 endTime
-    );
+    event eveSave(uint256 id);
 
     event eveSettlement(
         string status,
@@ -169,18 +158,7 @@ contract MGN_Render_Transcition is Ownable {
 
         _orders.push(order);
 
-        emit eveAdd(
-            node.incomeAddress,
-            msg.sender,
-            "1",
-            time,
-            node.price,
-            node.price * time,
-            _orderIds.current(),
-            createTime,
-            order.nodeId,
-            endTime
-        );
+        emit eveSave(order.id);
 
         return _orderIds.current();
     }
@@ -271,5 +249,43 @@ contract MGN_Render_Transcition is Ownable {
             settlementAmounts,
             settlementRatios
         );
+    }
+
+    function getOrder(
+        uint256 orderId
+    )
+        public
+        view
+        returns (
+            address,
+            address,
+            string memory,
+            uint256,
+            uint256,
+            uint256,
+            uint256,
+            uint256,
+            uint256,
+            uint256
+        )
+    {
+        for (uint256 i = 0; i < _orders.length; i++) {
+            if (_orders[i].id == orderId) {
+                return (
+                    _orders[i].serviceAccount,
+                    _orders[i].account,
+                    _orders[i].status,
+                    _orders[i].time,
+                    _orders[i].price,
+                    _orders[i].amount,
+                    _orders[i].id,
+                    _orders[i].createTime,
+                    _orders[i].nodeId,
+                    _orders[i].endTime
+                );
+            }
+        }
+
+        revert("order not found");
     }
 }

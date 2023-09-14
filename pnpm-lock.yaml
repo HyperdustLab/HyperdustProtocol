@@ -29,6 +29,9 @@ dependencies:
   keccak256:
     specifier: ^1.0.6
     version: 1.0.6
+  node-xlsx:
+    specifier: ^0.23.0
+    version: 0.23.0
   truffle-contract:
     specifier: ^4.0.31
     version: 4.0.31
@@ -5696,6 +5699,14 @@ packages:
     resolution: {integrity: sha512-uYr7J37ae/ORWdZeQ1xxMJe3NtdmqMC/JZK+geofDrkLUApKRHPd18/TxtBOJ4A0/+uUIliorNrfYV6s1b02eQ==}
     dev: false
 
+  /node-xlsx@0.23.0:
+    resolution: {integrity: sha512-r3KaSZSsSrK92rbPXnX/vDdxURmPPik0rjJ3A+Pybzpjyrk4G6WyGfj8JIz5dMMEpCmWVpmO4qoVPBxnpLv/8Q==}
+    engines: {node: '>=10.0.0'}
+    hasBin: true
+    dependencies:
+      xlsx: '@cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz'
+    dev: false
+
   /nofilter@3.1.0:
     resolution: {integrity: sha512-l2NNj07e9afPnhAhvgVrCD/oy2Ai1yfLpuo3EpiO1jFTsB4sFz6oIfAfSZyQzVpkZQ9xS8ZS5g1jCBgq4Hwo0g==}
     engines: {node: '>=12.19'}
@@ -8689,6 +8700,14 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
     dev: true
+
+  '@cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz':
+    resolution: {tarball: https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz}
+    name: xlsx
+    version: 0.19.3
+    engines: {node: '>=0.8'}
+    hasBin: true
+    dev: false
 
   github.com/ethereumjs/ethereumjs-abi/ee3994657fa7a427238e6ba92a84d0b529bbcde0:
     resolution: {tarball: https://codeload.github.com/ethereumjs/ethereumjs-abi/tar.gz/ee3994657fa7a427238e6ba92a84d0b529bbcde0}

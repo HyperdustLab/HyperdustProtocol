@@ -9,21 +9,21 @@ async function main() {
   const contract = await factory.deployed();
   await contract.deployed();
 
-  await (await contract.setRolesCfgAddress("0xB05c1453486195DD7bd572571ce7131707DA9411")).wait();
+  console.info("contractFactory address:", contract.address);
+
+  await (await contract.setRolesCfgAddress("0x57B938452f79959d59e843118C502D995eb1418B")).wait();
   await (await contract.setErc20Address("0x7a798E8eC045f911684dAa28B38a54b883b9523C")).wait();
   await (await contract.setNodeMgrAddress("0x7423928ad6FAfD4653DCC221510EB16cC2b40E8D")).wait();
-  await (await contract.setSettlementRulesAddress("0x7423928ad6FAfD4653DCC221510EB16cC2b40E8D")).wait();
+  await (await contract.setSettlementRulesAddress("0x7381f57a7504E4a4222c75efF60bcd331631867b")).wait();
 
-  const MGN_Role = await ethers.getContractAt("MGN_Roles_Cfg", "0xB05c1453486195DD7bd572571ce7131707DA9411");
+  const MGN_Role = await ethers.getContractAt("MGN_Roles_Cfg", "0x57B938452f79959d59e843118C502D995eb1418B");
   await (
     await MGN_Role.addAdmin(contract.address)
   ).wait;
 
   const MGNToken = await ethers.getContractAt("MGN_20", "0x7a798E8eC045f911684dAa28B38a54b883b9523C");
 
-  await MGNToken.approve(contract.address, 100000000000000000000);
-
-  console.info("contractFactory address:", contract.address);
+  await MGNToken.approve(contract.address, 1000000000000000);
 
   setTimeout(async () => {
     await run("verify:verify", {
