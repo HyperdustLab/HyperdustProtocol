@@ -34,30 +34,62 @@ abstract contract IERC20 {
     ) public virtual returns (bool) {}
 }
 
-contract MGN_airdrop is Ownable {
-    using Counters for Counters.Counter;
-    Counters.Counter private _id;
-
+contract MGN_Airdrop is Ownable {
     using Strings for *;
     using StrUtil for *;
 
+    uint256 public _maxAirdrop = 1000000000000000000;
+
+    address public _rolesCfgAddress;
+
     address public _erc20Address;
 
-    mapping(address => bool) public _airdrop;
+    address public _admin;
+
+    uint256 public _sumAirdrop = 500000000000000000000;
+
+    uint256 public _receivedAirdrop = 0;
+
+    constructor() {
+        _admin = msg.sender;
+    }
+
+    function setSumAirdrop(uint256 sumAirdrop) public onlyOwner {
+        _sumAirdrop = sumAirdrop;
+    }
 
     function setErc20Address(address erc20Address) public onlyOwner {
         _erc20Address = erc20Address;
     }
 
-    function airdrop(
-        address[] memory addressList,
-        uint256 num
-    ) public onlyOwner {
-        for (uint256 i = 0; i < addressList.length; i++) {
-            if (!_airdrop[addressList[i]]) {
-                IERC20(_erc20Address).transfer(addressList[i], num);
-                _airdrop[addressList[i]] = true;
-            }
+    function setMaxAirdrop(uint256 maxAirdrop) public onlyOwner {
+        _maxAirdrop = maxAirdrop;
+    }
+
+    function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
+        _rolesCfgAddress = rolesCfgAddress;
+    }
+
+    function airdrop(address account, uint256 num) public {
+        require(
+            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
+        );
+        require(num <= _maxAirdrop, "exceed max airdrop");
+        require(
+            _receivedAirdrop + num <= _sumAirdrop,
+            "No airdrop amount available"
+        );
+        IERC20(_erc20Address).transferFrom(_admin, account, num);
+
+        _receivedAirdrop += num;
+    }
+
+    function getRemainingAirdropQuantity() public view returns (uint256) {
+        if (_sumAirdrop >= _receivedAirdrop) {
+            return _sumAirdrop - _receivedAirdrop;
+        } else {
+            return 0;
         }
     }
 }
