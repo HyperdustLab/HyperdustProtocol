@@ -33,23 +33,7 @@ contract MGN_Space_Template is Ownable {
 
     event eveDelete(uint256 id);
 
-    event eveAdd(
-        uint256 id,
-        string name,
-        string coverImage,
-        string file,
-        uint256 spaceTypeId,
-        string fileHash
-    );
-
-    event eveUpdate(
-        uint256 id,
-        string name,
-        string coverImage,
-        string file,
-        uint256 spaceTypeId,
-        string fileHash
-    );
+    event eveSave(uint256 id);
 
     function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
         _rolesCfgAddress = rolesCfgAddress;
@@ -78,7 +62,7 @@ contract MGN_Space_Template is Ownable {
                 fileHash: fileHash
             })
         );
-        emit eveAdd(id, name, coverImage, file, spaceTypeId, fileHash);
+        emit eveSave(id);
     }
 
     function update(
@@ -106,7 +90,7 @@ contract MGN_Space_Template is Ownable {
             }
         }
         require(isUpdate, "not found");
-        emit eveUpdate(id, name, coverImage, file, spaceTypeId, fileHash);
+        emit eveSave(id);
     }
 
     function deleteSpaceTemplate(uint256 id) public {
@@ -129,5 +113,34 @@ contract MGN_Space_Template is Ownable {
         _spaceTemplate.pop();
 
         emit eveDelete(id);
+    }
+
+    function getSpaceTemplate(
+        uint256 id
+    )
+        public
+        view
+        returns (
+            uint256,
+            string memory,
+            string memory,
+            string memory,
+            uint256,
+            string memory
+        )
+    {
+        for (uint256 i = 0; i < _spaceTemplate.length; i++) {
+            if (_spaceTemplate[i].id == id) {
+                return (
+                    _spaceTemplate[i].id,
+                    _spaceTemplate[i].name,
+                    _spaceTemplate[i].coverImage,
+                    _spaceTemplate[i].file,
+                    _spaceTemplate[i].spaceTypeId,
+                    _spaceTemplate[i].fileHash
+                );
+            }
+        }
+        revert("not found");
     }
 }

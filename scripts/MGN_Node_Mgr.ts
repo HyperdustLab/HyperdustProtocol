@@ -3,25 +3,16 @@
 import { ethers, run } from "hardhat";
 
 async function main() {
-  const contractFactory = await ethers.getContractFactory("MGN_Node_Mgr");
 
-  const factory = await contractFactory.deploy();
-  const contract = await factory.deployed();
-  await contract.deployed();
+  const MGN_Node_Mgr = await ethers.deployContract("MGN_Node_Mgr");
 
-  await (await contract.setRolesCfgAddress("0xB05c1453486195DD7bd572571ce7131707DA9411")).wait();
-  await (await contract.setNodeTypeAddress("0xdd1A079FaCB45bC2d8c698A426bB2E24F075393D")).wait();
-  await (await contract.setNodeCheckInAddress("0xBca8D16A228E401d956Fc393383fFFD68F63b803")).wait();
 
-  console.info("contractFactory address:", contract.address);
+  await (await MGN_Node_Mgr.setRolesCfgAddress("0x8e0f8f0137F289456322F912a145cC30485CEcBc")).wait();
+  await (await MGN_Node_Mgr.setNodeTypeAddress("0x78aad2a3628840b6b1f8523e4fc569cd1d7a0300")).wait();
+  await (await MGN_Node_Mgr.setNodeCheckInAddress("0xBca8D16A228E401d956Fc393383fFFD68F63b803")).wait();
 
-  setTimeout(async () => {
-    await run("verify:verify", {
-      address: contract.address,
-      contract: "contracts/MGN_Node_Mgr.sol:MGN_Node_Mgr",
-      constructorArguments: [],
-    });
-  }, 5000);
+  console.info("contractFactory address:", MGN_Node_Mgr.target);
+
 }
 
 // We recommend this pattern to be able to use async/await everywhere

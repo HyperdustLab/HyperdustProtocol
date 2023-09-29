@@ -3,17 +3,15 @@
 import { ethers, run } from "hardhat";
 
 async function main() {
-  const contractFactory = await ethers.getContractFactory("MGN_Roles_Cfg");
+  const contract = await ethers.deployContract("MGN_Roles_Cfg");
 
-  const factory = await contractFactory.deploy();
-  const contract = await factory.deployed();
-  await contract.deployed();
+  console.info("contractFactory address:", contract.target);
 
-  console.info("contractFactory address:", contract.address);
+
 
   setTimeout(async () => {
     await run("verify:verify", {
-      address: contract.address,
+      address: contract.target,
       contract: "contracts/MGN_Roles_Cfg.sol:MGN_Roles_Cfg",
       constructorArguments: [],
     });

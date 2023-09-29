@@ -3,30 +3,22 @@
 import { ethers, run } from "hardhat";
 
 async function main() {
-  const contractFactory = await ethers.getContractFactory("SpaceAssetsCfg");
 
-  const factory = await contractFactory.deploy();
-  const contract = await factory.deployed();
-  await contract.deployed();
+  const SpaceAssetsCfg = await ethers.deployContract("SpaceAssetsCfg");
+
+
 
   await (
-    await contract.setContractAddress([
-      "0x419387c8843D29b0E085326710c495350DEA3d1D",
-      "0x7a798E8eC045f911684dAa28B38a54b883b9523C",
-      "0xe685F0CaBe192749ec54870bb86cdD68223E4C14",
-      "0x57B938452f79959d59e843118C502D995eb1418B",
+    await SpaceAssetsCfg.setContractAddress([
+      "0x014e7d6A38A860B2B80379d0BF71a52A902c2E6c",
+      "0x4241f24ce6ddebd073fe0c76bd5bc5da9c831728",
+      "0x513521e80A9d4854bb71ddbE768792B46f2ce9E8",
+      "0x8e0f8f0137F289456322F912a145cC30485CEcBc",
     ])
   ).wait();
 
-  console.info("contractFactory address:", contract.address);
+  console.info("contractFactory address:", SpaceAssetsCfg.target);
 
-  setTimeout(async () => {
-    await run("verify:verify", {
-      address: contract.address,
-      contract: "contracts/spaceAssets/SpaceAssetsCfg.sol:SpaceAssetsCfg",
-      constructorArguments: [],
-    });
-  }, 5000);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

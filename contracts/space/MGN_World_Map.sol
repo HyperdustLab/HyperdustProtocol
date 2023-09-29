@@ -86,7 +86,7 @@ contract MGN_World_Map is Ownable {
                 if (_worldMaps[j].coordinate == coordinates[i]) {
                     _worldMaps[i] = _worldMaps[_worldMaps.length - 1];
                     _worldMaps.pop();
-                    _coordinateMap[coordinates[i]] = false;
+                    _coordinateMap[coordinates[j]] = false;
                 }
             }
         }

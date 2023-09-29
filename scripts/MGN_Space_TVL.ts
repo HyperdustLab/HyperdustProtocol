@@ -3,23 +3,14 @@
 import { ethers, run } from "hardhat";
 
 async function main() {
-  const contractFactory = await ethers.getContractFactory("MGN_Space_TVL");
 
-  const factory = await contractFactory.deploy();
-  const contract = await factory.deployed();
-  await contract.deployed();
 
-  await (await contract.setRolesCfgAddress("0x57B938452f79959d59e843118C502D995eb1418B")).wait();
+  const MGN_Space_TVL = await ethers.deployContract("MGN_Space_TVL");
 
-  console.info("contractFactory address:", contract.address);
+  await (await MGN_Space_TVL.setRolesCfgAddress("0x57B938452f79959d59e843118C502D995eb1418B")).wait();
 
-  setTimeout(async () => {
-    await run("verify:verify", {
-      address: contract.address,
-      contract: "contracts/space/MGN_Space_TVL.sol:MGN_Space_TVL",
-      constructorArguments: [],
-    });
-  }, 5000);
+  console.info("contractFactory address:", MGN_Space_TVL.target);
+
 }
 
 // We recommend this pattern to be able to use async/await everywhere

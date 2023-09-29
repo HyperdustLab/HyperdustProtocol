@@ -66,7 +66,7 @@ contract MGN_Wallet_Account is Ownable {
                 accountType: AccountType.TEAM,
                 allocateAmount: 0,
                 useAmount: 0,
-                proportion: 23,
+                proportion: 24,
                 allowSettlement: true,
                 contractAddress: address(0)
             })
@@ -77,7 +77,7 @@ contract MGN_Wallet_Account is Ownable {
                 accountType: AccountType.BURN,
                 allocateAmount: 0,
                 useAmount: 0,
-                proportion: 17,
+                proportion: 16,
                 allowSettlement: true,
                 contractAddress: address(0)
             })
@@ -91,6 +91,13 @@ contract MGN_Wallet_Account is Ownable {
 
     function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
         _rolesCfgAddress = rolesCfgAddress;
+    }
+
+    function setContractAddress(
+        address[] memory contractaddressArray
+    ) public onlyOwner {
+        _rolesCfgAddress = contractaddressArray[0];
+        _erc20Address = contractaddressArray[1];
     }
 
     function list() public view returns (AmountConfInfo[] memory) {

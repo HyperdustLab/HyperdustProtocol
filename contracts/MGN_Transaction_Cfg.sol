@@ -19,7 +19,7 @@ contract MGN_Transaction_Cfg is Ownable {
 
     mapping(string => uint256) public _transactionProceduresMap;
 
-    function add(string memory func, uint32 rate) public {
+    function add(string memory func, uint256 rate) public {
         require(
             IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
             "not admin role"
@@ -27,7 +27,7 @@ contract MGN_Transaction_Cfg is Ownable {
         _transactionProceduresMap[func] = rate;
     }
 
-    function del(string memory func, uint32 rate) public {
+    function del(string memory func) public {
         require(
             IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
             "not admin role"

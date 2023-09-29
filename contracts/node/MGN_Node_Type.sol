@@ -34,33 +34,7 @@ contract MGN_Node_Type is Ownable {
         string remark;
     }
 
-    event eveAdd(
-        uint256 id,
-        uint256 orderNum,
-        string name,
-        uint256 cpuNum,
-        uint256 memoryNum,
-        uint256 diskNum,
-        uint256 cudaNum,
-        uint256 videoMemory,
-        string coverImage,
-        string frameRate,
-        string remark
-    );
-
-    event eveUpdate(
-        uint256 id,
-        uint256 orderNum,
-        string name,
-        uint256 cpuNum,
-        uint256 memoryNum,
-        uint256 diskNum,
-        uint256 cudaNum,
-        uint256 videoMemory,
-        string coverImage,
-        string frameRate,
-        string remark
-    );
+    event eveSave(uint256 id);
 
     event eveDelete(uint256 id);
 
@@ -106,19 +80,7 @@ contract MGN_Node_Type is Ownable {
 
         _nodeTypes.push(nodeType);
 
-        emit eveAdd(
-            id,
-            orderNum,
-            name,
-            cpuNum,
-            memoryNum,
-            diskNum,
-            cudaNum,
-            videoMemory,
-            coverImage,
-            frameRate,
-            remark
-        );
+        emit eveSave(id);
         return id;
     }
 
@@ -153,19 +115,37 @@ contract MGN_Node_Type is Ownable {
             }
         }
 
-        emit eveUpdate(
-            id,
-            orderNum,
-            name,
-            cpuNum,
-            memoryNum,
-            diskNum,
-            cudaNum,
-            videoMemory,
-            coverImage,
-            frameRate,
-            remark
-        );
+        emit eveSave(id);
+    }
+
+    function getNodeType(
+        uint256 id
+    ) public view returns (uint256[] memory, string[] memory) {
+        for (uint i = 0; i < _nodeTypes.length; i++) {
+            if (_nodeTypes[i].id == id) {
+                NodeType memory nodeType = _nodeTypes[i];
+
+                string[] memory strArray = new string[](4);
+                uint256[] memory uint256Array = new uint256[](7);
+
+                strArray[0] = nodeType.name;
+                strArray[1] = nodeType.coverImage;
+                strArray[2] = nodeType.frameRate;
+                strArray[3] = nodeType.remark;
+
+                uint256Array[0] = nodeType.id;
+                uint256Array[1] = nodeType.orderNum;
+                uint256Array[2] = nodeType.cpuNum;
+                uint256Array[3] = nodeType.memoryNum;
+                uint256Array[4] = nodeType.diskNum;
+                uint256Array[5] = nodeType.cudaNum;
+                uint256Array[6] = nodeType.videoMemory;
+
+                return (uint256Array, strArray);
+            }
+        }
+
+        revert("Node Type does not exist");
     }
 
     function deleteNodeType(uint256 id) public {

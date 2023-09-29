@@ -3,19 +3,15 @@
 import { ethers, run } from "hardhat";
 
 async function main() {
-  const contractFactory = await ethers.getContractFactory("MGN_Node_Type");
+  const contract = await ethers.deployContract("MGN_Node_Type");
 
-  const factory = await contractFactory.deploy();
-  const contract = await factory.deployed();
-  await contract.deployed();
+  await (await contract.setRolesCfgAddress("0x8e0f8f0137F289456322F912a145cC30485CEcBc")).wait();
 
-  await (await contract.setRolesCfgAddress("0xB05c1453486195DD7bd572571ce7131707DA9411")).wait();
-
-  console.info("contractFactory address:", contract.address);
+  console.info("contractFactory address:", contract.target);
 
   setTimeout(async () => {
     await run("verify:verify", {
-      address: contract.address,
+      address: contract.target,
       contract: "contracts/node/MGN_Node_Type.sol:MGN_Node_Type",
       constructorArguments: [],
     });
