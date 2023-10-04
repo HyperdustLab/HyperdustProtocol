@@ -3,6 +3,8 @@
 import { ethers } from "hardhat";
 const { describe, it } = require("mocha");
 
+import dayjs from 'dayjs'
+
 describe("MGN_Render_Transcition", () => {
   describe("MGN_Render_Transcition", () => {
     it("settlementOrder", async () => {
@@ -72,17 +74,15 @@ describe("MGN_Render_Transcition", () => {
       await (await MGN_Render_Transcition.settlement(1)).wait();
 
 
-      const Render_Transcition = await MGN_Render_Transcition.calculateCommission(10)
 
-      console.info(Render_Transcition);
-
-
-      // const baseRewardReleaseRecords = await MGN_BaseReward_Release.getBaseRewardReleaseRecords(accounts[0].address)
-
-      // console.info(baseRewardReleaseRecords[1]);
+      const baseRewardReleaseRecords = await MGN_BaseReward_Release.getBaseRewardReleaseRecords(accounts[0].address)
 
 
+      const dates = baseRewardReleaseRecords[2]
 
+      for (const item of dates) {
+        console.info(dayjs.unix(parseInt(item)).format('YYYY-MM-DD HH:MM:ss'))
+      }
     });
   });
 });

@@ -11,6 +11,9 @@ dependencies:
   '@openzeppelin/contracts':
     specifier: ^4.9.3
     version: 4.9.3
+  dayjs:
+    specifier: ^1.11.10
+    version: 1.11.10
 
 devDependencies:
   '@nomicfoundation/hardhat-toolbox':
@@ -1815,6 +1818,10 @@ packages:
     dependencies:
       assert-plus: 1.0.0
     dev: true
+
+  /dayjs@1.11.10:
+    resolution: {integrity: sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==}
+    dev: false
 
   /death@1.1.0:
     resolution: {integrity: sha512-vsV6S4KVHvTGxbEcij7hkWRv0It+sGGWVOM67dQde/o5Xjnr+KmLjxWJii2uEObIrt1CcM9w0Yaovx+iOlIL+w==}
