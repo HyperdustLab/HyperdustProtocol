@@ -1,56 +1,14 @@
 {
-  "name": "mgn_contract",
-  "version": "1.0.0",
-  "description": "To make it easy for you to get started with GitLab, here's a list of recommended next steps.",
-  "main": "truffle-config.js",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://gitlab.com/fangyemingzz/MGN_contract.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://gitlab.com/fangyemingzz/MGN_contract/issues"
-  },
-  "homepage": "https://gitlab.com/fangyemingzz/MGN_contract#readme",
-  "dependencies": {
-    "@confluxfans/contracts": "^0.3.2",
-    "@ethersproject/abi": "^5.7.0",
-    "@openzeppelin/contracts": "^4.9.2",
-    "@truffle/hdwallet-provider": "^2.1.12",
-    "babel-runtime": "^6.26.0",
-    "dotenv": "^16.3.1",
-    "ethers": "^5.7.2",
-    "fs": "^0.0.1-security",
-    "keccak256": "^1.0.6",
-    "node-xlsx": "^0.23.0"
-  },
   "devDependencies": {
-    "@chainlink/contracts": "^0.6.1",
-    "@ethersproject/providers": "^5.7.2",
-    "@nomicfoundation/hardhat-chai-matchers": "^1.0.6",
-    "@nomicfoundation/hardhat-network-helpers": "^1.0.8",
-    "@nomicfoundation/hardhat-toolbox": "^2.0.2",
-    "@nomicfoundation/hardhat-verify": "^1.1.1",
-    "@nomiclabs/hardhat-ethers": "^2.2.3",
-    "@nomiclabs/hardhat-etherscan": "^3.1.7",
-    "@typechain/ethers-v5": "^10.2.1",
-    "@typechain/hardhat": "^6.1.6",
-    "@types/chai": "^4.3.5",
-    "@types/mocha": "^10.0.1",
-    "chai": "^4.3.7",
-    "hardhat": "^2.17.1",
-    "hardhat-gas-reporter": "^1.0.9",
-    "mocha": "^10.2.0",
-    "solidity-coverage": "^0.8.4",
+    "hardhat": "^2.18.1",
     "ts-node": "^10.9.1",
-    "typechain": "^8.2.0",
-    "typescript": "^5.1.6"
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@chainlink/contracts": "^0.8.0",
+    "@confluxfans/contracts": "^0.3.3",
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "@openzeppelin/contracts": "^4.9.3",
+    "dotenv": "^16.3.1"
   }
 }
