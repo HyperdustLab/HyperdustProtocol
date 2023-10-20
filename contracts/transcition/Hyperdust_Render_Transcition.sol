@@ -28,8 +28,7 @@ abstract contract IHyperdustNodeMgr {
     struct Node {
         address incomeAddress;
         string ip; //Node public network IP
-        string status; //Status: 0 unused -1: limited use 1: in use
-        uint256[] uint256Array; //id,nodeType,price,cpuNum,memoryNum,diskNum,cudaNum,videoMemory
+        uint256[] uint256Array; //id,nodeType,cpuNum,memoryNum,diskNum,cudaNum,videoMemory
     }
 
     function getNodeObj(uint256 id) public view returns (Node memory) {}
@@ -48,9 +47,7 @@ abstract contract IHyperdustWalletAccount {
 }
 
 abstract contract IHyperdustTransactionCfg {
-    function getTransactionFee(
-        string memory key
-    ) public view returns (uint256) {}
+    function get(string memory key) public view returns (uint256) {}
 }
 
 abstract contract IHyperdustHYDTPrice {
@@ -127,12 +124,12 @@ contract Hyperdust_Render_Transcition is Ownable {
 
     function calculateCommission(uint256 time) public view returns (uint256) {
         uint256 renderPrice = IHyperdustTransactionCfg(_transactionCfgAddress)
-            .getTransactionFee("render");
+            .get("render");
 
         uint256 HYDTPrice = IHyperdustHYDTPrice(_HYDTPriceAddress)
             .getHYDTPrice();
 
-        uint256 commission = (renderPrice * time * HYDTPrice) / 10;
+        uint256 commission = (renderPrice * time) / 10 + HYDTPrice;
 
         return commission;
     }
@@ -149,8 +146,6 @@ contract Hyperdust_Render_Transcition is Ownable {
         require(node.uint256Array[0] != 0, "The miner node inexistence");
 
         uint256 commission = calculateCommission(time);
-
-        nodeMgr.updateStatus(nodeId, "2");
 
         uint256 amount = erc20.allowance(msg.sender, address(this));
 
