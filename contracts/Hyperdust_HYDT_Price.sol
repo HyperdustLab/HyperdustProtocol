@@ -104,7 +104,7 @@ contract Hyperdust_HYDT_Price is FunctionsClient, ConfirmedOwner {
         s_lastResponse = response;
         s_lastError = err;
 
-        //  _HYDT_Price = bytesToUint256(response);
+        //_HYDT_Price = bytesToUint256(s_lastResponse);
         emit Response(requestId, s_lastResponse, s_lastError);
     }
 

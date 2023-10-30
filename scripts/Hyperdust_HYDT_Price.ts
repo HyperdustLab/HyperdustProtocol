@@ -8,7 +8,7 @@ async function main() {
 
     await (await contract.setSource('return Functions.encodeUint256(1000)')).wait();
     await (await contract.setSubscriptionId(1092)).wait();
-    await (await contract.setGasLimit(30000)).wait();
+    await (await contract.setGasLimit(300000)).wait();
     await (await contract.setJobId('0x66756e2d657468657265756d2d7365706f6c69612d3100000000000000000000')).wait();
     await (await contract.setRolesCfgAddress('0xba9b4229C58A7eD1De9eaa1773fEd064D8c8B88F')).wait();
 
