@@ -93,9 +93,9 @@ contract Hyperdust_Node_Type is Ownable {
         uint256 diskNum,
         uint256 cudaNum,
         uint256 videoMemory,
-        string memory coverImage, //封面图片
-        string memory frameRate, //帧率范围
-        string memory remark //描述
+        string memory coverImage, 
+        string memory frameRate, 
+        string memory remark 
     ) public {
         require(
             IHyperdustRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
@@ -187,7 +187,7 @@ contract Hyperdust_Node_Type is Ownable {
             for (uint i = 0; i < n - 1; i++) {
                 for (uint j = 0; j < n - i - 1; j++) {
                     if (sortedData[j].orderNum < sortedData[j + 1].orderNum) {
-                        // 交换元素
+                        // switch data elements
                         (sortedData[j], sortedData[j + 1]) = (
                             sortedData[j + 1],
                             sortedData[j]
