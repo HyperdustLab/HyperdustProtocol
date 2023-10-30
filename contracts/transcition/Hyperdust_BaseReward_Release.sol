@@ -36,7 +36,7 @@ abstract contract IERC20 {
     function mint(address to, uint256 amount) public {}
 }
 
-contract MGN_BaseReward_Release is Ownable {
+contract Hyperdust_BaseReward_Release is Ownable {
     using Strings for *;
     using StrUtil for *;
 
