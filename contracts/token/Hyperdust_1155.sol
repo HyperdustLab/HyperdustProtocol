@@ -22,9 +22,8 @@ contract Hyperdust_1155 is
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant URI_SETTER_ROLE = keccak256("URI_SETTER_ROLE");
-    //tokenID对应的元数据URL地址
+
     mapping(uint256 => string) private _tokenURIs;
-    //tokenId对应的mint总数
     mapping(uint256 => uint256) private _mintNums;
 
     constructor(
@@ -74,12 +73,10 @@ contract Hyperdust_1155 is
         return _tokenURIs[tokenId];
     }
 
-    //获取tokenId总共铸造数量
     function getMintNum(uint256 tokenId) public view virtual returns (uint256) {
         return _mintNums[tokenId];
     }
 
-    //设置tokenId对应的元数据URI
     function setTokenURI(uint256 tokenId, string memory newuri) public virtual {
         require(
             hasRole(URI_SETTER_ROLE, _msgSender()),

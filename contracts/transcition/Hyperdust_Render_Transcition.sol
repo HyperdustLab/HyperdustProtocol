@@ -33,9 +33,11 @@ abstract contract IHyperdustNodeMgr {
 
     function getNodeObj(uint256 id) public view returns (Node memory) {}
 
-    function updateStatus(uint256 nodeId, string memory status) public {}
-
-    function count() public view returns (uint256, uint256) {}
+    function getStatisticalIndex()
+        public
+        view
+        returns (uint256, uint32, uint32)
+    {}
 }
 
 abstract contract IHyperdustRolesCfg {
@@ -48,10 +50,6 @@ abstract contract IHyperdustWalletAccount {
 
 abstract contract IHyperdustTransactionCfg {
     function get(string memory key) public view returns (uint256) {}
-}
-
-abstract contract IHyperdustHYDTPrice {
-    function getHYDTPrice() public view returns (uint256) {}
 }
 
 import "@openzeppelin/contracts/utils/Strings.sol";
@@ -73,17 +71,26 @@ contract Hyperdust_Render_Transcition is Ownable {
     address public _nodeMgrAddress;
     address public _transactionCfgAddress;
     address public _walletAccountAddress;
-    address public _HYDTPriceAddress;
 
     struct RenderTranscition {
+        uint256 id;
         address serviceAccount;
         address account;
-        uint256[] uint256Array; //id,time,amount,createTime,endTime,nodeId
+        uint32 epoch;
+        uint32 useEpoch;
+        uint256 amount;
+        uint256 createTime;
+        uint256 endTime;
+        uint256 nodeId;
     }
 
     event eveRenderTranscitionSave(uint256 id);
 
+    event eveUpdateRenderEpoch(uint256[] success, uint256[] fail);
+
     RenderTranscition[] public _renderTranscitions;
+
+    uint256[] public _runingRenderTranscitions;
 
     function setErc20Address(address erc20Address) public onlyOwner {
         _erc20Address = erc20Address;
@@ -107,10 +114,6 @@ contract Hyperdust_Render_Transcition is Ownable {
         _walletAccountAddress = walletAccountAddress;
     }
 
-    function setHYDTPriceAddress(address HYDTPriceAddress) public onlyOwner {
-        _HYDTPriceAddress = HYDTPriceAddress;
-    }
-
     function setContractAddress(
         address[] memory contractaddressArray
     ) public onlyOwner {
@@ -119,24 +122,30 @@ contract Hyperdust_Render_Transcition is Ownable {
         _nodeMgrAddress = contractaddressArray[2];
         _transactionCfgAddress = contractaddressArray[3];
         _walletAccountAddress = contractaddressArray[4];
-        _HYDTPriceAddress = contractaddressArray[5];
     }
 
-    function calculateCommission(uint256 time) public view returns (uint256) {
+    function calculateCommission() public view returns (uint256) {
         uint256 renderPrice = IHyperdustTransactionCfg(_transactionCfgAddress)
             .get("render");
 
-        uint256 HYDTPrice = IHyperdustHYDTPrice(_HYDTPriceAddress)
-            .getHYDTPrice();
+        (, uint32 _totalNum, uint32 _activeNum) = IHyperdustNodeMgr(
+            _nodeMgrAddress
+        ).getStatisticalIndex();
 
-        uint256 commission = (renderPrice * time) / 10 + HYDTPrice;
+        uint32 accuracy = 1000000;
 
-        return commission;
+        uint256 difficuty = (_totalNum * accuracy) / _activeNum;
+
+        uint256 gasPrice = (renderPrice * accuracy) / difficuty;
+
+        uint256 gasFree = (renderPrice * gasPrice) / 10000;
+
+        return gasFree;
     }
 
     function createRenderTranscition(
         uint256 nodeId,
-        uint256 time
+        uint32 epoch
     ) public returns (uint256) {
         IHyperdustNodeMgr nodeMgr = IHyperdustNodeMgr(_nodeMgrAddress);
 
@@ -145,7 +154,7 @@ contract Hyperdust_Render_Transcition is Ownable {
 
         require(node.uint256Array[0] != 0, "The miner node inexistence");
 
-        uint256 commission = calculateCommission(time);
+        uint256 commission = calculateCommission();
 
         uint256 amount = erc20.allowance(msg.sender, address(this));
 
@@ -159,37 +168,154 @@ contract Hyperdust_Render_Transcition is Ownable {
 
         uint256 createTime = block.timestamp;
 
-        uint256[] memory uint256Array = new uint256[](10);
-        uint256Array[0] = _id.current();
-        uint256Array[1] = time;
-        uint256Array[2] = node.uint256Array[2];
-        uint256Array[3] = commission;
-        uint256Array[4] = createTime;
-        uint256Array[5] = createTime + time * 60;
-        uint256Array[6] = nodeId;
-
         _renderTranscitions.push(
-            RenderTranscition(node.incomeAddress, msg.sender, uint256Array)
+            RenderTranscition(
+                _id.current(),
+                node.incomeAddress,
+                msg.sender,
+                epoch,
+                1,
+                commission,
+                createTime,
+                createTime + (epoch * 60 * 64) / 10,
+                nodeId
+            )
         );
+
+        if (epoch > 1) {
+            _runingRenderTranscitions.push(_id.current());
+        }
 
         emit eveRenderTranscitionSave(_id.current());
 
         return _id.current();
     }
 
-    function getRenderTranscition(
-        uint256 id
-    ) public view returns (address, address, uint256[] memory) {
-        for (uint256 i = 0; i < _renderTranscitions.length; i++) {
-            if (_renderTranscitions[i].uint256Array[0] == id) {
-                return (
-                    _renderTranscitions[i].serviceAccount,
-                    _renderTranscitions[i].account,
-                    _renderTranscitions[i].uint256Array
+    function updateEpoch() public {
+        require(
+            IHyperdustRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
+        );
+
+        if (_runingRenderTranscitions.length == 0) {
+            return;
+        }
+
+        IERC20 erc20 = IERC20(_erc20Address);
+
+        uint256 commission = calculateCommission();
+
+        uint256 totalAmount = 0;
+
+        uint256[] memory success = new uint256[](
+            _runingRenderTranscitions.length
+        );
+
+        uint256[] memory fail = new uint256[](_runingRenderTranscitions.length);
+
+        uint32 successIndex = 0;
+        uint32 failIndex = 0;
+
+        for (uint i = 0; i < _runingRenderTranscitions.length; i++) {
+            uint256 id = _runingRenderTranscitions[i];
+
+            RenderTranscition memory renderTranscition = _renderTranscitions[
+                id - 1
+            ];
+
+            uint256 amount = erc20.allowance(
+                renderTranscition.account,
+                address(this)
+            );
+
+            uint256 balance = erc20.balanceOf(renderTranscition.account);
+
+            if (amount >= commission && balance >= amount) {
+                erc20.transferFrom(
+                    renderTranscition.account,
+                    _walletAccountAddress,
+                    commission
                 );
+                _renderTranscitions[id - 1].useEpoch++;
+
+                totalAmount += commission;
+
+                success[successIndex] = id;
+                successIndex++;
+
+                if (
+                    _renderTranscitions[id - 1].useEpoch ==
+                    renderTranscition.epoch
+                ) {
+                    _runingRenderTranscitions[i] = _runingRenderTranscitions[
+                        _runingRenderTranscitions.length - 1
+                    ];
+                    _runingRenderTranscitions.pop();
+                }
+            } else {
+                fail[failIndex] = id;
+                failIndex++;
             }
         }
 
-        revert("renderTranscition not found");
+        if (totalAmount > 0) {
+            IHyperdustWalletAccount(_walletAccountAddress).addAmount(
+                totalAmount
+            );
+        }
+
+        uint256[] memory _success = new uint256[](successIndex + 1);
+
+        uint256[] memory _fail = new uint256[](failIndex + 1);
+
+        for (uint i = 0; i < successIndex; i++) {
+            _success[i] = success[i];
+        }
+
+        for (uint i = 0; i < failIndex; i++) {
+            _fail[i] = fail[i];
+        }
+
+        emit eveUpdateRenderEpoch(_success, _fail);
+    }
+
+    function getRenderTranscition(
+        uint256 id
+    )
+        public
+        view
+        returns (
+            address,
+            address,
+            uint256,
+            uint32,
+            uint256,
+            uint256,
+            uint256,
+            uint256
+        )
+    {
+        RenderTranscition memory renderTranscition = _renderTranscitions[
+            id - 1
+        ];
+
+        return (
+            renderTranscition.serviceAccount,
+            renderTranscition.account,
+            renderTranscition.id,
+            renderTranscition.epoch,
+            renderTranscition.amount,
+            renderTranscition.createTime,
+            renderTranscition.endTime,
+            renderTranscition.nodeId
+        );
+    }
+
+    function getRuningRenderTranscitions()
+        public
+        view
+        returns (uint256[] memory)
+    {
+        return _runingRenderTranscitions;
     }
 }

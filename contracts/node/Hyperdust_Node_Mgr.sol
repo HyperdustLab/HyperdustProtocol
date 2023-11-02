@@ -39,6 +39,9 @@ contract Hyperdust_Node_Mgr is Ownable {
     address public _rolesCfgAddress;
     address public _nodeTypeAddress;
 
+    uint32 public _totalNum;
+    uint32 public _activeNum;
+
     struct Node {
         address incomeAddress;
         string ip; //Node public network IP
@@ -175,5 +178,29 @@ contract Hyperdust_Node_Mgr is Ownable {
             }
         }
         revert("node not found");
+    }
+
+    function getIdByIndex(uint256 index) public view returns (uint256) {
+        if (index + 1 > _nodes.length) {
+            return 0;
+        }
+        return _nodes[index].uint256Array[0];
+    }
+
+    function getStatisticalIndex()
+        public
+        view
+        returns (uint256, uint32, uint32)
+    {
+        return (_nodes.length, _totalNum, _activeNum);
+    }
+
+    function setStatisticalIndex(uint32 totalNum, uint32 activeNum) public {
+        require(
+            IHyperdustRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
+        );
+        _totalNum = totalNum;
+        _activeNum = activeNum;
     }
 }

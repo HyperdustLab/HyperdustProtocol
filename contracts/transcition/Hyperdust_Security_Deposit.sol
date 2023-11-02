@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 import "../utils/StrUtil.sol";
 
-abstract contract IMGNRolesCfg {
+abstract contract IHyperdustNodeMgr {
     function hasAdminRole(address account) public view returns (bool) {}
 }
 
@@ -34,7 +34,7 @@ abstract contract IERC20 {
     function mint(address to, uint256 amount) public {}
 }
 
-contract MGN_Security_Deposit is Ownable {
+contract Hyperdust_Security_Deposit is Ownable {
     using Strings for *;
     using StrUtil for *;
 
@@ -60,7 +60,7 @@ contract MGN_Security_Deposit is Ownable {
 
     function addSecurityDeposit(uint256 nodeId, uint256 amount) public {
         require(
-            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            IHyperdustNodeMgr(_rolesCfgAddress).hasAdminRole(msg.sender),
             "not admin role"
         );
 
@@ -69,7 +69,7 @@ contract MGN_Security_Deposit is Ownable {
 
     function transfer(address to, uint256 amount, uint256 nodeId) public {
         require(
-            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            IHyperdustNodeMgr(_rolesCfgAddress).hasAdminRole(msg.sender),
             "not admin role"
         );
 

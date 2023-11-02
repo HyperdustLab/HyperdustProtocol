@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 import "../utils/StrUtil.sol";
 
-abstract contract IMGNRolesCfg {
+abstract contract IHyperdustRolesCfg {
     function hasAdminRole(address account) public view returns (bool) {}
 }
 
@@ -36,7 +36,7 @@ abstract contract IERC20 {
     function mint(address to, uint256 amount) public {}
 }
 
-contract MGN_BaseReward_Release is Ownable {
+contract Hyperdust_BaseReward_Release is Ownable {
     using Strings for *;
     using StrUtil for *;
 
@@ -49,7 +49,6 @@ contract MGN_BaseReward_Release is Ownable {
         uint256 releaseTime;
         address account;
         uint256 nodeId;
-        uint256 transcitionId;
     }
 
     address public _rolesCfgAddress;
@@ -64,8 +63,7 @@ contract MGN_BaseReward_Release is Ownable {
         uint256 amount,
         uint256[] releaseTimes,
         address account,
-        uint256 nodeId,
-        uint256 transcitionId
+        uint256 nodeId
     );
 
     event eveRelease(uint256[] ids);
@@ -99,11 +97,10 @@ contract MGN_BaseReward_Release is Ownable {
     function addBaseRewardReleaseRecord(
         uint256 amount,
         address account,
-        uint256 nodeId,
-        uint256 transcitionId
+        uint256 nodeId
     ) public {
         require(
-            IMGNRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            IHyperdustRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
             "not admin role"
         );
 
@@ -130,20 +127,12 @@ contract MGN_BaseReward_Release is Ownable {
                     avgAmount,
                     releaseTimes[i],
                     account,
-                    nodeId,
-                    transcitionId
+                    nodeId
                 )
             );
         }
 
-        emit eveSave(
-            ids,
-            avgAmount,
-            releaseTimes,
-            account,
-            nodeId,
-            transcitionId
-        );
+        emit eveSave(ids, avgAmount, releaseTimes, account, nodeId);
     }
 
     function release(uint256[] memory ids) public {
