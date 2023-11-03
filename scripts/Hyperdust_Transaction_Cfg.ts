@@ -6,8 +6,9 @@ async function main() {
     const contract = await ethers.deployContract("Hyperdust_Transaction_Cfg");
     await contract.waitForDeployment()
 
-    await (await contract.setRolesCfgAddress("0xba9b4229C58A7eD1De9eaa1773fEd064D8c8B88F")).wait();
-    await (await contract.add("render", ethers.parseUnits('2.1', 'ether'))).wait();
+    await (await contract.setContractAddress(["0x6C34AbF4632BC38e90f5016d784D3ED320Cfad14", "0xd676222f5B6ddb6BB78e9C6e022aa7146506BcD0"])).wait();
+    await (await contract.add("render", 30000)).wait();
+    await (await contract.add("mintNFT", 30000)).wait();
 
 
 

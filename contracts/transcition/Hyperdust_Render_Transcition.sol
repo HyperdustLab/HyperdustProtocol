@@ -50,6 +50,8 @@ abstract contract IHyperdustWalletAccount {
 
 abstract contract IHyperdustTransactionCfg {
     function get(string memory key) public view returns (uint256) {}
+
+    function getGasFee(string memory func) public view returns (uint256) {}
 }
 
 import "@openzeppelin/contracts/utils/Strings.sol";
@@ -124,25 +126,6 @@ contract Hyperdust_Render_Transcition is Ownable {
         _walletAccountAddress = contractaddressArray[4];
     }
 
-    function calculateCommission() public view returns (uint256) {
-        uint256 renderPrice = IHyperdustTransactionCfg(_transactionCfgAddress)
-            .get("render");
-
-        (, uint32 _totalNum, uint32 _activeNum) = IHyperdustNodeMgr(
-            _nodeMgrAddress
-        ).getStatisticalIndex();
-
-        uint32 accuracy = 1000000;
-
-        uint256 difficuty = (_totalNum * accuracy) / _activeNum;
-
-        uint256 gasPrice = (renderPrice * accuracy) / difficuty;
-
-        uint256 gasFree = (renderPrice * gasPrice) / 10000;
-
-        return gasFree;
-    }
-
     function createRenderTranscition(
         uint256 nodeId,
         uint32 epoch
@@ -154,7 +137,8 @@ contract Hyperdust_Render_Transcition is Ownable {
 
         require(node.uint256Array[0] != 0, "The miner node inexistence");
 
-        uint256 commission = calculateCommission();
+        uint256 commission = IHyperdustTransactionCfg(_transactionCfgAddress)
+            .get("render");
 
         uint256 amount = erc20.allowance(msg.sender, address(this));
 
@@ -203,7 +187,8 @@ contract Hyperdust_Render_Transcition is Ownable {
 
         IERC20 erc20 = IERC20(_erc20Address);
 
-        uint256 commission = calculateCommission();
+        uint256 commission = IHyperdustTransactionCfg(_transactionCfgAddress)
+            .get("render");
 
         uint256 totalAmount = 0;
 

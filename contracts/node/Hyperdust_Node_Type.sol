@@ -11,6 +11,7 @@ import "../utils/StrUtil.sol";
 abstract contract IHyperdustRolesCfg {
     function hasAdminRole(address account) public view returns (bool) {}
 }
+
 //The node types are reserved for future extension
 contract Hyperdust_Node_Type is Ownable {
     address public _rolesCfgAddress;
@@ -93,9 +94,9 @@ contract Hyperdust_Node_Type is Ownable {
         uint256 diskNum,
         uint256 cudaNum,
         uint256 videoMemory,
-        string memory coverImage, 
-        string memory frameRate, 
-        string memory remark 
+        string memory coverImage,
+        string memory frameRate,
+        string memory remark
     ) public {
         require(
             IHyperdustRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),

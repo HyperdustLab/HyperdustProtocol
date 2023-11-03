@@ -10,11 +10,43 @@ abstract contract IHyperdustRolesCfg {
     function hasAdminRole(address account) public view returns (bool) {}
 }
 
+abstract contract IHyperdustNodeMgr {
+    struct Node {
+        address incomeAddress;
+        string ip; //Node public network IP
+        uint256[] uint256Array; //id,nodeType,cpuNum,memoryNum,diskNum,cudaNum,videoMemory
+    }
+
+    function getNodeObj(uint256 id) public view returns (Node memory) {}
+
+    function getStatisticalIndex()
+        public
+        view
+        returns (uint256, uint32, uint32)
+    {}
+}
+
 contract Hyperdust_Transaction_Cfg is Ownable {
     address public _rolesCfgAddress;
 
+    address public _nodeMgrAddress;
+
+    using Strings for *;
+    using StrUtil for *;
+
     function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
         _rolesCfgAddress = rolesCfgAddress;
+    }
+
+    function setNodeMgrAddress(address nodeMgrAddress) public onlyOwner {
+        _nodeMgrAddress = nodeMgrAddress;
+    }
+
+    function setContractAddress(
+        address[] memory contractaddressArray
+    ) public onlyOwner {
+        _rolesCfgAddress = contractaddressArray[0];
+        _nodeMgrAddress = contractaddressArray[1];
     }
 
     mapping(string => uint256) public _transactionProceduresMap;
@@ -37,5 +69,22 @@ contract Hyperdust_Transaction_Cfg is Ownable {
 
     function get(string memory func) public view returns (uint256) {
         return _transactionProceduresMap[func];
+    }
+
+    function getGasFee(string memory func) public view returns (uint256) {
+        (, uint32 _totalNum, uint32 _activeNum) = IHyperdustNodeMgr(
+            _nodeMgrAddress
+        ).getStatisticalIndex();
+        uint256 renderPrice = _transactionProceduresMap[func];
+
+        uint32 accuracy = 1000000;
+
+        uint256 difficuty = (_totalNum * accuracy) / _activeNum;
+
+        uint256 gasPrice = (renderPrice * accuracy) / difficuty;
+
+        uint256 gasFee = (renderPrice * gasPrice * 1 ether) / accuracy / 10000;
+
+        return gasFee;
     }
 }
