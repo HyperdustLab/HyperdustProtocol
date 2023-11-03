@@ -224,7 +224,7 @@ contract Hyperdust_Render_Awards is Ownable {
         timestamp = block.timestamp;
     }
 
-    // 生成指定范围随机数
+    //TODO: change to on-chain random number generator
     function _getRandom(
         uint256 _start,
         uint256 _end
