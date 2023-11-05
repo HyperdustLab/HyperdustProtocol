@@ -2,9 +2,11 @@
 require("dotenv").config()
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
+import "hardhat-gas-reporter";
 const { ProxyAgent, setGlobalDispatcher } = require("undici");
 const proxyAgent = new ProxyAgent("http://127.0.0.1:10809");
 setGlobalDispatcher(proxyAgent);
+
 
 const config: HardhatUserConfig = {
   solidity: {

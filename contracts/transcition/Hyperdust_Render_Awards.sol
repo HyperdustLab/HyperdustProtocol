@@ -52,7 +52,7 @@ contract Hyperdust_Render_Awards is Ownable {
     Counters.Counter private _id;
     address public _rolesCfgAddress;
 
-    uint256 public _totalSupply = 2000000000 ether;
+    uint256 public _totalSupply = 200000000 ether;
 
     uint256 public _totalAward = (_totalSupply * 62) / 100;
 
@@ -74,7 +74,7 @@ contract Hyperdust_Render_Awards is Ownable {
 
     uint256 private _rand = 1;
 
-    event eveRewards(uint256 nodeId, uint256 epochAward);
+    event eveRewards(uint256 nodeId, uint256 epochAward, uint256 rand);
 
     function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
         _rolesCfgAddress = rolesCfgAddress;
@@ -120,17 +120,21 @@ contract Hyperdust_Render_Awards is Ownable {
             "not admin role"
         );
 
-        uint256[] memory activeNodes = countActiveNode(nodeStatus);
+        (
+            uint256[] memory activeNodes,
+            uint256 _totalNum,
+            uint256 _activeNum
+        ) = countActiveNode(nodeStatus);
 
         IHyperdustNodeMgr hyperdustNodeMgrAddress = IHyperdustNodeMgr(
             _hyperdustNodeMgrAddress
         );
 
-        (, uint32 _activeNum, uint32 _totalNum) = hyperdustNodeMgrAddress
-            .getStatisticalIndex();
-
         uint256 currYear = DateTime.getYear(block.timestamp);
         uint256 _currYear = DateTime.getYear(timestamp);
+
+        IHyperdustRenderTranscitionAddress(_hyperdustRenderTranscitionAddress)
+            .updateEpoch();
 
         if (currYear != _currYear) {
             resetCurrTotalAward();
@@ -169,15 +173,12 @@ contract Hyperdust_Render_Awards is Ownable {
                 nodeId
             );
 
-        IHyperdustRenderTranscitionAddress(_hyperdustRenderTranscitionAddress)
-            .updateEpoch();
-
-        emit eveRewards(nodeId, epochAward);
+        emit eveRewards(nodeId, epochAward, index);
     }
 
     function countActiveNode(
         bytes32[] memory nodeStatus
-    ) private returns (uint256[] memory) {
+    ) private returns (uint256[] memory, uint256, uint256) {
         IHyperdustNodeMgr hyperdustNodeMgrAddress = IHyperdustNodeMgr(
             _hyperdustNodeMgrAddress
         );
@@ -216,7 +217,7 @@ contract Hyperdust_Render_Awards is Ownable {
 
         hyperdustNodeMgrAddress.setStatisticalIndex(totalNum, activeNum);
 
-        return activeNodes;
+        return (activeNodes, totalNum, activeNum);
     }
 
     function resetCurrTotalAward() private {
@@ -224,7 +225,6 @@ contract Hyperdust_Render_Awards is Ownable {
         timestamp = block.timestamp;
     }
 
-    // 生成指定范围随机数
     function _getRandom(
         uint256 _start,
         uint256 _end

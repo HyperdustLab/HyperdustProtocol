@@ -138,7 +138,7 @@ contract Hyperdust_Render_Transcition is Ownable {
         require(node.uint256Array[0] != 0, "The miner node inexistence");
 
         uint256 commission = IHyperdustTransactionCfg(_transactionCfgAddress)
-            .get("render");
+            .getGasFee("render");
 
         uint256 amount = erc20.allowance(msg.sender, address(this));
 
@@ -188,7 +188,7 @@ contract Hyperdust_Render_Transcition is Ownable {
         IERC20 erc20 = IERC20(_erc20Address);
 
         uint256 commission = IHyperdustTransactionCfg(_transactionCfgAddress)
-            .get("render");
+            .getGasFee("render");
 
         uint256 totalAmount = 0;
 
@@ -215,7 +215,7 @@ contract Hyperdust_Render_Transcition is Ownable {
 
             uint256 balance = erc20.balanceOf(renderTranscition.account);
 
-            if (amount >= commission && balance >= amount) {
+            if (amount >= commission && balance >= commission) {
                 erc20.transferFrom(
                     renderTranscition.account,
                     _walletAccountAddress,
@@ -249,9 +249,9 @@ contract Hyperdust_Render_Transcition is Ownable {
             );
         }
 
-        uint256[] memory _success = new uint256[](successIndex + 1);
+        uint256[] memory _success = new uint256[](successIndex);
 
-        uint256[] memory _fail = new uint256[](failIndex + 1);
+        uint256[] memory _fail = new uint256[](failIndex);
 
         for (uint i = 0; i < successIndex; i++) {
             _success[i] = success[i];
@@ -277,6 +277,7 @@ contract Hyperdust_Render_Transcition is Ownable {
             uint256,
             uint256,
             uint256,
+            uint256,
             uint256
         )
     {
@@ -289,6 +290,7 @@ contract Hyperdust_Render_Transcition is Ownable {
             renderTranscition.account,
             renderTranscition.id,
             renderTranscition.epoch,
+            renderTranscition.useEpoch,
             renderTranscition.amount,
             renderTranscition.createTime,
             renderTranscition.endTime,

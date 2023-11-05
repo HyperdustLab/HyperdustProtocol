@@ -77,6 +77,10 @@ contract Hyperdust_Transaction_Cfg is Ownable {
         ).getStatisticalIndex();
         uint256 renderPrice = _transactionProceduresMap[func];
 
+        if (_activeNum == 0) {
+            return 0;
+        }
+
         uint32 accuracy = 1000000;
 
         uint256 difficuty = (_totalNum * accuracy) / _activeNum;

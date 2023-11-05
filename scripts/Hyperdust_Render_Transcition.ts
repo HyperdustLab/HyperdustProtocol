@@ -20,6 +20,12 @@ async function main() {
     const Hyperdust_Roles_Cfg = await ethers.getContractAt('Hyperdust_Roles_Cfg', '0x6C34AbF4632BC38e90f5016d784D3ED320Cfad14')
     await (await Hyperdust_Roles_Cfg.addAdmin(contract.target)).wait()
 
+
+
+    const Hyperdust_Render_Awards = await ethers.getContractAt('Hyperdust_Render_Awards', '0x656A4a75aCFc6Ab339EF2b18322e9F2E2a0237C7')
+
+    await (await Hyperdust_Render_Awards.setHyperdustRenderTranscitionAddress(contract.target)).wait()
+
     console.info("contractFactory address:", contract.target);
 }
 
