@@ -31,6 +31,8 @@ contract Hyperdust_Transaction_Cfg is Ownable {
 
     address public _nodeMgrAddress;
 
+    uint256 public minGasFee = 1 ether / 10;
+
     using Strings for *;
     using StrUtil for *;
 
@@ -78,7 +80,7 @@ contract Hyperdust_Transaction_Cfg is Ownable {
         uint256 renderPrice = _transactionProceduresMap[func];
 
         if (_activeNum == 0) {
-            return 0;
+            return minGasFee;
         }
 
         uint32 accuracy = 1000000;

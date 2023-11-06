@@ -225,10 +225,6 @@ contract Hyperdust_Render_Awards is Ownable {
         timestamp = block.timestamp;
     }
 
-<<<<<<< HEAD
-=======
-    //TODO: change to on-chain random number generator
->>>>>>> 7dca36d4beffb70f57b873a685dfd35ee89f225c
     function _getRandom(
         uint256 _start,
         uint256 _end
