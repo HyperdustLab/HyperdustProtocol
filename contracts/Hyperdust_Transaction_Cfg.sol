@@ -31,7 +31,7 @@ contract Hyperdust_Transaction_Cfg is Ownable {
 
     address public _nodeMgrAddress;
 
-    uint256 public minGasFee = 1 ether / 10;
+    uint256 public _minGasFee = 1 ether / 10;
 
     using Strings for *;
     using StrUtil for *;
@@ -79,8 +79,8 @@ contract Hyperdust_Transaction_Cfg is Ownable {
         ).getStatisticalIndex();
         uint256 renderPrice = _transactionProceduresMap[func];
 
-        if (_activeNum == 0) {
-            return minGasFee;
+        if (_activeNum == 0 || renderPrice == 0) {
+            return _minGasFee;
         }
 
         uint32 accuracy = 1000000;
@@ -92,5 +92,14 @@ contract Hyperdust_Transaction_Cfg is Ownable {
         uint256 gasFee = (renderPrice * gasPrice * 1 ether) / accuracy / 10000;
 
         return gasFee;
+    }
+
+    function setMinGasFee(uint256 minGasFee) public {
+        require(
+            IHyperdustRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
+        );
+
+        _minGasFee = minGasFee;
     }
 }

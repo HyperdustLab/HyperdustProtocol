@@ -10,9 +10,9 @@ async function main() {
     await (await contract.add("render", 30000)).wait();
     await (await contract.add("mintNFT", 30000)).wait();
 
-    const Hyperdust_Render_Transcition = await ethers.getContractAt("Hyperdust_Render_Transcition", "0x5c28a0EF89e5e341c5C9a87aDF72EbEAB5B3a9d5")
+    //const Hyperdust_Render_Transcition = await ethers.getContractAt("Hyperdust_Render_Transcition", "0x5c28a0EF89e5e341c5C9a87aDF72EbEAB5B3a9d5")
 
-    await (await Hyperdust_Render_Transcition.setTransactionCfg(contract.target)).wait()
+    //await (await Hyperdust_Render_Transcition.setTransactionCfg(contract.target)).wait()
 
 
 

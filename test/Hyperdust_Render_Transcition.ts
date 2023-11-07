@@ -50,7 +50,9 @@ describe("MGN_Render_Transcition", () => {
             const Hyperdust_Transaction_Cfg = await ethers.deployContract("Hyperdust_Transaction_Cfg");
             await Hyperdust_Transaction_Cfg.waitForDeployment()
 
-            await (await Hyperdust_Transaction_Cfg.setRolesCfgAddress(Hyperdust_Roles_Cfg.target)).wait();
+            await (await Hyperdust_Transaction_Cfg.setContractAddress([Hyperdust_Roles_Cfg.target, Hyperdust_Node_Mgr.target])).wait();
+
+
             await (await Hyperdust_Transaction_Cfg.add("render", 30000)).wait();
 
 
@@ -85,10 +87,53 @@ describe("MGN_Render_Transcition", () => {
             Hyperdust_Token.mint(accounts[0].address, ethers.parseUnits('1000', 'ether'));
 
 
-            Hyperdust_Token.approve(Hyperdust_Render_Transcition.target, Number.MAX_SAFE_INTEGER);
+            Hyperdust_Token.approve(Hyperdust_Render_Transcition.target, ethers.parseEther('99999999'));
             await (await Hyperdust_Node_Type.addNodeType(1, "test", 1, 1, 1, 1, 1, "test", "test", "1")).wait();
             await (await Hyperdust_Node_Mgr.addNode(accounts[0].address, "127.0.0.1", [1, 1, 1, 1, 1, 1, 1])).wait();
-            await (await Hyperdust_Render_Transcition.createRenderTranscition(1, 3)).wait();
+            await (await Hyperdust_Node_Mgr.addNode(accounts[0].address, "127.0.0.2", [1, 1, 1, 1, 1, 1, 1])).wait();
+
+            await (await Hyperdust_Render_Transcition.createRenderTranscition(1, 2)).wait();
+
+
+
+            Hyperdust_Token.mint(accounts[1].address, ethers.parseUnits('1000', 'ether'));
+            Hyperdust_Token.connect(accounts[1]).approve(Hyperdust_Render_Transcition.target, ethers.parseEther('99999999'));
+            await (await Hyperdust_Render_Transcition.connect(accounts[1]).createRenderTranscition(2, 2)).wait()
+
+
+
+            const getRuningRenderAccounts = await Hyperdust_Render_Transcition.getRuningRenderAccounts(accounts[0].address);
+            console.info(getRuningRenderAccounts)
+
+            const getRuningRenderNodes = await Hyperdust_Render_Transcition.getRuningRenderNodes(1);
+
+            console.info(getRuningRenderNodes)
+
+            const updateEpoch = await (await Hyperdust_Render_Transcition.updateEpoch()).wait()
+
+            for (const log of updateEpoch?.logs) {
+
+
+                if (log.address === Hyperdust_Render_Transcition.target) {
+
+
+
+                    const a = Hyperdust_Render_Transcition.interface.decodeEventLog("eveUpdateRenderEpoch", log.data, log.topics)
+                    console.info("eveUpdateRenderEpoch:", a)
+                    console.info(log.topics);
+
+                }
+
+            }
+
+
+            const getRuningRenderTranscitions = await Hyperdust_Render_Transcition.getRuningRenderTranscitions();
+
+            console.info(getRuningRenderTranscitions)
+
+
+
+
 
 
 
