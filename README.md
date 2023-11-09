@@ -1,6 +1,6 @@
 # Hyperdust Protocol (Istanbul Version)
 
-Smart Conttracts on Sepolia: 
+Smart Contracts on Sepolia: 
 https://docs.google.com/spreadsheets/d/1AF_OXMWHXhWSuJxhobhHxR8hHfYVH8stxmL0Pi99eAY/edit#gid=1069436617
 
 Immersive experience is the key factor of a metaverse platform. Not every potential end user has a performance computer to render AAA photographic metaverse. The headset XR device often has limited 3D rendering capability. So for years , there have been some commercial cloud platforms that are providing real time cloud rendering services for gaming and other emerging markets, such as metaverses. But all these businesses leverage traditional business models. They prefer to be a service provider that sells shovels to the miners of new business builders rather than being part of the ecosystem and accepting the tokens of the metaverse platform.
