@@ -22,7 +22,7 @@ async function main() {
 
 
 
-    const Hyperdust_Render_Awards = await ethers.getContractAt('Hyperdust_Render_Awards', '0x656A4a75aCFc6Ab339EF2b18322e9F2E2a0237C7')
+    const Hyperdust_Render_Awards = await ethers.getContractAt('Hyperdust_Render_Awards', '0xD87be4df1E43E83519447Aa2dDf561C967AEF6F1')
 
     await (await Hyperdust_Render_Awards.setHyperdustRenderTranscitionAddress(contract.target)).wait()
 

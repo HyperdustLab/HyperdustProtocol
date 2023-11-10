@@ -102,9 +102,9 @@ contract Hyperdust_Render_Transcition is Ownable {
 
     uint256[] public _runingRenderTranscitions;
 
-    mapping(address => uint256[]) _runingRenderAccounts;
+    mapping(address => uint256) public _runingRenderAccounts;
 
-    mapping(uint256 => uint256[]) _runingRenderNodes;
+    mapping(uint256 => uint256) public _runingRenderNodes;
 
     function setErc20Address(address erc20Address) public onlyOwner {
         _erc20Address = erc20Address;
@@ -167,10 +167,10 @@ contract Hyperdust_Render_Transcition is Ownable {
 
         uint256 createTime = block.timestamp;
 
-        bytes1 status = 0x00;
+        bytes1 status = 0x11;
 
         if (epoch > 1) {
-            status = 0x11;
+            status = 0x00;
         }
 
         _renderTranscitions.push(
@@ -193,8 +193,8 @@ contract Hyperdust_Render_Transcition is Ownable {
             _runingRenderTranscitions.push(_id.current());
         }
 
-        _runingRenderAccounts[msg.sender].push(_id.current());
-        _runingRenderNodes[nodeId].push(_id.current());
+        _runingRenderAccounts[msg.sender] = _id.current();
+        _runingRenderNodes[nodeId] = _id.current();
 
         emit eveRenderTranscitionSave(_id.current());
 
@@ -202,73 +202,39 @@ contract Hyperdust_Render_Transcition is Ownable {
     }
 
     function checkRenderTranscition(address account) private {
-        uint256[] memory _runingRenderTranscitionIds = _runingRenderAccounts[
-            account
-        ];
+        uint256 _runingRenderTranscitionId = _runingRenderAccounts[account];
 
-        if (_runingRenderTranscitionIds.length == 0) {
+        if (_runingRenderTranscitionId == 0) {
             return;
         }
 
-        bool has = false;
+        RenderTranscition memory renderTranscition = _renderTranscitions[
+            _runingRenderTranscitionId - 1
+        ];
 
-        for (uint i = 0; i < _runingRenderTranscitionIds.length; i++) {
-            RenderTranscition memory renderTranscition = _renderTranscitions[
-                _runingRenderTranscitionIds[i] - 1
-            ];
-
-            if (renderTranscition.nextEndTime > block.timestamp) {
-                has = true;
-            } else {
-                if (renderTranscition.status == 0x11) {
-                    if (i != _runingRenderAccounts[account].length - 1) {
-                        _runingRenderAccounts[account][
-                            i
-                        ] = _runingRenderAccounts[account][
-                            _runingRenderAccounts[account].length - 1
-                        ];
-                    }
-
-                    _runingRenderAccounts[account].pop();
-                }
-            }
-        }
-
-        require(!has, "You have an Render Transcition running");
+        require(
+            renderTranscition.status == 0x11 &&
+                block.timestamp > renderTranscition.nextEndTime,
+            "You have an Render Transcition running"
+        );
     }
 
     function checkRenderNode(uint256 nodeId) private {
-        uint256[] memory _runingRenderTranscitionIds = _runingRenderNodes[
-            nodeId
-        ];
+        uint256 _runingRenderTranscitionId = _runingRenderNodes[nodeId];
 
-        if (_runingRenderTranscitionIds.length == 0) {
+        if (_runingRenderTranscitionId == 0) {
             return;
         }
 
-        bool has = false;
+        RenderTranscition memory renderTranscition = _renderTranscitions[
+            _runingRenderTranscitionId - 1
+        ];
 
-        for (uint i = 0; i < _runingRenderTranscitionIds.length; i++) {
-            RenderTranscition memory renderTranscition = _renderTranscitions[
-                _runingRenderTranscitionIds[i] - 1
-            ];
-
-            if (renderTranscition.nextEndTime > block.timestamp) {
-                has = true;
-            } else {
-                if (renderTranscition.status == 0x11) {
-                    if (i != _runingRenderNodes[nodeId].length - 1) {
-                        _runingRenderNodes[nodeId][i] = _runingRenderNodes[
-                            nodeId
-                        ][_runingRenderNodes[nodeId].length - 1];
-                    }
-
-                    _runingRenderNodes[nodeId].pop();
-                }
-            }
-        }
-
-        require(!has, "The render node is already in use");
+        require(
+            renderTranscition.status == 0x11 &&
+                block.timestamp > renderTranscition.nextEndTime,
+            "The render node is already in use"
+        );
     }
 
     function updateEpoch() public {
@@ -320,6 +286,14 @@ contract Hyperdust_Render_Transcition is Ownable {
                     commission
                 );
                 _renderTranscitions[id - 1].useEpoch++;
+
+                if (
+                    _renderTranscitions[id - 1].useEpoch >=
+                    renderTranscition.epoch
+                ) {
+                    _renderTranscitions[id - 1].status = 0x11;
+                }
+
                 _renderTranscitions[id - 1].nextEndTime =
                     _renderTranscitions[id - 1].nextEndTime +
                     (60 * 64) /
@@ -341,6 +315,8 @@ contract Hyperdust_Render_Transcition is Ownable {
 
                 fail[failIndex] = id;
                 failIndex++;
+
+                _renderTranscitions[id - 1].status = 0x11;
             }
         }
 
@@ -444,13 +420,13 @@ contract Hyperdust_Render_Transcition is Ownable {
 
     function getRuningRenderAccounts(
         address account
-    ) public view returns (uint256[] memory) {
+    ) public view returns (uint256) {
         return _runingRenderAccounts[account];
     }
 
     function getRuningRenderNodes(
         uint256 nodeId
-    ) public view returns (uint256[] memory) {
+    ) public view returns (uint256) {
         return _runingRenderNodes[nodeId];
     }
 }
