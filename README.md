@@ -1,4 +1,8 @@
 # Hyperdust Protocol (Istanbul Version)
+
+Smart Contracts on Sepolia: 
+https://docs.google.com/spreadsheets/d/1AF_OXMWHXhWSuJxhobhHxR8hHfYVH8stxmL0Pi99eAY/edit#gid=1069436617
+
 Immersive experience is the key factor of a metaverse platform. Not every potential end user has a performance computer to render AAA photographic metaverse. The headset XR device often has limited 3D rendering capability. So for years , there have been some commercial cloud platforms that are providing real time cloud rendering services for gaming and other emerging markets, such as metaverses. But all these businesses leverage traditional business models. They prefer to be a service provider that sells shovels to the miners of new business builders rather than being part of the ecosystem and accepting the tokens of the metaverse platform.
 
 In traditional business, metaverse/games need to pay the service to the cloud company with fiat or digital fiat/stable coin. So the computation power beneath cloud rendering is alway the cost of metaverse/games. The metaverse/games can never benefit from the network effects brought by its prospers. The cloud companies continue to get revenues from metaverse/games. In such circumstances, new businesses such as metaverse/ cloud games in the early stage have very little chance to prosper or even survive. That could be the reason why the successful web2 platform always has their own cloud service company. Amazon has AWS, Microsoft has Axure, Google has Google Cloud etc.
@@ -7,7 +11,8 @@ Although a few projects claimed they could provide cloud rendering service in we
 
 Decentralization of metaverse/games requires a more sustainable business model for massive aggregate computation, such as real time 3D/XR rendering to prosper.
 
-The details of token issurence and gas price update refer to https://drive.google.com/file/d/1ZdAz1KLJFnsrNuGjJAM3kgKrAkztfQlI/view?usp=sharing
+The details of token issurence and gas price update refer to 
+https://drive.google.com/file/d/1ZdAz1KLJFnsrNuGjJAM3kgKrAkztfQlI/view?usp=sharing
 
 
 ![image](https://github.com/HyperdustLab/MGN/assets/85720482/4e5e3e2c-a299-4dca-bd57-0564af3bab84)
