@@ -4,34 +4,12 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 import "../utils/StrUtil.sol";
 
 abstract contract IHyperdustNodeMgr {
     function hasAdminRole(address account) public view returns (bool) {}
-}
-
-abstract contract IERC20 {
-    function transferFrom(
-        address from,
-        address to,
-        uint256 amount
-    ) public returns (bool) {}
-
-    function allowance(
-        address owner,
-        address spender
-    ) external view returns (uint256) {}
-
-    function balanceOf(address account) external view returns (uint256) {}
-
-    function approve(address spender, uint256 amount) external returns (bool) {}
-
-    function transfer(
-        address to,
-        uint256 amount
-    ) public virtual returns (bool) {}
-
-    function mint(address to, uint256 amount) public {}
 }
 
 contract Hyperdust_Security_Deposit is Ownable {
@@ -78,7 +56,7 @@ contract Hyperdust_Security_Deposit is Ownable {
             "not enough security deposit"
         );
 
-        IERC20(_erc20Address).mint(to, amount);
+        IERC20(_erc20Address).transfer(to, amount);
     }
 
     function getSecurityDeposit(uint256 nodeId) public view returns (uint256) {

@@ -18,7 +18,7 @@
  *      `s.copy().split(".")`. Try and avoid using this idiom in loops; since
  *      Solidity has no memory management, it will result in allocating many
  *      short-lived slices that are later discarded.
- *
+ 
  *      Functions that return two slices come in two versions: a non-allocating
  *      version that takes the second slice as an argument, modifying it in
  *      place, and an allocating version that allocates and returns the second

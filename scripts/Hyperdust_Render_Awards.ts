@@ -6,7 +6,14 @@ async function main() {
     const contract = await ethers.deployContract("Hyperdust_Render_Awards");
     await contract.waitForDeployment()
 
-    await (await contract.setContractAddress(["0x6C34AbF4632BC38e90f5016d784D3ED320Cfad14", "0xd676222f5B6ddb6BB78e9C6e022aa7146506BcD0", "0xd75864a7970361235469009e5A3511206E23c780", "0x9b00C722461E845D71a1d370B7B7223ffFc30Fb6", "0x5c28a0EF89e5e341c5C9a87aDF72EbEAB5B3a9d5"])).wait()
+    await (await contract.setContractAddress([
+        "0x6C34AbF4632BC38e90f5016d784D3ED320Cfad14",
+        "0xd676222f5B6ddb6BB78e9C6e022aa7146506BcD0",
+        "0xC50183008C4642d7325B1B049F7988b895dAfAA6",
+        "0x37e1D9d13509819b1AeD058dE2d288BE4dF31D62",
+        "0x82b8A6AE65ab9449273179f8D2EfE44398A8401f",
+        "0xa2418f09F5BB07a6eec0bba34d7cB6e9cAb9455A"
+    ])).wait()
 
 
     const Hyperdust_Roles_Cfg = await ethers.getContractAt("Hyperdust_Roles_Cfg", "0x6C34AbF4632BC38e90f5016d784D3ED320Cfad14")

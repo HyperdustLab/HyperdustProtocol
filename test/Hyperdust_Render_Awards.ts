@@ -13,8 +13,7 @@ describe("Hyperdust_Render_Awards", () => {
             const Hyperdust_Roles_Cfg = await ethers.deployContract("Hyperdust_Roles_Cfg");
             await Hyperdust_Roles_Cfg.waitForDeployment()
 
-
-            const Hyperdust_Token = await ethers.deployContract("Hyperdust_Token");
+            const Hyperdust_Token = await ethers.deployContract("Hyperdust_Token", [accounts[0].address, accounts[1].address, accounts[2].address]);
             await Hyperdust_Token.waitForDeployment()
 
 
@@ -38,6 +37,13 @@ describe("Hyperdust_Render_Awards", () => {
             await Hyperdust_Render_Awards.waitForDeployment()
 
 
+            await (await Hyperdust_Token.setGPUMiningAddress(Hyperdust_Render_Awards.target)).wait()
+
+            await (await Hyperdust_Token.connect(accounts[1]).approveUpdateAddress("setGPUMiningAddress"))
+
+
+
+
             const Hyperdust_Render_Transcition = await ethers.deployContract("Hyperdust_Render_Transcition");
             await Hyperdust_Render_Transcition.waitForDeployment()
 
@@ -56,10 +62,6 @@ describe("Hyperdust_Render_Awards", () => {
 
 
             await (await Hyperdust_Node_Type.setRolesCfgAddress(Hyperdust_Roles_Cfg.target)).wait()
-
-            await (await Hyperdust_Token.setRolesCfgAddress(Hyperdust_Roles_Cfg.target)).wait()
-
-
 
 
 
@@ -97,7 +99,7 @@ describe("Hyperdust_Render_Awards", () => {
 
 
 
-            await (await Hyperdust_Render_Awards.setContractAddress([Hyperdust_Roles_Cfg.target, Hyperdust_Node_Mgr.target, Hyperdust_Security_Deposit.target, Hyperdust_BaseReward_Release.target, Hyperdust_Render_Transcition.target])
+            await (await Hyperdust_Render_Awards.setContractAddress([Hyperdust_Roles_Cfg.target, Hyperdust_Node_Mgr.target, Hyperdust_Security_Deposit.target, Hyperdust_BaseReward_Release.target, Hyperdust_Render_Transcition.target, Hyperdust_Token.target])
             ).wait()
 
 
@@ -113,73 +115,25 @@ describe("Hyperdust_Render_Awards", () => {
             await (await Hyperdust_Node_Mgr.addNode(accounts[0].address, "127.0.0.2", [1, 1, 1, 1, 1, 1, 1])).wait();
 
 
-            const calculateCommission = await Hyperdust_Transaction_Cfg.getGasFee("render");
-
-
-            console.info(ethers.formatEther(calculateCommission.toString()))
 
 
 
-
-
-            Hyperdust_Token.mint(accounts[0].address, ethers.parseUnits('1000', 'ether'));
-
-
-            Hyperdust_Token.approve(Hyperdust_Render_Transcition.target, ethers.parseEther('9999999999'));
-
-
-
-            await (await Hyperdust_Render_Transcition.createRenderTranscition(1, 2)).wait();
-
-            const tx = await (await Hyperdust_Render_Awards.rewards(["0x1111000000000000000000000000000000000000000000000000000000000000"])).wait()
+            const tx = await (await Hyperdust_Render_Awards.rewards(["0x1111000000000000000000000000000000000000000000000000000000000000"], 1)).wait()
 
             for (const log of tx?.logs) {
 
-                if (log.address === Hyperdust_Render_Transcition.target) {
-
-                    const a = Hyperdust_Render_Transcition.interface.decodeEventLog("eveUpdateRenderEpoch", log.data, log.topics)
-                    console.info(log.topics)
-
-                    console.info("Hyperdust_Render_Transcition:", a)
-
-                } else if (log.address === Hyperdust_BaseReward_Release.target) {
-
-                    const a = Hyperdust_BaseReward_Release.interface.decodeEventLog("eveSave", log.data, log.topics)
+                if (log.address === Hyperdust_Token.target) {
 
 
-                    console.info("Hyperdust_BaseReward_Release:", a)
-                } else if (log.address === Hyperdust_Render_Awards.target) {
+                    const a = Hyperdust_Token.interface.decodeEventLog("Transfer", log.data, log.topics)
 
-                    const a = Hyperdust_Render_Awards.interface.decodeEventLog("eveRewards", log.data, log.topics)
+                    console.info(ethers.formatEther(a[2]))
 
-                    console.info("Hyperdust_Render_Awards:", a)
-
-                    // console.info(Hyperdust_Render_Awards.interface.decodeEventLog("RewardsEvent", log.data, log.topics)
+                    console.info(a)
                 }
+
+
             }
-
-
-
-
-            // Hyperdust_Render_Awards.interface.decodeEventLog()
-
-            const balance = await Hyperdust_Token.balanceOf(accounts[0].address)
-            const renderTranscitionList = await Hyperdust_Render_Transcition.getRuningRenderTranscitions()
-
-            console.info(balance, renderTranscitionList)
-
-            const statisticalIndex = await Hyperdust_Node_Mgr.getStatisticalIndex()
-
-            console.info(statisticalIndex)
-
-
-
-
-
-
-
-
-
 
 
 

@@ -1,3 +1,12 @@
+/**
+ * @title Hyperdust_Render_Awards
+ * @dev This contract is responsible for distributing rewards to active nodes in the Hyperdust Protocol.
+ * It uses a random selection process to choose a node and distributes an epoch award to it.
+ * The epoch award is calculated based on the total supply of the protocol and the number of active nodes.
+ * A portion of the epoch award is kept as security deposit and the rest is released as base reward to the node.
+ * The contract also keeps track of the total award and residue total award available for distribution.
+ * Only the admin role can trigger the rewards distribution.
+ */
 pragma solidity ^0.8.7;
 
 import {DateTime} from "@quant-finance/solidity-datetime/contracts/DateTime.sol";
@@ -32,6 +41,14 @@ abstract contract IHyperdustSecurityDeposit {
     function addSecurityDeposit(uint256 nodeId, uint256 amount) public {}
 }
 
+abstract contract IHyperdustToken {
+    function _epochAward() public view returns (uint256) {}
+
+    function mint(uint256 amount) public {}
+
+    function transfer(address to, uint256 amount) external returns (bool) {}
+}
+
 abstract contract IHyperdustBaseRewardRelease {
     function addBaseRewardReleaseRecord(
         uint256 amount,
@@ -50,19 +67,8 @@ contract Hyperdust_Render_Awards is Ownable {
 
     using Counters for Counters.Counter;
     Counters.Counter private _id;
+
     address public _rolesCfgAddress;
-
-    uint256 public _totalSupply = 200000000 ether;
-
-    uint256 public _totalAward = (_totalSupply * 62) / 100;
-
-    uint256 public _residueTotalAward = _totalAward;
-
-    uint256 timestamp = block.timestamp;
-
-    uint256 public _currTotalAward = (_residueTotalAward * 10) / 100;
-
-    uint256 public _epochAward = _currTotalAward / 365 / 225;
 
     address public _hyperdustNodeMgrAddress;
 
@@ -72,9 +78,16 @@ contract Hyperdust_Render_Awards is Ownable {
 
     address public _hyperdustRenderTranscitionAddress;
 
+    address public _HyperdustTokenAddress;
+
     uint256 private _rand = 1;
 
-    event eveRewards(uint256 nodeId, uint256 epochAward, uint256 rand);
+    event eveRewards(
+        uint256 nodeId,
+        uint256 epochAward,
+        uint256 rand,
+        uint256 nonce
+    );
 
     function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
         _rolesCfgAddress = rolesCfgAddress;
@@ -104,6 +117,23 @@ contract Hyperdust_Render_Awards is Ownable {
         _hyperdustRenderTranscitionAddress = hyperdustRenderTranscitionAddress;
     }
 
+    function setHyperdustTokenAddress(
+        address HyperdustTokenAddress
+    ) public onlyOwner {
+        _HyperdustTokenAddress = HyperdustTokenAddress;
+    }
+
+    /**
+     * @dev Sets the contract addresses for Hyperdust Render Awards.
+     * @param contractaddressArray An array of contract addresses to be set.
+     * 0: Roles configuration contract address.
+     * 1: Hyperdust node manager contract address.
+     * 2: Hyperdust security deposit contract address.
+     * 3: Hyperdust base reward release contract address.
+     * 4: Hyperdust render transition contract address.
+     * 5: Hyperdust token contract address.
+     * Emits a {ContractAddressSet} event.
+     */
     function setContractAddress(
         address[] memory contractaddressArray
     ) public onlyOwner {
@@ -112,9 +142,15 @@ contract Hyperdust_Render_Awards is Ownable {
         _hyperdustSecurityDeposit = contractaddressArray[2];
         _hyperdustBaseRewardRelease = contractaddressArray[3];
         _hyperdustRenderTranscitionAddress = contractaddressArray[4];
+        _HyperdustTokenAddress = contractaddressArray[5];
     }
 
-    function rewards(bytes32[] memory nodeStatus) public {
+    /**
+     * @dev Distributes rewards to a randomly selected active node based on the number of active nodes and total nodes.
+     * @param nodeStatus An array of node statuses.
+     * @param nonce A random number used to ensure uniqueness of the rewards distribution.
+     */
+    function rewards(bytes32[] memory nodeStatus, uint256 nonce) public {
         require(
             IHyperdustRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
             "not admin role"
@@ -130,17 +166,13 @@ contract Hyperdust_Render_Awards is Ownable {
             _hyperdustNodeMgrAddress
         );
 
-        uint256 currYear = DateTime.getYear(block.timestamp);
-        uint256 _currYear = DateTime.getYear(timestamp);
+        IHyperdustToken hyperdustToken = IHyperdustToken(
+            _HyperdustTokenAddress
+        );
 
-        IHyperdustRenderTranscitionAddress(_hyperdustRenderTranscitionAddress)
-            .updateEpoch();
+        uint256 epochAward = hyperdustToken._epochAward();
 
-        if (currYear != _currYear) {
-            resetCurrTotalAward();
-        }
-
-        if (_activeNum == 0 || _totalNum == 0 || _residueTotalAward == 0) {
+        if (_activeNum == 0 || _totalNum == 0 || epochAward == 0) {
             return;
         }
 
@@ -148,11 +180,20 @@ contract Hyperdust_Render_Awards is Ownable {
 
         uint256 nodeId = activeNodes[index];
 
-        uint256 epochAward = _epochAward / _totalNum / _activeNum;
+        uint256 actualEpochAward = epochAward / _totalNum / _activeNum;
+        uint256 securityDeposit = actualEpochAward / 10;
 
-        _residueTotalAward -= epochAward;
+        IHyperdustRenderTranscitionAddress(_hyperdustRenderTranscitionAddress)
+            .updateEpoch();
 
-        uint256 securityDeposit = (_epochAward * 10) / 100;
+        hyperdustToken.mint(actualEpochAward);
+
+        hyperdustToken.transfer(
+            _hyperdustBaseRewardRelease,
+            actualEpochAward - securityDeposit
+        );
+
+        hyperdustToken.transfer(_hyperdustSecurityDeposit, securityDeposit);
 
         IHyperdustSecurityDeposit(_hyperdustSecurityDeposit).addSecurityDeposit(
             nodeId,
@@ -173,9 +214,14 @@ contract Hyperdust_Render_Awards is Ownable {
                 nodeId
             );
 
-        emit eveRewards(nodeId, epochAward, index);
+        emit eveRewards(nodeId, epochAward, index, nonce);
     }
 
+    /**
+     * @dev Counts the number of active nodes and returns an array of their IDs, as well as the total number of nodes and active nodes.
+     * @param nodeStatus An array of bytes32 representing the status of each node.
+     * @return A tuple containing an array of uint256 representing the IDs of active nodes, the total number of nodes, and the number of active nodes.
+     */
     function countActiveNode(
         bytes32[] memory nodeStatus
     ) private returns (uint256[] memory, uint256, uint256) {
@@ -220,11 +266,12 @@ contract Hyperdust_Render_Awards is Ownable {
         return (activeNodes, totalNum, activeNum);
     }
 
-    function resetCurrTotalAward() private {
-        _currTotalAward = (_residueTotalAward * 10) / 100;
-        timestamp = block.timestamp;
-    }
-
+    /**
+     * @dev Generates a random number between _start and _end (exclusive) using block difficulty, timestamp and a private variable _rand.
+     * @param _start The start of the range (inclusive).
+     * @param _end The end of the range (exclusive).
+     * @return A random number between _start and _end (exclusive).
+     */
     function _getRandom(
         uint256 _start,
         uint256 _end

@@ -5,35 +5,12 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import "../utils/StrUtil.sol";
 
 abstract contract IHyperdustRolesCfg {
     function hasAdminRole(address account) public view returns (bool) {}
-}
-
-abstract contract IERC20 {
-    function transferFrom(
-        address from,
-        address to,
-        uint256 amount
-    ) public returns (bool) {}
-
-    function allowance(
-        address owner,
-        address spender
-    ) external view returns (uint256) {}
-
-    function balanceOf(address account) external view returns (uint256) {}
-
-    function approve(address spender, uint256 amount) external returns (bool) {}
-
-    function transfer(
-        address to,
-        uint256 amount
-    ) public virtual returns (bool) {}
-
-    function mint(address to, uint256 amount) public {}
 }
 
 contract Hyperdust_BaseReward_Release is Ownable {
@@ -142,7 +119,7 @@ contract Hyperdust_BaseReward_Release is Ownable {
             amount += release(ids[i]);
         }
 
-        IERC20(_erc20Address).mint(msg.sender, amount);
+        IERC20(_erc20Address).transfer(msg.sender, amount);
         emit eveRelease(ids);
     }
 
