@@ -172,6 +172,9 @@ contract Hyperdust_Render_Awards is Ownable {
 
         uint256 epochAward = hyperdustToken._epochAward();
 
+        IHyperdustRenderTranscitionAddress(_hyperdustRenderTranscitionAddress)
+            .updateEpoch();
+
         if (_activeNum == 0 || _totalNum == 0 || epochAward == 0) {
             return;
         }
@@ -182,9 +185,6 @@ contract Hyperdust_Render_Awards is Ownable {
 
         uint256 actualEpochAward = epochAward / _totalNum / _activeNum;
         uint256 securityDeposit = actualEpochAward / 10;
-
-        IHyperdustRenderTranscitionAddress(_hyperdustRenderTranscitionAddress)
-            .updateEpoch();
 
         hyperdustToken.mint(actualEpochAward);
 

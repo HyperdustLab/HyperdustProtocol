@@ -173,7 +173,7 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
      * @dev This variable represents the total award that will be released to the core team members
      * over a period of 60 months. The amount released each month will be equal to `_CoreTeamReleaseTotalAward`.
      */
-    uint256 public _CoreTeamReleaseTotalAward = _CoreTeamTotalAward / 60;
+    uint256 public _CoreTeamReleaseTotalAward = _CoreTeamTotalAward / 20;
 
     /**
      * @dev Public variable that stores the address of the core team.
@@ -208,7 +208,7 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
     /**
      * @dev The total amount of tokens to be released for advisors every month.
      */
-    uint256 public _AdvisorReleaseTotalAward = _AdvisorTotalAward / 60;
+    uint256 public _AdvisorReleaseTotalAward = _AdvisorTotalAward / 20;
 
     /**
      * @dev Public variable that represents the current amount of tokens released to advisors.
@@ -273,7 +273,8 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
     /**
      * @dev Public variable that stores the timestamp for the early contributors' genesis release time.
      */
-    uint256 public _EarlyContributorsGenesisAllowReleaseTime = timestamp;
+    uint256 public _EarlyContributorsGenesisAllowReleaseTime =
+        timestamp + 30 days;
 
     /**
      * @dev This variable represents the total award for early contributors' genesis release, which is calculated as a twelfth of the total award for early contributors.
@@ -308,12 +309,12 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
     /**
      * @dev The interval between private sale releases.
      */
-    uint256 public _PrivateSaleReleaseInterval = 30 days;
+    uint256 public _PrivateSaleReleaseInterval = 90 days;
 
     /**
      * @dev The total amount of tokens to be released for Private Sale divided by 60.
      */
-    uint256 public _PrivateSaleReleaseTotalAward = _PrivateSaleTotalAward / 60;
+    uint256 public _PrivateSaleReleaseTotalAward = _PrivateSaleTotalAward / 20;
 
     /**
      * @dev Public variable that stores the current award for the private sale release.
@@ -343,7 +344,7 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
     /**
      * @dev Public variable that stores the timestamp for the Foundation release allow release time.
      */
-    uint256 public _FoundationReleaseAllowReleaseTime = timestamp;
+    uint256 public _FoundationReleaseAllowReleaseTime = timestamp + 30 days;
     /**
      * @dev This variable represents the total amount of tokens awarded to the foundation in the Hyperdust Token contract.
      * It is calculated as one fourth of the total award amount.
@@ -590,7 +591,7 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
             _CoreTeamReleaseTotalAward =
                 (_CoreTeamReleaseTotalAward - _CoreTeamReleaseCurrAward) +
                 _CoreTeamTotalAward /
-                60;
+                20;
 
             _CoreTeamReleaseCurrAward = 0;
         }
@@ -629,7 +630,7 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
             _AdvisorReleaseTotalAward =
                 (_AdvisorReleaseTotalAward - _AdvisorReleaseCurrAward) +
                 _CoreTeamTotalAward /
-                60;
+                20;
             _AdvisorReleaseCurrAward = 0;
         }
 
@@ -753,7 +754,7 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
             _PrivateSaleReleaseTotalAward =
                 (_PrivateSaleReleaseTotalAward - _PrivateSaleReleaseCurrAward) +
                 _PrivateSaleTotalAward /
-                60;
+                20;
             _PrivateSaleReleaseCurrAward = 0;
         }
 

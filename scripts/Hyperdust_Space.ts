@@ -6,7 +6,7 @@ async function main() {
   const contract = await ethers.deployContract("Hyperdust_Space");
   await contract.waitForDeployment()
 
-  await (await contract.setHyperdustRolesCfgAddress("0xba9b4229C58A7eD1De9eaa1773fEd064D8c8B88F")).wait()
+  await (await contract.setHyperdustRolesCfgAddress("0x6C34AbF4632BC38e90f5016d784D3ED320Cfad14")).wait()
 
   console.info("contractFactory address:", contract.target);
 }

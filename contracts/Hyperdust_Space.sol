@@ -85,7 +85,7 @@ contract Hyperdust_Space is Ownable {
                 _spaces[i].coverImage = coverImage;
                 _spaces[i].description = description;
 
-                emit eveSpaceSave(_id.current());
+                emit eveSpaceSave(id);
 
                 return;
             }
@@ -147,7 +147,7 @@ contract Hyperdust_Space is Ownable {
                 _spaces[i].downloadLink = downloadLink;
                 _spaces[i].status = "1";
 
-                emit eveSpaceSave(_id.current());
+                emit eveSpaceSave(id);
 
                 return;
             }
@@ -175,7 +175,7 @@ contract Hyperdust_Space is Ownable {
                 _spaces[i].deploymentPath = deploymentPath;
                 _spaces[i].spaceId = spaceId;
 
-                emit eveSpaceSave(_id.current());
+                emit eveSpaceSave(_spaces[i].id);
 
                 return;
             }
@@ -196,7 +196,7 @@ contract Hyperdust_Space is Ownable {
             if (_spaces[i].id == id) {
                 _spaces[i].status = status;
 
-                emit eveSpaceSave(_id.current());
+                emit eveSpaceSave(id);
 
                 return;
             }
