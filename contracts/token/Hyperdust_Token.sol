@@ -309,12 +309,12 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
     /**
      * @dev The interval between private sale releases.
      */
-    uint256 public _PrivateSaleReleaseInterval = 90 days;
+    uint256 public _PrivateSaleReleaseInterval = 30 days;
 
     /**
      * @dev The total amount of tokens to be released for Private Sale divided by 60.
      */
-    uint256 public _PrivateSaleReleaseTotalAward = _PrivateSaleTotalAward / 20;
+    uint256 public _PrivateSaleReleaseTotalAward = _PrivateSaleTotalAward / 60;
 
     /**
      * @dev Public variable that stores the current award for the private sale release.
@@ -754,7 +754,7 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
             _PrivateSaleReleaseTotalAward =
                 (_PrivateSaleReleaseTotalAward - _PrivateSaleReleaseCurrAward) +
                 _PrivateSaleTotalAward /
-                20;
+                60;
             _PrivateSaleReleaseCurrAward = 0;
         }
 

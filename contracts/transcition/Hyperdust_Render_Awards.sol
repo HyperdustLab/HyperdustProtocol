@@ -175,7 +175,11 @@ contract Hyperdust_Render_Awards is Ownable {
         IHyperdustRenderTranscitionAddress(_hyperdustRenderTranscitionAddress)
             .updateEpoch();
 
-        if (_activeNum == 0 || _totalNum == 0 || epochAward == 0) {
+        if (_totalNum < 100) {
+            _totalNum = 100;
+        }
+
+        if (_activeNum == 0 || epochAward == 0) {
             return;
         }
 
@@ -183,7 +187,7 @@ contract Hyperdust_Render_Awards is Ownable {
 
         uint256 nodeId = activeNodes[index];
 
-        uint256 actualEpochAward = epochAward / _totalNum / _activeNum;
+        uint256 actualEpochAward = epochAward / (_totalNum / _activeNum);
         uint256 securityDeposit = actualEpochAward / 10;
 
         hyperdustToken.mint(actualEpochAward);
@@ -214,7 +218,7 @@ contract Hyperdust_Render_Awards is Ownable {
                 nodeId
             );
 
-        emit eveRewards(nodeId, epochAward, index, nonce);
+        emit eveRewards(nodeId, actualEpochAward, index, nonce);
     }
 
     /**

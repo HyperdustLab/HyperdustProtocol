@@ -116,27 +116,22 @@ describe("Hyperdust_Render_Awards", () => {
 
 
 
+            const array = []
 
+            for (let i = 0; i < 1; i++) {
+                const tx = await (await Hyperdust_Render_Awards.rewards(["0x1111000000000000000000000000000000000000000000000000000000000000"], 1)).wait()
 
-            const tx = await (await Hyperdust_Render_Awards.rewards(["0x1111000000000000000000000000000000000000000000000000000000000000"], 1)).wait()
+                for (const log of tx?.logs) {
 
-            for (const log of tx?.logs) {
-
-                if (log.address === Hyperdust_Token.target) {
-
-
-                    const a = Hyperdust_Token.interface.decodeEventLog("Transfer", log.data, log.topics)
-
-                    console.info(ethers.formatEther(a[2]))
-
-                    console.info(a)
+                    if (log.address === Hyperdust_Render_Awards.target) {
+                        const a = Hyperdust_Render_Awards.interface.decodeEventLog("eveRewards", log.data, log.topics)
+                        console.info(ethers.formatEther(a[1]))
+                    }
                 }
-
 
             }
 
-
-
+            console.info(array)
         });
     });
 });
