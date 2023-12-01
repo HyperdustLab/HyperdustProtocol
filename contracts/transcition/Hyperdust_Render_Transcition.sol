@@ -86,17 +86,13 @@ contract Hyperdust_Render_Transcition is Ownable {
         uint256 nextEndTime;
         uint256 nodeId;
         bytes1 status;
+        uint256[] epochAmounts;
+        uint256[] epochTimes;
     }
 
     event eveRenderTranscitionSave(uint256 id);
 
-    event eveUpdateRenderEpoch(
-        uint256[] success,
-        uint256[] nextEndTimes,
-        bytes1[] status,
-        uint32[] useEpoch,
-        uint256[] fail
-    );
+    event eveUpdateRenderEpoch(uint256[] success, uint256[] fail);
 
     RenderTranscition[] public _renderTranscitions;
 
@@ -173,21 +169,26 @@ contract Hyperdust_Render_Transcition is Ownable {
             status = 0x00;
         }
 
-        _renderTranscitions.push(
-            RenderTranscition(
-                _id.current(),
-                node.incomeAddress,
-                msg.sender,
-                epoch,
-                1,
-                commission,
-                createTime,
-                createTime + (epoch * 60 * 64) / 10,
-                createTime + (60 * 64) / 10,
-                nodeId,
-                status
-            )
+        RenderTranscition memory renderTranscition = RenderTranscition(
+            _id.current(),
+            node.incomeAddress,
+            msg.sender,
+            epoch,
+            1,
+            commission,
+            createTime,
+            createTime + (epoch * 60 * 64) / 10,
+            createTime + (60 * 64) / 10,
+            nodeId,
+            status,
+            new uint256[](epoch),
+            new uint256[](epoch)
         );
+
+        renderTranscition.epochAmounts[0] = commission;
+        renderTranscition.epochTimes[0] = createTime;
+
+        _renderTranscitions.push(renderTranscition);
 
         if (epoch > 1) {
             _runingRenderTranscitions.push(_id.current());
@@ -299,6 +300,18 @@ contract Hyperdust_Render_Transcition is Ownable {
                     (60 * 64) /
                     10;
 
+                uint32 useEpoch = _renderTranscitions[id - 1].useEpoch;
+
+                _renderTranscitions[id - 1].epochAmounts[
+                    useEpoch - 1
+                ] = commission;
+
+                _renderTranscitions[id - 1].epochTimes[useEpoch - 1] = block
+                    .timestamp;
+
+                _renderTranscitions[id - 1].amount =
+                    _renderTranscitions[id - 1].amount +
+                    commission;
                 totalAmount += commission;
 
                 success[successIndex] = id;
@@ -330,30 +343,15 @@ contract Hyperdust_Render_Transcition is Ownable {
 
         uint256[] memory _fail = new uint256[](failIndex);
 
-        uint256[] memory _nextEndTimes = new uint256[](successIndex);
-
-        uint32[] memory _useEpochs = new uint32[](successIndex);
-
-        bytes1[] memory _status = new bytes1[](successIndex);
-
         for (uint i = 0; i < successIndex; i++) {
             _success[i] = success[i];
-            _nextEndTimes[i] = _renderTranscitions[success[i] - 1].nextEndTime;
-            _status[i] = _renderTranscitions[success[i] - 1].status;
-            _useEpochs[i] = _renderTranscitions[success[i] - 1].useEpoch;
         }
 
         for (uint i = 0; i < failIndex; i++) {
             _fail[i] = fail[i];
         }
 
-        emit eveUpdateRenderEpoch(
-            _success,
-            _nextEndTimes,
-            _status,
-            _useEpochs,
-            _fail
-        );
+        emit eveUpdateRenderEpoch(_success, _fail);
     }
 
     function cleanRuningRenderTranscitions(uint256 id) private {
@@ -380,33 +378,35 @@ contract Hyperdust_Render_Transcition is Ownable {
         returns (
             address,
             address,
-            uint256,
             uint32,
-            uint256,
-            uint256,
-            uint256,
-            uint256,
-            uint256,
-            uint256,
-            bytes1
+            uint32,
+            uint256[] memory,
+            bytes1,
+            uint256[] memory,
+            uint256[] memory
         )
     {
         RenderTranscition memory renderTranscition = _renderTranscitions[
             id - 1
         ];
 
+        uint256[] memory uint256Array = new uint256[](6);
+        uint256Array[0] = renderTranscition.id;
+        uint256Array[1] = renderTranscition.amount;
+        uint256Array[2] = renderTranscition.createTime;
+        uint256Array[3] = renderTranscition.endTime;
+        uint256Array[4] = renderTranscition.nextEndTime;
+        uint256Array[5] = renderTranscition.nodeId;
+
         return (
             renderTranscition.serviceAccount,
             renderTranscition.account,
-            renderTranscition.id,
             renderTranscition.epoch,
             renderTranscition.useEpoch,
-            renderTranscition.amount,
-            renderTranscition.createTime,
-            renderTranscition.endTime,
-            renderTranscition.nextEndTime,
-            renderTranscition.nodeId,
-            renderTranscition.status
+            uint256Array,
+            renderTranscition.status,
+            renderTranscition.epochAmounts,
+            renderTranscition.epochTimes
         );
     }
 

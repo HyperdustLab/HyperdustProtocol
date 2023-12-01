@@ -244,14 +244,15 @@ contract Hyperdust_Render_Awards is Ownable {
         uint256 activeIndex = 0;
 
         for (uint i = 0; i < nodeStatus.length; i++) {
-            uint256 nodeId = hyperdustNodeMgrAddress.getIdByIndex(index);
-
-            if (nodeId == 0) {
-                break;
-            }
-
             for (uint j = 0; j < 32; j++) {
+                uint256 nodeId = hyperdustNodeMgrAddress.getIdByIndex(index);
+
+                if (nodeId == 0) {
+                    break;
+                }
+
                 bytes1 status = bytes1(nodeStatus[i][j]);
+
                 if (status != 0x00) {
                     totalNum++;
 

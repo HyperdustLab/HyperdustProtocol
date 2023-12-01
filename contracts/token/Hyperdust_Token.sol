@@ -7,12 +7,12 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import {DateTime} from "@quant-finance/solidity-datetime/contracts/DateTime.sol";
 import "../utils/StrUtil.sol";
 
-contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
+contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
     constructor(
         address account1,
         address account2,
         address account3
-    ) ERC20("Hyperdust", "HYPT Test") {
+    ) ERC20("Hyperdust Token Test", "HYPT test") {
         _multiSignatureWallet.push(account1);
         _multiSignatureWallet.push(account2);
         _multiSignatureWallet.push(account3);
@@ -344,13 +344,12 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
     /**
      * @dev Public variable that stores the timestamp for the Foundation release allow release time.
      */
-    uint256 public _FoundationReleaseAllowReleaseTime = timestamp + 30 days;
+    uint256 public _FoundationReleaseAllowReleaseTime = timestamp;
     /**
      * @dev This variable represents the total amount of tokens awarded to the foundation in the Hyperdust Token contract.
      * It is calculated as one fourth of the total award amount.
      */
-    uint256 public _FoundationReleaseReleaseTotalAward =
-        _FoundationTotalAward / 4;
+    uint256 public _FoundationReleaseTotalAward = _FoundationTotalAward / 4;
 
     /**
      * @dev Public variable that represents the current award for the foundation release.
@@ -525,6 +524,8 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
         } else {
             revert("name is error");
         }
+
+        _updateAddress[name] = address(0);
     }
 
     /**
@@ -596,6 +597,8 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
             _CoreTeamReleaseCurrAward = 0;
         }
 
+        require(block.timestamp >= _CoreTeamAllowReleaseTime, "time is not ok");
+
         require(
             _CoreTeamTotalAward - _CoreTeamCurrAward - mintNum >= 0,
             "CoreTeamTotalAward is not enough"
@@ -633,6 +636,8 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
                 20;
             _AdvisorReleaseCurrAward = 0;
         }
+
+        require(block.timestamp >= _AdvisorAllowReleaseTime, "time is not ok");
 
         require(
             _AdvisorTotalAward - _AdvisorCurrAward - mintNum >= 0,
@@ -719,6 +724,11 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
         }
 
         require(
+            block.timestamp >= _EarlyContributorsGenesisAllowReleaseTime,
+            "time is not ok"
+        );
+
+        require(
             _EarlyContributorsGenesisReleaseTotalAward -
                 _EarlyContributorsGenesisReleaseCurrAward -
                 mintNum >=
@@ -791,20 +801,19 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
         ) {
             _FoundationReleaseAllowReleaseTime += _FoundationReleaseInterval;
 
-            _FoundationReleaseReleaseTotalAward =
-                (_FoundationReleaseReleaseTotalAward -
-                    _FoundationReleaseCurrAward) +
+            _FoundationReleaseTotalAward =
+                (_FoundationReleaseTotalAward - _FoundationReleaseCurrAward) +
                 (_FoundationTotalAward / 4);
 
-            _EarlyContributorsGenesisReleaseCurrAward = 0;
+            _FoundationReleaseCurrAward = 0;
         }
 
         require(
-            _FoundationReleaseReleaseTotalAward -
-                _EarlyContributorsGenesisReleaseCurrAward -
+            _FoundationReleaseTotalAward -
+                _FoundationReleaseCurrAward -
                 mintNum >=
                 0,
-            "_FoundationReleaseReleaseTotalAward is not enough"
+            "_FoundationReleaseTotalAward is not enough"
         );
 
         require(

@@ -17,9 +17,20 @@ describe("MGN_Render_Transcition", () => {
 
 
 
-            const Hyperdust_Token = await ethers.deployContract("Hyperdust_Token");
+            const Hyperdust_Token = await ethers.deployContract("Hyperdust_Token", [accounts[0].address, accounts[1].address, accounts[2].address]);
             await Hyperdust_Token.waitForDeployment()
-            await (await Hyperdust_Token.setRolesCfgAddress(Hyperdust_Roles_Cfg.target)).wait()
+
+
+            await (await Hyperdust_Token.setPrivateSaleAddress(accounts[0].address)
+            ).wait()
+
+
+            await (await Hyperdust_Token.connect(accounts[1]).approveUpdateAddress("setPrivateSaleAddress")
+            ).wait()
+
+
+            await (await Hyperdust_Token.mint(ethers.parseEther('100000'))).wait()
+
 
 
 
@@ -82,11 +93,6 @@ describe("MGN_Render_Transcition", () => {
             await (await Hyperdust_Roles_Cfg.addAdmin(Hyperdust_Render_Transcition.target)).wait()
 
 
-
-
-            Hyperdust_Token.mint(accounts[0].address, ethers.parseUnits('1000', 'ether'));
-
-
             Hyperdust_Token.approve(Hyperdust_Render_Transcition.target, ethers.parseEther('99999999'));
             await (await Hyperdust_Node_Type.addNodeType(1, "test", 1, 1, 1, 1, 1, "test", "test", "1")).wait();
             await (await Hyperdust_Node_Mgr.addNode(accounts[0].address, "127.0.0.1", [1, 1, 1, 1, 1, 1, 1])).wait();
@@ -96,9 +102,7 @@ describe("MGN_Render_Transcition", () => {
 
 
 
-            Hyperdust_Token.mint(accounts[1].address, ethers.parseUnits('1000', 'ether'));
-            Hyperdust_Token.connect(accounts[1]).approve(Hyperdust_Render_Transcition.target, ethers.parseEther('99999999'));
-            await (await Hyperdust_Render_Transcition.connect(accounts[1]).createRenderTranscition(2, 2)).wait()
+
 
 
 
@@ -111,25 +115,21 @@ describe("MGN_Render_Transcition", () => {
 
             const updateEpoch = await (await Hyperdust_Render_Transcition.updateEpoch()).wait()
 
-            for (const log of updateEpoch?.logs) {
 
 
-                if (log.address === Hyperdust_Render_Transcition.target) {
-
-
-
-                    const a = Hyperdust_Render_Transcition.interface.decodeEventLog("eveUpdateRenderEpoch", log.data, log.topics)
-                    console.info("eveUpdateRenderEpoch:", a)
-                    console.info(log.topics);
-
-                }
-
-            }
 
 
             const getRuningRenderTranscitions = await Hyperdust_Render_Transcition.getRuningRenderTranscitions();
 
             console.info(getRuningRenderTranscitions)
+
+
+            const ts = await Hyperdust_Render_Transcition.getRenderTranscition(1)
+
+            console.info(ts)
+
+
+            console.info("Hyperdust_Render_Transcition:" + Hyperdust_Render_Transcition.target)
 
 
 

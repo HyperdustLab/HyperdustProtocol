@@ -9,7 +9,7 @@ async function main() {
 
     await (await contract.setContractAddress([
         "0x6C34AbF4632BC38e90f5016d784D3ED320Cfad14",
-        "0x617C4e961Ad922c05EBF3e4521d329Ff5Ef89a9E",
+        "0x1CF7f55C216b28BC14Bf663d49D95d5F68446bed",
         "0xd676222f5B6ddb6BB78e9C6e022aa7146506BcD0",
         "0xeb43b97d1AE99F28c07d0EA79C467E3ECF2a6A77",
         "0x41B72CB16A2e89DddA403519A42aa0C386c1A4e7"
@@ -22,7 +22,7 @@ async function main() {
 
 
 
-    const Hyperdust_Render_Awards = await ethers.getContractAt('Hyperdust_Render_Awards', '0xD87be4df1E43E83519447Aa2dDf561C967AEF6F1')
+    const Hyperdust_Render_Awards = await ethers.getContractAt('Hyperdust_Render_Awards', '0x0ba1f0329187C6AD8a73285100a9407F753B5A9f')
 
     await (await Hyperdust_Render_Awards.setHyperdustRenderTranscitionAddress(contract.target)).wait()
 

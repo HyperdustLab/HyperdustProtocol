@@ -113,19 +113,28 @@ describe("Hyperdust_Render_Awards", () => {
             await (await Hyperdust_Node_Type.addNodeType(1, "test", 1, 1, 1, 1, 1, "test", "test", "1")).wait();
             await (await Hyperdust_Node_Mgr.addNode(accounts[0].address, "127.0.0.1", [1, 1, 1, 1, 1, 1, 1])).wait();
             await (await Hyperdust_Node_Mgr.addNode(accounts[0].address, "127.0.0.2", [1, 1, 1, 1, 1, 1, 1])).wait();
+            await (await Hyperdust_Node_Mgr.addNode(accounts[0].address, "127.0.0.3", [1, 1, 1, 1, 1, 1, 1])).wait();
+            await (await Hyperdust_Node_Mgr.addNode(accounts[0].address, "127.0.0.4", [1, 1, 1, 1, 1, 1, 1])).wait();
+            await (await Hyperdust_Node_Mgr.addNode(accounts[0].address, "127.0.0.5", [1, 1, 1, 1, 1, 1, 1])).wait();
+            await (await Hyperdust_Node_Mgr.addNode(accounts[0].address, "127.0.0.6", [1, 1, 1, 1, 1, 1, 1])).wait();
+            await (await Hyperdust_Node_Mgr.addNode(accounts[0].address, "127.0.0.7", [1, 1, 1, 1, 1, 1, 1])).wait();
+            await (await Hyperdust_Node_Mgr.addNode(accounts[0].address, "127.0.0.8", [1, 1, 1, 1, 1, 1, 1])).wait();
+            await (await Hyperdust_Node_Mgr.addNode(accounts[0].address, "127.0.0.9", [1, 1, 1, 1, 1, 1, 1])).wait();
+            await (await Hyperdust_Node_Mgr.addNode(accounts[0].address, "127.0.0.10", [1, 1, 1, 1, 1, 1, 1])).wait();
+            await (await Hyperdust_Node_Mgr.addNode(accounts[0].address, "127.0.0.11", [1, 1, 1, 1, 1, 1, 1])).wait();
 
 
 
             const array = []
 
             for (let i = 0; i < 1; i++) {
-                const tx = await (await Hyperdust_Render_Awards.rewards(["0x1111000000000000000000000000000000000000000000000000000000000000"], 1)).wait()
+                const tx = await (await Hyperdust_Render_Awards.rewards(["0x1111110000000000001110000000000000000000000000000000000000000000"], 1)).wait()
 
                 for (const log of tx?.logs) {
 
                     if (log.address === Hyperdust_Render_Awards.target) {
                         const a = Hyperdust_Render_Awards.interface.decodeEventLog("eveRewards", log.data, log.topics)
-                        console.info(ethers.formatEther(a[1]))
+                        console.info(a)
                     }
                 }
 

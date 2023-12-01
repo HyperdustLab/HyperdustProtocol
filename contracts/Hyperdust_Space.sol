@@ -31,6 +31,7 @@ contract Hyperdust_Space is Ownable {
         string lastVersion;
         address accout;
         string coverImage;
+        string image;
     }
 
     event eveSpaceSave(uint256 id);
@@ -49,7 +50,8 @@ contract Hyperdust_Space is Ownable {
         string memory downloadLink,
         string memory description,
         string memory currentVersion,
-        string memory coverImage
+        string memory coverImage,
+        string memory image
     ) public {
         _id.increment();
 
@@ -65,7 +67,8 @@ contract Hyperdust_Space is Ownable {
                 currentVersion,
                 "",
                 msg.sender,
-                coverImage
+                coverImage,
+                image
             )
         );
         emit eveSpaceSave(_id.current());
@@ -75,6 +78,7 @@ contract Hyperdust_Space is Ownable {
         uint256 id,
         string memory name,
         string memory coverImage,
+        string memory image,
         string memory description
     ) public {
         for (uint i = 0; i < _spaces.length; i++) {
@@ -84,6 +88,7 @@ contract Hyperdust_Space is Ownable {
                 _spaces[i].name = name;
                 _spaces[i].coverImage = coverImage;
                 _spaces[i].description = description;
+                _spaces[i].image = image;
 
                 emit eveSpaceSave(id);
 
@@ -110,6 +115,7 @@ contract Hyperdust_Space is Ownable {
             string memory,
             string memory,
             address,
+            string memory,
             string memory
         )
     {
@@ -126,7 +132,8 @@ contract Hyperdust_Space is Ownable {
                     _spaces[i].currentVersion,
                     _spaces[i].lastVersion,
                     _spaces[i].accout,
-                    _spaces[i].coverImage
+                    _spaces[i].coverImage,
+                    _spaces[i].image
                 );
             }
         }
