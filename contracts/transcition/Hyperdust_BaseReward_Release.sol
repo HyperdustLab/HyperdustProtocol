@@ -48,20 +48,16 @@ contract Hyperdust_BaseReward_Release is Ownable {
     mapping(address => BaseRewardReleaseRecord[])
         public _baseRewardReleaseRecordsMap;
 
+    mapping(uint256 => uint256) public _indexReleaseTimeMap;
+    mapping(uint256 => uint256) public _indexReleaseAmountMap;
+    mapping(address => uint256[]) public _indexReleaseAmountMap1;
+
     function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
         _rolesCfgAddress = rolesCfgAddress;
     }
 
     function setERC20Address(address erc20Address) public onlyOwner {
         _erc20Address = erc20Address;
-    }
-
-    function setIntervalTime(uint256 intervalTime) public onlyOwner {
-        _intervalTime = intervalTime;
-    }
-
-    function setIntervalCount(uint256 intervalCount) public onlyOwner {
-        _intervalCount = intervalCount;
     }
 
     function setContractAddress(
@@ -112,49 +108,45 @@ contract Hyperdust_BaseReward_Release is Ownable {
         emit eveSave(ids, avgAmount, releaseTimes, account, nodeId);
     }
 
-    function release(uint256[] memory ids) public {
+    function release() public {
         uint256 amount = 0;
 
-        for (uint256 i = 0; i < ids.length; i++) {
-            amount += release(ids[i]);
-        }
-
-        IERC20(_erc20Address).transfer(msg.sender, amount);
-        emit eveRelease(ids);
-    }
-
-    function release(uint256 id) private returns (uint256) {
         BaseRewardReleaseRecord[]
             memory baseRewardReleaseRecords = _baseRewardReleaseRecordsMap[
                 msg.sender
             ];
 
-        uint256 totalSize = baseRewardReleaseRecords.length;
+        require(baseRewardReleaseRecords.length > 0, "no release");
 
-        uint256 currTime = block.timestamp;
+        uint256[] memory ids = new uint256[](baseRewardReleaseRecords.length);
 
-        for (uint256 i = 0; i < totalSize; i++) {
-            if (baseRewardReleaseRecords[i].id == id) {
-                if (currTime >= baseRewardReleaseRecords[i].releaseTime) {
-                    uint256 amount = baseRewardReleaseRecords[i].amount;
+        uint256 index = 0;
+        for (uint256 i = 0; i < baseRewardReleaseRecords.length; i++) {
+            if (
+                baseRewardReleaseRecords[i].releaseTime <= block.timestamp &&
+                index < 10
+            ) {
+                amount += baseRewardReleaseRecords[i].amount;
+                ids[index] = baseRewardReleaseRecords[i].id;
+                index++;
 
-                    _baseRewardReleaseRecordsMap[msg.sender][
-                        i
-                    ] = baseRewardReleaseRecords[totalSize - 1];
-                    _baseRewardReleaseRecordsMap[msg.sender].pop();
-
-                    return amount;
-                } else {
-                    revert(
-                        id.toString().toSlice().concat(
-                            " not release time".toSlice()
-                        )
-                    );
-                }
+                _baseRewardReleaseRecordsMap[msg.sender][
+                    i
+                ] = baseRewardReleaseRecords[
+                    baseRewardReleaseRecords.length - 1
+                ];
+                _baseRewardReleaseRecordsMap[msg.sender].pop();
             }
         }
 
-        revert(id.toString().toSlice().concat(" not found".toSlice()));
+        IERC20(_erc20Address).transfer(msg.sender, amount);
+
+        uint256[] memory newIds = new uint256[](index);
+        for (uint256 i = 0; i < index; i++) {
+            newIds[i] = ids[i];
+        }
+
+        emit eveRelease(newIds);
     }
 
     function getBaseRewardReleaseRecords(
