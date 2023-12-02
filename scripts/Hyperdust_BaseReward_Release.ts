@@ -8,7 +8,13 @@ async function main() {
 
     await (await contract.setContractAddress([
         "0x6C34AbF4632BC38e90f5016d784D3ED320Cfad14",
-        "0xa2418f09F5BB07a6eec0bba34d7cB6e9cAb9455A"])).wait()
+        "0x1CF7f55C216b28BC14Bf663d49D95d5F68446bed"])).wait()
+
+
+    // const Hyperdust_Render_Awards = await ethers.getContractAt("Hyperdust_Render_Awards", "0xDa68b15D1FD6bb492440BdC194f8389379C8e205")
+
+    // await (await Hyperdust_Render_Awards.setHyperdustBaseRewardRelease(contract.target)).wait()
+
 
 
     console.info("contractFactory address:", contract.target);

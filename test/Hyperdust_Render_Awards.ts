@@ -13,7 +13,7 @@ describe("Hyperdust_Render_Awards", () => {
             const Hyperdust_Roles_Cfg = await ethers.deployContract("Hyperdust_Roles_Cfg");
             await Hyperdust_Roles_Cfg.waitForDeployment()
 
-            const Hyperdust_Token = await ethers.deployContract("Hyperdust_Token", [accounts[0].address, accounts[1].address, accounts[2].address]);
+            const Hyperdust_Token = await ethers.deployContract("Hyperdust_Token_Test", [accounts[0].address, accounts[1].address, accounts[2].address]);
             await Hyperdust_Token.waitForDeployment()
 
 
@@ -132,10 +132,18 @@ describe("Hyperdust_Render_Awards", () => {
 
                 for (const log of tx?.logs) {
 
+                    if (log.address === Hyperdust_BaseReward_Release.target) {
+                        const a = Hyperdust_BaseReward_Release.interface.decodeEventLog("eveSave", log.data, log.topics)
+                        console.info(a)
+                    }
+
+
                     if (log.address === Hyperdust_Render_Awards.target) {
                         const a = Hyperdust_Render_Awards.interface.decodeEventLog("eveRewards", log.data, log.topics)
                         console.info(a)
                     }
+
+                    
                 }
 
             }
