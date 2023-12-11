@@ -2,6 +2,8 @@
 
 import { ethers } from "hardhat";
 
+const dayjs = require('dayjs')
+
 describe("Hyperdust_BaseReward_Release", () => {
     describe("Hyperdust_BaseReward_Release", () => {
         it("Hyperdust_BaseReward_Release", async () => {
@@ -12,7 +14,7 @@ describe("Hyperdust_BaseReward_Release", () => {
             const Hyperdust_Roles_Cfg = await ethers.deployContract("Hyperdust_Roles_Cfg");
             await Hyperdust_Roles_Cfg.waitForDeployment()
 
-            const Hyperdust_Token = await ethers.deployContract("Hyperdust_Token", [accounts[0].address, accounts[1].address, accounts[2].address]);
+            const Hyperdust_Token = await ethers.deployContract("Hyperdust_Token_Test", [accounts[0].address, accounts[1].address, accounts[2].address]);
             await Hyperdust_Token.waitForDeployment()
 
 
@@ -35,23 +37,33 @@ describe("Hyperdust_BaseReward_Release", () => {
             await (await Hyperdust_Token.mint(ethers.parseEther('100000'))).wait()
 
 
-            for (let i = 0; i < 400; i++) {
-                await (await Hyperdust_BaseReward_Release.addBaseRewardReleaseRecord(ethers.parseEther('1'), accounts[0].address, 1)).wait()
+            Hyperdust_BaseReward_Release.on("eveSave", (amounts, releaseAmounts, releaseTimes, account, event) => {
+                console.log(amounts, releaseAmounts, releaseTimes, account);
+            });
+
+
+            for (let i = 0; i < 1; i++) {
+
+                await (await Hyperdust_Token.transfer(Hyperdust_BaseReward_Release.target, ethers.parseEther('100'))).wait()
+
+                await (await Hyperdust_BaseReward_Release.addBaseRewardReleaseRecord(ethers.parseEther('100'), accounts[0].address)).wait()
 
             }
 
-            const tx = await (await Hyperdust_BaseReward_Release.release()).wait()
-
-            for (const log of tx.events) {
+            ///    await (await Hyperdust_BaseReward_Release.release([1701734400])).wait()
 
 
-                if (log.address === Hyperdust_BaseReward_Release.target) {
-                    const a = Hyperdust_BaseReward_Release.interface.decodeEventLog("eveRelease", log.data, log.topics)
-                    console.info(a)
-                }
+
+            // for (const log of tx.events) {
 
 
-            }
+            //     if (log.address === Hyperdust_BaseReward_Release.target) {
+            //         const a = Hyperdust_BaseReward_Release.interface.decodeEventLog("eveSave", log.data, log.topics)
+            //         console.info(a)
+            //     }
+
+
+            // }
 
 
 

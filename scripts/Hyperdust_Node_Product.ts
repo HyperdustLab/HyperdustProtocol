@@ -7,7 +7,7 @@ async function main() {
     await contract.waitForDeployment()
 
 
-    await (await contract.setHyperdustRolesCfgAddress("0x6C34AbF4632BC38e90f5016d784D3ED320Cfad14")).wait()
+    await (await contract.setHyperdustRolesCfgAddress("0x3cc42e32ea76016CED99b98DEc0FD8D541Dc3B76")).wait()
 
     console.info("contractFactory address:", contract.target);
 }

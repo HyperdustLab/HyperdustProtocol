@@ -11,9 +11,9 @@ async function main() {
         "0x1CF7f55C216b28BC14Bf663d49D95d5F68446bed"])).wait()
 
 
-    // const Hyperdust_Render_Awards = await ethers.getContractAt("Hyperdust_Render_Awards", "0xDa68b15D1FD6bb492440BdC194f8389379C8e205")
+    const Hyperdust_Render_Awards = await ethers.getContractAt("Hyperdust_Render_Awards", "0x4297BC40938a2ceeF67A19848A8eB0b7E2e63c8f")
 
-    // await (await Hyperdust_Render_Awards.setHyperdustBaseRewardRelease(contract.target)).wait()
+    await (await Hyperdust_Render_Awards.setHyperdustBaseRewardRelease(contract.target)).wait()
 
 
 

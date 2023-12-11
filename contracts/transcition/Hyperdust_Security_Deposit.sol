@@ -21,6 +21,8 @@ contract Hyperdust_Security_Deposit is Ownable {
 
     mapping(uint256 => uint256) public _securityDepositMap;
 
+    event eveSave(uint256 nodeId, uint256 totalSecurityAmount);
+
     function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
         _rolesCfgAddress = rolesCfgAddress;
     }
@@ -43,6 +45,8 @@ contract Hyperdust_Security_Deposit is Ownable {
         );
 
         _securityDepositMap[nodeId] += amount;
+
+        emit eveSave(nodeId, _securityDepositMap[nodeId]);
     }
 
     function transfer(address to, uint256 amount, uint256 nodeId) public {
@@ -55,8 +59,11 @@ contract Hyperdust_Security_Deposit is Ownable {
             _securityDepositMap[nodeId] >= amount,
             "not enough security deposit"
         );
+        _securityDepositMap[nodeId] -= amount;
 
         IERC20(_erc20Address).transfer(to, amount);
+
+        emit eveSave(nodeId, _securityDepositMap[nodeId]);
     }
 
     function getSecurityDeposit(uint256 nodeId) public view returns (uint256) {

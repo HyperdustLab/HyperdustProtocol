@@ -52,9 +52,7 @@ abstract contract IHyperdustToken {
 abstract contract IHyperdustBaseRewardRelease {
     function addBaseRewardReleaseRecord(
         uint256 amount,
-        address account,
-        uint256 nodeId,
-        uint256 nonce
+        address account
     ) public {}
 }
 
@@ -209,12 +207,7 @@ contract Hyperdust_Render_Awards is Ownable {
         (address incomeAddress, , ) = hyperdustNodeMgrAddress.getNode(nodeId);
 
         IHyperdustBaseRewardRelease(_hyperdustBaseRewardRelease)
-            .addBaseRewardReleaseRecord(
-                baseRewardReleaseAward,
-                incomeAddress,
-                nodeId,
-                nonce
-            );
+            .addBaseRewardReleaseRecord(baseRewardReleaseAward, incomeAddress);
 
         emit eveRewards(nodeId, actualEpochAward, index, nonce);
     }
