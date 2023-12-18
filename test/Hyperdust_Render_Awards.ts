@@ -143,7 +143,7 @@ describe("Hyperdust_Render_Awards", () => {
                         console.info(a)
                     }
 
-                    
+
                 }
 
             }

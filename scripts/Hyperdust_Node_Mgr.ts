@@ -7,7 +7,7 @@ async function main() {
     await contract.waitForDeployment()
 
 
-    await (await contract.setContractAddress(["0x6C34AbF4632BC38e90f5016d784D3ED320Cfad14", "0x46eF9f6b1036cBFbb174b4d1BEcc02Cd9C45058a", "0x5564555EB0a08255Cb2C3BA420860076435E2281"])).wait();
+    await (await contract.setContractAddress(["0x3cc42e32ea76016CED99b98DEc0FD8D541Dc3B76", "0x63E3dDdbA7d0778a8c1d493F6d6b8Bc0E95f2a96", "0x74BD810D6C5978cdd35873ee64244F563b78Bc6e"])).wait();
 
 
     console.info("contractFactory address:", contract.target);

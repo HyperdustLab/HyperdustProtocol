@@ -12,7 +12,7 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         address account1,
         address account2,
         address account3
-    ) ERC20("Hyperdust Token Test", "HYPT test") {
+    ) ERC20("Hyperdust Private Token Test", "HYPT test") {
         _multiSignatureWallet.push(account1);
         _multiSignatureWallet.push(account2);
         _multiSignatureWallet.push(account3);
