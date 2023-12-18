@@ -7,8 +7,11 @@ abstract contract ITest1 {
 contract Test2 {
     address public adAddress;
 
+    event test(uint256 test);
+
     function setTest1(address _address) public {
         adAddress = _address;
+        emit test(1);
     }
 
     function getTest1() public view returns (uint256) {

@@ -3,10 +3,11 @@
 import { ethers, run } from "hardhat";
 
 async function main() {
-    const contract = await ethers.deployContract("Hyperdust_Wallet_Account");
+    const contract = await ethers.deployContract("Hyperdust_AirDrop");
     await contract.waitForDeployment()
 
-    await (await contract.setContractAddress(["0x3cc42e32ea76016CED99b98DEc0FD8D541Dc3B76", "0x01778569225bA43FFDABF872607e1df2Bc83f102"])).wait();
+    await (await contract.setHyperdustTokenAddress('0x01778569225bA43FFDABF872607e1df2Bc83f102')).wait()
+    await (await contract.setFromAddress('0x94A19469DB85E4b13E8Af2305cFE15ddd3D2f38B')).wait()
 
 
     console.info("contractFactory address:", contract.target);

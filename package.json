@@ -13,6 +13,7 @@
     "@openzeppelin/contracts": "^4.9.3",
     "@quant-finance/solidity-datetime": "^2.2.0",
     "dayjs": "^1.11.10",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "node-xlsx": "^0.23.0"
   }
 }
