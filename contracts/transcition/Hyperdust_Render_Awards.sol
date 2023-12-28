@@ -75,8 +75,6 @@ contract Hyperdust_Render_Awards is Ownable {
 
     address public _hyperdustBaseRewardRelease;
 
-    address public _hyperdustRenderTranscitionAddress;
-
     address public _HyperdustTokenAddress;
 
     uint256 private _rand = 1;
@@ -110,12 +108,6 @@ contract Hyperdust_Render_Awards is Ownable {
         _hyperdustBaseRewardRelease = hyperdustBaseRewardRelease;
     }
 
-    function setHyperdustRenderTranscitionAddress(
-        address hyperdustRenderTranscitionAddress
-    ) public onlyOwner {
-        _hyperdustRenderTranscitionAddress = hyperdustRenderTranscitionAddress;
-    }
-
     function setHyperdustTokenAddress(
         address HyperdustTokenAddress
     ) public onlyOwner {
@@ -140,8 +132,7 @@ contract Hyperdust_Render_Awards is Ownable {
         _hyperdustNodeMgrAddress = contractaddressArray[1];
         _hyperdustSecurityDeposit = contractaddressArray[2];
         _hyperdustBaseRewardRelease = contractaddressArray[3];
-        _hyperdustRenderTranscitionAddress = contractaddressArray[4];
-        _HyperdustTokenAddress = contractaddressArray[5];
+        _HyperdustTokenAddress = contractaddressArray[4];
     }
 
     /**
@@ -170,9 +161,6 @@ contract Hyperdust_Render_Awards is Ownable {
         );
 
         uint256 epochAward = hyperdustToken._epochAward();
-
-        IHyperdustRenderTranscitionAddress(_hyperdustRenderTranscitionAddress)
-            .updateEpoch();
 
         if (_totalNum < 100) {
             _totalNum = 100;

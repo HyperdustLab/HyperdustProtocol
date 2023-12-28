@@ -7,16 +7,15 @@ async function main() {
     await contract.waitForDeployment()
 
     await (await contract.setContractAddress([
-        "0x3cc42e32ea76016CED99b98DEc0FD8D541Dc3B76",
-        "0x24d30240883ac86c6d0b2475839aeDA38085B498",
-        "0x6567a36fE357F1c71C3F8e469Bce411e7Ad599Ae",
-        "0x2D054A5CC017c72D91F9633908f29907B9814968",
-        "0x90159260ca306Fc6bCc46048BeDEe5121CdD641f",
+        "0xd5A7E4eFb8Ae98aadE6d0078B3FeCf06c44c55Ae",
+        "0x0e9E04A0A98fD60F4179ca8988bF1cA94856e7A0",
+        "0xcF9446240c525a249a4c00B74Daf5d05fC28a952",
+        "0x505550deAab7E31fFd1Fd8364Ba2baEFc4F3b656",
         "0x1a41f86248E33e5327B26092b898bDfe04C6d8b4"
     ])).wait()
 
 
-    const Hyperdust_Roles_Cfg = await ethers.getContractAt("Hyperdust_Roles_Cfg", "0x3cc42e32ea76016CED99b98DEc0FD8D541Dc3B76")
+    const Hyperdust_Roles_Cfg = await ethers.getContractAt("Hyperdust_Roles_Cfg", "0xd5A7E4eFb8Ae98aadE6d0078B3FeCf06c44c55Ae")
 
     await (await Hyperdust_Roles_Cfg.addAdmin(contract.target)).wait()
 

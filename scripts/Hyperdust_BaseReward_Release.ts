@@ -7,8 +7,8 @@ async function main() {
     await contract.waitForDeployment()
 
     await (await contract.setContractAddress([
-        "0x3cc42e32ea76016CED99b98DEc0FD8D541Dc3B76",
-        "0x01778569225bA43FFDABF872607e1df2Bc83f102"])).wait()
+        "0xd5A7E4eFb8Ae98aadE6d0078B3FeCf06c44c55Ae",
+        "0x1a41f86248E33e5327B26092b898bDfe04C6d8b4"])).wait()
 
 
     const Hyperdust_Render_Awards = await ethers.getContractAt("Hyperdust_Render_Awards", "0xb7EEA03dcc393f69fD277C0fFB0EE233f2488F47")

@@ -8,23 +8,23 @@ async function main() {
 
 
     await (await contract.setContractAddress([
-        "0x3cc42e32ea76016CED99b98DEc0FD8D541Dc3B76",
+        "0xd5A7E4eFb8Ae98aadE6d0078B3FeCf06c44c55Ae",
         "0x1a41f86248E33e5327B26092b898bDfe04C6d8b4",
-        "0x24d30240883ac86c6d0b2475839aeDA38085B498",
-        "0xAb0a5962659e59325ea6A3b0246444FC5e6024e0",
-        "0x2EBDe3e744d0a870a17A2d51fd9079f14BF2137B"
+        "0x0e9E04A0A98fD60F4179ca8988bF1cA94856e7A0",
+        "0x6108a5aC82d15a8034902DcFC20431BD169d2597",
+        "0xcA19Ba81bdF2d9d1a4EBEba09598265195821982"
     ])).wait();
 
 
 
-    const Hyperdust_Roles_Cfg = await ethers.getContractAt('Hyperdust_Roles_Cfg', '0x6C34AbF4632BC38e90f5016d784D3ED320Cfad14')
+    const Hyperdust_Roles_Cfg = await ethers.getContractAt('Hyperdust_Roles_Cfg', '0xd5A7E4eFb8Ae98aadE6d0078B3FeCf06c44c55Ae')
     await (await Hyperdust_Roles_Cfg.addAdmin(contract.target)).wait()
 
 
 
-    const Hyperdust_Render_Awards = await ethers.getContractAt('Hyperdust_Render_Awards', '0x0ba1f0329187C6AD8a73285100a9407F753B5A9f')
+    // const Hyperdust_Render_Awards = await ethers.getContractAt('Hyperdust_Render_Awards', '0x0ba1f0329187C6AD8a73285100a9407F753B5A9f')
 
-    await (await Hyperdust_Render_Awards.setHyperdustRenderTranscitionAddress(contract.target)).wait()
+    // await (await Hyperdust_Render_Awards.setHyperdustRenderTranscitionAddress(contract.target)).wait()
 
     console.info("contractFactory address:", contract.target);
 }
