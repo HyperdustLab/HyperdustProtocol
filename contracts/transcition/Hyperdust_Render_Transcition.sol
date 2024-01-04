@@ -56,54 +56,35 @@ abstract contract IHyperdustTransactionCfg {
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 import {StrUtil} from "../utils/StrUtil.sol";
 
-contract Hyperdust_Render_Transcition is Ownable {
+import "./../Hyperdust_Storage.sol";
+
+contract Hyperdust_Render_Transcition is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 
-    using Counters for Counters.Counter;
-    Counters.Counter private _id;
     address public _rolesCfgAddress;
     address public _erc20Address;
     address public _nodeMgrAddress;
     address public _transactionCfgAddress;
     address public _walletAccountAddress;
-
-    struct RenderTranscition {
-        uint256 id;
-        address serviceAccount;
-        address account;
-        uint32 epoch;
-        uint32 useEpoch;
-        uint256 amount;
-        uint256 createTime;
-        uint256 endTime;
-        uint256 nextEndTime;
-        uint256 nodeId;
-        bytes1 status;
-        uint256[] epochAmounts;
-        uint256[] epochTimes;
-    }
+    address public _HyperdustStorageAddress;
 
     event eveRenderTranscitionSave(uint256 id);
 
     event eveUpdateRenderEpoch(uint256[] success, uint256[] fail);
 
-    RenderTranscition[] public _renderTranscitions;
-
-    uint256[] public _runingRenderTranscitions;
-
-    mapping(address => uint256) public _runingRenderAccounts;
-
-    mapping(uint256 => uint256) public _runingRenderNodes;
-
     function setErc20Address(address erc20Address) public onlyOwner {
         _erc20Address = erc20Address;
+    }
+
+    function initialize() public initializer {
+        __Ownable_init(msg.sender);
     }
 
     function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
@@ -124,6 +105,12 @@ contract Hyperdust_Render_Transcition is Ownable {
         _walletAccountAddress = walletAccountAddress;
     }
 
+    function setHyperdustStorageAddress(
+        address hyperdustStorageAddress
+    ) public onlyOwner {
+        _HyperdustStorageAddress = hyperdustStorageAddress;
+    }
+
     function setContractAddress(
         address[] memory contractaddressArray
     ) public onlyOwner {
@@ -132,12 +119,17 @@ contract Hyperdust_Render_Transcition is Ownable {
         _nodeMgrAddress = contractaddressArray[2];
         _transactionCfgAddress = contractaddressArray[3];
         _walletAccountAddress = contractaddressArray[4];
+        _HyperdustStorageAddress = contractaddressArray[5];
     }
 
     function createRenderTranscition(
         uint256 nodeId,
-        uint32 epoch
+        uint256 epoch
     ) public returns (uint256) {
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
+
         checkRenderTranscition(msg.sender);
         checkRenderNode(nodeId);
 
@@ -159,8 +151,6 @@ contract Hyperdust_Render_Transcition is Ownable {
 
         IHyperdustWalletAccount(_walletAccountAddress).addAmount(amount);
 
-        _id.increment();
-
         uint256 createTime = block.timestamp;
 
         bytes1 status = 0x11;
@@ -169,71 +159,124 @@ contract Hyperdust_Render_Transcition is Ownable {
             status = 0x00;
         }
 
-        RenderTranscition memory renderTranscition = RenderTranscition(
-            _id.current(),
-            node.incomeAddress,
-            msg.sender,
-            epoch,
-            1,
-            commission,
-            createTime,
-            createTime + (epoch * 60 * 64) / 10,
-            createTime + (60 * 64) / 10,
-            nodeId,
-            status,
-            new uint256[](epoch),
-            new uint256[](epoch)
+        uint256 id = hyperdustStorage.getNextId();
+
+        hyperdustStorage.setAddress(
+            hyperdustStorage.genKey("serviceAccount", id),
+            node.incomeAddress
         );
 
-        renderTranscition.epochAmounts[0] = commission;
-        renderTranscition.epochTimes[0] = createTime;
+        hyperdustStorage.setAddress(
+            hyperdustStorage.genKey("account", id),
+            msg.sender
+        );
 
-        _renderTranscitions.push(renderTranscition);
+        hyperdustStorage.setUint(hyperdustStorage.genKey("epoch", id), epoch);
+        hyperdustStorage.setUint(hyperdustStorage.genKey("useEpoch", id), 1);
+        hyperdustStorage.setUint(
+            hyperdustStorage.genKey("commission", id),
+            commission
+        );
+
+        hyperdustStorage.setUint(
+            hyperdustStorage.genKey("createTime", id),
+            createTime
+        );
+
+        hyperdustStorage.setUint(
+            hyperdustStorage.genKey("endTime", id),
+            createTime + (epoch * 60 * 64) / 10
+        );
+
+        hyperdustStorage.setUint(
+            hyperdustStorage.genKey("nextEndTime", id),
+            createTime + (60 * 64) / 10
+        );
+
+        hyperdustStorage.setUint(hyperdustStorage.genKey("nodeId", id), nodeId);
+
+        hyperdustStorage.setBytes1(
+            hyperdustStorage.genKey("status", id),
+            status
+        );
+        uint256[] memory epochAmounts = new uint256[](epoch);
+        uint256[] memory epochTimes = new uint256[](epoch);
+
+        epochAmounts[0] = commission;
+        epochTimes[1] = createTime;
+
+        hyperdustStorage.setUintArray(
+            hyperdustStorage.genKey("epochAmounts", id),
+            epochAmounts
+        );
+
+        hyperdustStorage.setUintArray(
+            hyperdustStorage.genKey("epochTimes", id),
+            epochTimes
+        );
 
         if (epoch > 1) {
-            _runingRenderTranscitions.push(_id.current());
+            hyperdustStorage.setUintArray("runingRenderTranscitions", id);
         }
 
-        _runingRenderAccounts[msg.sender] = _id.current();
-        _runingRenderNodes[nodeId] = _id.current();
+        hyperdustStorage.setUint(msg.sender.toHexString(), id);
+        hyperdustStorage.setUint(nodeId.toString(), id);
 
-        emit eveRenderTranscitionSave(_id.current());
+        emit eveRenderTranscitionSave(id);
 
-        return _id.current();
+        return id;
     }
 
     function checkRenderTranscition(address account) private {
-        uint256 _runingRenderTranscitionId = _runingRenderAccounts[account];
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
+
+        uint256 _runingRenderTranscitionId = hyperdustStorage.getUint(
+            account.toHexString()
+        );
 
         if (_runingRenderTranscitionId == 0) {
             return;
         }
 
-        RenderTranscition memory renderTranscition = _renderTranscitions[
-            _runingRenderTranscitionId - 1
-        ];
+        bytes1 status = hyperdustStorage.getBytes1(
+            hyperdustStorage.genKey("status", _runingRenderTranscitionId)
+        );
+
+        uint256 nextEndTime = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("nextEndTime", _runingRenderTranscitionId)
+        );
 
         require(
-            renderTranscition.status == 0x11 &&
-                block.timestamp > renderTranscition.nextEndTime,
+            status == 0x11 && block.timestamp > nextEndTime,
             "You have an Render Transcition running"
         );
     }
 
     function checkRenderNode(uint256 nodeId) private {
-        uint256 _runingRenderTranscitionId = _runingRenderNodes[nodeId];
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
+
+        uint256 _runingRenderTranscitionId = hyperdustStorage.getUint(
+            nodeId.toString()
+        );
 
         if (_runingRenderTranscitionId == 0) {
             return;
         }
 
-        RenderTranscition memory renderTranscition = _renderTranscitions[
-            _runingRenderTranscitionId - 1
-        ];
+        bytes1 status = hyperdustStorage.getBytes1(
+            hyperdustStorage.genKey("status", _runingRenderTranscitionId)
+        );
+
+        uint256 nextEndTime = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("nextEndTime", _runingRenderTranscitionId)
+        );
 
         require(
-            renderTranscition.status == 0x11 &&
-                block.timestamp > renderTranscition.nextEndTime,
+            status == 0x11 && block.timestamp > nextEndTime,
             "The render node is already in use"
         );
     }
@@ -244,7 +287,16 @@ contract Hyperdust_Render_Transcition is Ownable {
             "not admin role"
         );
 
-        if (_runingRenderTranscitions.length == 0) {
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
+
+        uint256[] memory _runingRenderTranscitions = hyperdustStorage
+            .getUintArray("runingRenderTranscitions");
+
+        uint256 last = _runingRenderTranscitions.length;
+
+        if (last == 0) {
             return;
         }
 
@@ -259,77 +311,109 @@ contract Hyperdust_Render_Transcition is Ownable {
             _runingRenderTranscitions.length
         );
 
-        uint256[] memory fail = new uint256[](_runingRenderTranscitions.length);
+        uint256[] memory runingRenderTranscitions = hyperdustStorage
+            .getUintArray("runingRenderTranscitions");
+
+        uint256[] memory fail = new uint256[](runingRenderTranscitions.length);
 
         uint32 successIndex = 0;
         uint32 failIndex = 0;
 
-        uint256[] memory runingRenderTranscitions = _runingRenderTranscitions;
-
         for (uint i = 0; i < runingRenderTranscitions.length; i++) {
             uint256 id = runingRenderTranscitions[i];
 
-            RenderTranscition memory renderTranscition = _renderTranscitions[
-                id - 1
-            ];
-
-            uint256 amount = erc20.allowance(
-                renderTranscition.account,
-                address(this)
+            address account = hyperdustStorage.getAddress(
+                hyperdustStorage.genKey("account", id)
             );
 
-            uint256 balance = erc20.balanceOf(renderTranscition.account);
+            uint256 amount = erc20.allowance(account, address(this));
+
+            uint256 balance = erc20.balanceOf(account);
 
             if (amount >= commission && balance >= commission) {
-                erc20.transferFrom(
-                    renderTranscition.account,
-                    _walletAccountAddress,
-                    commission
-                );
-                _renderTranscitions[id - 1].useEpoch++;
+                erc20.transferFrom(account, _walletAccountAddress, commission);
 
-                if (
-                    _renderTranscitions[id - 1].useEpoch >=
-                    renderTranscition.epoch
-                ) {
-                    _renderTranscitions[id - 1].status = 0x11;
+                uint256 epoch = hyperdustStorage.getUint(
+                    hyperdustStorage.genKey("epoch", id)
+                );
+
+                uint256 useEpoch = hyperdustStorage.getUint(
+                    hyperdustStorage.genKey("useEpoch", id)
+                );
+
+                useEpoch++;
+
+                hyperdustStorage.setUint(
+                    hyperdustStorage.genKey("useEpoch", id),
+                    useEpoch
+                );
+
+                if (useEpoch >= epoch) {
+                    hyperdustStorage.setBytes1(
+                        hyperdustStorage.genKey("status", id),
+                        0x11
+                    );
                 }
 
-                _renderTranscitions[id - 1].nextEndTime =
-                    _renderTranscitions[id - 1].nextEndTime +
-                    (60 * 64) /
-                    10;
+                uint256 nextEndTime = hyperdustStorage.getUint(
+                    hyperdustStorage.genKey("nextEndTime", id)
+                );
 
-                uint32 useEpoch = _renderTranscitions[id - 1].useEpoch;
+                hyperdustStorage.setUint(
+                    hyperdustStorage.genKey("nextEndTime", id),
+                    nextEndTime + (60 * 64) / 10
+                );
 
-                _renderTranscitions[id - 1].epochAmounts[
-                    useEpoch - 1
-                ] = commission;
+                hyperdustStorage.setUint(
+                    hyperdustStorage.genKey("nextEndTime", id),
+                    nextEndTime + (60 * 64) / 10
+                );
 
-                _renderTranscitions[id - 1].epochTimes[useEpoch - 1] = block
-                    .timestamp;
+                hyperdustStorage.setUintArray(
+                    hyperdustStorage.genKey("epochTimes", id),
+                    useEpoch - 1,
+                    block.timestamp
+                );
 
-                _renderTranscitions[id - 1].amount =
-                    _renderTranscitions[id - 1].amount +
-                    commission;
+                uint256 _amount = hyperdustStorage.getUint(
+                    hyperdustStorage.genKey("amount", id)
+                );
+
+                hyperdustStorage.setUint(
+                    hyperdustStorage.genKey("amount", id),
+                    _amount + commission
+                );
+
                 totalAmount += commission;
 
                 success[successIndex] = id;
                 successIndex++;
 
-                if (
-                    _renderTranscitions[id - 1].useEpoch >=
-                    renderTranscition.epoch
-                ) {
-                    cleanRuningRenderTranscitions(id);
+                if (useEpoch >= epoch) {
+                    cleanRuningRenderTranscitions(
+                        id,
+                        _runingRenderTranscitions,
+                        last
+                    );
+
+                    last--;
                 }
             } else {
-                cleanRuningRenderTranscitions(id);
+                cleanRuningRenderTranscitions(
+                    id,
+                    _runingRenderTranscitions,
+                    last
+                );
+
+                last--;
 
                 fail[failIndex] = id;
                 failIndex++;
 
-                _renderTranscitions[id - 1].status = 0x11;
+                hyperdustStorage.setBytes1(
+                    hyperdustStorage.genKey("status", id),
+                    0x11
+                );
             }
         }
 
@@ -354,18 +438,24 @@ contract Hyperdust_Render_Transcition is Ownable {
         emit eveUpdateRenderEpoch(_success, _fail);
     }
 
-    function cleanRuningRenderTranscitions(uint256 id) private {
-        _renderTranscitions[id - 1].status = 0x11;
+    function cleanRuningRenderTranscitions(
+        uint256 id,
+        uint256[] memory runingRenderTranscitions,
+        uint256 last
+    ) private {
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
 
-        for (uint i = 0; i < _runingRenderTranscitions.length; i++) {
-            if (_runingRenderTranscitions[i] == id) {
-                if (i != _runingRenderTranscitions.length - 1) {
-                    _runingRenderTranscitions[i] = _runingRenderTranscitions[
-                        _runingRenderTranscitions.length - 1
-                    ];
-                }
+        hyperdustStorage.setBytes1(hyperdustStorage.genKey("status", id), 0x11);
 
-                _runingRenderTranscitions.pop();
+        for (uint i = 0; i < last; i++) {
+            if (runingRenderTranscitions[i] == id) {
+                runingRenderTranscitions[i] = runingRenderTranscitions[
+                    last - 1
+                ];
+
+                hyperdustStorage.removeUintArray("runingRenderTranscitions", i);
             }
         }
     }
@@ -378,35 +468,59 @@ contract Hyperdust_Render_Transcition is Ownable {
         returns (
             address,
             address,
-            uint32,
-            uint32,
             uint256[] memory,
             bytes1,
             uint256[] memory,
             uint256[] memory
         )
     {
-        RenderTranscition memory renderTranscition = _renderTranscitions[
-            id - 1
-        ];
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
 
-        uint256[] memory uint256Array = new uint256[](6);
-        uint256Array[0] = renderTranscition.id;
-        uint256Array[1] = renderTranscition.amount;
-        uint256Array[2] = renderTranscition.createTime;
-        uint256Array[3] = renderTranscition.endTime;
-        uint256Array[4] = renderTranscition.nextEndTime;
-        uint256Array[5] = renderTranscition.nodeId;
+        uint256 createTime = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("createTime", id)
+        );
+
+        require(createTime > 0, "not found");
+
+        uint256[] memory uint256Array = new uint256[](8);
+        uint256Array[0] = id;
+        uint256Array[1] = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("amount", id)
+        );
+        uint256Array[2] = createTime;
+        uint256Array[3] = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("endTime", id)
+        );
+        uint256Array[4] = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("nextEndTime", id)
+        );
+        uint256Array[5] = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("nodeId", id)
+        );
+
+        uint256Array[6] = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("epoch", id)
+        );
+
+        uint256Array[7] = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("useEpoch", id)
+        );
 
         return (
-            renderTranscition.serviceAccount,
-            renderTranscition.account,
-            renderTranscition.epoch,
-            renderTranscition.useEpoch,
+            hyperdustStorage.getAddress(
+                hyperdustStorage.genKey("serviceAccount", id)
+            ),
+            hyperdustStorage.getAddress(hyperdustStorage.genKey("account", id)),
             uint256Array,
-            renderTranscition.status,
-            renderTranscition.epochAmounts,
-            renderTranscition.epochTimes
+            hyperdustStorage.getBytes1(hyperdustStorage.genKey("status", id)),
+            hyperdustStorage.getUintArray(
+                hyperdustStorage.genKey("epochAmounts", id)
+            ),
+            hyperdustStorage.getUintArray(
+                hyperdustStorage.genKey("epochTimes", id)
+            )
         );
     }
 
@@ -415,18 +529,30 @@ contract Hyperdust_Render_Transcition is Ownable {
         view
         returns (uint256[] memory)
     {
-        return _runingRenderTranscitions;
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
+
+        return hyperdustStorage.getUintArray("runingRenderTranscitions");
     }
 
     function getRuningRenderAccounts(
         address account
     ) public view returns (uint256) {
-        return _runingRenderAccounts[account];
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
+
+        return hyperdustStorage.getUint(account.toHexString());
     }
 
     function getRuningRenderNodes(
         uint256 nodeId
     ) public view returns (uint256) {
-        return _runingRenderNodes[nodeId];
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
+
+        return hyperdustStorage.getUint(nodeId.toString());
     }
 }

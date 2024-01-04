@@ -1,13 +1,18 @@
 /** @format */
 
-import { ethers, run } from "hardhat";
+import { ethers, run, upgrades } from "hardhat";
+
+import '@openzeppelin/hardhat-upgrades';
 
 async function main() {
-    const contract = await ethers.deployContract("Hyperdust_Node_CheckIn");
-    await contract.waitForDeployment()
+    const contract = await ethers.getContractFactory("Hyperdust_Node_CheckIn");
 
+    const instance = await upgrades.deployProxy(contract);
 
-    console.info("contractFactory address:", contract.target);
+    await instance.waitForDeployment();
+
+    console.info("contractFactory address:", instance.target);
+
 }
 
 // We recommend this pattern to be able to use async/await everywhere q

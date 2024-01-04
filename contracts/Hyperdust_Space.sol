@@ -2,48 +2,40 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 import "./Hyperdust_Roles_Cfg.sol";
 
 import "./utils/StrUtil.sol";
 
-contract Hyperdust_Space is Ownable {
+import "./Hyperdust_Storage.sol";
+
+contract Hyperdust_Space is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 
     address public _HyperdustRolesCfgAddress;
-
-    using Counters for Counters.Counter;
-    Counters.Counter private _id;
-
-    struct Space {
-        uint256 id;
-        string name;
-        string downloadLink;
-        string description;
-        string spaceId;
-        string deploymentPath;
-        string status;
-        string currentVersion;
-        string lastVersion;
-        address accout;
-        string coverImage;
-        string image;
-        string parameters;
-    }
+    address public _HyperdustStorageAddress;
 
     event eveSpaceSave(uint256 id);
     event eveDeleteSave(uint256 id);
 
-    Space[] public _spaces;
+    function initialize() public initializer {
+        __Ownable_init(msg.sender);
+    }
 
     function setHyperdustRolesCfgAddress(
         address HyperdustRolesCfgAddress
     ) public onlyOwner {
         _HyperdustRolesCfgAddress = HyperdustRolesCfgAddress;
+    }
+
+    function setHyperdustStorageAddress(
+        address hyperdustStorageAddress
+    ) public onlyOwner {
+        _HyperdustStorageAddress = hyperdustStorageAddress;
     }
 
     function addSpace(
@@ -55,26 +47,52 @@ contract Hyperdust_Space is Ownable {
         string memory image,
         string memory parameters
     ) public {
-        _id.increment();
-
-        _spaces.push(
-            Space(
-                _id.current(),
-                name,
-                downloadLink,
-                description,
-                "",
-                "",
-                "0",
-                currentVersion,
-                "",
-                msg.sender,
-                coverImage,
-                image,
-                parameters
-            )
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
         );
-        emit eveSpaceSave(_id.current());
+
+        uint256 id = hyperdustStorage.getNextId();
+
+        hyperdustStorage.setString(hyperdustStorage.genKey("name", id), name);
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("downloadLink", id),
+            downloadLink
+        );
+
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("description", id),
+            description
+        );
+
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("currentVersion", id),
+            currentVersion
+        );
+
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("coverImage", id),
+            coverImage
+        );
+
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("coverImage", id),
+            coverImage
+        );
+
+        hyperdustStorage.setString(hyperdustStorage.genKey("image", id), image);
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("parameters", id),
+            parameters
+        );
+
+        hyperdustStorage.setString(hyperdustStorage.genKey("status", id), "0");
+
+        hyperdustStorage.setAddress(
+            hyperdustStorage.genKey("accout", id),
+            msg.sender
+        );
+
+        emit eveSpaceSave(id);
     }
 
     function updateSpace(
@@ -85,23 +103,33 @@ contract Hyperdust_Space is Ownable {
         string memory description,
         string memory parameters
     ) public {
-        for (uint i = 0; i < _spaces.length; i++) {
-            if (_spaces[i].id == id) {
-                require(_spaces[i].accout == msg.sender, "not owner");
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
 
-                _spaces[i].name = name;
-                _spaces[i].coverImage = coverImage;
-                _spaces[i].description = description;
-                _spaces[i].image = image;
-                _spaces[i].parameters = parameters;
+        string memory name = hyperdustStorage.getString(
+            hyperdustStorage.genKey("name", id)
+        );
 
-                emit eveSpaceSave(id);
+        require(bytes(name).length > 0, "not found");
 
-                return;
-            }
-        }
+        hyperdustStorage.setString(hyperdustStorage.genKey("name", id), name);
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("coverImage", id),
+            coverImage
+        );
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("description", id),
+            description
+        );
 
-        revert("space not found");
+        hyperdustStorage.setString(hyperdustStorage.genKey("image", id), image);
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("parameters", id),
+            parameters
+        );
+
+        emit eveSpaceSave(id);
     }
 
     function getSpace(
@@ -125,27 +153,45 @@ contract Hyperdust_Space is Ownable {
             string memory
         )
     {
-        for (uint256 i = 0; i < _spaces.length; i++) {
-            if (_spaces[i].id == id) {
-                return (
-                    _spaces[i].id,
-                    _spaces[i].name,
-                    _spaces[i].downloadLink,
-                    _spaces[i].description,
-                    _spaces[i].spaceId,
-                    _spaces[i].deploymentPath,
-                    _spaces[i].status,
-                    _spaces[i].currentVersion,
-                    _spaces[i].lastVersion,
-                    _spaces[i].accout,
-                    _spaces[i].coverImage,
-                    _spaces[i].image,
-                    _spaces[i].parameters
-                );
-            }
-        }
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
 
-        revert("space not found");
+        string memory name = hyperdustStorage.getString(
+            hyperdustStorage.genKey("name", id)
+        );
+
+        require(bytes(name).length > 0, "not found");
+
+        return (
+            id,
+            name,
+            hyperdustStorage.getString(
+                hyperdustStorage.genKey("downloadLink", id)
+            ),
+            hyperdustStorage.getString(
+                hyperdustStorage.genKey("description", id)
+            ),
+            hyperdustStorage.getString(hyperdustStorage.genKey("spaceId", id)),
+            hyperdustStorage.getString(
+                hyperdustStorage.genKey("deploymentPath", id)
+            ),
+            hyperdustStorage.getString(hyperdustStorage.genKey("status", id)),
+            hyperdustStorage.getString(
+                hyperdustStorage.genKey("currentVersion", id)
+            ),
+            hyperdustStorage.getString(
+                hyperdustStorage.genKey("lastVersion", id)
+            ),
+            hyperdustStorage.getAddress(hyperdustStorage.genKey("accout", id)),
+            hyperdustStorage.getString(
+                hyperdustStorage.genKey("coverImage", id)
+            ),
+            hyperdustStorage.getString(hyperdustStorage.genKey("image", id)),
+            hyperdustStorage.getString(
+                hyperdustStorage.genKey("parameters", id)
+            )
+        );
     }
 
     function release(
@@ -153,21 +199,35 @@ contract Hyperdust_Space is Ownable {
         string memory lastVersion,
         string memory downloadLink
     ) public {
-        for (uint i = 0; i < _spaces.length; i++) {
-            if (_spaces[i].id == id) {
-                require(_spaces[i].accout == msg.sender, "not owner");
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
 
-                _spaces[i].lastVersion = lastVersion;
-                _spaces[i].downloadLink = downloadLink;
-                _spaces[i].status = "1";
+        string memory name = hyperdustStorage.getString(
+            hyperdustStorage.genKey("name", id)
+        );
 
-                emit eveSpaceSave(id);
+        require(bytes(name).length > 0, "not found");
 
-                return;
-            }
-        }
+        address accout = hyperdustStorage.getAddress(
+            hyperdustStorage.genKey("accout", id)
+        );
 
-        revert("space not found");
+        require(accout == msg.sender, "not owner");
+
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("lastVersion", id),
+            lastVersion
+        );
+
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("downloadLink", id),
+            downloadLink
+        );
+
+        hyperdustStorage.setString(hyperdustStorage.genKey("status", id), "1");
+
+        emit eveSpaceSave(id);
     }
 
     function reviewAdd(
@@ -183,19 +243,32 @@ contract Hyperdust_Space is Ownable {
             "not admin role"
         );
 
-        for (uint i = 0; i < _spaces.length; i++) {
-            if (_spaces[i].id == id) {
-                _spaces[i].status = status;
-                _spaces[i].deploymentPath = deploymentPath;
-                _spaces[i].spaceId = spaceId;
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
 
-                emit eveSpaceSave(_spaces[i].id);
+        string memory name = hyperdustStorage.getString(
+            hyperdustStorage.genKey("name", id)
+        );
 
-                return;
-            }
-        }
+        require(bytes(name).length > 0, "not found");
 
-        revert("space not found");
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("status", id),
+            status
+        );
+
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("deploymentPath", id),
+            deploymentPath
+        );
+
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("spaceId", id),
+            spaceId
+        );
+
+        emit eveSpaceSave(id);
     }
 
     function reviewRelease(uint256 id, string memory status) public {
@@ -206,30 +279,32 @@ contract Hyperdust_Space is Ownable {
             "not admin role"
         );
 
-        for (uint i = 0; i < _spaces.length; i++) {
-            if (_spaces[i].id == id) {
-                _spaces[i].status = status;
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
 
-                emit eveSpaceSave(id);
+        string memory name = hyperdustStorage.getString(
+            hyperdustStorage.genKey("name", id)
+        );
 
-                return;
-            }
-        }
+        require(bytes(name).length > 0, "not found");
 
-        revert("space not found");
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("status", id),
+            status
+        );
     }
 
     function delSpace(uint256 id) public {
-        for (uint i = 0; i < _spaces.length; i++) {
-            if (_spaces[i].id == id) {
-                _spaces[i] = _spaces[_spaces.length - 1];
-                _spaces.pop();
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
 
-                emit eveDeleteSave(id);
-                return;
-            }
-        }
+        string memory name = hyperdustStorage.getString(
+            hyperdustStorage.genKey("name", id)
+        );
 
-        revert("space not found");
+        require(bytes(name).length > 0, "not found");
+        hyperdustStorage.setString(hyperdustStorage.genKey("name", id), "");
     }
 }

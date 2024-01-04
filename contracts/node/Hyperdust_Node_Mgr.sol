@@ -1,4 +1,4 @@
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.2;
 
 abstract contract IHyperdustNodeCheckIn {
     function check(address incomeAddress) public view returns (bool) {}
@@ -20,24 +20,23 @@ abstract contract INodeType {
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 import {StrUtil} from "../utils/StrUtil.sol";
 
-contract Hyperdust_Node_Mgr is Ownable {
+import "./../Hyperdust_Storage.sol";
+
+contract Hyperdust_Node_Mgr is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
-
-    using Counters for Counters.Counter;
-    Counters.Counter private _nodeIds;
-
-    Node[] public _nodes;
 
     address public _nodeCheckInAddress;
     address public _rolesCfgAddress;
     address public _nodeTypeAddress;
+
+    address public _HyperdustStorageAddress;
 
     uint32 public _totalNum;
     uint32 public _activeNum;
@@ -51,6 +50,10 @@ contract Hyperdust_Node_Mgr is Ownable {
     event eveSave(uint256 id);
 
     event eveDelete(uint256 id);
+
+    function initialize() public initializer {
+        __Ownable_init(msg.sender);
+    }
 
     function setNodeCheckInAddress(
         address nodeCheckInAddress
@@ -66,12 +69,19 @@ contract Hyperdust_Node_Mgr is Ownable {
         _nodeTypeAddress = nodeTypeAddress;
     }
 
+    function setHyperdustStorageAddress(
+        address hyperdustStorageAddress
+    ) public onlyOwner {
+        _HyperdustStorageAddress = hyperdustStorageAddress;
+    }
+
     function setContractAddress(
         address[] memory contractaddressArray
     ) public onlyOwner {
         _rolesCfgAddress = contractaddressArray[0];
         _nodeCheckInAddress = contractaddressArray[1];
         _nodeTypeAddress = contractaddressArray[2];
+        _HyperdustStorageAddress = contractaddressArray[3];
     }
 
     function addNode(
@@ -79,13 +89,13 @@ contract Hyperdust_Node_Mgr is Ownable {
         string memory ip,
         uint256[] memory hardwareInfos
     ) public returns (uint256) {
-        INodeType nodeType = INodeType(_nodeTypeAddress);
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
 
-        for (uint256 i = 0; i < _nodes.length; i++) {
-            if (StrUtil.equals(_nodes[i].ip.toSlice(), ip.toSlice())) {
-                revert("ip already exists");
-            }
-        }
+        require(!hyperdustStorage.getBool(ip), "ip already exists");
+
+        INodeType nodeType = INodeType(_nodeTypeAddress);
 
         IHyperdustNodeCheckIn minerNodeCheck = IHyperdustNodeCheckIn(
             _nodeCheckInAddress
@@ -106,13 +116,11 @@ contract Hyperdust_Node_Mgr is Ownable {
 
         require(nodeTypeId > 0, "not found node type");
 
-        _nodeIds.increment();
+        uint256 id = hyperdustStorage.getNextId();
 
-        uint256 nodeId = _nodeIds.current();
+        add(id, nodeTypeId, incomeAddress, ip, hardwareInfos);
 
-        add(nodeId, nodeTypeId, incomeAddress, ip, hardwareInfos);
-
-        return nodeId;
+        return id;
     }
 
     function add(
@@ -122,18 +130,52 @@ contract Hyperdust_Node_Mgr is Ownable {
         string memory ip,
         uint256[] memory hardwareInfos
     ) private {
-        uint256[] memory uint256Array = new uint256[](8);
-        uint256Array[0] = id;
-        uint256Array[1] = nodeTypeId;
-        uint256Array[2] = hardwareInfos[0];
-        uint256Array[3] = hardwareInfos[1];
-        uint256Array[4] = hardwareInfos[2];
-        uint256Array[5] = hardwareInfos[3];
-        uint256Array[6] = hardwareInfos[4];
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
 
-        Node memory node = Node(incomeAddress, ip, uint256Array);
+        uint256 count = hyperdustStorage.getUint("count");
 
-        _nodes.push(node);
+        hyperdustStorage.setBool(ip, true);
+
+        hyperdustStorage.setUint("count", count + 1);
+
+        hyperdustStorage.setUint(
+            hyperdustStorage.genKey("nodeTypeId", id),
+            nodeTypeId
+        );
+
+        hyperdustStorage.setUint(
+            hyperdustStorage.genKey("cpuNum", id),
+            hardwareInfos[0]
+        );
+
+        hyperdustStorage.setUint(
+            hyperdustStorage.genKey("memoryNum", id),
+            hardwareInfos[1]
+        );
+
+        hyperdustStorage.setUint(
+            hyperdustStorage.genKey("diskNum", id),
+            hardwareInfos[2]
+        );
+
+        hyperdustStorage.setUint(
+            hyperdustStorage.genKey("cudaNum", id),
+            hardwareInfos[3]
+        );
+
+        hyperdustStorage.setUint(
+            hyperdustStorage.genKey("videoMemory", id),
+            hardwareInfos[4]
+        );
+
+        hyperdustStorage.setAddress(
+            hyperdustStorage.genKey("incomeAddress", id),
+            incomeAddress
+        );
+
+        hyperdustStorage.setString(hyperdustStorage.genKey("ip", id), ip);
 
         emit eveSave(id);
     }
@@ -141,24 +183,59 @@ contract Hyperdust_Node_Mgr is Ownable {
     function getNode(
         uint256 id
     ) public view returns (address, string memory, uint256[] memory) {
-        for (uint i = 0; i < _nodes.length; i++) {
-            if (_nodes[i].uint256Array[0] == id) {
-                Node memory node = _nodes[i];
-                return (node.incomeAddress, node.ip, _nodes[i].uint256Array);
-            }
-        }
-        revert("node not found");
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
+
+        string memory ip = hyperdustStorage.getString(
+            hyperdustStorage.genKey("ip", id)
+        );
+
+        require(bytes(ip).length > 0, "not found");
+
+        address incomeAddress = hyperdustStorage.getAddress(
+            hyperdustStorage.genKey("incomeAddress", id)
+        );
+
+        uint256[] memory uint256Array = new uint256[](7);
+
+        uint256Array[0] = id;
+        uint256Array[1] = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("nodeTypeId", id)
+        );
+        uint256Array[2] = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("cpuNum", id)
+        );
+        uint256Array[3] = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("memoryNum", id)
+        );
+        uint256Array[4] = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("diskNum", id)
+        );
+        uint256Array[5] = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("cudaNum", id)
+        );
+        uint256Array[6] = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("videoMemory", id)
+        );
+
+        return (incomeAddress, ip, uint256Array);
     }
 
     function getNodeObj(uint256 id) public view returns (Node memory) {
-        for (uint i = 0; i < _nodes.length; i++) {
-            if (_nodes[i].uint256Array[0] == id) {
-                Node memory node = _nodes[i];
-                return node;
-            }
-        }
+        (
+            address incomeAddress,
+            string memory ip,
+            uint256[] memory uint256Array
+        ) = getNode(id);
 
-        revert("node not found");
+        Node memory node = Node({
+            incomeAddress: incomeAddress,
+            ip: ip,
+            uint256Array: uint256Array
+        });
+
+        return node;
     }
 
     function deleteNode(uint256 id) public {
@@ -167,40 +244,49 @@ contract Hyperdust_Node_Mgr is Ownable {
             "not admin role"
         );
 
-        for (uint256 i = 0; i < _nodes.length; i++) {
-            if (_nodes[i].uint256Array[0] == id) {
-                _nodes[i] = _nodes[_nodes.length - 1];
-                _nodes.pop();
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
 
-                emit eveDelete(id);
+        string memory ip = hyperdustStorage.getString(
+            hyperdustStorage.genKey("ip", id)
+        );
 
-                return;
-            }
-        }
-        revert("node not found");
-    }
+        require(bytes(ip).length > 0, "not found");
 
-    function getIdByIndex(uint256 index) public view returns (uint256) {
-        if (index + 1 > _nodes.length) {
-            return 0;
-        }
-        return _nodes[index].uint256Array[0];
+        hyperdustStorage.setString(hyperdustStorage.genKey("ip", id), "");
+
+        uint256 count = hyperdustStorage.getUint("count");
+
+        hyperdustStorage.setUint("count", count - 1);
     }
 
     function getStatisticalIndex()
         public
         view
-        returns (uint256, uint32, uint32)
+        returns (uint256, uint256, uint256)
     {
-        return (_nodes.length, _totalNum, _activeNum);
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
+        uint256 count = hyperdustStorage.getUint("count");
+        uint256 totalNum = hyperdustStorage.getUint("totalNum");
+        uint256 activeNum = hyperdustStorage.getUint("activeNum");
+
+        return (count, totalNum, activeNum);
     }
 
-    function setStatisticalIndex(uint32 totalNum, uint32 activeNum) public {
+    function setStatisticalIndex(uint256 totalNum, uint256 activeNum) public {
         require(
             IHyperdustRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
             "not admin role"
         );
-        _totalNum = totalNum;
-        _activeNum = activeNum;
+
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
+
+        hyperdustStorage.setUint("totalNum", totalNum);
+        hyperdustStorage.setUint("activeNum", activeNum);
     }
 }

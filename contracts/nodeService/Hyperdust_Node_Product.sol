@@ -2,19 +2,23 @@
 pragma solidity ^0.8.1;
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-
-import "@openzeppelin/contracts/utils/Counters.sol";
-
 import "../Hyperdust_Roles_Cfg.sol";
 
 import "../utils/StrUtil.sol";
 
-contract Hyperdust_Node_Product is Ownable {
+import "./../Hyperdust_Storage.sol";
+
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+
+contract Hyperdust_Node_Product is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 
     address public _HyperdustRolesCfgAddress;
+
+    address public _HyperdustStorageAddress;
 
     function setHyperdustRolesCfgAddress(
         address HyperdustRolesCfgAddress
@@ -22,27 +26,23 @@ contract Hyperdust_Node_Product is Ownable {
         _HyperdustRolesCfgAddress = HyperdustRolesCfgAddress;
     }
 
-    using Counters for Counters.Counter;
-    Counters.Counter private _id;
-
-    struct HNodeProduct {
-        uint256 id;
-        string name;
-        uint32 day;
-        uint256 price;
-        string coverImage;
-        string remark;
-    }
-
     event eveHNodeProductSave(uint256 id);
 
     event eveDeleteProductSave(uint256 id);
 
-    HNodeProduct[] public _nodeProducts;
+    function initialize() public initializer {
+        __Ownable_init(msg.sender);
+    }
+
+    function setHyperdustStorageAddress(
+        address hyperdustStorageAddress
+    ) public onlyOwner {
+        _HyperdustStorageAddress = hyperdustStorageAddress;
+    }
 
     function add(
         string memory name,
-        uint32 day,
+        uint256 day,
         uint256 price,
         string memory coverImage,
         string memory remark
@@ -54,13 +54,26 @@ contract Hyperdust_Node_Product is Ownable {
             "not admin role"
         );
 
-        _id.increment();
-
-        _nodeProducts.push(
-            HNodeProduct(_id.current(), name, day, price, coverImage, remark)
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
         );
 
-        emit eveHNodeProductSave(_id.current());
+        uint256 id = hyperdustStorage.getNextId();
+
+        hyperdustStorage.setString(hyperdustStorage.genKey("name", id), name);
+        hyperdustStorage.setUint(hyperdustStorage.genKey("day", id), day);
+        hyperdustStorage.setUint(hyperdustStorage.genKey("price", id), price);
+
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("coverImage", id),
+            coverImage
+        );
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("remark", id),
+            remark
+        );
+
+        emit eveHNodeProductSave(id);
     }
 
     function get(
@@ -71,30 +84,37 @@ contract Hyperdust_Node_Product is Ownable {
         returns (
             uint256,
             string memory,
-            uint32,
+            uint256,
             uint256,
             string memory,
             string memory
         )
     {
-        for (uint256 i = 0; i < _nodeProducts.length; i++) {
-            if (_nodeProducts[i].id == id) {
-                return (
-                    _nodeProducts[i].id,
-                    _nodeProducts[i].name,
-                    _nodeProducts[i].day,
-                    _nodeProducts[i].price,
-                    _nodeProducts[i].coverImage,
-                    _nodeProducts[i].remark
-                );
-            }
-        }
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
 
-        revert("id not exist");
-    }
+        string memory name = hyperdustStorage.getString(
+            hyperdustStorage.genKey("name", id)
+        );
 
-    function list() public view returns (HNodeProduct[] memory) {
-        return _nodeProducts;
+        require(bytes(name).length > 0, "not found");
+
+        uint256 day = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("day", id)
+        );
+        uint256 price = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("price", id)
+        );
+
+        string memory coverImage = hyperdustStorage.getString(
+            hyperdustStorage.genKey("coverImage", id)
+        );
+        string memory remark = hyperdustStorage.getString(
+            hyperdustStorage.genKey("remark", id)
+        );
+
+        return (id, name, day, price, coverImage, remark);
     }
 
     function edit(
@@ -112,21 +132,29 @@ contract Hyperdust_Node_Product is Ownable {
             "not admin role"
         );
 
-        for (uint256 i = 0; i < _nodeProducts.length; i++) {
-            if (_nodeProducts[i].id == id) {
-                _nodeProducts[i].name = name;
-                _nodeProducts[i].day = day;
-                _nodeProducts[i].price = price;
-                _nodeProducts[i].coverImage = coverImage;
-                _nodeProducts[i].remark = remark;
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
 
-                emit eveHNodeProductSave(id);
+        string memory name = hyperdustStorage.getString(
+            hyperdustStorage.genKey("name", id)
+        );
 
-                return;
-            }
-        }
+        require(bytes(name).length > 0, "not found");
 
-        revert("id not exist");
+        hyperdustStorage.setString(hyperdustStorage.genKey("name", id), name);
+        hyperdustStorage.setUint(hyperdustStorage.genKey("day", id), day);
+        hyperdustStorage.setUint(hyperdustStorage.genKey("price", id), price);
+
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("coverImage", id),
+            coverImage
+        );
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("remark", id),
+            remark
+        );
+        emit eveHNodeProductSave(id);
     }
 
     function del(uint256 id) public {
@@ -137,19 +165,16 @@ contract Hyperdust_Node_Product is Ownable {
             "not admin role"
         );
 
-        for (uint256 i = 0; i < _nodeProducts.length; i++) {
-            if (_nodeProducts[i].id == id) {
-                delete _nodeProducts[i];
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
 
-                _nodeProducts[i] = _nodeProducts[_nodeProducts.length - 1];
-                _nodeProducts.pop();
+        string memory name = hyperdustStorage.getString(
+            hyperdustStorage.genKey("name", id)
+        );
 
-                emit eveDeleteProductSave(id);
+        require(bytes(name).length > 0, "not found");
 
-                return;
-            }
-        }
-
-        revert("id not exist");
+        hyperdustStorage.setString(hyperdustStorage.genKey("name", id), "");
     }
 }

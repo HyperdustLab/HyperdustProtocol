@@ -12,10 +12,11 @@ pragma solidity ^0.8.7;
 import {DateTime} from "@quant-finance/solidity-datetime/contracts/DateTime.sol";
 import {StrUtil} from "../utils/StrUtil.sol";
 
-import "@openzeppelin/contracts/utils/Counters.sol";
-
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 abstract contract IHyperdustRolesCfg {
     function hasAdminRole(address account) public view returns (bool) {}
@@ -60,12 +61,9 @@ abstract contract IHyperdustRenderTranscitionAddress {
     function updateEpoch() public {}
 }
 
-contract Hyperdust_Render_Awards is Ownable {
+contract Hyperdust_Render_Awards is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
-
-    using Counters for Counters.Counter;
-    Counters.Counter private _id;
 
     address public _rolesCfgAddress;
 
@@ -77,7 +75,7 @@ contract Hyperdust_Render_Awards is Ownable {
 
     address public _HyperdustTokenAddress;
 
-    uint256 private _rand = 1;
+    uint256 private _rand;
 
     event eveRewards(
         uint256 nodeId,
@@ -85,6 +83,11 @@ contract Hyperdust_Render_Awards is Ownable {
         uint256 rand,
         uint256 nonce
     );
+
+    function initialize() public initializer {
+        _rand = 1;
+        __Ownable_init(msg.sender);
+    }
 
     function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
         _rolesCfgAddress = rolesCfgAddress;

@@ -4,6 +4,10 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+
 import "./utils/StrUtil.sol";
 
 abstract contract IHyperdustRolesCfg {
@@ -26,15 +30,19 @@ abstract contract IHyperdustNodeMgr {
     {}
 }
 
-contract Hyperdust_Transaction_Cfg is Ownable {
+contract Hyperdust_Transaction_Cfg is OwnableUpgradeable {
     address public _rolesCfgAddress;
 
     address public _nodeMgrAddress;
 
-    uint256 public _minGasFee = 1 ether / 10;
+    mapping(string => uint256) public _minGasFeeMap;
 
     using Strings for *;
     using StrUtil for *;
+
+    function initialize() public initializer {
+        __Ownable_init(msg.sender);
+    }
 
     function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
         _rolesCfgAddress = rolesCfgAddress;
@@ -80,7 +88,7 @@ contract Hyperdust_Transaction_Cfg is Ownable {
         uint256 renderPrice = _transactionProceduresMap[func];
 
         if (_activeNum == 0 || renderPrice == 0) {
-            return _minGasFee;
+            return _minGasFeeMap[func];
         }
 
         uint32 accuracy = 1000000;
@@ -94,12 +102,12 @@ contract Hyperdust_Transaction_Cfg is Ownable {
         return gasFee;
     }
 
-    function setMinGasFee(uint256 minGasFee) public {
+    function setMinGasFee(string memory key, uint256 minGasFee) public {
         require(
             IHyperdustRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
             "not admin role"
         );
 
-        _minGasFee = minGasFee;
+        _minGasFeeMap[key] = minGasFee;
     }
 }

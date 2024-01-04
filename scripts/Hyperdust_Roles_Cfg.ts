@@ -1,12 +1,15 @@
 /** @format */
 
-import { ethers, run } from "hardhat";
+import { ethers, run, upgrades } from "hardhat";
 
 async function main() {
-  const contract = await ethers.deployContract("Hyperdust_Roles_Cfg");
-  await contract.waitForDeployment()
 
-  console.info("contractFactory address:", contract.target);
+  const contract = await ethers.getContractFactory("Hyperdust_Roles_Cfg");
+  const instance = await upgrades.deployProxy(contract);
+
+  await instance.waitForDeployment();
+
+  console.info("contractFactory address:", instance.target);
 }
 
 // We recommend this pattern to be able to use async/await everywhere q

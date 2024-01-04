@@ -1,14 +1,20 @@
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.2;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 import "../utils/StrUtil.sol";
 
-contract Hyperdust_Node_CheckIn is Ownable {
+contract Hyperdust_Node_CheckIn is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
+
+    function initialize() public initializer {
+        __Ownable_init(msg.sender);
+    }
 
     function check(address incomeAddress) public view returns (bool) {
         return true;

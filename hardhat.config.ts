@@ -3,14 +3,16 @@ require("dotenv").config()
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-gas-reporter";
+import '@openzeppelin/hardhat-upgrades';
+
 const { ProxyAgent, setGlobalDispatcher } = require("undici");
-const proxyAgent = new ProxyAgent("http://127.0.0.1:10809");
+const proxyAgent = new ProxyAgent("http://127.0.0.1:7890");
 setGlobalDispatcher(proxyAgent);
 
 
 const config: HardhatUserConfig = {
   solidity: {
-    version: "0.8.19",
+    version: "0.8.20",
     settings: {
       optimizer: {
         enabled: true,
@@ -32,7 +34,6 @@ const config: HardhatUserConfig = {
     },
     sepolia: {
       url: process.env.SEPOLIA_RPC_URL,
-      accounts: [process.env.PRIVATE_KEY],
       loggingEnabled: true,
     },
     arbitrumSepolia: {
