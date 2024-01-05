@@ -177,6 +177,8 @@ contract Hyperdust_Node_Mgr is OwnableUpgradeable {
 
         hyperdustStorage.setString(hyperdustStorage.genKey("ip", id), ip);
 
+        hyperdustStorage.setUintArray("idList", id);
+
         emit eveSave(id);
     }
 
@@ -259,6 +261,17 @@ contract Hyperdust_Node_Mgr is OwnableUpgradeable {
         uint256 count = hyperdustStorage.getUint("count");
 
         hyperdustStorage.setUint("count", count - 1);
+
+        uint256[] memory idList = hyperdustStorage.getUintArray("idList");
+
+        for (uint i = 0; i < idList.length; i++) {
+            if (idList[i] == id) {
+                hyperdustStorage.removeStringArray("idList", i);
+                break;
+            }
+        }
+
+        emit eveDelete(id);
     }
 
     function getStatisticalIndex()
@@ -288,5 +301,27 @@ contract Hyperdust_Node_Mgr is OwnableUpgradeable {
 
         hyperdustStorage.setUint("totalNum", totalNum);
         hyperdustStorage.setUint("activeNum", activeNum);
+    }
+
+    function getIdByIndex(uint256 index) public view returns (uint256) {
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
+
+        uint256[] memory ids = hyperdustStorage.getUintArray("idList");
+
+        if (index + 1 > ids.length) {
+            return 0;
+        }
+
+        return ids[index];
+    }
+
+    function setIdList(uint256[] memory idList) public onlyOwner {
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
+
+        hyperdustStorage.setUintArray("idList", idList);
     }
 }

@@ -32,10 +32,10 @@ abstract contract IHyperdustNodeMgr {
     function getStatisticalIndex()
         public
         view
-        returns (uint256, uint32, uint32)
+        returns (uint256, uint256, uint256)
     {}
 
-    function setStatisticalIndex(uint32 totalNum, uint32 activeNum) public {}
+    function setStatisticalIndex(uint256 totalNum, uint256 activeNum) public {}
 }
 
 abstract contract IHyperdustSecurityDeposit {
@@ -215,8 +215,8 @@ contract Hyperdust_Render_Awards is OwnableUpgradeable {
             _hyperdustNodeMgrAddress
         );
 
-        uint32 activeNum = 0;
-        uint32 totalNum = 0;
+        uint256 activeNum = 0;
+        uint256 totalNum = 0;
 
         (uint256 totalSize, , ) = hyperdustNodeMgrAddress.getStatisticalIndex();
 
