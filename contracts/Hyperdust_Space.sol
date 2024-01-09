@@ -306,5 +306,6 @@ contract Hyperdust_Space is OwnableUpgradeable {
 
         require(bytes(name).length > 0, "not found");
         hyperdustStorage.setString(hyperdustStorage.genKey("name", id), "");
+        emit eveDeleteSave(id);
     }
 }

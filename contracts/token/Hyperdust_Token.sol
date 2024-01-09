@@ -3,11 +3,10 @@ pragma solidity ^0.8.1;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 import {DateTime} from "@quant-finance/solidity-datetime/contracts/DateTime.sol";
 import "../utils/StrUtil.sol";
 
-contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
+contract Hyperdust_Token_Test is ERC20, ERC20Burnable {
     constructor(
         address account1,
         address account2,

@@ -1,54 +1,28 @@
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.2;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
-import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
-import "@confluxfans/contracts/token/CRC1155/extensions/CRC1155Enumerable.sol";
+import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 import "@confluxfans/contracts/token/CRC1155/extensions/CRC1155Metadata.sol";
-import "@confluxfans/contracts/InternalContracts/InternalContractsHandler.sol";
 
 contract Hyperdust_1155 is
-    AccessControlEnumerable,
-    CRC1155Enumerable,
-    CRC1155Metadata,
-    InternalContractsHandler
+    ERC1155,
+    ERC1155Burnable,
+    AccessControl,
+    ERC1155Supply,
+    CRC1155Metadata
 {
-    using Strings for uint256;
-
-    //tokenId => FeatureCode, the Feature code is generally md5 code for resource files such as images or videos.
-    mapping(uint256 => uint256) public tokenFeatureCode;
-
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
-    bytes32 public constant URI_SETTER_ROLE = keccak256("URI_SETTER_ROLE");
 
     mapping(uint256 => string) private _tokenURIs;
-    mapping(uint256 => uint256) private _mintNums;
 
     constructor(
         string memory name_,
         string memory symbol_
     ) CRC1155Metadata(name_, symbol_) ERC1155("") {
-        _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
-        _setupRole(MINTER_ROLE, _msgSender());
-        _setupRole(URI_SETTER_ROLE, _msgSender());
-        _setupRole(PAUSER_ROLE, _msgSender());
-    }
-
-    /**
-     * @dev Update the URI for all tokens.
-     *
-     * Requirements:
-     *
-     * - the caller must have the `DEFAULT_ADMIN_ROLE`.
-     */
-    function setURI(string memory newuri) public virtual {
-        require(
-            hasRole(URI_SETTER_ROLE, _msgSender()),
-            "CRC1155NatureAutoId: must have admin role to set URI"
-        );
-        _setURI(newuri);
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(MINTER_ROLE, msg.sender);
     }
 
     /**
@@ -73,18 +47,6 @@ contract Hyperdust_1155 is
         return _tokenURIs[tokenId];
     }
 
-    function getMintNum(uint256 tokenId) public view virtual returns (uint256) {
-        return _mintNums[tokenId];
-    }
-
-    function setTokenURI(uint256 tokenId, string memory newuri) public virtual {
-        require(
-            hasRole(URI_SETTER_ROLE, _msgSender()),
-            "CRC1155NatureAutoId: must have admin role to set URI"
-        );
-        _tokenURIs[tokenId] = newuri;
-    }
-
     /**
      * @dev Creates `amount` new tokens for `to`, of token type `id`.
      *
@@ -106,7 +68,6 @@ contract Hyperdust_1155 is
             "CRC1155NatureAutoId: must have minter role to mint"
         );
         _tokenURIs[id] = tokenURI;
-        _mintNums[id] += amount;
 
         _mint(to, id, amount, data);
     }
@@ -133,58 +94,26 @@ contract Hyperdust_1155 is
         _mintBatch(to, ids, amounts, "");
     }
 
-    //Optional functions：The feature code can only be set once for each id, and then it can never be change again。
-    function setTokenFeatureCode(
-        uint256 tokenId,
-        uint256 featureCode
-    ) public virtual {
-        require(
-            hasRole(MINTER_ROLE, _msgSender()),
-            "CRC721NatureAutoId: must have minter role to mint"
-        );
-        require(
-            tokenFeatureCode[tokenId] == 0,
-            "CRC721NatureAutoId: token Feature Code is already set up"
-        );
-        tokenFeatureCode[tokenId] = featureCode;
-    }
-
-    /**
-     * @dev See {IERC165-supportsInterface}.
-     */
-    function supportsInterface(
-        bytes4 interfaceId
-    )
-        public
-        view
-        virtual
-        override(AccessControlEnumerable, CRC1155Enumerable, IERC165)
-        returns (bool)
-    {
-        return
-            AccessControlEnumerable.supportsInterface(interfaceId) ||
-            CRC1155Enumerable.supportsInterface(interfaceId);
-    }
-
-    function burn(address account, uint256 id, uint256 value) public virtual {
-        require(
-            account == _msgSender() || isApprovedForAll(account, _msgSender()),
-            "ERC1155: caller is not token owner nor approved"
-        );
-
-        _burn(account, id, value);
-    }
-
-    function burnBatch(
-        address account,
+    function _update(
+        address from,
+        address to,
         uint256[] memory ids,
         uint256[] memory values
-    ) public virtual {
-        require(
-            account == _msgSender() || isApprovedForAll(account, _msgSender()),
-            "ERC1155: caller is not token owner nor approved"
-        );
+    ) internal override(ERC1155, ERC1155Supply) {
+        super._update(from, to, ids, values);
+    }
 
-        _burnBatch(account, ids, values);
+    function supportsInterface(
+        bytes4 interfaceId
+    ) public view override(ERC1155, AccessControl, IERC165) returns (bool) {
+        return super.supportsInterface(interfaceId);
+    }
+
+    function _setTokenURI(uint256 tokenId, string memory tokenURI) private {
+        string memory tokenURI = _tokenURIs[tokenId];
+
+        if (bytes(tokenURI).length == 0) {
+            _tokenURIs[tokenId] = tokenURI;
+        }
     }
 }

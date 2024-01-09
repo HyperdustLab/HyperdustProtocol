@@ -59,7 +59,7 @@ contract Hyperdust_Wallet_Account is Ownable {
         address contractAddress;
     }
 
-    constructor() {
+    constructor() Ownable(msg.sender) {
         _amountConfInfos.push(
             AmountConfInfo({
                 accountType: AccountType.TVL,

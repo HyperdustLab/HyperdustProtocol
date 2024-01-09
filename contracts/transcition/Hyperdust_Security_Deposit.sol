@@ -16,6 +16,8 @@ contract Hyperdust_Security_Deposit is Ownable {
     using Strings for *;
     using StrUtil for *;
 
+    constructor() Ownable(msg.sender) {}
+
     address public _rolesCfgAddress;
     address public _erc20Address;
 

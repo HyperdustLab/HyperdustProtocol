@@ -31,7 +31,7 @@ async function main() {
     instance.setContractAddress([
         "0x9bDaf3912e7b4794fE8aF2E748C35898265D5615",
         "0x1a41f86248E33e5327B26092b898bDfe04C6d8b4",
-        "0x285Aa5D756F9f7c91B841EaF3AE5211BAB8A577c",
+        "0xf8991FaaD079eA01AA6Ba7bb7c6e22E044F55844",
         "0x61Ce9e4A31bFEe62e100Ef128f757EeE9012786f",
         Hyperdust_Storage.target
     ])

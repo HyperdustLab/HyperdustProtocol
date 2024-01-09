@@ -14,7 +14,7 @@ async function main() {
     console.info("implementationAddress:", implementationAddress);
 
 
-    await (await instance.setContractAddress(["0x9bDaf3912e7b4794fE8aF2E748C35898265D5615", "0x5f9Fbd15284B56D50F8844F22a8838e65EB2Fc76"])).wait();
+    await (await instance.setContractAddress(["0x9bDaf3912e7b4794fE8aF2E748C35898265D5615", "0x1e89b67D2075D4E1973B832203f12F5960C371E1"])).wait();
     await (await instance.add("render", 30000)).wait();
     await (await instance.add("mintNFT", 30000)).wait();
 

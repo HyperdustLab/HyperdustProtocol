@@ -19,6 +19,8 @@ async function main() {
     await (await instance.setHyperdustStorageAddress(Hyperdust_Storage.target)).wait()
 
 
+    console.info("Hyperdust_Storage:", Hyperdust_Storage.target)
+
     console.info("contractFactory address:", instance.target);
 
 

@@ -203,7 +203,7 @@ contract Hyperdust_Render_Transcition is OwnableUpgradeable {
         uint256[] memory epochTimes = new uint256[](epoch);
 
         epochAmounts[0] = commission;
-        epochTimes[1] = createTime;
+        epochTimes[0] = createTime;
 
         hyperdustStorage.setUintArray(
             hyperdustStorage.genKey("epochAmounts", id),
@@ -231,23 +231,18 @@ contract Hyperdust_Render_Transcition is OwnableUpgradeable {
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
             _HyperdustStorageAddress
         );
-
         uint256 _runingRenderTranscitionId = hyperdustStorage.getUint(
             account.toHexString()
         );
-
         if (_runingRenderTranscitionId == 0) {
             return;
         }
-
         bytes1 status = hyperdustStorage.getBytes1(
             hyperdustStorage.genKey("status", _runingRenderTranscitionId)
         );
-
         uint256 nextEndTime = hyperdustStorage.getUint(
             hyperdustStorage.genKey("nextEndTime", _runingRenderTranscitionId)
         );
-
         require(
             status == 0x11 && block.timestamp > nextEndTime,
             "You have an Render Transcition running"
@@ -258,23 +253,18 @@ contract Hyperdust_Render_Transcition is OwnableUpgradeable {
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
             _HyperdustStorageAddress
         );
-
         uint256 _runingRenderTranscitionId = hyperdustStorage.getUint(
             nodeId.toString()
         );
-
         if (_runingRenderTranscitionId == 0) {
             return;
         }
-
         bytes1 status = hyperdustStorage.getBytes1(
             hyperdustStorage.genKey("status", _runingRenderTranscitionId)
         );
-
         uint256 nextEndTime = hyperdustStorage.getUint(
             hyperdustStorage.genKey("nextEndTime", _runingRenderTranscitionId)
         );
-
         require(
             status == 0x11 && block.timestamp > nextEndTime,
             "The render node is already in use"

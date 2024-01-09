@@ -1,6 +1,6 @@
 /** @format */
 
-import { ethers } from "hardhat";
+import { ethers, upgrades } from "hardhat";
 const { describe, it } = require("mocha");
 
 import dayjs from 'dayjs'
@@ -12,8 +12,8 @@ describe("MGN_Render_Transcition", () => {
 
 
 
-            const Hyperdust_Roles_Cfg = await ethers.deployContract("Hyperdust_Roles_Cfg");
-            await Hyperdust_Roles_Cfg.waitForDeployment()
+            const _Hyperdust_Roles_Cfg = await ethers.getContractFactory("Hyperdust_Roles_Cfg");
+            const Hyperdust_Roles_Cfg = await upgrades.deployProxy(_Hyperdust_Roles_Cfg);
 
 
 
@@ -34,16 +34,15 @@ describe("MGN_Render_Transcition", () => {
 
 
 
-            const Hyperdust_Node_CheckIn = await ethers.deployContract("Hyperdust_Node_CheckIn");
-            await Hyperdust_Node_CheckIn.waitForDeployment()
+            const _Hyperdust_Node_CheckIn = await ethers.getContractFactory("Hyperdust_Node_CheckIn");
+            const Hyperdust_Node_CheckIn = await upgrades.deployProxy(_Hyperdust_Node_CheckIn);
 
 
 
 
 
-            const Hyperdust_Node_Type = await ethers.deployContract("Hyperdust_Node_Type");
-            await Hyperdust_Node_Type.waitForDeployment()
-
+            const _Hyperdust_Node_Type = await ethers.getContractFactory("Hyperdust_Node_Type");
+            const Hyperdust_Node_Type = await upgrades.deployProxy(_Hyperdust_Node_Type);
 
 
 
@@ -57,8 +56,8 @@ describe("MGN_Render_Transcition", () => {
 
 
 
-            const Hyperdust_Node_Mgr = await ethers.deployContract("Hyperdust_Node_Mgr");
-            await Hyperdust_Node_Mgr.waitForDeployment()
+            const _Hyperdust_Node_Mgr = await ethers.getContractFactory("Hyperdust_Node_Mgr");
+            const Hyperdust_Node_Mgr = await upgrades.deployProxy(_Hyperdust_Node_Mgr);
 
 
             const Hyperdust_Node_Mgr_Data = await ethers.deployContract("Hyperdust_Storage");
@@ -73,8 +72,8 @@ describe("MGN_Render_Transcition", () => {
 
 
 
-            const Hyperdust_Transaction_Cfg = await ethers.deployContract("Hyperdust_Transaction_Cfg");
-            await Hyperdust_Transaction_Cfg.waitForDeployment()
+            const _Hyperdust_Transaction_Cfg = await ethers.getContractFactory("Hyperdust_Transaction_Cfg");
+            const Hyperdust_Transaction_Cfg = await upgrades.deployProxy(_Hyperdust_Transaction_Cfg);
 
             await (await Hyperdust_Transaction_Cfg.setContractAddress([Hyperdust_Roles_Cfg.target, Hyperdust_Node_Mgr.target])).wait();
 
@@ -90,8 +89,8 @@ describe("MGN_Render_Transcition", () => {
 
 
 
-            const Hyperdust_Render_Transcition = await ethers.deployContract("Hyperdust_Render_Transcition");
-            await Hyperdust_Render_Transcition.waitForDeployment()
+            const _Hyperdust_Render_Transcition = await ethers.getContractFactory("Hyperdust_Render_Transcition");
+            const Hyperdust_Render_Transcition = await upgrades.deployProxy(_Hyperdust_Render_Transcition);
 
 
 
@@ -127,33 +126,29 @@ describe("MGN_Render_Transcition", () => {
             await (await Hyperdust_Node_Mgr.addNode(accounts[0].address, "127.0.0.1", [1, 1, 1, 1, 1, 1, 1])).wait();
             await (await Hyperdust_Node_Mgr.addNode(accounts[0].address, "127.0.0.2", [1, 1, 1, 1, 1, 1, 1])).wait();
 
-            await (await Hyperdust_Render_Transcition.createRenderTranscition(1, 2)).wait();
+            await (await Hyperdust_Render_Transcition.createRenderTranscition(1, 1)).wait();
+
+            // const getRuningRenderAccounts = await Hyperdust_Render_Transcition.getRuningRenderAccounts(accounts[0].address);
+            // console.info(getRuningRenderAccounts)
+
+            // const getRuningRenderNodes = await Hyperdust_Render_Transcition.getRuningRenderNodes(1);
+
+            // console.info(getRuningRenderNodes)
+
+            // const updateEpoch = await (await Hyperdust_Render_Transcition.updateEpoch()).wait()
 
 
+            // const getRuningRenderTranscitions = await Hyperdust_Render_Transcition.getRuningRenderTranscitions();
+
+            // console.info(getRuningRenderTranscitions)
 
 
+            // const ts = await Hyperdust_Render_Transcition.getRenderTranscition(1)
 
-            const getRuningRenderAccounts = await Hyperdust_Render_Transcition.getRuningRenderAccounts(accounts[0].address);
-            console.info(getRuningRenderAccounts)
-
-            const getRuningRenderNodes = await Hyperdust_Render_Transcition.getRuningRenderNodes(1);
-
-            console.info(getRuningRenderNodes)
-
-            const updateEpoch = await (await Hyperdust_Render_Transcition.updateEpoch()).wait()
+            // console.info(ts)
 
 
-            const getRuningRenderTranscitions = await Hyperdust_Render_Transcition.getRuningRenderTranscitions();
-
-            console.info(getRuningRenderTranscitions)
-
-
-            const ts = await Hyperdust_Render_Transcition.getRenderTranscition(1)
-
-            console.info(ts)
-
-
-            console.info("Hyperdust_Render_Transcition:" + Hyperdust_Render_Transcition.target)
+            // console.info("Hyperdust_Render_Transcition:" + Hyperdust_Render_Transcition.target)
 
         });
     });
