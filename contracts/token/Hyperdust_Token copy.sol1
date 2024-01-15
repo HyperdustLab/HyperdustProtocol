@@ -4,18 +4,15 @@ pragma solidity ^0.8.1;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import {DateTime} from "@quant-finance/solidity-datetime/contracts/DateTime.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "../utils/StrUtil.sol";
 
-contract Hyperdust_Token_Test is ERC20, ERC20Burnable {
+contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
     constructor(
-        address account1,
-        address account2,
-        address account3
-    ) ERC20("Hyperdust Private Token Test", "HYPT test") {
-        _multiSignatureWallet.push(account1);
-        _multiSignatureWallet.push(account2);
-        _multiSignatureWallet.push(account3);
-    }
+        string memory name_,
+        string memory symbol_,
+        address onlyOwner
+    ) ERC20(name_, symbol_) Ownable(onlyOwner) {}
 
     using StrUtil for *;
 
@@ -87,10 +84,21 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable {
      * @dev The duration of time after which GPU mining rewards will be released.
      */
     uint256 public _GPUMiningReleaseInterval = 365 days;
+
+    /**
+     * @dev The interval at which the ratio is halved
+     */
+    uint256 public _GPUMiningRateInterval = 365 * 4 days;
+
     /**
      * @dev The timestamp when GPU mining tokens are allowed to be released.
      */
     uint256 public _GPUMiningAllowReleaseTime = timestamp;
+
+    /**
+     * @dev The last time the ratio was halved
+     */
+    uint256 public _lastGPUMiningRateTime = timestamp;
 
     /**
      * @dev Public variable that stores the address of the mining reserve.
@@ -130,19 +138,25 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable {
     uint256 public _MiningReserveCurrYearTotalAward = 0;
 
     /**
-     * @dev The current year number for mining reserve.
-     */
-    uint32 public _MiningReserveCurrYearNum = 1;
-
-    /**
      * @dev The timestamp when the mining reserve will be released.
      */
-    uint256 public _MiningReserveReleaseTime = timestamp;
+    uint256 public _MiningReserveAllowReleaseTime = 0;
 
     /**
      * @dev The interval of time after which the mining reserve is released.
      */
     uint256 public _MiningReserveReleaseInterval = 365 days;
+
+    /**
+     * @dev The interval at which the ratio is halved
+     */
+    uint256 public _MiningReserveRateInterval = 365 * 4 days;
+
+    /**
+     * @dev The last time the ratio was halved
+     */
+
+    uint256 public _lastMiningReserveRateTime = 0;
 
     /**
      * @dev Public variable that stores the address of the Core Team.
@@ -297,28 +311,9 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable {
     uint256 public _PrivateSaleTotalAward = (_totalSupply * 9) / 100;
 
     /**
-     * @dev Public variable that stores the current award for private sale.
+     * @dev Public variable that represents the current award for the private sale.
      */
     uint256 public _PrivateSaleCurrAward = 0;
-
-    /**
-     * @dev Public variable that stores the timestamp when private sale tokens can be released.
-     */
-    uint256 public _PrivateSaleAllowReleaseTime = timestamp;
-    /**
-     * @dev The interval between private sale releases.
-     */
-    uint256 public _PrivateSaleReleaseInterval = 30 days;
-
-    /**
-     * @dev The total amount of tokens to be released for Private Sale divided by 60.
-     */
-    uint256 public _PrivateSaleReleaseTotalAward = _PrivateSaleTotalAward / 60;
-
-    /**
-     * @dev Public variable that stores the current award for the private sale release.
-     */
-    uint256 public _PrivateSaleReleaseCurrAward = 0;
 
     /**
      * @dev Public variable that stores the address of the foundation.
@@ -356,25 +351,11 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable {
     uint256 public _FoundationReleaseCurrAward = 0;
 
     /**
-     * @dev A mapping of string to address to store the approvers of the Hyperdust Token.
-     */
-    mapping(string => address) public _approvers;
-
-    /**
-     * @dev Mapping of contract names to their updated addresses.
-     */
-    mapping(string => address) public _updateAddress;
-
-    /**
      * @dev Sets the GPU mining address.
      * @param GPUMiningAddress The address of the GPU mining contract.
      */
-    function setGPUMiningAddress(address GPUMiningAddress) public {
-        checkSignatureWallet();
-
-        _approvers["setGPUMiningAddress"] = msg.sender;
-
-        _updateAddress["setGPUMiningAddress"] = GPUMiningAddress;
+    function setGPUMiningAddress(address GPUMiningAddress) public onlyOwner {
+        _GPUMiningAddress = GPUMiningAddress;
     }
 
     /**
@@ -382,36 +363,26 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable {
      * @param MiningReserveAddress The address of the mining reserve contract.
      */
 
-    function setMiningReserveAddress(address MiningReserveAddress) public {
-        checkSignatureWallet();
-
-        _approvers["setMiningReserveAddress"] = msg.sender;
-
-        _updateAddress["setMiningReserveAddress"] = MiningReserveAddress;
+    function setMiningReserveAddress(
+        address MiningReserveAddress
+    ) public onlyOwner {
+        _MiningReserveAddress = MiningReserveAddress;
     }
 
     /**
      * @dev Sets the address of the core team.
      * @param CoreTeamAddress The address of the core team.
      */
-    function setCoreTeamAddress(address CoreTeamAddress) public {
-        checkSignatureWallet();
-
-        _approvers["setCoreTeamAddress"] = msg.sender;
-
-        _updateAddress["setCoreTeamAddress"] = CoreTeamAddress;
+    function setCoreTeamAddress(address CoreTeamAddress) public onlyOwner {
+        _CoreTeamAddeess = CoreTeamAddress;
     }
 
     /**
      * @dev Sets the address of the advisor.
      * @param AdvisorAddress The address of the advisor to be set.
      */
-    function setAdvisorAddress(address AdvisorAddress) public {
-        checkSignatureWallet();
-
-        _approvers["setAdvisorAddress"] = msg.sender;
-
-        _updateAddress["setAdvisorAddress"] = AdvisorAddress;
+    function setAdvisorAddress(address AdvisorAddress) public onlyOwner {
+        _AdvisorAddress = AdvisorAddress;
     }
 
     /**
@@ -421,14 +392,8 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable {
 
     function setEarlyContributorsKOLAddress(
         address EarlyContributorsKOLAddress
-    ) public {
-        checkSignatureWallet();
-
-        _approvers["setEarlyContributorsKOLAddress"] = msg.sender;
-
-        _updateAddress[
-            "setEarlyContributorsKOLAddress"
-        ] = EarlyContributorsKOLAddress;
+    ) public onlyOwner {
+        _EarlyContributorsKOLAddress = EarlyContributorsKOLAddress;
     }
 
     /**
@@ -437,94 +402,26 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable {
      */
     function setEarlyContributorsGenesisAddress(
         address EarlyContributorsGenesisAddress
-    ) public {
-        checkSignatureWallet();
-
-        _approvers["setEarlyContributorsGenesisAddress"] = msg.sender;
-
-        _updateAddress[
-            "setEarlyContributorsGenesisAddress"
-        ] = EarlyContributorsGenesisAddress;
+    ) public onlyOwner {
+        _EarlyContributorsGenesisAddress = EarlyContributorsGenesisAddress;
     }
 
     /**
      * @dev Sets the address of the private sale contract.
      * @param PrivateSaleAddress The address of the private sale contract.
      */
-    function setPrivateSaleAddress(address PrivateSaleAddress) public {
-        checkSignatureWallet();
-
-        _approvers["setPrivateSaleAddress"] = msg.sender;
-
-        _updateAddress["setPrivateSaleAddress"] = PrivateSaleAddress;
+    function setPrivateSaleAddress(
+        address PrivateSaleAddress
+    ) public onlyOwner {
+        _PrivateSaleAddress = PrivateSaleAddress;
     }
 
     /**
      * @dev Sets the address of the foundation.
      * @param FoundationAddress The address of the foundation.
      */
-    function setFoundationAddress(address FoundationAddress) public {
-        checkSignatureWallet();
-
-        _approvers["setFoundationAddress"] = msg.sender;
-
-        _updateAddress["setFoundationAddress"] = FoundationAddress;
-    }
-
-    /**
-     * @dev Allows an approver to update the address of a specific contract.
-     * @param name The name of the contract to update.
-     * @notice This function can only be called by an approver and requires a valid signature.
-     * @notice The name parameter must match one of the predefined contract names.
-     * @notice If the name parameter is not recognized, the function will revert.
-     */
-    function approveUpdateAddress(string memory name) public {
-        checkSignatureWallet();
-
-        require(_updateAddress[name] != address(0), "address is 0x0");
-        require(_approvers[name] != msg.sender, "msg.sender is approvers");
-
-        if (StrUtil.equals(name.toSlice(), "setGPUMiningAddress".toSlice())) {
-            _GPUMiningAddress = _updateAddress[name];
-        } else if (
-            StrUtil.equals(name.toSlice(), "setMiningReserveAddress".toSlice())
-        ) {
-            _MiningReserveAddress = _updateAddress[name];
-        } else if (
-            StrUtil.equals(name.toSlice(), "setCoreTeamAddress".toSlice())
-        ) {
-            _CoreTeamAddeess = _updateAddress[name];
-        } else if (
-            StrUtil.equals(name.toSlice(), "setAdvisorAddress".toSlice())
-        ) {
-            _AdvisorAddress = _updateAddress[name];
-        } else if (
-            StrUtil.equals(
-                name.toSlice(),
-                "setEarlyContributorsKOLAddress".toSlice()
-            )
-        ) {
-            _EarlyContributorsKOLAddress = _updateAddress[name];
-        } else if (
-            StrUtil.equals(
-                name.toSlice(),
-                "setEarlyContributorsGenesisAddress".toSlice()
-            )
-        ) {
-            _EarlyContributorsGenesisAddress = _updateAddress[name];
-        } else if (
-            StrUtil.equals(name.toSlice(), "setPrivateSaleAddress".toSlice())
-        ) {
-            _PrivateSaleAddress = _updateAddress[name];
-        } else if (
-            StrUtil.equals(name.toSlice(), "setFoundationAddress".toSlice())
-        ) {
-            _FoundationAddress = _updateAddress[name];
-        } else {
-            revert("name is error");
-        }
-
-        _updateAddress[name] = address(0);
+    function setFoundationAddress(address FoundationAddress) public onlyOwner {
+        _FoundationAddress = FoundationAddress;
     }
 
     /**
@@ -533,24 +430,25 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable {
      */
     function GPUMiningMint(uint256 mintNum) private {
         if (
+            block.timestamp >= _lastGPUMiningRateTime + _GPUMiningRateInterval
+        ) {
+            _GPUMiningCurrMiningRatio = _GPUMiningCurrMiningRatio / 2;
+            require(_GPUMiningCurrMiningRatio > 0, "currMiningRatio is 0");
+
+            _lastGPUMiningRateTime += _GPUMiningRateInterval;
+        }
+
+        if (
             block.timestamp >=
             _GPUMiningAllowReleaseTime + _GPUMiningReleaseInterval
         ) {
-            _GPUMiningCurrYearNum++;
-            if (_GPUMiningCurrYearNum % 4 == 0) {
-                _GPUMiningCurrMiningRatio = _GPUMiningCurrMiningRatio / 2;
-                require(_GPUMiningCurrMiningRatio > 0, "currMiningRatio is 0");
-            }
-
             _GPUMiningCurrYearTotalAward = 0;
-            _GPUMiningAllowReleaseTime = block.timestamp;
+            _GPUMiningAllowReleaseTime += _GPUMiningReleaseInterval;
 
             _GPUMiningCurrYearTotalSupply =
                 ((_GPUMiningTotalAward - _GPUMiningCurrAward) *
                     _GPUMiningCurrMiningRatio) /
                 _GPUMiningTotalMiningRatio;
-
-            _GPUMiningCurrAward = 0;
 
             _epochAward = _GPUMiningCurrYearTotalSupply / 365 / 225;
         }
@@ -567,6 +465,8 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable {
             _GPUMiningTotalAward - _GPUMiningCurrAward - mintNum >= 0,
             "GPUMiningTotalAward is not enough"
         );
+
+        require(_epochAward >= mintNum, "epochAward is not enough");
 
         _GPUMiningCurrYearTotalAward += mintNum;
         _GPUMiningCurrAward += mintNum;
@@ -754,33 +654,11 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable {
      * @param mintNum The number of tokens to be minted.
      */
     function PrivateSaleMint(uint256 mintNum) private {
-        if (
-            block.timestamp >=
-            _PrivateSaleAllowReleaseTime + _PrivateSaleReleaseInterval
-        ) {
-            _PrivateSaleAllowReleaseTime += _PrivateSaleReleaseInterval;
-
-            _PrivateSaleReleaseTotalAward =
-                (_PrivateSaleReleaseTotalAward - _PrivateSaleReleaseCurrAward) +
-                _PrivateSaleTotalAward /
-                60;
-            _PrivateSaleReleaseCurrAward = 0;
-        }
-
-        require(
-            _PrivateSaleReleaseTotalAward -
-                _PrivateSaleReleaseCurrAward -
-                mintNum >=
-                0,
-            "_PrivateSaleReleaseTotalAward is not enough"
-        );
-
         require(
             _PrivateSaleTotalAward - _PrivateSaleCurrAward - mintNum >= 0,
             "_PrivateSaleTotalAward is not enough"
         );
 
-        _PrivateSaleReleaseCurrAward += mintNum;
         _PrivateSaleCurrAward += mintNum;
 
         _mint(_PrivateSaleAddress, mintNum);
@@ -833,30 +711,33 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable {
      * @notice The total award must be sufficient for the minting to succeed.
      */
     function MiningReserveMint(uint256 mintNum) private {
+        require(
+            _MiningReserveAllowReleaseTime > 0,
+            "The commencement of the release of mining reserves has not yet commenced"
+        );
+
+        if (block.timestamp >= _lastMiningReserveRateTime) {
+            _MiningReserveMiningRatio = _MiningReserveMiningRatio / 2;
+            require(
+                _MiningReserveMiningRatio > 0,
+                "_MiningReserveMiningRatio is 0"
+            );
+
+            _lastMiningReserveRateTime += _MiningReserveRateInterval;
+        }
+
         if (
             block.timestamp >=
-            _MiningReserveReleaseTime + _MiningReserveReleaseInterval
+            _MiningReserveAllowReleaseTime + _MiningReserveReleaseInterval
         ) {
-            _MiningReserveCurrYearNum++;
-            if (_MiningReserveCurrYearNum % 4 == 0) {
-                _MiningReserveMiningRatio = _MiningReserveMiningRatio / 2;
-                require(
-                    _MiningReserveMiningRatio > 0,
-                    "_MiningReserveMiningRatio is 0"
-                );
-            }
-
             _MiningReserveCurrYearTotalAward = 0;
-            _MiningReserveReleaseTime =
-                _MiningReserveReleaseTime +
-                _MiningReserveReleaseInterval;
+
+            _MiningReserveAllowReleaseTime += _MiningReserveReleaseInterval;
 
             _MiningReserveCurrYearTotalSupply =
                 ((_MiningReserveTotalAward - _MiningReserveCurrAward) *
                     _MiningReserveMiningRatio) /
                 _GPUMiningTotalMiningRatio;
-
-            _MiningReserveCurrYearTotalAward = 0;
         }
 
         require(
@@ -876,20 +757,6 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable {
         _MiningReserveCurrAward += mintNum;
 
         _mint(_MiningReserveAddress, mintNum);
-    }
-
-    /**
-     * @dev Checks if the message sender is in the MultiSignatureWallet.
-     * @dev If the sender is not in the MultiSignatureWallet, reverts with an error message.
-     */
-    function checkSignatureWallet() private {
-        for (uint i = 0; i < _multiSignatureWallet.length; i++) {
-            if (_multiSignatureWallet[i] == msg.sender) {
-                return;
-            }
-        }
-
-        revert("msg.sender is not in MultiSignatureWallet");
     }
 
     /**
@@ -925,6 +792,11 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable {
         } else {
             revert("do not have permission");
         }
+    }
+
+    function startMiningReserveReleaseTime() public onlyOwner {
+        _MiningReserveAllowReleaseTime = block.timestamp;
+        _lastMiningReserveRateTime = block.timestamp;
     }
 
     function totalSupply() public view override returns (uint256) {

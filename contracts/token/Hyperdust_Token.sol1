@@ -1,0 +1,559 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.1;
+
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+import {DateTime} from "@quant-finance/solidity-datetime/contracts/DateTime.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+import "../utils/StrUtil.sol";
+
+contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
+    constructor(
+        string memory name_,
+        string memory symbol_,
+        address onlyOwner
+    ) ERC20(name_, symbol_) Ownable(onlyOwner) {}
+
+    using Strings for *;
+    using StrUtil for *;
+
+    uint256 public TGE_timestamp = 0;
+
+    uint256 public _totalSupply = 200 ether;
+
+    uint256 public _mintNum = 0;
+
+    address public _GPUMiningAddress;
+
+    uint256 public _GPUMiningTotalAward = (_totalSupply * 65) / 100;
+
+    uint256 public _GPUMiningCurrAward = 0;
+
+    uint32 public _GPUMiningCurrMiningRatio = 100000;
+
+    uint32 public _GPUMiningTotalMiningRatio = _GPUMiningCurrMiningRatio * 10;
+
+    uint256 public _GPUMiningCurrYearTotalSupply =
+        (_GPUMiningTotalAward * _GPUMiningCurrMiningRatio) /
+            _GPUMiningTotalMiningRatio;
+
+    uint256 public _epochAward = _GPUMiningCurrYearTotalSupply / 365 / 225;
+
+    uint256 public _GPUMiningCurrYearTotalAward = 0;
+
+    uint256 public _GPUMiningReleaseInterval = 600;
+
+    uint256 public _GPUMiningRateInterval = 60 * 600;
+
+    uint256 public _GPUMiningAllowReleaseTime = 0;
+
+    uint256 public _lastGPUMiningRateTime = 0;
+
+    address public _CoreTeamAddeess;
+
+    uint256 public _CoreTeamTotalAward = (_totalSupply * 115) / 1000;
+
+    uint256 public _CoreTeamCurrAward = 0;
+
+    uint256 public _CoreTeamAllowReleaseTime = 0;
+
+    uint256 public _CoreTeamReleaseInterval = 600;
+
+    uint256 public _CoreTeamReleaseTotalAward = _CoreTeamTotalAward / 36;
+
+    uint256 public _CoreTeamReleaseCurrAward = 0;
+
+    address public _FoundationAddress;
+
+    uint256 public _FoundationTotalAward = (_totalSupply * 1025) / 10000;
+
+    uint256 public _FoundationCurrAward = 0;
+
+    uint256 public _FoundationReleaseInterval = 600;
+
+    uint256 public _FoundationReleaseAllowReleaseTime = 0;
+
+    uint256 public _FoundationReleaseTotalAward = _FoundationTotalAward / 4;
+
+    uint256 public _FoundationReleaseCurrAward = 0;
+
+    address public _AdvisorAddress;
+
+    uint256 public _AdvisorAllowReleaseTime = 0;
+
+    uint256 public _AdvisorTotalAward = (_totalSupply * 4) / 100;
+
+    uint256 public _AdvisorCurrAward = 0;
+
+    uint256 public _AdvisorReleaseInterval = 600;
+
+    uint256 public _AdvisorReleaseTotalAward = _AdvisorTotalAward / 12;
+
+    uint256 public _AdvisorReleaseCurrAward = 0;
+
+    address public _PrivateSaleAddress;
+
+    /**
+     * @dev The total amount of tokens awarded during the private sale.
+     */
+    uint256 public _PrivateSaleTotalAward = (_totalSupply * 9) / 100;
+
+    /**
+     * @dev Public variable that represents the current award for the private sale.
+     */
+    uint256 public _PrivateSaleCurrAward = 0;
+
+    /**
+     * @dev Sets the GPU mining address.
+     * @param GPUMiningAddress The address of the GPU mining contract.
+     */
+    function setGPUMiningAddress(address GPUMiningAddress) public onlyOwner {
+        _GPUMiningAddress = GPUMiningAddress;
+    }
+
+    /**
+     * @dev Sets the address of the mining reserve contract.
+     * @param MiningReserveAddress The address of the mining reserve contract.
+     */
+
+    function setMiningReserveAddress(
+        address MiningReserveAddress
+    ) public onlyOwner {
+        _MiningReserveAddress = MiningReserveAddress;
+    }
+
+    /**
+     * @dev Sets the address of the core team.
+     * @param CoreTeamAddress The address of the core team.
+     */
+    function setCoreTeamAddress(address CoreTeamAddress) public onlyOwner {
+        _CoreTeamAddeess = CoreTeamAddress;
+    }
+
+    /**
+     * @dev Sets the address of the advisor.
+     * @param AdvisorAddress The address of the advisor to be set.
+     */
+    function setAdvisorAddress(address AdvisorAddress) public onlyOwner {
+        _AdvisorAddress = AdvisorAddress;
+    }
+
+    /**
+     * @dev Sets the address of the early contributors and KOLs.
+     * @param EarlyContributorsKOLAddress The address of the early contributors and KOLs.
+     */
+
+    function setEarlyContributorsKOLAddress(
+        address EarlyContributorsKOLAddress
+    ) public onlyOwner {
+        _EarlyContributorsKOLAddress = EarlyContributorsKOLAddress;
+    }
+
+    /**
+     * @dev Sets the address of the early contributors genesis address.
+     * @param EarlyContributorsGenesisAddress The address of the early contributors genesis.
+     */
+    function setEarlyContributorsGenesisAddress(
+        address EarlyContributorsGenesisAddress
+    ) public onlyOwner {
+        _EarlyContributorsGenesisAddress = EarlyContributorsGenesisAddress;
+    }
+
+    /**
+     * @dev Sets the address of the private sale contract.
+     * @param PrivateSaleAddress The address of the private sale contract.
+     */
+    function setPrivateSaleAddress(
+        address PrivateSaleAddress
+    ) public onlyOwner {
+        _PrivateSaleAddress = PrivateSaleAddress;
+    }
+
+    /**
+     * @dev Sets the address of the foundation.
+     * @param FoundationAddress The address of the foundation.
+     */
+    function setFoundationAddress(address FoundationAddress) public onlyOwner {
+        _FoundationAddress = FoundationAddress;
+    }
+
+    /**
+     * @dev Private function to mint tokens for GPU mining.
+     * @param mintNum The number of tokens to mint.
+     */
+    function GPUMiningMint(uint256 mintNum) private {
+        if (
+            block.timestamp >= _lastGPUMiningRateTime + _GPUMiningRateInterval
+        ) {
+            _GPUMiningCurrMiningRatio = _GPUMiningCurrMiningRatio / 2;
+            require(_GPUMiningCurrMiningRatio > 0, "currMiningRatio is 0");
+
+            _lastGPUMiningRateTime += _GPUMiningRateInterval;
+        }
+
+        if (
+            block.timestamp >=
+            _GPUMiningAllowReleaseTime + _GPUMiningReleaseInterval
+        ) {
+            _GPUMiningCurrYearTotalAward = 0;
+            _GPUMiningAllowReleaseTime += _GPUMiningReleaseInterval;
+
+            _GPUMiningCurrYearTotalSupply =
+                ((_GPUMiningTotalAward - _GPUMiningCurrAward) *
+                    _GPUMiningCurrMiningRatio) /
+                _GPUMiningTotalMiningRatio;
+
+            _epochAward = _GPUMiningCurrYearTotalSupply / 365 / 225;
+        }
+
+        require(
+            _GPUMiningCurrYearTotalSupply -
+                _GPUMiningCurrYearTotalAward -
+                mintNum >=
+                0,
+            "currYearTotalSupply is not enough"
+        );
+
+        require(
+            _GPUMiningTotalAward - _GPUMiningCurrAward - mintNum >= 0,
+            "GPUMiningTotalAward is not enough"
+        );
+
+        require(_epochAward >= mintNum, "epochAward is not enough");
+
+        _GPUMiningCurrYearTotalAward += mintNum;
+        _GPUMiningCurrAward += mintNum;
+
+        _mint(_GPUMiningAddress, mintNum);
+    }
+
+    /**
+     * @dev Private function to mint tokens for the Core Team.
+     * @param mintNum The number of tokens to mint.
+     * Requirements:
+     * - `CoreTeamTotalAward` must be greater than or equal to `mintNum`.
+     * - `CoreTeamReleaseTotalAward` must be greater than or equal to `mintNum`.
+     */
+    function CoreTeamMint(uint256 mintNum) private {
+        if (
+            block.timestamp >=
+            _CoreTeamAllowReleaseTime + _CoreTeamReleaseInterval
+        ) {
+            _CoreTeamAllowReleaseTime += _CoreTeamReleaseInterval;
+
+            _CoreTeamReleaseTotalAward =
+                (_CoreTeamReleaseTotalAward - _CoreTeamReleaseCurrAward) +
+                _CoreTeamTotalAward /
+                20;
+
+            _CoreTeamReleaseCurrAward = 0;
+        }
+
+        require(block.timestamp >= _CoreTeamAllowReleaseTime, "time is not ok");
+
+        require(
+            _CoreTeamTotalAward - _CoreTeamCurrAward - mintNum >= 0,
+            "CoreTeamTotalAward is not enough"
+        );
+
+        require(
+            _CoreTeamReleaseTotalAward - _CoreTeamReleaseCurrAward - mintNum >=
+                0,
+            "CoreTeamReleaseTotalAward is not enough"
+        );
+
+        _CoreTeamCurrAward += mintNum;
+        _CoreTeamReleaseCurrAward += mintNum;
+
+        _mint(_CoreTeamAddeess, mintNum);
+    }
+
+    /**
+     * @dev Private function to mint tokens for advisors.
+     * @param mintNum The number of tokens to mint.
+     * Requirements:
+     * - `AdvisorTotalAward` must be greater than or equal to `mintNum`.
+     * - `AdvisorReleaseTotalAward` must be greater than or equal to `mintNum`.
+     */
+    function AdvisorMint(uint256 mintNum) private {
+        if (
+            block.timestamp >=
+            _AdvisorAllowReleaseTime + _AdvisorReleaseInterval
+        ) {
+            _AdvisorAllowReleaseTime += _CoreTeamReleaseInterval;
+
+            _AdvisorReleaseTotalAward =
+                (_AdvisorReleaseTotalAward - _AdvisorReleaseCurrAward) +
+                _AdvisorTotalAward /
+                20;
+            _AdvisorReleaseCurrAward = 0;
+        }
+
+        require(block.timestamp >= _AdvisorAllowReleaseTime, "time is not ok");
+
+        require(
+            _AdvisorTotalAward - _AdvisorCurrAward - mintNum >= 0,
+            "AdvisorTotalAward is not enough"
+        );
+
+        require(
+            _AdvisorReleaseTotalAward - _AdvisorReleaseCurrAward - mintNum >= 0,
+            "AdvisorReleaseTotalAward is not enough"
+        );
+
+        _AdvisorCurrAward += mintNum;
+        _AdvisorReleaseCurrAward += mintNum;
+
+        _mint(_AdvisorAddress, mintNum);
+    }
+
+    /**
+     * @dev Private function to mint tokens for early contributors and KOLs.
+     * @param mintNum The number of tokens to mint.
+     * Requirements:
+     * - The release time must have passed.
+     * - Sufficient tokens must be available for minting.
+     */
+    function EarlyContributorsKOLMint(uint256 mintNum) private {
+        if (
+            block.timestamp >=
+            _EarlyContributorsKOLAllowReleaseTime +
+                _EarlyContributorsKOLReleaseInterval
+        ) {
+            _EarlyContributorsKOLAllowReleaseTime += _EarlyContributorsKOLReleaseInterval;
+
+            _EarlyContributorsKOLReleaseTotalAward =
+                (_EarlyContributorsKOLReleaseTotalAward -
+                    _EarlyContributorsKOLReleaseCurrAward) +
+                10000 ether;
+
+            _EarlyContributorsKOLReleaseCurrAward = 0;
+        }
+
+        require(
+            _EarlyContributorsKOLReleaseTotalAward -
+                _EarlyContributorsKOLReleaseCurrAward -
+                mintNum >=
+                0,
+            "_EarlyContributorsKOLReleaseTotalAward is not enough"
+        );
+
+        require(
+            _EarlyContributorsKOLTotalAward -
+                _EarlyContributorsKOLCurrAward -
+                mintNum >=
+                0,
+            "_EarlyContributorsKOLReleaseTotalAward is not enough"
+        );
+
+        _EarlyContributorsKOLCurrAward += mintNum;
+        _EarlyContributorsKOLReleaseCurrAward += mintNum;
+
+        _mint(_EarlyContributorsKOLAddress, mintNum);
+    }
+
+    /**
+     * @dev Private function to mint tokens for early contributors during the genesis period.
+     * @param mintNum The number of tokens to mint.
+     * Requirements:
+     * - `_EarlyContributorsGenesisReleaseTotalAward` must be enough to cover the minted tokens.
+     * - `_EarlyContributorsGenesisTotalAward` must be enough to cover the minted tokens.
+     */
+    function EarlyContributorsGenesisMint(uint256 mintNum) private {
+        if (
+            block.timestamp >=
+            _EarlyContributorsGenesisAllowReleaseTime +
+                _EarlyContributorsGenesisReleaseInterval
+        ) {
+            _EarlyContributorsGenesisAllowReleaseTime += _EarlyContributorsGenesisReleaseInterval;
+
+            _EarlyContributorsGenesisReleaseTotalAward =
+                (_EarlyContributorsGenesisReleaseTotalAward -
+                    _EarlyContributorsGenesisReleaseCurrAward) +
+                (_EarlyContributorsGenesisTotalAward / 12);
+
+            _EarlyContributorsGenesisReleaseCurrAward = 0;
+        }
+
+        require(
+            block.timestamp >= _EarlyContributorsGenesisAllowReleaseTime,
+            "time is not ok"
+        );
+
+        require(
+            _EarlyContributorsGenesisReleaseTotalAward -
+                _EarlyContributorsGenesisReleaseCurrAward -
+                mintNum >=
+                0,
+            "_EarlyContributorsGenesisReleaseTotalAward is not enough"
+        );
+
+        require(
+            _EarlyContributorsGenesisTotalAward -
+                _EarlyContributorsGenesisCurrAward -
+                mintNum >=
+                0,
+            "_EarlyContributorsGenesisTotalAward is not enough"
+        );
+
+        _EarlyContributorsGenesisCurrAward += mintNum;
+        _EarlyContributorsGenesisReleaseCurrAward += mintNum;
+
+        _mint(_EarlyContributorsGenesisAddress, mintNum);
+    }
+
+    /**
+     * @dev PrivateSaleMint function mints new tokens during the private sale.
+     * @param mintNum The number of tokens to be minted.
+     */
+    function PrivateSaleMint(uint256 mintNum) private {
+        require(
+            _PrivateSaleTotalAward - _PrivateSaleCurrAward - mintNum >= 0,
+            "_PrivateSaleTotalAward is not enough"
+        );
+
+        _PrivateSaleCurrAward += mintNum;
+
+        _mint(_PrivateSaleAddress, mintNum);
+    }
+
+    /**
+     * @dev Private function to mint tokens for the foundation.
+     * @param mintNum The number of tokens to mint.
+     * Requirements:
+     * - `_FoundationReleaseReleaseTotalAward` must be enough to mint `mintNum` tokens.
+     * - `_FoundationTotalAward` must be enough to mint `mintNum` tokens.
+     */
+    function FoundationMint(uint256 mintNum) private {
+        if (
+            block.timestamp >=
+            _FoundationReleaseAllowReleaseTime + _FoundationReleaseInterval
+        ) {
+            _FoundationReleaseAllowReleaseTime += _FoundationReleaseInterval;
+
+            _FoundationReleaseTotalAward =
+                (_FoundationReleaseTotalAward - _FoundationReleaseCurrAward) +
+                (_FoundationTotalAward / 4);
+
+            _FoundationReleaseCurrAward = 0;
+        }
+
+        require(
+            _FoundationReleaseTotalAward -
+                _FoundationReleaseCurrAward -
+                mintNum >=
+                0,
+            "_FoundationReleaseTotalAward is not enough"
+        );
+
+        require(
+            _FoundationTotalAward - _FoundationCurrAward - mintNum >= 0,
+            "_FoundationTotalAward is not enough"
+        );
+
+        _FoundationCurrAward += mintNum;
+        _FoundationReleaseCurrAward += mintNum;
+
+        _mint(_FoundationAddress, mintNum);
+    }
+
+    /**
+     * @dev Mint tokens to the mining reserve address.
+     * @param mintNum The number of tokens to mint.
+     * @notice Only callable by the contract owner.
+     * @notice The total award must be sufficient for the minting to succeed.
+     */
+    function MiningReserveMint(uint256 mintNum) private {
+        require(
+            _MiningReserveAllowReleaseTime > 0,
+            "The commencement of the release of mining reserves has not yet commenced"
+        );
+
+        if (block.timestamp >= _lastMiningReserveRateTime) {
+            _MiningReserveMiningRatio = _MiningReserveMiningRatio / 2;
+            require(
+                _MiningReserveMiningRatio > 0,
+                "_MiningReserveMiningRatio is 0"
+            );
+
+            _lastMiningReserveRateTime += _MiningReserveRateInterval;
+        }
+
+        if (
+            block.timestamp >=
+            _MiningReserveAllowReleaseTime + _MiningReserveReleaseInterval
+        ) {
+            _MiningReserveCurrYearTotalAward = 0;
+
+            _MiningReserveAllowReleaseTime += _MiningReserveReleaseInterval;
+
+            _MiningReserveCurrYearTotalSupply =
+                ((_MiningReserveTotalAward - _MiningReserveCurrAward) *
+                    _MiningReserveMiningRatio) /
+                _GPUMiningTotalMiningRatio;
+        }
+
+        require(
+            _MiningReserveCurrYearTotalSupply -
+                _MiningReserveCurrYearTotalAward -
+                mintNum >=
+                0,
+            "_MiningReserveCurrYearTotalSupply is not enough"
+        );
+
+        require(
+            _MiningReserveTotalAward - _MiningReserveCurrAward - mintNum >= 0,
+            "_MiningReserveTotalAward is not enough"
+        );
+
+        _MiningReserveCurrYearTotalAward += mintNum;
+        _MiningReserveCurrAward += mintNum;
+
+        _mint(_MiningReserveAddress, mintNum);
+    }
+
+    /**
+     * @dev Mint new tokens to designated addresses.
+     * @param amount The amount of tokens to mint.
+     * Emits a {Transfer} event with `from` set to the zero address.
+     * Requirements:
+     * - The caller must have permission to mint tokens.
+     * - The total supply must not exceed the maximum supply.
+     */
+    function mint(uint256 amount) public {
+        require(
+            _mintNum + amount <= totalSupply(),
+            "totalSupply is not enough"
+        );
+
+        if (msg.sender == _GPUMiningAddress) {
+            GPUMiningMint(amount);
+        } else if (msg.sender == _CoreTeamAddeess) {
+            CoreTeamMint(amount);
+        } else if (msg.sender == _AdvisorAddress) {
+            AdvisorMint(amount);
+        } else if (msg.sender == _EarlyContributorsKOLAddress) {
+            EarlyContributorsKOLMint(amount);
+        } else if (msg.sender == _EarlyContributorsGenesisAddress) {
+            EarlyContributorsGenesisMint(amount);
+        } else if (msg.sender == _PrivateSaleAddress) {
+            PrivateSaleMint(amount);
+        } else if (msg.sender == _FoundationAddress) {
+            FoundationMint(amount);
+        } else if (msg.sender == _MiningReserveAddress) {
+            MiningReserveMint(amount);
+        } else {
+            revert("do not have permission");
+        }
+    }
+
+    function startMiningReserveReleaseTime() public onlyOwner {
+        _MiningReserveAllowReleaseTime = block.timestamp;
+        _lastMiningReserveRateTime = block.timestamp;
+    }
+
+    function totalSupply() public view override returns (uint256) {
+        return _totalSupply;
+    }
+}

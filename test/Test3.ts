@@ -2,6 +2,11 @@
 
 import { ethers } from "hardhat";
 
+
+const mysql = require('mysql2');
+
+import fs from 'fs';
+
 describe("Hyperdust_HYDT_Price", () => {
     describe("sendRequest", () => {
         it("sendRequest", async () => {

@@ -104,11 +104,10 @@ contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
                 time.toString().toSlice()
             );
 
-            string memory amountKey = key.toSlice().concat("_amount").toSlice();
-            string memory releaseAmountKey = key
-                .toSlice()
-                .concat("_releaseAmount")
-                .toSlice();
+            string memory amountKey = key.toSlice().concat("_amount".toSlice());
+            string memory releaseAmountKey = key.toSlice().concat(
+                "_releaseAmount".toSlice()
+            );
 
             uint256 amount = hyperdustStorage.getUint(amountKey) + avgAmount;
 
@@ -146,11 +145,10 @@ contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
                 time.toString().toSlice()
             );
 
-            string memory amountKey = key.toSlice().concat("_amount").toSlice();
-            string memory releaseAmountKey = key
-                .toSlice()
-                .concat("_releaseAmount")
-                .toSlice();
+            string memory amountKey = key.toSlice().concat("_amount".toSlice());
+            string memory releaseAmountKey = key.toSlice().concat(
+                "_releaseAmount".toSlice()
+            );
 
             uint256 amount = hyperdustStorage.getUint(amountKey);
 
@@ -191,11 +189,10 @@ contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
             time.toString().toSlice()
         );
 
-        string memory amountKey = key.toSlice().concat("_amount").toSlice();
-        string memory releaseAmountKey = key
-            .toSlice()
-            .concat("_releaseAmount")
-            .toSlice();
+        string memory amountKey = key.toSlice().concat("_amount".toSlice());
+        string memory releaseAmountKey = key.toSlice().concat(
+            "_releaseAmount".toSlice()
+        );
 
         uint256 amount = hyperdustStorage.getUint(amountKey);
         uint256 releaseAmount = hyperdustStorage.getUint(releaseAmountKey);

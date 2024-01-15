@@ -1,28 +1,6 @@
 pragma solidity ^0.8.0;
 
-abstract contract IERC20 {
-    function transferFrom(
-        address from,
-        address to,
-        uint256 amount
-    ) public returns (bool) {}
-
-    function allowance(
-        address owner,
-        address spender
-    ) external view returns (uint256) {}
-
-    function balanceOf(address account) external view returns (uint256) {}
-
-    function approve(address spender, uint256 amount) external returns (bool) {}
-
-    function mint(address to, uint256 amount) public {}
-
-    function transfer(
-        address to,
-        uint256 amount
-    ) public virtual returns (bool) {}
-}
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 abstract contract IHyperdustNodeMgr {
     struct Node {
@@ -44,10 +22,6 @@ abstract contract IHyperdustRolesCfg {
     function hasAdminRole(address account) public view returns (bool) {}
 }
 
-abstract contract IHyperdustWalletAccount {
-    function addAmount(uint256 amount) public {}
-}
-
 abstract contract IHyperdustTransactionCfg {
     function get(string memory key) public view returns (uint256) {}
 
@@ -63,6 +37,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {StrUtil} from "../utils/StrUtil.sol";
 
 import "./../Hyperdust_Storage.sol";
+import "../Hyperdust_Wallet_Account.sol";
 
 contract Hyperdust_Render_Transcition is OwnableUpgradeable {
     using Strings for *;
@@ -130,6 +105,18 @@ contract Hyperdust_Render_Transcition is OwnableUpgradeable {
             _HyperdustStorageAddress
         );
 
+        Hyperdust_Wallet_Account walletAccount = Hyperdust_Wallet_Account(
+            _walletAccountAddress
+        );
+
+        address _GasFeeCollectionWallet = walletAccount
+            ._GasFeeCollectionWallet();
+
+        require(
+            _GasFeeCollectionWallet != address(0),
+            "not set GasFeeCollectionWallet"
+        );
+
         checkRenderTranscition(msg.sender);
         checkRenderNode(nodeId);
 
@@ -147,9 +134,9 @@ contract Hyperdust_Render_Transcition is OwnableUpgradeable {
 
         require(amount >= commission, "Insufficient authorized amount");
 
-        erc20.transferFrom(msg.sender, _walletAccountAddress, commission);
+        erc20.transferFrom(msg.sender, _GasFeeCollectionWallet, commission);
 
-        IHyperdustWalletAccount(_walletAccountAddress).addAmount(amount);
+        walletAccount.addAmount(commission);
 
         uint256 createTime = block.timestamp;
 
@@ -277,6 +264,10 @@ contract Hyperdust_Render_Transcition is OwnableUpgradeable {
             "not admin role"
         );
 
+        Hyperdust_Wallet_Account walletAccount = Hyperdust_Wallet_Account(
+            _walletAccountAddress
+        );
+
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
             _HyperdustStorageAddress
         );
@@ -351,7 +342,7 @@ contract Hyperdust_Render_Transcition is OwnableUpgradeable {
 
                 hyperdustStorage.setUint(
                     hyperdustStorage.genKey("nextEndTime", id),
-                    nextEndTime + (60 * 64) / 10
+                    nextEndTime
                 );
 
                 hyperdustStorage.setUint(
@@ -363,6 +354,12 @@ contract Hyperdust_Render_Transcition is OwnableUpgradeable {
                     hyperdustStorage.genKey("epochTimes", id),
                     useEpoch - 1,
                     block.timestamp
+                );
+
+                hyperdustStorage.setUintArray(
+                    hyperdustStorage.genKey("epochAmounts", id),
+                    useEpoch - 1,
+                    commission
                 );
 
                 uint256 _amount = hyperdustStorage.getUint(
@@ -408,9 +405,7 @@ contract Hyperdust_Render_Transcition is OwnableUpgradeable {
         }
 
         if (totalAmount > 0) {
-            IHyperdustWalletAccount(_walletAccountAddress).addAmount(
-                totalAmount
-            );
+            walletAccount.addAmount(totalAmount);
         }
 
         uint256[] memory _success = new uint256[](successIndex);

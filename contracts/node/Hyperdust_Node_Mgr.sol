@@ -45,6 +45,7 @@ contract Hyperdust_Node_Mgr is OwnableUpgradeable {
         address incomeAddress;
         string ip; //Node public network IP
         uint256[] uint256Array; //id,nodeType,cpuNum,memoryNum,diskNum,cudaNum,videoMemory
+        bool isOffine;
     }
 
     event eveSave(uint256 id);
@@ -228,13 +229,15 @@ contract Hyperdust_Node_Mgr is OwnableUpgradeable {
         (
             address incomeAddress,
             string memory ip,
-            uint256[] memory uint256Array
-        ) = getNode(id);
+            uint256[] memory uint256Array,
+            bool isOffine
+        ) = getNodeV2(id);
 
         Node memory node = Node({
             incomeAddress: incomeAddress,
             ip: ip,
-            uint256Array: uint256Array
+            uint256Array: uint256Array,
+            isOffine: isOffine
         });
 
         return node;
@@ -323,5 +326,38 @@ contract Hyperdust_Node_Mgr is OwnableUpgradeable {
         );
 
         hyperdustStorage.setUintArray("idList", idList);
+    }
+
+    function updateStatus(uint256 nodeId, bool isOffine) public {
+        require(
+            IHyperdustRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
+            "not admin role"
+        );
+
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
+
+        hyperdustStorage.setBool(
+            hyperdustStorage.genKey("isOffine", nodeId),
+            isOffine
+        );
+
+        emit eveSave(nodeId);
+    }
+
+    function getNodeV2(
+        uint256 id
+    ) public view returns (address, string memory, uint256[] memory, bool) {
+        (
+            address incomeAddress,
+            string memory ip,
+            uint256[] memory uint256Array
+        ) = getNode(id);
+
+        bool isOffine = Hyperdust_Storage(_HyperdustStorageAddress).getBool(
+            Hyperdust_Storage(_HyperdustStorageAddress).genKey("isOffine", id)
+        );
+        return (incomeAddress, ip, uint256Array, isOffine);
     }
 }
