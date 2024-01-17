@@ -1,22 +1,32 @@
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+
 import "./utils/StrUtil.sol";
 
-contract Hyperdust_AirDrop is Ownable {
+abstract contract IHyperdustRolesCfg {
+    function hasAdminRole(address account) public view returns (bool) {}
+}
+
+contract Hyperdust_Faucet is OwnableUpgradeable {
     address public _HyperdustTokenAddress;
     address public _fromAddress;
+    address public _HyperdustRolesCfgAddress;
     using Strings for *;
 
     using StrUtil for *;
 
-    constructor() Ownable(msg.sender) {}
+    event eveTransfer(address[]);
 
-    mapping(address => bool) public _airDropMap;
+    function initialize() public initializer {
+        __Ownable_init(msg.sender);
+    }
 
     function setHyperdustTokenAddress(
         address HyperdustTokenAddress
@@ -28,25 +38,29 @@ contract Hyperdust_AirDrop is Ownable {
         _fromAddress = fromAddress;
     }
 
-    function Transfer(
+    function transfer(
         address[] memory accounts,
         uint256[] memory amounts
-    ) public onlyOwner {
-        for (uint256 i = 0; i < accounts.length; i++) {
-            if (_airDropMap[accounts[i]]) {
-                string memory errMsg = "airDrop: already airDrop "
-                    .toSlice()
-                    .concat(accounts[i].toHexString().toSlice());
-                revert(errMsg);
-            }
+    ) public {
+        require(
+            IHyperdustRolesCfg(_HyperdustRolesCfgAddress).hasAdminRole(
+                msg.sender
+            ),
+            "not admin role"
+        );
 
+        for (uint256 i = 0; i < accounts.length; i++) {
             IERC20(_HyperdustTokenAddress).transferFrom(
                 _fromAddress,
                 accounts[i],
                 amounts[i]
             );
-
-            _airDropMap[accounts[i]] = true;
         }
+
+        emit eveTransfer(accounts);
+    }
+
+    function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
+        _HyperdustRolesCfgAddress = rolesCfgAddress;
     }
 }
