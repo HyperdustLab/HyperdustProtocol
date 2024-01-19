@@ -401,7 +401,7 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         uint256 num = time / _FoundationReleaseInterval;
 
         if (num > 0) {
-            uint256 addAward = _CoreTeamMonthReleaseAward * (num);
+            uint256 addAward = _FoundationMonthReleaseAward * num;
 
             uint256 totalMintAward = _FoundationTotalAward -
                 _FoundationCurrAward;
@@ -703,8 +703,8 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
                 addAward = totalMintAward;
             }
 
-            _PrivateSaleTotalAward += addAward;
-            _PrivateSaleReleaseTime = num * _PrivateSaleReleaseInterval;
+            _PrivateSaleReleaseTotalAward += addAward;
+            _PrivateSaleReleaseTime += num * _PrivateSaleReleaseInterval;
         }
 
         uint256 mintNum = _PrivateSaleReleaseTotalAward - _PrivateSaleCurrAward;
@@ -761,7 +761,7 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         }
 
         return (
-            _PublicSaleReleaseTotalAward - _PublicSaleCurrAward,
+            PublicSaleReleaseTotalAward - _PublicSaleCurrAward,
             PublicSaleReleaseTotalAward
         );
     }
