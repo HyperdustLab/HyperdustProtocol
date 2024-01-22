@@ -10,7 +10,7 @@ async function main() {
     await contract.waitForDeployment()
 
 
-
+    
 
     console.info("contractFactory address:", contract.target);
 }

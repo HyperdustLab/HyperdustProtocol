@@ -318,7 +318,9 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         if (num > 0) {
             uint256 addAward = _CoreTeamMonthReleaseAward * (num);
 
-            uint256 totalMintAward = _CoreTeamTotalAward - _CoreTeamCurrAward;
+            uint256 totalMintAward = _CoreTeamTotalAward -
+                _CoreTeamCurrAward -
+                _CoreTeamReleaseTotalAward;
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -350,7 +352,9 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         if (num > 0) {
             uint256 addAward = _CoreTeamMonthReleaseAward * num;
 
-            uint256 totalMintAward = _CoreTeamTotalAward - _CoreTeamCurrAward;
+            uint256 totalMintAward = _CoreTeamTotalAward -
+                _CoreTeamCurrAward -
+                _CoreTeamReleaseTotalAward;
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -401,10 +405,11 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         uint256 num = time / _FoundationReleaseInterval;
 
         if (num > 0) {
-            uint256 addAward = _CoreTeamMonthReleaseAward * (num);
+            uint256 addAward = _CoreTeamMonthReleaseAward * num;
 
             uint256 totalMintAward = _FoundationTotalAward -
-                _FoundationCurrAward;
+                _FoundationCurrAward -
+                _FoundationReleaseTotalAward;
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -439,7 +444,8 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
             uint256 addAward = _FoundationMonthReleaseAward * num;
 
             uint256 totalMintAward = _FoundationTotalAward -
-                _FoundationCurrAward;
+                _FoundationCurrAward -
+                _FoundationReleaseTotalAward;
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -494,7 +500,9 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         if (num > 0) {
             uint256 addAward = _AdvisorMonthReleaseAward * num;
 
-            uint256 totalMintAward = _AdvisorTotalAward - _AdvisorCurrAward;
+            uint256 totalMintAward = _AdvisorTotalAward -
+                _AdvisorCurrAward -
+                _AdvisorReleaseTotalAward;
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -526,7 +534,9 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         if (num > 0) {
             uint256 addAward = _AdvisorMonthReleaseAward * num;
 
-            uint256 totalMintAward = _AdvisorTotalAward - _AdvisorCurrAward;
+            uint256 totalMintAward = _AdvisorTotalAward -
+                _AdvisorCurrAward -
+                _AdvisorReleaseTotalAward;
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -580,7 +590,9 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         if (num > 0) {
             uint256 addAward = _SeedMonthReleaseAward * num;
 
-            uint256 totalMintAward = _SeedTotalAward - _SeedCurrAward;
+            uint256 totalMintAward = _SeedTotalAward -
+                _SeedCurrAward -
+                _SeedReleaseTotalAward;
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -609,7 +621,9 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         if (num > 0) {
             uint256 addAward = _SeedMonthReleaseAward * num;
 
-            uint256 totalMintAward = _SeedTotalAward - _SeedCurrAward;
+            uint256 totalMintAward = _SeedTotalAward -
+                _SeedCurrAward -
+                _SeedReleaseTotalAward;
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -664,7 +678,8 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
             uint256 addAward = _PrivateSaleMonthReleaseAward * num;
 
             uint256 totalMintAward = _PrivateSaleTotalAward -
-                _PrivateSaleCurrAward;
+                _PrivateSaleCurrAward -
+                _PrivateSaleReleaseTotalAward;
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -697,7 +712,8 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
             uint256 addAward = _PrivateSaleMonthReleaseAward * num;
 
             uint256 totalMintAward = _PrivateSaleTotalAward -
-                _PrivateSaleCurrAward;
+                _PrivateSaleCurrAward -
+                _PrivateSaleReleaseTotalAward;
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -751,7 +767,8 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
             uint256 addAward = _PublicSaleMonthReleaseAward * num;
 
             uint256 totalMintAward = _PublicSaleTotalAward -
-                _PublicSaleCurrAward;
+                _PublicSaleCurrAward -
+                _PublicSaleReleaseTotalAward;
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -784,7 +801,8 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
             uint256 addAward = _PublicSaleMonthReleaseAward * num;
 
             uint256 totalMintAward = _PublicSaleTotalAward -
-                _PublicSaleCurrAward;
+                _PublicSaleCurrAward -
+                _PublicSaleReleaseTotalAward;
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -837,7 +855,9 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         if (num > 0) {
             uint256 addAward = _AirdropReleaseMonthAward * num;
 
-            uint256 totalMintAward = _AirdropTotalAward - _AirdropCurrAward;
+            uint256 totalMintAward = _AirdropTotalAward -
+                _AirdropCurrAward -
+                _AirdropReleaseTotalAward;
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -869,7 +889,9 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         if (num > 0) {
             uint256 addAward = _AirdropReleaseMonthAward * num;
 
-            uint256 totalMintAward = _AirdropTotalAward - _AirdropCurrAward;
+            uint256 totalMintAward = _AirdropTotalAward -
+                _AirdropCurrAward -
+                _AdvisorReleaseTotalAward;
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
