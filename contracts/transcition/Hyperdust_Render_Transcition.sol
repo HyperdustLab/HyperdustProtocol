@@ -54,6 +54,8 @@ contract Hyperdust_Render_Transcition is OwnableUpgradeable {
 
     event eveUpdateRenderEpoch(uint256[] success, uint256[] fail);
 
+    event eveNodeStatistical(uint256 totalNum, uint256 activeNum);
+
     function setErc20Address(address erc20Address) public onlyOwner {
         _erc20Address = erc20Address;
     }
@@ -129,6 +131,10 @@ contract Hyperdust_Render_Transcition is OwnableUpgradeable {
 
         uint256 commission = IHyperdustTransactionCfg(_transactionCfgAddress)
             .getGasFee("render");
+
+        (, uint256 totalNum, uint256 activeNum) = nodeMgr.getStatisticalIndex();
+
+        emit eveNodeStatistical(totalNum, activeNum);
 
         uint256 amount = erc20.allowance(msg.sender, address(this));
 
@@ -285,6 +291,12 @@ contract Hyperdust_Render_Transcition is OwnableUpgradeable {
 
         uint256 commission = IHyperdustTransactionCfg(_transactionCfgAddress)
             .getGasFee("render");
+
+        IHyperdustNodeMgr nodeMgr = IHyperdustNodeMgr(_nodeMgrAddress);
+
+        (, uint256 totalNum, uint256 activeNum) = nodeMgr.getStatisticalIndex();
+
+        emit eveNodeStatistical(totalNum, activeNum);
 
         uint256 totalAmount = 0;
 

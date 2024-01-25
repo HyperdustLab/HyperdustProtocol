@@ -34,6 +34,7 @@ const config: HardhatUserConfig = {
   networks: {
     dev: {
       url: "HTTP://127.0.0.1:8545",
+      accounts: [process.env.PRIVATE_KEY],
     },
     sepolia: {
       url: process.env.SEPOLIA_RPC_URL,

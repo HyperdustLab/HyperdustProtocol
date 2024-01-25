@@ -165,8 +165,8 @@ contract Hyperdust_Render_Awards is OwnableUpgradeable {
 
         uint256 epochAward = hyperdustToken._epochAward();
 
-        if (_totalNum < 100) {
-            _totalNum = 100;
+        if (_totalNum < 10) {
+            _totalNum = 10;
         }
 
         if (_activeNum == 0 || epochAward == 0) {
@@ -177,7 +177,11 @@ contract Hyperdust_Render_Awards is OwnableUpgradeable {
 
         uint256 nodeId = activeNodes[index];
 
-        uint256 actualEpochAward = epochAward / (_totalNum / _activeNum);
+        uint32 accuracy = 1000000;
+
+        uint256 difficuty = (_totalNum * accuracy) / _activeNum;
+
+        uint256 actualEpochAward = (epochAward * accuracy) / difficuty;
         uint256 securityDeposit = actualEpochAward / 10;
         uint256 baseRewardReleaseAward = actualEpochAward - securityDeposit;
 

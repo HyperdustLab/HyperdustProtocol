@@ -8,19 +8,17 @@ describe("Hyperdust_HYDT_Price", () => {
 
 
             const accounts = await ethers.getSigners();
-            const Hyperdust_Token_Test = await ethers.getContractAt('Hyperdust_Token_Test', '0x5FbDB2315678afecb367f032d93F642f64180aa3')
 
-            await (await Hyperdust_Token_Test.setCoreTeamAddress(accounts[0].address)).wait()
 
-            const time1 = await Hyperdust_Token_Test._CoreTeamAllowReleaseTime();
 
-            console.info(time1);
+            const contract = await ethers.deployContract("Test1");
 
-            await (await Hyperdust_Token_Test.mint(ethers.parseEther("1.15"))).wait()
+            await contract.waitForDeployment()
 
-            const time2 = await Hyperdust_Token_Test._CoreTeamAllowReleaseTime();
+            const a = await contract.test();
 
-            console.info(time2);
+            console.info(ethers.formatEther(a))
+
 
 
 

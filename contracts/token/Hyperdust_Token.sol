@@ -41,7 +41,7 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         (_GPUMiningTotalAward * _GPUMiningCurrMiningRatio) /
             _GPUMiningTotalMiningRatio;
 
-    uint256 public _epochAward = _GPUMiningCurrYearTotalSupply / 365 / 225;
+    uint256 private _epochAward = _GPUMiningCurrYearTotalSupply / 365 / 225;
 
     uint256 private _GPUMiningCurrYearTotalAward = 0;
 
@@ -186,7 +186,7 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
     function getGPUMiningCurrAllowMintTotalNum()
         public
         view
-        returns (uint256, uint256)
+        returns (uint256, uint256, uint256)
     {
         require(
             _GPUMiningAllowReleaseTime > 0,
@@ -197,6 +197,8 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         uint256 GPUMiningCurrYearTotalAward = _GPUMiningCurrYearTotalAward;
 
         uint256 GPUMiningCurrYearTotalSupply = _GPUMiningCurrYearTotalSupply;
+
+        uint256 epochAward = _epochAward;
 
         if (
             block.timestamp >= _lastGPUMiningRateTime + _GPUMiningRateInterval
@@ -213,29 +215,20 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
 
             GPUMiningCurrYearTotalSupply =
                 ((_GPUMiningTotalAward - _GPUMiningCurrAward) *
-                    _GPUMiningCurrMiningRatio) /
+                    GPUMiningCurrMiningRatio) /
                 _GPUMiningTotalMiningRatio;
-        }
 
-        if (
-            block.timestamp >=
-            _GPUMiningAllowReleaseTime + _GPUMiningReleaseInterval
-        ) {
-            GPUMiningCurrYearTotalAward = 0;
-
-            GPUMiningCurrYearTotalSupply =
-                ((_GPUMiningTotalAward - _GPUMiningCurrAward) *
-                    _GPUMiningCurrMiningRatio) /
-                _GPUMiningTotalMiningRatio;
+            epochAward = GPUMiningCurrYearTotalSupply / 365 / 225;
         }
 
         if (block.timestamp >= _GPUMiningAllowReleaseTime) {
             return (
                 GPUMiningCurrYearTotalSupply - GPUMiningCurrYearTotalAward,
-                GPUMiningCurrYearTotalSupply
+                GPUMiningCurrYearTotalSupply,
+                epochAward
             );
         } else {
-            return (0, 0);
+            return (0, 0, epochAward);
         }
     }
 
@@ -260,6 +253,7 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
             _GPUMiningAllowReleaseTime + _GPUMiningReleaseInterval
         ) {
             _GPUMiningCurrYearTotalAward = 0;
+
             _GPUMiningAllowReleaseTime += _GPUMiningReleaseInterval;
 
             _GPUMiningCurrYearTotalSupply =
@@ -405,7 +399,7 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         uint256 num = time / _FoundationReleaseInterval;
 
         if (num > 0) {
-            uint256 addAward = _CoreTeamMonthReleaseAward * num;
+            uint256 addAward = _FoundationMonthReleaseAward * num;
 
             uint256 totalMintAward = _FoundationTotalAward -
                 _FoundationCurrAward -
@@ -891,7 +885,7 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
 
             uint256 totalMintAward = _AirdropTotalAward -
                 _AirdropCurrAward -
-                _AdvisorReleaseTotalAward;
+                _AirdropReleaseTotalAward;
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -955,7 +949,7 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
     }
 
     function getPrivateProperty() public view returns (uint256[] memory) {
-        uint256[] memory arr = new uint256[](31);
+        uint256[] memory arr = new uint256[](32);
 
         arr[0] = _GPUMiningCurrMiningRatio;
         arr[1] = _GPUMiningTotalMiningRatio;
@@ -964,33 +958,32 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         arr[4] = _GPUMiningReleaseInterval;
         arr[5] = _GPUMiningRateInterval;
         arr[6] = _lastGPUMiningRateTime;
-        arr[7] = _CoreTeamTotalAward;
-        arr[8] = _CoreTeamCurrAward;
-        arr[9] = _CoreTeamReleaseInterval;
-        arr[10] = _CoreTeamMonthReleaseAward;
-        arr[11] = _CoreTeamReleaseTotalAward;
 
-        arr[12] = _FoundationReleaseInterval;
-        arr[13] = _FoundationReleaseTotalAward;
-        arr[14] = _FoundationMonthReleaseAward;
+        arr[7] = _CoreTeamReleaseInterval;
+        arr[8] = _CoreTeamMonthReleaseAward;
+        arr[9] = _CoreTeamReleaseTotalAward;
 
-        arr[15] = _AdvisorCurrAward;
-        arr[16] = _AdvisorReleaseInterval;
-        arr[17] = _AdvisorMonthReleaseAward;
-        arr[18] = _AdvisorReleaseTotalAward;
+        arr[10] = _FoundationReleaseInterval;
+        arr[11] = _FoundationReleaseTotalAward;
+        arr[12] = _FoundationMonthReleaseAward;
 
-        arr[19] = _SeedReleaseInterval;
-        arr[20] = _SeedReleaseTotalAward;
-        arr[21] = _PrivateSaleReleaseInterval;
-        arr[22] = _PrivateSaleReleaseTotalAward;
-        arr[23] = _PrivateSaleMonthReleaseAward;
-        arr[24] = _PublicSaleReleaseInterval;
-        arr[25] = _PublicSaleReleaseTotalAward;
-        arr[26] = _PublicSaleMonthReleaseAward;
-        arr[27] = _AirdropReleaseInterval;
-        arr[28] = _AirdropReleaseMonthAward;
-        arr[29] = _AirdropReleaseMonthAward;
-        arr[30] = _AirdropReleaseTotalAward;
+        arr[13] = _AdvisorCurrAward;
+        arr[14] = _AdvisorReleaseInterval;
+        arr[15] = _AdvisorMonthReleaseAward;
+        arr[16] = _AdvisorReleaseTotalAward;
+
+        arr[17] = _SeedReleaseInterval;
+        arr[18] = _SeedReleaseTotalAward;
+        arr[19] = _PrivateSaleReleaseInterval;
+        arr[20] = _PrivateSaleReleaseTotalAward;
+        arr[21] = _PrivateSaleMonthReleaseAward;
+        arr[22] = _PublicSaleReleaseInterval;
+        arr[23] = _PublicSaleReleaseTotalAward;
+        arr[24] = _PublicSaleMonthReleaseAward;
+        arr[25] = _AirdropReleaseInterval;
+        arr[26] = _AirdropReleaseMonthAward;
+        arr[27] = _AirdropReleaseTotalAward;
+        arr[28] = _epochAward;
 
         return arr;
     }

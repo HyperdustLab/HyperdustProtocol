@@ -89,6 +89,10 @@ contract Hyperdust_Transaction_Cfg is OwnableUpgradeable {
             return _minGasFeeMap[func];
         }
 
+        if (_totalNum < 10) {
+            _totalNum = 10;
+        }
+
         uint32 accuracy = 1000000;
 
         uint256 difficuty = (_totalNum * accuracy) / _activeNum;
