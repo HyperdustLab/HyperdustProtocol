@@ -18,12 +18,12 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
     using Strings for *;
     using StrUtil for *;
 
-    uint256 public _monthTime = 600;
-    uint256 public _yearTime = 600;
+    uint256 public _monthTime = 30 days;
+    uint256 public _yearTime = 365 days;
 
     uint256 public TGE_timestamp = 0;
 
-    uint256 public _totalSupply = 200 ether;
+    uint256 public _totalSupply = 200000000 ether;
 
     uint256 public _mintNum = 0;
 
@@ -204,7 +204,7 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
             block.timestamp >= _lastGPUMiningRateTime + _GPUMiningRateInterval
         ) {
             GPUMiningCurrMiningRatio = GPUMiningCurrMiningRatio / 2;
-            require(_GPUMiningCurrMiningRatio > 0, "currMiningRatio is 0");
+            require(GPUMiningCurrMiningRatio > 0, "currMiningRatio is 0");
         }
 
         if (
