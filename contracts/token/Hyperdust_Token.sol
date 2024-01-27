@@ -995,10 +995,7 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         return arr;
     }
 
-    function getGPUMiningCurrMiningRatio() {
-
-
-        
-
+    function getGPUMiningCurrMiningRatio() public view returns (uint256) {
+        return Math.mulDiv(_GPUMiningCurrMiningRatio, 100, FACTOR);
     }
 }

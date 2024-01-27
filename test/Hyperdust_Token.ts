@@ -6,10 +6,13 @@ const { expect } = require("chai");
 
 import dayjs from 'dayjs'
 
+import ExcelJS from 'exceljs'
+
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
 chai.use(chaiAsPromised);
+
 
 describe("Hyperdust_Token", () => {
 
@@ -548,7 +551,12 @@ describe("Hyperdust_Token", () => {
 
 
 
+
+
     it("GPUMining Mint Recursive halving test", async () => {
+
+
+
 
         const accounts = await ethers.getSigners();
 
@@ -562,21 +570,30 @@ describe("Hyperdust_Token", () => {
         await (await contract.setGPUMiningAddress(accounts[0].address)).wait()
 
 
-        const data = [
-            ['Mint时间', 'Mint金额', 'Epoch金额', '释放比例', "允许释放时间", "年度", "年度允许释放金额", "已释放金额", "总计金额", "已释放金额"]
-        ];
-
+        const _GPUMiningTotalAward = await contract._GPUMiningTotalAward();
 
         for (let i = 1; i <= 20; i++) {
 
 
-            for (let j = 0; j < 365; i++) {
+
+            // 创建一个新的工作簿
+            let workbook = new ExcelJS.Workbook();
+
+            // 添加一个新的工作表
+            let worksheet = workbook.addWorksheet('My Sheet');
+
+
+            worksheet.addRow(['Mint时间', 'Mint金额', 'Epoch金额', '释放比例', "允许释放时间", "年度", "年度可释放金额", "年度总计可释放金额", "总计金额", "已释放金额"]);
+
+
+
+
+            for (let j = 0; j < 365; j++) {
 
                 for (let k = 0; k < 225; k++) {
 
                     const privateProperty = await contract.getPrivateProperty();
 
-                    const _epochAward = privateProperty[28];
 
                     const list = [];
 
@@ -586,19 +603,55 @@ describe("Hyperdust_Token", () => {
 
                     const createDate = dayjs.unix(parseInt(timestamp.toString())).format("YYYY-MM-DD HH:mm:ss");
 
+
+                    const GPUMiningCurrAllowMintTotalNum = await contract.getGPUMiningCurrAllowMintTotalNum();
+
+
+                    const _epochAward = GPUMiningCurrAllowMintTotalNum[2];
+
+
+                    const _GPUMiningCurrAward = await contract._GPUMiningCurrAward();
+
+                    await (await contract.GPUMiningMint(_epochAward)).wait();
+
+                    const GPUMiningCurrMiningRatio = await contract.getGPUMiningCurrMiningRatio();
+                    const _GPUMiningAllowReleaseTime = await contract._GPUMiningAllowReleaseTime();
+
+
                     list.push(createDate);
                     list.push(ethers.formatEther(_epochAward));
                     list.push(ethers.formatEther(_epochAward));
-                    
+                    list.push((parseInt(GPUMiningCurrMiningRatio) / 100));
+                    list.push(dayjs.unix(parseInt(_GPUMiningAllowReleaseTime.toString())).format("YYYY-MM-DD HH:mm:ss"));
+                    list.push(i);
+                    list.push(ethers.formatEther(GPUMiningCurrAllowMintTotalNum[0]));
+                    list.push(ethers.formatEther(GPUMiningCurrAllowMintTotalNum[1]));
+                    list.push(ethers.formatEther(_GPUMiningTotalAward));
+                    list.push(ethers.formatEther(_GPUMiningCurrAward));
 
+                    worksheet.addRow(list);
 
+                    await network.provider.send("evm_increaseTime", [384]);
+                    await network.provider.send("evm_mine");
 
+                    console.info(i, j, k)
                 }
 
             }
 
 
+            // 写入Excel文件
+            await workbook.xlsx.writeFile(`D:\\file\\Hyperdust_${i}.xlsx`);
+
+
         }
+
+
+
+
+
+
+
     })
 
 
