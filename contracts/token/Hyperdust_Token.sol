@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import {DateTime} from "@quant-finance/solidity-datetime/contracts/DateTime.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/math/Math.sol";
 import "../utils/StrUtil.sol";
 
 contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
@@ -33,13 +34,12 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
 
     uint256 public _GPUMiningCurrAward = 0;
 
-    uint32 private _GPUMiningCurrMiningRatio = 100000;
+    uint256 private _GPUMiningCurrMiningRatio = 10 * 10 ** 18;
 
-    uint32 private _GPUMiningTotalMiningRatio = _GPUMiningCurrMiningRatio * 10;
+    uint256 constant FACTOR = 10 ** 18 * 100;
 
     uint256 private _GPUMiningCurrYearTotalSupply =
-        (_GPUMiningTotalAward * _GPUMiningCurrMiningRatio) /
-            _GPUMiningTotalMiningRatio;
+        Math.mulDiv(_GPUMiningTotalAward, _GPUMiningCurrMiningRatio, FACTOR);
 
     uint256 private _epochAward = _GPUMiningCurrYearTotalSupply / 365 / 225;
 
@@ -203,7 +203,12 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         if (
             block.timestamp >= _lastGPUMiningRateTime + _GPUMiningRateInterval
         ) {
-            GPUMiningCurrMiningRatio = GPUMiningCurrMiningRatio / 2;
+            GPUMiningCurrMiningRatio = Math.mulDiv(
+                GPUMiningCurrMiningRatio,
+                FACTOR,
+                2 * FACTOR
+            );
+
             require(GPUMiningCurrMiningRatio > 0, "currMiningRatio is 0");
         }
 
@@ -213,10 +218,11 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         ) {
             GPUMiningCurrYearTotalAward = 0;
 
-            GPUMiningCurrYearTotalSupply =
-                ((_GPUMiningTotalAward - _GPUMiningCurrAward) *
-                    GPUMiningCurrMiningRatio) /
-                _GPUMiningTotalMiningRatio;
+            GPUMiningCurrYearTotalSupply = Math.mulDiv(
+                _GPUMiningTotalAward - _GPUMiningCurrAward,
+                GPUMiningCurrMiningRatio,
+                FACTOR
+            );
 
             epochAward = GPUMiningCurrYearTotalSupply / 365 / 225;
         }
@@ -256,10 +262,11 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
 
             _GPUMiningAllowReleaseTime += _GPUMiningReleaseInterval;
 
-            _GPUMiningCurrYearTotalSupply =
-                ((_GPUMiningTotalAward - _GPUMiningCurrAward) *
-                    _GPUMiningCurrMiningRatio) /
-                _GPUMiningTotalMiningRatio;
+            _GPUMiningCurrYearTotalSupply = Math.mulDiv(
+                _GPUMiningTotalAward - _GPUMiningCurrAward,
+                _GPUMiningCurrMiningRatio,
+                FACTOR
+            );
 
             _epochAward = _GPUMiningCurrYearTotalSupply / 365 / 225;
         }
@@ -952,7 +959,7 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         uint256[] memory arr = new uint256[](32);
 
         arr[0] = _GPUMiningCurrMiningRatio;
-        arr[1] = _GPUMiningTotalMiningRatio;
+        arr[1] = 0;
         arr[2] = _GPUMiningCurrYearTotalSupply;
         arr[3] = _GPUMiningCurrYearTotalAward;
         arr[4] = _GPUMiningReleaseInterval;

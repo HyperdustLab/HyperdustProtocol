@@ -605,11 +605,6 @@ describe("Hyperdust_Token", () => {
 
             console.info("_GPUMiningAllowReleaseTime:", _GPUMiningAllowReleaseTime)
 
-
-
-
-
-
             const GPUMiningCurrAllowMintTotalNum = await contract.getGPUMiningCurrAllowMintTotalNum();
 
             console.info(
@@ -620,16 +615,6 @@ describe("Hyperdust_Token", () => {
             )
 
         }
-
-
-
-
-
-
-
-
-
-
     })
 
 
