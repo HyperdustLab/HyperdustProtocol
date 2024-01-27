@@ -4,6 +4,8 @@ import { ethers, network } from "hardhat";
 
 const { expect } = require("chai");
 
+import dayjs from 'dayjs'
+
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 
@@ -545,77 +547,133 @@ describe("Hyperdust_Token", () => {
 
 
 
+
     it("GPUMining Mint Recursive halving test", async () => {
-
-
 
         const accounts = await ethers.getSigners();
 
         const contract = await ethers.deployContract("Hyperdust_Token_Test", ["Hyperdust Private Token Test", "HYPT test", accounts[0].address]);
         await contract.waitForDeployment()
 
-
-
-
         await (await contract.startTGETimestamp()).wait()
 
         const TGE_timestamp = await contract.TGE_timestamp()
         console.info("TGE_timestamp:", TGE_timestamp)
-
-
-        const TGE_timestamp_int = parseInt(TGE_timestamp.toString());
-
         await (await contract.setGPUMiningAddress(accounts[0].address)).wait()
 
 
-
-        await network.provider.send("evm_increaseTime", [_yearTime * 16]);
-        await network.provider.send("evm_mine");
-
-
-        // 获取最新的区块
-        let latestBlock = await ethers.provider.getBlock('latest');
-
-        // 从区块中获取时间戳
-        let timestamp = latestBlock ? latestBlock.timestamp : 0;
-
-        console.info("timestamp:", timestamp)
+        const data = [
+            ['Mint时间', 'Mint金额', 'Epoch金额', '释放比例', "允许释放时间", "年度", "年度允许释放金额", "已释放金额", "总计金额", "已释放金额"]
+        ];
 
 
-        for (let i = 0; i < 4; i++) {
-
-            await (await contract.GPUMiningMint(ethers.parseEther("1"))).wait()
+        for (let i = 1; i <= 20; i++) {
 
 
-            const privatePropertys = await contract.getPrivateProperty();
+            for (let j = 0; j < 365; i++) {
+
+                for (let k = 0; k < 225; k++) {
+
+                    const privateProperty = await contract.getPrivateProperty();
+
+                    const _epochAward = privateProperty[28];
+
+                    const list = [];
+
+                    let latestBlock = await ethers.provider.getBlock('latest');
+                    // 从区块中获取时间戳
+                    let timestamp = latestBlock ? latestBlock.timestamp : 0;
+
+                    const createDate = dayjs.unix(parseInt(timestamp.toString())).format("YYYY-MM-DD HH:mm:ss");
+
+                    list.push(createDate);
+                    list.push(ethers.formatEther(_epochAward));
+                    list.push(ethers.formatEther(_epochAward));
+                    
 
 
 
-            console.info(privatePropertys[0])
-            console.info(ethers.formatEther(privatePropertys[2]))
-            console.info(ethers.formatEther(privatePropertys[3]))
+                }
 
+            }
 
-            const GPUMiningTotalAward = await contract._GPUMiningTotalAward();
-
-            console.info("GPUMiningTotalAward:", ethers.formatEther(GPUMiningTotalAward))
-
-
-            const _GPUMiningAllowReleaseTime = await contract._GPUMiningAllowReleaseTime()
-
-            console.info("_GPUMiningAllowReleaseTime:", _GPUMiningAllowReleaseTime)
-
-            const GPUMiningCurrAllowMintTotalNum = await contract.getGPUMiningCurrAllowMintTotalNum();
-
-            console.info(
-
-                ethers.formatEther(GPUMiningCurrAllowMintTotalNum[0]),
-                ethers.formatEther(GPUMiningCurrAllowMintTotalNum[1]),
-                ethers.formatEther(GPUMiningCurrAllowMintTotalNum[2])
-            )
 
         }
     })
+
+
+
+    // it("GPUMining Mint Recursive halving test", async () => {
+
+
+
+    //     const accounts = await ethers.getSigners();
+
+    //     const contract = await ethers.deployContract("Hyperdust_Token_Test", ["Hyperdust Private Token Test", "HYPT test", accounts[0].address]);
+    //     await contract.waitForDeployment()
+
+
+
+
+    //     await (await contract.startTGETimestamp()).wait()
+
+    //     const TGE_timestamp = await contract.TGE_timestamp()
+    //     console.info("TGE_timestamp:", TGE_timestamp)
+
+
+    //     const TGE_timestamp_int = parseInt(TGE_timestamp.toString());
+
+    //     await (await contract.setGPUMiningAddress(accounts[0].address)).wait()
+
+
+
+    //     await network.provider.send("evm_increaseTime", [_yearTime * 16]);
+    //     await network.provider.send("evm_mine");
+
+
+    //     // 获取最新的区块
+    //     let latestBlock = await ethers.provider.getBlock('latest');
+
+    //     // 从区块中获取时间戳
+    //     let timestamp = latestBlock ? latestBlock.timestamp : 0;
+
+    //     console.info("timestamp:", timestamp)
+
+
+    //     for (let i = 0; i < 4; i++) {
+
+    //         await (await contract.GPUMiningMint(ethers.parseEther("1"))).wait()
+
+
+    //         const privatePropertys = await contract.getPrivateProperty();
+
+
+
+    //         console.info(privatePropertys[0])
+    //         console.info(ethers.formatEther(privatePropertys[2]))
+    //         console.info(ethers.formatEther(privatePropertys[3]))
+
+
+    //         const GPUMiningTotalAward = await contract._GPUMiningTotalAward();
+
+    //         console.info("GPUMiningTotalAward:", ethers.formatEther(GPUMiningTotalAward))
+
+
+    //         const _GPUMiningAllowReleaseTime = await contract._GPUMiningAllowReleaseTime()
+
+    //         console.info("_GPUMiningAllowReleaseTime:", _GPUMiningAllowReleaseTime)
+
+    //         const GPUMiningCurrAllowMintTotalNum = await contract.getGPUMiningCurrAllowMintTotalNum();
+
+    //         console.info(
+
+    //             ethers.formatEther(GPUMiningCurrAllowMintTotalNum[0]),
+    //             ethers.formatEther(GPUMiningCurrAllowMintTotalNum[1]),
+    //             ethers.formatEther(GPUMiningCurrAllowMintTotalNum[2])
+    //         )
+
+    //     }
+    // })
 
 
 
