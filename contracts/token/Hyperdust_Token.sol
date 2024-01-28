@@ -53,6 +53,8 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
 
     uint256 private _lastGPUMiningRateTime = 0;
 
+    uint256 private _lastGPUMiningMintTime = 0;
+
     address public _CoreTeamAddeess;
 
     uint256 public _CoreTeamTotalAward = (_totalSupply * 115) / 1000;
@@ -149,8 +151,6 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
 
     uint256 private _AirdropReleaseTotalAward = _AirdropReleaseMonthAward;
 
-    event eveMint(uint256 mintTime);
-
     function setGPUMiningAddress(address GPUMiningAddress) public onlyOwner {
         _GPUMiningAddress = GPUMiningAddress;
     }
@@ -230,11 +230,15 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         }
 
         if (block.timestamp >= _GPUMiningAllowReleaseTime) {
-            return (
-                GPUMiningCurrYearTotalSupply - GPUMiningCurrYearTotalAward,
-                GPUMiningCurrYearTotalSupply,
-                epochAward
-            );
+            if (block.timestamp - _lastGPUMiningMintTime >= 384) {
+                return (
+                    GPUMiningCurrYearTotalSupply - GPUMiningCurrYearTotalAward,
+                    GPUMiningCurrYearTotalSupply,
+                    epochAward
+                );
+            } else {
+                return (0, GPUMiningCurrYearTotalSupply, epochAward);
+            }
         } else {
             return (0, 0, epochAward);
         }
@@ -245,6 +249,11 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         require(
             _GPUMiningAllowReleaseTime > 0,
             "The commencement of the release of GPU mining has not yet commenced"
+        );
+
+        require(
+            block.timestamp - _lastGPUMiningMintTime >= 384,
+            "It's not time for the next mint"
         );
 
         if (
@@ -286,15 +295,15 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
             "GPUMiningTotalAward is not enough"
         );
 
-        require(_epochAward >= mintNum, "epochAward is not enough");
+        //  require(_epochAward >= mintNum, "epochAward is not enough");
 
         _GPUMiningCurrYearTotalAward += mintNum;
         _GPUMiningCurrAward += mintNum;
         _mintNum += mintNum;
 
-        require(_mintNum <= _totalSupply, "totalSupply is not enough");
+        _lastGPUMiningMintTime = block.timestamp;
 
-        emit eveMint(block.timestamp);
+        require(_mintNum <= _totalSupply, "totalSupply is not enough");
 
         _mint(_GPUMiningAddress, mintNum);
     }
@@ -1000,6 +1009,6 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
     }
 
     function getGPUMiningCurrMiningRatio() public view returns (uint256) {
-        return Math.mulDiv(_GPUMiningCurrMiningRatio, 100, FACTOR);
+        return Math.mulDiv(_GPUMiningCurrMiningRatio, 100000000, FACTOR);
     }
 }
