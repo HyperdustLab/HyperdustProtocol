@@ -149,6 +149,8 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
 
     uint256 private _AirdropReleaseTotalAward = _AirdropReleaseMonthAward;
 
+    event eveMint(uint256 mintTime);
+
     function setGPUMiningAddress(address GPUMiningAddress) public onlyOwner {
         _GPUMiningAddress = GPUMiningAddress;
     }
@@ -291,6 +293,8 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         _mintNum += mintNum;
 
         require(_mintNum <= _totalSupply, "totalSupply is not enough");
+
+        emit eveMint(block.timestamp);
 
         _mint(_GPUMiningAddress, mintNum);
     }
