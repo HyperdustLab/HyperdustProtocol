@@ -19,8 +19,8 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
     using Strings for *;
     using StrUtil for *;
 
-    uint256 public _monthTime = 30 days;
-    uint256 public _yearTime = 365 days;
+    uint256 public _monthTime = 600;
+    uint256 public _yearTime = 600;
 
     uint256 public TGE_timestamp = 0;
 

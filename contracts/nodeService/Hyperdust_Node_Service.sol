@@ -74,14 +74,14 @@ contract Hyperdust_Node_Service is OwnableUpgradeable {
 
     mapping(address => uint256) _accountNodeService;
 
-    function buy(uint256 id, uint32 num) public {
+    function buy(uint256 nodeProductId, uint32 num) public {
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
             _HyperdustStorageAddress
         );
 
         (, , uint32 day, uint256 price) = IHyperdustNodeProduct(
             _HyperdustNodeProductAddress
-        ).get(id);
+        ).get(nodeProductId);
 
         require(day > 0, "day must > 0");
 
@@ -120,12 +120,17 @@ contract Hyperdust_Node_Service is OwnableUpgradeable {
 
         hyperdustStorage.setUint(hyperdustStorage.genKey("day", id), day);
 
+        hyperdustStorage.setUint(
+            hyperdustStorage.genKey("nodeProductId", id),
+            nodeProductId
+        );
+
         emit eveSave(id);
     }
 
     function addAccountNodeService(
         address account,
-        uint256 id,
+        uint256 nodeProductId,
         uint32 num
     ) public {
         require(
@@ -141,7 +146,7 @@ contract Hyperdust_Node_Service is OwnableUpgradeable {
 
         (, , uint32 day, uint256 price) = IHyperdustNodeProduct(
             _HyperdustNodeProductAddress
-        ).get(id);
+        ).get(nodeProductId);
 
         require(day > 0, "day must > 0");
 
@@ -247,7 +252,7 @@ contract Hyperdust_Node_Service is OwnableUpgradeable {
             _HyperdustStorageAddress
         );
 
-        uint256[] memory uint256Array = new uint256[](5);
+        uint256[] memory uint256Array = new uint256[](6);
         uint256Array[0] = id;
         uint256Array[1] = hyperdustStorage.getUint(
             hyperdustStorage.genKey("startTime", id)
@@ -258,11 +263,15 @@ contract Hyperdust_Node_Service is OwnableUpgradeable {
         );
 
         uint256Array[3] = hyperdustStorage.getUint(
-            hyperdustStorage.genKey("amount", id)
+            hyperdustStorage.genKey("payAmount", id)
         );
 
         uint256Array[4] = hyperdustStorage.getUint(
             hyperdustStorage.genKey("price", id)
+        );
+
+        uint256Array[5] = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("nodeProductId", id)
         );
 
         address account = hyperdustStorage.getAddress(

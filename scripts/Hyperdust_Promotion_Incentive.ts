@@ -13,7 +13,7 @@ async function main() {
 
 
 
-    const contract = await ethers.getContractFactory("Hyperdust_Node_Service");
+    const contract = await ethers.getContractFactory("Hyperdust_Promotion_Incentive");
     const instance = await upgrades.deployProxy(contract);
     await instance.waitForDeployment();
 
@@ -30,10 +30,10 @@ async function main() {
 
     instance.setContractAddress([
         "0x9bDaf3912e7b4794fE8aF2E748C35898265D5615",
-        "0x9D88106Ba510D3852eC03B22b8F754F2bcd16739",
-        "0x1045A6b9be4149254F2194fb0Ed7DC7bC7B2795B",
+        Hyperdust_Storage.target,
         "0x61Ce9e4A31bFEe62e100Ef128f757EeE9012786f",
-        Hyperdust_Storage.target
+        "0x9D88106Ba510D3852eC03B22b8F754F2bcd16739",
+
     ])
 
     console.info("contractFactory address:", instance.target)

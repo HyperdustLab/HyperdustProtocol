@@ -615,14 +615,16 @@ describe("Hyperdust_Token", () => {
 
             const _GPUMiningCurrAward = await contract._GPUMiningCurrAward();
 
-            await (await contract.GPUMiningMint(GPUMiningCurrAllowMintTotalNum[0])).wait();
+            const mintNum = ethers.formatEther(GPUMiningCurrAllowMintTotalNum[0])
+
+            await (await contract.GPUMiningMint(ethers.parseEther((parseFloat(mintNum) * 0.8).toString()))).wait();
 
             const GPUMiningCurrMiningRatio = await contract.getGPUMiningCurrMiningRatio();
             const _GPUMiningAllowReleaseTime = await contract._GPUMiningAllowReleaseTime();
 
 
             list.push(createDate);
-            list.push(ethers.formatEther(GPUMiningCurrAllowMintTotalNum[0]));
+            list.push(parseFloat(mintNum) * 0.8);
             list.push(ethers.formatEther(_epochAward));
             list.push((parseInt(GPUMiningCurrMiningRatio) / 100000000));
             list.push(dayjs.unix(parseInt(_GPUMiningAllowReleaseTime.toString())).format("YYYY-MM-DD HH:mm:ss"));
