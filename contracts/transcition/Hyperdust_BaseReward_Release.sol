@@ -109,14 +109,14 @@ contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
                 "_releaseAmount".toSlice()
             );
 
-            uint256 amount = hyperdustStorage.getUint(amountKey) + avgAmount;
+            uint256 _amount = hyperdustStorage.getUint(amountKey) + avgAmount;
 
-            hyperdustStorage.setUint(key, amount);
+            hyperdustStorage.setUint(amountKey, _amount);
 
             uint256 releaseAmount = hyperdustStorage.getUint(releaseAmountKey);
 
             releaseTimes[i] = time;
-            amounts[i] = amount;
+            amounts[i] = _amount;
             releaseAmounts[i] = releaseAmount;
 
             time += _intervalTime;

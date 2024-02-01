@@ -280,6 +280,26 @@
       "address": "0xb684C94D6D9aF42c370Ee124C8093f50faffEAdA",
       "txHash": "0xbd79a1dcdc23958ce8391af479f3e9e4a465daad5eb5c89d9f7c9b14efcadac9",
       "kind": "transparent"
+    },
+    {
+      "address": "0x3351eDC5f532f3978d6414ccfCa60eea6Aa5c834",
+      "txHash": "0xc90d7aba49c59c4631b151d27ff9314ee38f62390b484ab8ed10e4657346a20a",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xdb0Beb867c96aaEa007761EB0CD8313ac3dEFF42",
+      "txHash": "0xfd586fc1327611517150340ee403df0ac3a440432a191eb0ff2be2841cda1acd",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x65DE13CeF257F614403a4E9D26BB6fFa224FfA5c",
+      "txHash": "0x529e1c32ec11ad01dc672014eefcdc59afaa751a4fb0ab156cf2b4e113ff7b10",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xB828401CFec6CAFafB99fa4026cb243e359c9Fd8",
+      "txHash": "0xc23939ba721641fe210056a7b665847d8dba3b44f57965b36afaba683a88332f",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -2466,7 +2486,7 @@
             "label": "bool",
             "numberOfBytes": "1"
           },
-          "t_struct(InitializableStorage)64_storage": {
+          "t_struct(InitializableStorage)196_storage": {
             "label": "struct Initializable.InitializableStorage",
             "members": [
               {
@@ -2484,7 +2504,7 @@
             ],
             "numberOfBytes": "32"
           },
-          "t_struct(OwnableStorage)14_storage": {
+          "t_struct(OwnableStorage)146_storage": {
             "label": "struct OwnableUpgradeable.OwnableStorage",
             "members": [
               {
@@ -5367,6 +5387,306 @@
           "t_uint64": {
             "label": "uint64",
             "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "22aa8fdff53aa10ee84b02eaa0835a4871c0c0649d1a8a588f301287ff990789": {
+      "address": "0x847d29d4Cb3b7ee5675b1a2414797C1ab3D8a662",
+      "txHash": "0xfcfac5bf633cfabf0b7854b11c78198339f7d0b1651407f68e9753151d9ba11d",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "Hyperdust_BaseReward_Release",
+            "src": "contracts\\transcition\\Hyperdust_BaseReward_Release.sol:23"
+          },
+          {
+            "label": "_erc20Address",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "Hyperdust_BaseReward_Release",
+            "src": "contracts\\transcition\\Hyperdust_BaseReward_Release.sol:24"
+          },
+          {
+            "label": "_intervalTime",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256",
+            "contract": "Hyperdust_BaseReward_Release",
+            "src": "contracts\\transcition\\Hyperdust_BaseReward_Release.sol:26"
+          },
+          {
+            "label": "_intervalCount",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_uint256",
+            "contract": "Hyperdust_BaseReward_Release",
+            "src": "contracts\\transcition\\Hyperdust_BaseReward_Release.sol:28"
+          },
+          {
+            "label": "_HyperdustStorageAddress",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_address",
+            "contract": "Hyperdust_BaseReward_Release",
+            "src": "contracts\\transcition\\Hyperdust_BaseReward_Release.sol:30"
+          },
+          {
+            "label": "_baseRewardReleaseRecordsMap",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_mapping(t_string_memory_ptr,t_array(t_uint256)dyn_storage)",
+            "contract": "Hyperdust_BaseReward_Release",
+            "src": "contracts\\transcition\\Hyperdust_BaseReward_Release.sol:45"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_array(t_uint256)dyn_storage": {
+            "label": "uint256[]",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_array(t_uint256)dyn_storage)": {
+            "label": "mapping(string => uint256[])",
+            "numberOfBytes": "32"
+          },
+          "t_string_memory_ptr": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_string_storage": {
+            "label": "string"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "17f9a3a24929ab44d4b8979ec2ebc986d9b65eba52c745af6f65943432407d13": {
+      "address": "0xa70C6d588398671C71e61daEfFAB5C00a2F672fe",
+      "txHash": "0x41ee7feda026c95cef81dd08269a6b92a44e5b963ea26756731868b95677e938",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "Hyperdust_BaseReward_Release",
+            "src": "contracts\\transcition\\Hyperdust_BaseReward_Release.sol:23"
+          },
+          {
+            "label": "_erc20Address",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "Hyperdust_BaseReward_Release",
+            "src": "contracts\\transcition\\Hyperdust_BaseReward_Release.sol:24"
+          },
+          {
+            "label": "_intervalTime",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_uint256",
+            "contract": "Hyperdust_BaseReward_Release",
+            "src": "contracts\\transcition\\Hyperdust_BaseReward_Release.sol:26"
+          },
+          {
+            "label": "_intervalCount",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_uint256",
+            "contract": "Hyperdust_BaseReward_Release",
+            "src": "contracts\\transcition\\Hyperdust_BaseReward_Release.sol:28"
+          },
+          {
+            "label": "_HyperdustStorageAddress",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_address",
+            "contract": "Hyperdust_BaseReward_Release",
+            "src": "contracts\\transcition\\Hyperdust_BaseReward_Release.sol:30"
+          },
+          {
+            "label": "_baseRewardReleaseRecordsMap",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_mapping(t_string_memory_ptr,t_array(t_uint256)dyn_storage)",
+            "contract": "Hyperdust_BaseReward_Release",
+            "src": "contracts\\transcition\\Hyperdust_BaseReward_Release.sol:45"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_array(t_uint256)dyn_storage": {
+            "label": "uint256[]",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_array(t_uint256)dyn_storage)": {
+            "label": "mapping(string => uint256[])",
+            "numberOfBytes": "32"
+          },
+          "t_string_memory_ptr": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_string_storage": {
+            "label": "string"
           }
         },
         "namespaces": {
