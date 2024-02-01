@@ -19,12 +19,14 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
     using Strings for *;
     using StrUtil for *;
 
+    using Math for uint256;
+
     uint256 public _monthTime = 600;
     uint256 public _yearTime = 600;
 
     uint256 public TGE_timestamp = 0;
 
-    uint256 public _totalSupply = 200000000 ether;
+    uint256 public _totalSupply = 200 ether;
 
     uint256 public _mintNum = 0;
 
@@ -331,10 +333,18 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
 
         if (num > 0) {
             uint256 addAward = _CoreTeamMonthReleaseAward * (num);
-
-            uint256 totalMintAward = _CoreTeamTotalAward -
-                _CoreTeamCurrAward -
-                _CoreTeamReleaseTotalAward;
+            uint256 totalMintAward = 0;
+            if (
+                _CoreTeamTotalAward <
+                _CoreTeamCurrAward + _CoreTeamReleaseTotalAward
+            ) {
+                totalMintAward = 0;
+            } else {
+                totalMintAward =
+                    _CoreTeamTotalAward -
+                    _CoreTeamCurrAward -
+                    _CoreTeamReleaseTotalAward;
+            }
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -366,9 +376,18 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         if (num > 0) {
             uint256 addAward = _CoreTeamMonthReleaseAward * num;
 
-            uint256 totalMintAward = _CoreTeamTotalAward -
-                _CoreTeamCurrAward -
-                _CoreTeamReleaseTotalAward;
+            uint256 totalMintAward = 0;
+            if (
+                _CoreTeamTotalAward <
+                _CoreTeamCurrAward + _CoreTeamReleaseTotalAward
+            ) {
+                totalMintAward = 0;
+            } else {
+                totalMintAward =
+                    _CoreTeamTotalAward -
+                    _CoreTeamCurrAward -
+                    _CoreTeamReleaseTotalAward;
+            }
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -421,9 +440,18 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         if (num > 0) {
             uint256 addAward = _FoundationMonthReleaseAward * num;
 
-            uint256 totalMintAward = _FoundationTotalAward -
-                _FoundationCurrAward -
-                _FoundationReleaseTotalAward;
+            uint256 totalMintAward = 0;
+            if (
+                _FoundationTotalAward <
+                _FoundationCurrAward + _FoundationReleaseTotalAward
+            ) {
+                totalMintAward = 0;
+            } else {
+                totalMintAward =
+                    _FoundationTotalAward -
+                    _FoundationCurrAward -
+                    _FoundationReleaseTotalAward;
+            }
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -457,9 +485,19 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         if (num > 0) {
             uint256 addAward = _FoundationMonthReleaseAward * num;
 
-            uint256 totalMintAward = _FoundationTotalAward -
-                _FoundationCurrAward -
-                _FoundationReleaseTotalAward;
+            uint256 totalMintAward = 0;
+
+            if (
+                _FoundationTotalAward <
+                _FoundationCurrAward + _FoundationReleaseTotalAward
+            ) {
+                totalMintAward = 0;
+            } else {
+                totalMintAward =
+                    _FoundationTotalAward -
+                    _FoundationCurrAward -
+                    _FoundationReleaseTotalAward;
+            }
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -514,9 +552,19 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         if (num > 0) {
             uint256 addAward = _AdvisorMonthReleaseAward * num;
 
-            uint256 totalMintAward = _AdvisorTotalAward -
-                _AdvisorCurrAward -
-                _AdvisorReleaseTotalAward;
+            uint256 totalMintAward = 0;
+
+            if (
+                _AdvisorTotalAward <
+                _AdvisorCurrAward + _AdvisorReleaseTotalAward
+            ) {
+                totalMintAward = 0;
+            } else {
+                totalMintAward =
+                    _AdvisorTotalAward -
+                    _AdvisorCurrAward -
+                    _AdvisorReleaseTotalAward;
+            }
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -548,9 +596,18 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         if (num > 0) {
             uint256 addAward = _AdvisorMonthReleaseAward * num;
 
-            uint256 totalMintAward = _AdvisorTotalAward -
-                _AdvisorCurrAward -
-                _AdvisorReleaseTotalAward;
+            uint256 totalMintAward = 0;
+            if (
+                _AdvisorTotalAward <
+                _AdvisorCurrAward + _AdvisorReleaseTotalAward
+            ) {
+                totalMintAward = 0;
+            } else {
+                totalMintAward =
+                    _AdvisorTotalAward -
+                    _AdvisorCurrAward -
+                    _AdvisorReleaseTotalAward;
+            }
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -604,9 +661,16 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         if (num > 0) {
             uint256 addAward = _SeedMonthReleaseAward * num;
 
-            uint256 totalMintAward = _SeedTotalAward -
-                _SeedCurrAward -
-                _SeedReleaseTotalAward;
+            uint256 totalMintAward = 0;
+
+            if (_SeedTotalAward < _SeedCurrAward + _SeedReleaseTotalAward) {
+                totalMintAward = 0;
+            } else {
+                totalMintAward =
+                    _SeedTotalAward -
+                    _SeedCurrAward -
+                    _SeedReleaseTotalAward;
+            }
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -635,9 +699,16 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         if (num > 0) {
             uint256 addAward = _SeedMonthReleaseAward * num;
 
-            uint256 totalMintAward = _SeedTotalAward -
-                _SeedCurrAward -
-                _SeedReleaseTotalAward;
+            uint256 totalMintAward = 0;
+
+            if (_SeedTotalAward < _SeedCurrAward + _SeedReleaseTotalAward) {
+                totalMintAward = 0;
+            } else {
+                totalMintAward =
+                    _SeedTotalAward -
+                    _SeedCurrAward -
+                    _SeedReleaseTotalAward;
+            }
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -691,9 +762,19 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         if (num > 0) {
             uint256 addAward = _PrivateSaleMonthReleaseAward * num;
 
-            uint256 totalMintAward = _PrivateSaleTotalAward -
-                _PrivateSaleCurrAward -
-                _PrivateSaleReleaseTotalAward;
+            uint256 totalMintAward = 0;
+
+            if (
+                _PrivateSaleTotalAward <
+                _PrivateSaleCurrAward + _PrivateSaleReleaseTotalAward
+            ) {
+                totalMintAward = 0;
+            } else {
+                totalMintAward =
+                    _PrivateSaleTotalAward -
+                    _PrivateSaleCurrAward -
+                    _PrivateSaleReleaseTotalAward;
+            }
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -725,9 +806,19 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         if (num > 0) {
             uint256 addAward = _PrivateSaleMonthReleaseAward * num;
 
-            uint256 totalMintAward = _PrivateSaleTotalAward -
-                _PrivateSaleCurrAward -
-                _PrivateSaleReleaseTotalAward;
+            uint256 totalMintAward = 0;
+
+            if (
+                _PrivateSaleTotalAward <
+                _PrivateSaleCurrAward + _PrivateSaleReleaseTotalAward
+            ) {
+                totalMintAward = 0;
+            } else {
+                totalMintAward =
+                    _PrivateSaleTotalAward -
+                    _PrivateSaleCurrAward -
+                    _PrivateSaleReleaseTotalAward;
+            }
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -780,9 +871,19 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         if (num > 0) {
             uint256 addAward = _PublicSaleMonthReleaseAward * num;
 
-            uint256 totalMintAward = _PublicSaleTotalAward -
-                _PublicSaleCurrAward -
-                _PublicSaleReleaseTotalAward;
+            uint256 totalMintAward = 0;
+
+            if (
+                _PublicSaleTotalAward <
+                _PublicSaleCurrAward + _PublicSaleReleaseTotalAward
+            ) {
+                totalMintAward = 0;
+            } else {
+                totalMintAward =
+                    _PublicSaleTotalAward -
+                    _PublicSaleCurrAward -
+                    _PublicSaleReleaseTotalAward;
+            }
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -814,9 +915,19 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         if (num > 0) {
             uint256 addAward = _PublicSaleMonthReleaseAward * num;
 
-            uint256 totalMintAward = _PublicSaleTotalAward -
-                _PublicSaleCurrAward -
-                _PublicSaleReleaseTotalAward;
+            uint256 totalMintAward = 0;
+
+            if (
+                _PublicSaleTotalAward <
+                _PublicSaleCurrAward + _PublicSaleReleaseTotalAward
+            ) {
+                totalMintAward = 0;
+            } else {
+                totalMintAward =
+                    _PublicSaleTotalAward -
+                    _PublicSaleCurrAward -
+                    _PublicSaleReleaseTotalAward;
+            }
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -869,9 +980,19 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         if (num > 0) {
             uint256 addAward = _AirdropReleaseMonthAward * num;
 
-            uint256 totalMintAward = _AirdropTotalAward -
-                _AirdropCurrAward -
-                _AirdropReleaseTotalAward;
+            uint256 totalMintAward = 0;
+
+            if (
+                _AirdropTotalAward <
+                _AirdropCurrAward + _AirdropReleaseTotalAward
+            ) {
+                totalMintAward = 0;
+            } else {
+                totalMintAward =
+                    _AirdropTotalAward -
+                    _AirdropCurrAward -
+                    _AirdropReleaseTotalAward;
+            }
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
@@ -886,6 +1007,8 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         );
     }
 
+    uint256 public i = 1;
+
     function AirdropMint() private {
         require(
             _AirdropReleaseTime > 0,
@@ -893,42 +1016,59 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         );
 
         require(block.timestamp >= _AirdropReleaseTime, "time is not ok");
-
         uint256 time = block.timestamp - _AirdropReleaseTime;
-
         time = time - (time % _AirdropReleaseInterval);
-
         uint256 num = time / _AirdropReleaseInterval;
 
         if (num > 0) {
             uint256 addAward = _AirdropReleaseMonthAward * num;
 
-            uint256 totalMintAward = _AirdropTotalAward -
-                _AirdropCurrAward -
-                _AirdropReleaseTotalAward;
+            uint256 totalMintAward = 0;
+            if (
+                _AirdropTotalAward <
+                _AirdropCurrAward + _AirdropReleaseTotalAward
+            ) {
+                totalMintAward = 0;
+            } else {
+                totalMintAward =
+                    _AirdropTotalAward -
+                    _AirdropCurrAward -
+                    _AirdropReleaseTotalAward;
+            }
 
             if (addAward > totalMintAward) {
                 addAward = totalMintAward;
             }
-
             _AirdropReleaseTotalAward += addAward;
             _AirdropReleaseTime += num * _AirdropReleaseInterval;
         }
 
+        require(
+            _AirdropCurrAward <= _AirdropReleaseTotalAward,
+            "Underflow prevented"
+        );
+
         uint256 mintNum = _AirdropReleaseTotalAward - _AirdropCurrAward;
 
-        _AirdropCurrAward += mintNum;
+        (bool isAdd, uint256 newAirdropCurrAward) = _AirdropCurrAward.tryAdd(
+            mintNum
+        );
+
+        if (isAdd) {
+            _AirdropCurrAward = newAirdropCurrAward;
+        } else {
+            revert("1");
+        }
 
         require(
             _AirdropTotalAward >= _AirdropCurrAward,
             "_AirdropTotalAward is not enough"
         );
-
         _mintNum += mintNum;
-
         require(_mintNum <= _totalSupply, "totalSupply is not enough");
-
         _mint(_AirdropAddress, mintNum);
+
+        i++;
     }
 
     function mint() public {
