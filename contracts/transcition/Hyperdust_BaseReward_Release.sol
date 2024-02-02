@@ -29,6 +29,8 @@ contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
 
     address public _HyperdustStorageAddress;
 
+    uint256 public _dayTime;
+
     event eveSave(
         uint256[] amounts,
         uint256[] releaseAmounts,
@@ -39,6 +41,7 @@ contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
     function initialize(address onlyOwner) public initializer {
         _intervalTime = 30 days;
         _intervalCount = 12;
+        _dayTime = 1 days;
         __Ownable_init(onlyOwner);
     }
 
@@ -173,7 +176,7 @@ contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
 
     function getStartOfToday() private view returns (uint256) {
         uint256 currentTime = block.timestamp;
-        uint256 startOfDay = currentTime - (currentTime % 1 days);
+        uint256 startOfDay = currentTime - (currentTime % _dayTime);
         return startOfDay;
     }
 
@@ -198,5 +201,9 @@ contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
         uint256 releaseAmount = hyperdustStorage.getUint(releaseAmountKey);
 
         return (amount, releaseAmount);
+    }
+
+    function setDayTime(uint256 dayTime) public onlyOwner {
+        _dayTime = dayTime;
     }
 }
