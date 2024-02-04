@@ -61,7 +61,7 @@ abstract contract IHyperdustRenderTranscitionAddress {
     function updateEpoch() public {}
 }
 
-contract Hyperdust_Render_Awards is OwnableUpgradeable {
+contract Hyperdust_Ecpoch_Awards is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 
@@ -117,32 +117,6 @@ contract Hyperdust_Render_Awards is OwnableUpgradeable {
         _HyperdustTokenAddress = HyperdustTokenAddress;
     }
 
-    /**
-     * @dev Sets the contract addresses for Hyperdust Render Awards.
-     * @param contractaddressArray An array of contract addresses to be set.
-     * 0: Roles configuration contract address.
-     * 1: Hyperdust node manager contract address.
-     * 2: Hyperdust security deposit contract address.
-     * 3: Hyperdust base reward release contract address.
-     * 4: Hyperdust render transition contract address.
-     * 5: Hyperdust token contract address.
-     * Emits a {ContractAddressSet} event.
-     */
-    function setContractAddress(
-        address[] memory contractaddressArray
-    ) public onlyOwner {
-        _rolesCfgAddress = contractaddressArray[0];
-        _hyperdustNodeMgrAddress = contractaddressArray[1];
-        _hyperdustSecurityDeposit = contractaddressArray[2];
-        _hyperdustBaseRewardRelease = contractaddressArray[3];
-        _HyperdustTokenAddress = contractaddressArray[4];
-    }
-
-    /**
-     * @dev Distributes rewards to a randomly selected active node based on the number of active nodes and total nodes.
-     * @param nodeStatus An array of node statuses.
-     * @param nonce A random number used to ensure uniqueness of the rewards distribution.
-     */
     function rewards(bytes32[] memory nodeStatus, uint256 nonce) public {
         require(
             IHyperdustRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
@@ -195,9 +169,9 @@ contract Hyperdust_Render_Awards is OwnableUpgradeable {
         hyperdustToken.transfer(_hyperdustSecurityDeposit, securityDeposit);
 
         IHyperdustSecurityDeposit(_hyperdustSecurityDeposit).addSecurityDeposit(
-            nodeId,
-            securityDeposit
-        );
+                nodeId,
+                securityDeposit
+            );
 
         (address incomeAddress, , ) = hyperdustNodeMgrAddress.getNode(nodeId);
 
@@ -207,11 +181,6 @@ contract Hyperdust_Render_Awards is OwnableUpgradeable {
         emit eveRewards(nodeId, actualEpochAward, index, nonce);
     }
 
-    /**
-     * @dev Counts the number of active nodes and returns an array of their IDs, as well as the total number of nodes and active nodes.
-     * @param nodeStatus An array of bytes32 representing the status of each node.
-     * @return A tuple containing an array of uint256 representing the IDs of active nodes, the total number of nodes, and the number of active nodes.
-     */
     function countActiveNode(
         bytes32[] memory nodeStatus
     ) private returns (uint256[] memory, uint256, uint256) {
@@ -257,12 +226,6 @@ contract Hyperdust_Render_Awards is OwnableUpgradeable {
         return (activeNodes, totalNum, activeNum);
     }
 
-    /**
-     * @dev Generates a random number between _start and _end (exclusive) using block difficulty, timestamp and a private variable _rand.
-     * @param _start The start of the range (inclusive).
-     * @param _end The end of the range (exclusive).
-     * @return A random number between _start and _end (exclusive).
-     */
     function _getRandom(
         uint256 _start,
         uint256 _end
@@ -279,5 +242,15 @@ contract Hyperdust_Render_Awards is OwnableUpgradeable {
         random = (random % _length) + _start;
         _rand++;
         return random;
+    }
+
+    function setContractAddress(
+        address[] memory contractaddressArray
+    ) public onlyOwner {
+        _rolesCfgAddress = contractaddressArray[0];
+        _hyperdustNodeMgrAddress = contractaddressArray[1];
+        _hyperdustSecurityDeposit = contractaddressArray[2];
+        _hyperdustBaseRewardRelease = contractaddressArray[3];
+        _HyperdustTokenAddress = contractaddressArray[4];
     }
 }

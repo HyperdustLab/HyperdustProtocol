@@ -39,7 +39,7 @@ import {StrUtil} from "../utils/StrUtil.sol";
 import "./../Hyperdust_Storage.sol";
 import "../Hyperdust_Wallet_Account.sol";
 
-contract Hyperdust_Render_Transcition is OwnableUpgradeable {
+contract Hyperdust_Ecpoch_Transcition is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 
@@ -130,7 +130,7 @@ contract Hyperdust_Render_Transcition is OwnableUpgradeable {
         require(node.uint256Array[0] != 0, "The miner node inexistence");
 
         uint256 commission = IHyperdustTransactionCfg(_transactionCfgAddress)
-            .getGasFee("render");
+            .getGasFee("ecpoch");
 
         (, uint256 totalNum, uint256 activeNum) = nodeMgr.getStatisticalIndex();
 

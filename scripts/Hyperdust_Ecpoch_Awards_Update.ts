@@ -7,9 +7,9 @@ async function main() {
 
 
 
-    const Hyperdust_Render_Awards = await ethers.getContractFactory("Hyperdust_Render_Awards");
+    const Hyperdust_Ecpoch_Awards = await ethers.getContractFactory("Hyperdust_Ecpoch_Awards");
 
-    const upgraded = await upgrades.upgradeProxy("0xBE37aCA5f173c1bdBFDdf64e5EF569a971633Ba0", Hyperdust_Render_Awards);
+    const upgraded = await upgrades.upgradeProxy("0x331D06340d73389E52adA19205b50a32225B5834", Hyperdust_Ecpoch_Awards);
 
 
     await (await upgraded.setContractAddress([
