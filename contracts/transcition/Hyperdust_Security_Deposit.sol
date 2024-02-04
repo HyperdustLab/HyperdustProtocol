@@ -33,7 +33,7 @@ contract Hyperdust_Security_Deposit is OwnableUpgradeable {
         _withdrawalInterval = 30 days;
     }
 
-    event eveSave(uint256 nodeId, uint256 totalSecurityAmount);
+    event eveSave(uint256 nodeId, uint256 totalSecurityAmount,uint256 amount);
 
     function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
         _rolesCfgAddress = rolesCfgAddress;
@@ -123,7 +123,7 @@ contract Hyperdust_Security_Deposit is OwnableUpgradeable {
             );
         }
 
-        emit eveSave(nodeId, _amount);
+        emit eveSave(nodeId, _amount, amount);
     }
 
     function applyWithdrawal(uint256 nodeId) public {

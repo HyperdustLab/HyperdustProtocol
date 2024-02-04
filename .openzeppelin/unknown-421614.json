@@ -4705,48 +4705,48 @@
             "offset": 0,
             "slot": "0",
             "type": "t_address",
-            "contract": "Hyperdust_Render_Awards",
-            "src": "contracts\\transcition\\Hyperdust_Render_Awards.sol:68"
+            "contract": "Hyperdust_Ecpoch_Awards",
+            "src": "contracts\\transcition\\Hyperdust_Ecpoch_Awards.sol:68"
           },
           {
             "label": "_hyperdustNodeMgrAddress",
             "offset": 0,
             "slot": "1",
             "type": "t_address",
-            "contract": "Hyperdust_Render_Awards",
-            "src": "contracts\\transcition\\Hyperdust_Render_Awards.sol:70"
+            "contract": "Hyperdust_Ecpoch_Awards",
+            "src": "contracts\\transcition\\Hyperdust_Ecpoch_Awards.sol:70"
           },
           {
             "label": "_hyperdustSecurityDeposit",
             "offset": 0,
             "slot": "2",
             "type": "t_address",
-            "contract": "Hyperdust_Render_Awards",
-            "src": "contracts\\transcition\\Hyperdust_Render_Awards.sol:72"
+            "contract": "Hyperdust_Ecpoch_Awards",
+            "src": "contracts\\transcition\\Hyperdust_Ecpoch_Awards.sol:72"
           },
           {
             "label": "_hyperdustBaseRewardRelease",
             "offset": 0,
             "slot": "3",
             "type": "t_address",
-            "contract": "Hyperdust_Render_Awards",
-            "src": "contracts\\transcition\\Hyperdust_Render_Awards.sol:74"
+            "contract": "Hyperdust_Ecpoch_Awards",
+            "src": "contracts\\transcition\\Hyperdust_Ecpoch_Awards.sol:74"
           },
           {
             "label": "_HyperdustTokenAddress",
             "offset": 0,
             "slot": "4",
             "type": "t_address",
-            "contract": "Hyperdust_Render_Awards",
-            "src": "contracts\\transcition\\Hyperdust_Render_Awards.sol:76"
+            "contract": "Hyperdust_Ecpoch_Awards",
+            "src": "contracts\\transcition\\Hyperdust_Ecpoch_Awards.sol:76"
           },
           {
             "label": "_rand",
             "offset": 0,
             "slot": "5",
             "type": "t_uint256",
-            "contract": "Hyperdust_Render_Awards",
-            "src": "contracts\\transcition\\Hyperdust_Render_Awards.sol:78"
+            "contract": "Hyperdust_Ecpoch_Awards",
+            "src": "contracts\\transcition\\Hyperdust_Ecpoch_Awards.sol:78"
           }
         ],
         "types": {
@@ -4758,7 +4758,7 @@
             "label": "bool",
             "numberOfBytes": "1"
           },
-          "t_struct(InitializableStorage)64_storage": {
+          "t_struct(InitializableStorage)196_storage": {
             "label": "struct Initializable.InitializableStorage",
             "members": [
               {
@@ -4776,7 +4776,7 @@
             ],
             "numberOfBytes": "32"
           },
-          "t_struct(OwnableStorage)14_storage": {
+          "t_struct(OwnableStorage)146_storage": {
             "label": "struct OwnableUpgradeable.OwnableStorage",
             "members": [
               {
