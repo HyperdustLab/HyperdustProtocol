@@ -11,15 +11,9 @@ describe("Hyperdust_HYDT_Price", () => {
 
 
 
-            const contract = await ethers.deployContract("Test1");
+            const Hyperdust_BaseReward_Release = await ethers.getContractAt("Hyperdust_BaseReward_Release", "0x511c0be0B9B1068152a121C982EF059212F96dAd")
 
-            await contract.waitForDeployment()
-
-            const a = await contract.test();
-
-            console.info(ethers.formatEther(a))
-
-
+            await (await Hyperdust_BaseReward_Release.release([1706891167])).wait()
 
 
 

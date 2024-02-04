@@ -176,6 +176,9 @@ contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
 
     function getStartOfToday() private view returns (uint256) {
         uint256 currentTime = block.timestamp;
+        if(_dayTime == 0){
+            return currentTime;
+        }
         uint256 startOfDay = currentTime - (currentTime % _dayTime);
         return startOfDay;
     }
