@@ -48,6 +48,8 @@ abstract contract IHyperdustToken {
     function mint(uint256 amount) public {}
 
     function transfer(address to, uint256 amount) external returns (bool) {}
+
+    function GPUMiningMint(uint256 amount) public {}
 }
 
 abstract contract IHyperdustBaseRewardRelease {
@@ -159,7 +161,7 @@ contract Hyperdust_Ecpoch_Awards is OwnableUpgradeable {
         uint256 securityDeposit = actualEpochAward / 10;
         uint256 baseRewardReleaseAward = actualEpochAward - securityDeposit;
 
-        hyperdustToken.mint(actualEpochAward);
+        hyperdustToken.GPUMiningMint(actualEpochAward);
 
         hyperdustToken.transfer(
             _hyperdustBaseRewardRelease,

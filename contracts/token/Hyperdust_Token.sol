@@ -21,12 +21,12 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
 
     using Math for uint256;
 
-    uint256 public _monthTime = 600;
-    uint256 public _yearTime = 600;
+    uint256 public _monthTime = 30 days;
+    uint256 public _yearTime = 365 days;
 
     uint256 public TGE_timestamp = 0;
 
-    uint256 public _totalSupply = 200 ether;
+    uint256 public _totalSupply = 200000000 ether;
 
     uint256 public _mintNum = 0;
 
@@ -43,7 +43,7 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
     uint256 private _GPUMiningCurrYearTotalSupply =
         Math.mulDiv(_GPUMiningTotalAward, _GPUMiningCurrMiningRatio, FACTOR);
 
-    uint256 private _epochAward = _GPUMiningCurrYearTotalSupply / 365 / 225;
+    uint256 public _epochAward = _GPUMiningCurrYearTotalSupply / 365 / 225;
 
     uint256 private _GPUMiningCurrYearTotalAward = 0;
 
@@ -297,7 +297,7 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
             "GPUMiningTotalAward is not enough"
         );
 
-        //  require(_epochAward >= mintNum, "epochAward is not enough");
+        require(_epochAward >= mintNum, "epochAward is not enough");
 
         _GPUMiningCurrYearTotalAward += mintNum;
         _GPUMiningCurrAward += mintNum;
@@ -1007,8 +1007,6 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         );
     }
 
-    uint256 public i = 1;
-
     function AirdropMint() private {
         require(
             _AirdropReleaseTime > 0,
@@ -1067,8 +1065,6 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
         _mintNum += mintNum;
         require(_mintNum <= _totalSupply, "totalSupply is not enough");
         _mint(_AirdropAddress, mintNum);
-
-        i++;
     }
 
     function mint() public {

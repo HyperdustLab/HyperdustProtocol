@@ -93,13 +93,13 @@ contract Hyperdust_Transaction_Cfg is OwnableUpgradeable {
             _totalNum = 10;
         }
 
-        uint32 accuracy = 1000000;
+        uint256 accuracy = 10000000000000;
 
         uint256 difficuty = (_totalNum * accuracy) / _activeNum;
 
         uint256 gasPrice = (renderPrice * accuracy) / difficuty;
 
-        uint256 gasFee = (renderPrice * gasPrice * 1 ether) / accuracy / 10000;
+        uint256 gasFee = (renderPrice * gasPrice * 1 ether) / accuracy;
 
         return gasFee;
     }

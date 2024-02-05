@@ -2,14 +2,20 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/utils/math/Math.sol";
 
 contract Test1 {
-    uint256 constant FACTOR = 10 ** 18;
-
     function test() public view returns (uint256) {
-        uint256 a = 136000000000000000000000000;
-        uint256 c = 625000000000000000;
+        uint256 _totalNum = 1000;
+        uint256 _activeNum = 1;
 
-        //5 2.5  1.25 0.615
-        uint256 b = Math.mulDiv(a, c, FACTOR * 100);
-        return b;
+        uint256 renderPrice = 38000;
+
+        uint256 accuracy = 10000000000000;
+
+        uint256 difficuty = (_totalNum * accuracy) / _activeNum;
+
+        uint256 gasPrice = (renderPrice * accuracy) / difficuty;
+
+        uint256 gasFee = (renderPrice * gasPrice * 1 ether) / accuracy;
+
+        return gasFee;
     }
 }

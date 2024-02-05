@@ -15,10 +15,10 @@ async function main() {
     await (await upgraded.setMinGasFee("NFT_Market", ethers.parseEther("0.01"))).wait()
     await (await upgraded.setMinGasFee("mintIsland", ethers.parseEther("0.01"))).wait()
     await (await upgraded.setMinGasFee("mintNFT", ethers.parseEther("0.01"))).wait()
-    await (await upgraded.setMinGasFee("render", ethers.parseEther("0.01"))).wait()
+    await (await upgraded.setMinGasFee("ecpoch", ethers.parseEther("0.01"))).wait()
 
-    await (await upgraded.add("render", 38000)).wait();
-    await (await upgraded.add("mintNFT", 38000)).wait();
+    await (await upgraded.add("ecpoch", 38000)).wait();
+    // await (await upgraded.add("mintNFT", 38000)).wait();
 
 }
 
