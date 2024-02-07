@@ -13,23 +13,15 @@ describe("MGN_Render_Transcition", () => {
 
 
             const _Hyperdust_Roles_Cfg = await ethers.getContractFactory("Hyperdust_Roles_Cfg");
-            const Hyperdust_Roles_Cfg = await upgrades.deployProxy(_Hyperdust_Roles_Cfg);
+            const Hyperdust_Roles_Cfg = await upgrades.deployProxy(_Hyperdust_Roles_Cfg, [accounts[0].address]);
 
 
 
-            const Hyperdust_Token = await ethers.deployContract("Hyperdust_Token_Test", [accounts[0].address, accounts[1].address, accounts[2].address]);
+            const Hyperdust_Token = await ethers.deployContract("Hyperdust_20", ["Test", "Test"]);
             await Hyperdust_Token.waitForDeployment()
 
 
-            await (await Hyperdust_Token.setPrivateSaleAddress(accounts[0].address)
-            ).wait()
-
-
-            await (await Hyperdust_Token.connect(accounts[1]).approveUpdateAddress("setPrivateSaleAddress")
-            ).wait()
-
-
-            await (await Hyperdust_Token.mint(ethers.parseEther('100000'))).wait()
+            await (await Hyperdust_Token.mint(accounts[0].address, ethers.parseEther('100000'))).wait()
 
 
 
@@ -78,19 +70,23 @@ describe("MGN_Render_Transcition", () => {
             await (await Hyperdust_Transaction_Cfg.setContractAddress([Hyperdust_Roles_Cfg.target, Hyperdust_Node_Mgr.target])).wait();
 
 
-            await (await Hyperdust_Transaction_Cfg.add("render", 30000)).wait();
+            await (await Hyperdust_Transaction_Cfg.add("epoch", 30000)).wait();
+
+
+            await (await Hyperdust_Transaction_Cfg.setMinGasFee("epoch", ethers.parseEther("0.0001"))).wait()
 
 
 
-            const Hyperdust_Wallet_Account = await ethers.deployContract("Hyperdust_Wallet_Account");
-            await Hyperdust_Wallet_Account.waitForDeployment()
 
-            await (await Hyperdust_Wallet_Account.setContractAddress([Hyperdust_Roles_Cfg.target, Hyperdust_Token.target])).wait();
+            const _Hyperdust_Wallet_Account = await ethers.getContractFactory("Hyperdust_Wallet_Account");
+            const Hyperdust_Wallet_Account = await upgrades.deployProxy(_Hyperdust_Wallet_Account, [accounts[0].address])
+
+            await (await Hyperdust_Wallet_Account.setContractAddress([Hyperdust_Roles_Cfg.target, accounts[0].address])).wait();
 
 
 
-            const _Hyperdust_Render_Transcition = await ethers.getContractFactory("Hyperdust_Render_Transcition");
-            const Hyperdust_Render_Transcition = await upgrades.deployProxy(_Hyperdust_Render_Transcition);
+            const _Hyperdust_Ecpoch_Transcition = await ethers.getContractFactory("Hyperdust_Ecpoch_Transcition");
+            const Hyperdust_Ecpoch_Transcition = await upgrades.deployProxy(_Hyperdust_Ecpoch_Transcition);
 
 
 
@@ -98,7 +94,7 @@ describe("MGN_Render_Transcition", () => {
             await Hyperdust_Render_Transcition_Data.waitForDeployment()
 
 
-            await (await Hyperdust_Render_Transcition.setContractAddress([
+            await (await Hyperdust_Ecpoch_Transcition.setContractAddress([
                 Hyperdust_Roles_Cfg.target,
                 Hyperdust_Token.target,
                 Hyperdust_Node_Mgr.target,
@@ -109,13 +105,13 @@ describe("MGN_Render_Transcition", () => {
 
 
 
-            await (await Hyperdust_Render_Transcition_Data.setServiceAddress(Hyperdust_Render_Transcition.target)).wait()
+            await (await Hyperdust_Render_Transcition_Data.setServiceAddress(Hyperdust_Ecpoch_Transcition.target)).wait()
 
 
-            await (await Hyperdust_Roles_Cfg.addAdmin(Hyperdust_Render_Transcition.target)).wait()
+            await (await Hyperdust_Roles_Cfg.addAdmin(Hyperdust_Ecpoch_Transcition.target)).wait()
 
 
-            Hyperdust_Token.approve(Hyperdust_Render_Transcition.target, ethers.parseEther('99999999'));
+            await (await Hyperdust_Token.approve(Hyperdust_Ecpoch_Transcition.target, ethers.parseEther('99999999'))).wait();
 
 
 
@@ -126,7 +122,12 @@ describe("MGN_Render_Transcition", () => {
             await (await Hyperdust_Node_Mgr.addNode(accounts[0].address, "127.0.0.1", [1, 1, 1, 1, 1, 1, 1])).wait();
             await (await Hyperdust_Node_Mgr.addNode(accounts[0].address, "127.0.0.2", [1, 1, 1, 1, 1, 1, 1])).wait();
 
-            await (await Hyperdust_Render_Transcition.createRenderTranscition(1, 1)).wait();
+            await (await Hyperdust_Ecpoch_Transcition.createRenderTranscition(1, 1)).wait();
+
+
+            const a = await Hyperdust_Ecpoch_Transcition.getRenderTranscition(1)
+
+            console.info(a)
 
             // const getRuningRenderAccounts = await Hyperdust_Render_Transcition.getRuningRenderAccounts(accounts[0].address);
             // console.info(getRuningRenderAccounts)

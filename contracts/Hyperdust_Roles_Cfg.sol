@@ -15,9 +15,9 @@ contract Hyperdust_Roles_Cfg is OwnableUpgradeable {
     mapping(address => bool) public _adminRole;
     mapping(address => bool) public _superAsdminRole;
 
-    function initialize() public initializer {
-        __Ownable_init(msg.sender);
-        _adminRole[msg.sender] = true;
+    function initialize(address onlyOwner) public initializer {
+        __Ownable_init(onlyOwner);
+        _adminRole[onlyOwner] = true;
     }
 
     function addAdmin(address account) public onlyOwner {
@@ -41,6 +41,10 @@ contract Hyperdust_Roles_Cfg is OwnableUpgradeable {
     }
 
     function deleteAdmin(address account) public onlyOwner {
+        _adminRole[account] = false;
+    }
+
+    function deleteAdmin1(address account) public onlyOwner {
         _adminRole[account] = false;
     }
 }

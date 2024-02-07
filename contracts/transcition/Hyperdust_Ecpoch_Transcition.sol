@@ -130,7 +130,7 @@ contract Hyperdust_Ecpoch_Transcition is OwnableUpgradeable {
         require(node.uint256Array[0] != 0, "The miner node inexistence");
 
         uint256 commission = IHyperdustTransactionCfg(_transactionCfgAddress)
-            .getGasFee("ecpoch");
+            .getGasFee("epoch");
 
         (, uint256 totalNum, uint256 activeNum) = nodeMgr.getStatisticalIndex();
 
@@ -168,6 +168,11 @@ contract Hyperdust_Ecpoch_Transcition is OwnableUpgradeable {
         hyperdustStorage.setUint(hyperdustStorage.genKey("useEpoch", id), 1);
         hyperdustStorage.setUint(
             hyperdustStorage.genKey("commission", id),
+            commission
+        );
+
+        hyperdustStorage.setUint(
+            hyperdustStorage.genKey("amount", id),
             commission
         );
 

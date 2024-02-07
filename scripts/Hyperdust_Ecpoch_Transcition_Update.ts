@@ -7,13 +7,9 @@ async function main() {
 
 
 
+    const Hyperdust_Ecpoch_Transcition = await ethers.getContractFactory("Hyperdust_Ecpoch_Transcition");
 
-
-
-
-    const Hyperdust_Render_Transcition = await ethers.getContractFactory("Hyperdust_Render_Transcition");
-
-    const upgraded = await upgrades.upgradeProxy("0x741E3592D2eCFdFbf684D1240Afd950ba60333e1", Hyperdust_Render_Transcition);
+    const upgraded = await upgrades.upgradeProxy("0x5cC781ce5A2F67973084a6D22a2417458b8a3fF4", Hyperdust_Ecpoch_Transcition);
 
 
     await (await upgraded.setContractAddress([
@@ -24,10 +20,6 @@ async function main() {
         "0xe0362E63F734A733dcF7BC002A2FE044AF41b37b",
         "0x5ADb5528a93D3Dcab69eceB82F3c652E411c3F61",
     ])).wait()
-
-
-
-
 
 
 }

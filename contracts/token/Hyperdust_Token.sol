@@ -55,7 +55,7 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
 
     uint256 private _lastGPUMiningRateTime = 0;
 
-    uint256 private _lastGPUMiningMintTime = 0;
+    uint256 public _lastGPUMiningMintTime = 0;
 
     address public _CoreTeamAddeess;
 
@@ -1088,6 +1088,9 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
     }
 
     function startTGETimestamp() public onlyOwner {
+
+        require(TGE_timestamp == 0, "TGE_timestamp is not 0");
+
         TGE_timestamp = block.timestamp;
         _GPUMiningAllowReleaseTime = TGE_timestamp;
         _lastGPUMiningRateTime = TGE_timestamp;
