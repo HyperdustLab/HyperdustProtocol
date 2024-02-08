@@ -5,9 +5,14 @@ import { ethers, run, upgrades } from "hardhat";
 async function main() {
 
 
-
-
     const Hyperdust_Ecpoch_Transcition = await ethers.getContractFactory("Hyperdust_Ecpoch_Transcition");
+
+
+    // await upgrades.forceImport("0x5cC781ce5A2F67973084a6D22a2417458b8a3fF4", Hyperdust_Ecpoch_Transcition)
+
+
+
+
 
     const upgraded = await upgrades.upgradeProxy("0x5cC781ce5A2F67973084a6D22a2417458b8a3fF4", Hyperdust_Ecpoch_Transcition);
 

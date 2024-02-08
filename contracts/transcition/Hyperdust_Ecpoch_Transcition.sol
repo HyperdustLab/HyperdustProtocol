@@ -225,7 +225,7 @@ contract Hyperdust_Ecpoch_Transcition is OwnableUpgradeable {
         return id;
     }
 
-    function checkRenderTranscition(address account) private {
+    function checkRenderTranscition(address account) private view {
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
             _HyperdustStorageAddress
         );
@@ -247,7 +247,7 @@ contract Hyperdust_Ecpoch_Transcition is OwnableUpgradeable {
         );
     }
 
-    function checkRenderNode(uint256 nodeId) private {
+    function checkRenderNode(uint256 nodeId) private view {
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
             _HyperdustStorageAddress
         );
@@ -295,7 +295,7 @@ contract Hyperdust_Ecpoch_Transcition is OwnableUpgradeable {
         IERC20 erc20 = IERC20(_erc20Address);
 
         uint256 commission = IHyperdustTransactionCfg(_transactionCfgAddress)
-            .getGasFee("render");
+            .getGasFee("epoch");
 
         IHyperdustNodeMgr nodeMgr = IHyperdustNodeMgr(_nodeMgrAddress);
 
