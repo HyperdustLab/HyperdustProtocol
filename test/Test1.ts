@@ -7,32 +7,19 @@ describe("Hyperdust_HYDT_Price", () => {
         it("sendRequest", async () => {
 
 
-
-
             const accounts = await ethers.getSigners();
 
+            const Test1 = await ethers.deployContract("Test1");
 
-            const Test = await ethers.deployContract("EndiannessExample");
-            await Test.waitForDeployment()
+            await Test1.waitForDeployment()
 
-            //10101010101  01 01 10 10 10
+            const a = await Test1.test()
 
-            let a = '11';
-
-
-            for (let i = 0; i < 62; i++) {
-
-                a += '0';
-
-            }
-
-            console.info(a);
+            console.info(ethers.formatEther(a))
 
 
 
-            const tx = await Test.getIndividualBytes('0x' + a)
 
-            console.info(tx)
 
 
 

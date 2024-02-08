@@ -14,6 +14,8 @@ contract Hyperdust_AirDrop is Ownable {
 
     using StrUtil for *;
 
+    constructor() Ownable(msg.sender) {}
+
     mapping(address => bool) public _airDropMap;
 
     function setHyperdustTokenAddress(

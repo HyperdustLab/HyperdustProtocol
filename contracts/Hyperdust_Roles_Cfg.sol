@@ -2,19 +2,22 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 import "./utils/StrUtil.sol";
 
-contract Hyperdust_Roles_Cfg is Ownable {
+contract Hyperdust_Roles_Cfg is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 
     mapping(address => bool) public _adminRole;
     mapping(address => bool) public _superAsdminRole;
 
-    constructor() {
-        _adminRole[msg.sender] = true;
+    function initialize(address onlyOwner) public initializer {
+        __Ownable_init(onlyOwner);
+        _adminRole[onlyOwner] = true;
     }
 
     function addAdmin(address account) public onlyOwner {
@@ -38,6 +41,10 @@ contract Hyperdust_Roles_Cfg is Ownable {
     }
 
     function deleteAdmin(address account) public onlyOwner {
+        _adminRole[account] = false;
+    }
+
+    function deleteAdmin1(address account) public onlyOwner {
         _adminRole[account] = false;
     }
 }

@@ -1,16 +1,35 @@
 /** @format */
 
-import { ethers, run } from "hardhat";
+import { ethers, run, upgrades } from "hardhat";
 
 async function main() {
-    const contract = await ethers.deployContract("Hyperdust_Node_Mgr");
-    await contract.waitForDeployment()
+
+    const Hyperdust_Storage = await ethers.deployContract("Hyperdust_Storage");
+    await Hyperdust_Storage.waitForDeployment()
 
 
-    await (await contract.setContractAddress(["0x3cc42e32ea76016CED99b98DEc0FD8D541Dc3B76", "0x63E3dDdbA7d0778a8c1d493F6d6b8Bc0E95f2a96", "0x74BD810D6C5978cdd35873ee64244F563b78Bc6e"])).wait();
+
+    const contract = await ethers.getContractFactory("Hyperdust_Node_Mgr");
+    const instance = await upgrades.deployProxy(contract);
+    await instance.waitForDeployment();
+
+    console.info("Hyperdust_Storage:", Hyperdust_Storage.target)
 
 
-    console.info("contractFactory address:", contract.target);
+    await (await Hyperdust_Storage.setServiceAddress(instance.target)).wait()
+
+
+
+
+    await (await instance.setContractAddress([
+        "0x9bDaf3912e7b4794fE8aF2E748C35898265D5615",
+        "0x6B9138b310A243ac7eCB306BDf108Fb2413dF2B6",
+        "0x294d309282F5c9Ef061eD83E4A5bC7102FB3AeE6",
+        Hyperdust_Storage.target
+    ])).wait()
+
+
+    console.info("contractFactory address:", instance.target);
 }
 
 // We recommend this pattern to be able to use async/await everywhere q

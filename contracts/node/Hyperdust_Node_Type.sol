@@ -2,22 +2,23 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
-import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 import "../utils/StrUtil.sol";
+
+import "./../Hyperdust_Storage.sol";
 
 abstract contract IHyperdustRolesCfg {
     function hasAdminRole(address account) public view returns (bool) {}
 }
 
 //The node types are reserved for future extension
-contract Hyperdust_Node_Type is Ownable {
+contract Hyperdust_Node_Type is OwnableUpgradeable {
     address public _rolesCfgAddress;
+    address public _HyperdustStorageAddress;
 
-    using Counters for Counters.Counter;
-    Counters.Counter private _id;
     using Strings for *;
     using StrUtil for *;
 
@@ -35,14 +36,24 @@ contract Hyperdust_Node_Type is Ownable {
         string remark;
     }
 
+    function initialize() public initializer {
+        __Ownable_init(msg.sender);
+    }
+
     event eveSave(uint256 id);
 
     event eveDelete(uint256 id);
 
-    NodeType[] public _nodeTypes;
+    uint256[] public _ids;
 
     function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
         _rolesCfgAddress = rolesCfgAddress;
+    }
+
+    function setHyperdustStorageAddress(
+        address hyperdustStorageAddress
+    ) public onlyOwner {
+        _HyperdustStorageAddress = hyperdustStorageAddress;
     }
 
     function addNodeType(
@@ -62,25 +73,49 @@ contract Hyperdust_Node_Type is Ownable {
             "not admin role"
         );
 
-        _id.increment();
-        uint256 id = _id.current();
-
-        NodeType memory nodeType = NodeType(
-            id,
-            orderNum,
-            name,
-            cpuNum,
-            memoryNum,
-            diskNum,
-            cudaNum,
-            videoMemory,
-            coverImage,
-            frameRate,
-            remark
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
         );
 
-        _nodeTypes.push(nodeType);
+        uint256 id = hyperdustStorage.getNextId();
 
+        _ids.push(id);
+
+        hyperdustStorage.setUint(
+            hyperdustStorage.genKey("orderNum", id),
+            orderNum
+        );
+
+        hyperdustStorage.setString(hyperdustStorage.genKey("name", id), name);
+        hyperdustStorage.setUint(hyperdustStorage.genKey("cpuNum", id), cpuNum);
+        hyperdustStorage.setUint(
+            hyperdustStorage.genKey("memoryNum", id),
+            memoryNum
+        );
+        hyperdustStorage.setUint(
+            hyperdustStorage.genKey("diskNum", id),
+            diskNum
+        );
+        hyperdustStorage.setUint(
+            hyperdustStorage.genKey("cudaNum", id),
+            cudaNum
+        );
+        hyperdustStorage.setUint(
+            hyperdustStorage.genKey("videoMemory", id),
+            videoMemory
+        );
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("coverImage", id),
+            coverImage
+        );
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("frameRate", id),
+            frameRate
+        );
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("remark", id),
+            remark
+        );
         emit eveSave(id);
         return id;
     }
@@ -103,21 +138,51 @@ contract Hyperdust_Node_Type is Ownable {
             "not admin role"
         );
 
-        for (uint256 i = 0; i < _nodeTypes.length; i++) {
-            if (_nodeTypes[i].id == id) {
-                _nodeTypes[i].orderNum = orderNum;
-                _nodeTypes[i].name = name;
-                _nodeTypes[i].cpuNum = cpuNum;
-                _nodeTypes[i].memoryNum = memoryNum;
-                _nodeTypes[i].diskNum = diskNum;
-                _nodeTypes[i].cudaNum = cudaNum;
-                _nodeTypes[i].videoMemory = videoMemory;
-                _nodeTypes[i].coverImage = coverImage;
-                _nodeTypes[i].frameRate = frameRate;
-                _nodeTypes[i].remark = remark;
-                break;
-            }
-        }
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
+
+        string memory _name = hyperdustStorage.getString(
+            hyperdustStorage.genKey("name", id)
+        );
+
+        require(bytes(_name).length > 0, "not found");
+
+        hyperdustStorage.setUint(
+            hyperdustStorage.genKey("orderNum", id),
+            orderNum
+        );
+
+        hyperdustStorage.setString(hyperdustStorage.genKey("name", id), name);
+        hyperdustStorage.setUint(hyperdustStorage.genKey("cpuNum", id), cpuNum);
+        hyperdustStorage.setUint(
+            hyperdustStorage.genKey("memoryNum", id),
+            memoryNum
+        );
+        hyperdustStorage.setUint(
+            hyperdustStorage.genKey("diskNum", id),
+            diskNum
+        );
+        hyperdustStorage.setUint(
+            hyperdustStorage.genKey("cudaNum", id),
+            cudaNum
+        );
+        hyperdustStorage.setUint(
+            hyperdustStorage.genKey("videoMemory", id),
+            videoMemory
+        );
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("coverImage", id),
+            coverImage
+        );
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("frameRate", id),
+            frameRate
+        );
+        hyperdustStorage.setString(
+            hyperdustStorage.genKey("remark", id),
+            remark
+        );
 
         emit eveSave(id);
     }
@@ -125,31 +190,53 @@ contract Hyperdust_Node_Type is Ownable {
     function getNodeType(
         uint256 id
     ) public view returns (uint256[] memory, string[] memory) {
-        for (uint i = 0; i < _nodeTypes.length; i++) {
-            if (_nodeTypes[i].id == id) {
-                NodeType memory nodeType = _nodeTypes[i];
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
+        string[] memory strArray = new string[](4);
+        uint256[] memory uint256Array = new uint256[](7);
 
-                string[] memory strArray = new string[](4);
-                uint256[] memory uint256Array = new uint256[](7);
+        strArray[0] = hyperdustStorage.getString(
+            hyperdustStorage.genKey("name", id)
+        );
 
-                strArray[0] = nodeType.name;
-                strArray[1] = nodeType.coverImage;
-                strArray[2] = nodeType.frameRate;
-                strArray[3] = nodeType.remark;
+        require(bytes(strArray[0]).length > 0, "not found");
 
-                uint256Array[0] = nodeType.id;
-                uint256Array[1] = nodeType.orderNum;
-                uint256Array[2] = nodeType.cpuNum;
-                uint256Array[3] = nodeType.memoryNum;
-                uint256Array[4] = nodeType.diskNum;
-                uint256Array[5] = nodeType.cudaNum;
-                uint256Array[6] = nodeType.videoMemory;
+        strArray[1] = hyperdustStorage.getString(
+            hyperdustStorage.genKey("coverImage", id)
+        );
+        strArray[2] = hyperdustStorage.getString(
+            hyperdustStorage.genKey("frameRate", id)
+        );
+        strArray[3] = hyperdustStorage.getString(
+            hyperdustStorage.genKey("remark", id)
+        );
 
-                return (uint256Array, strArray);
-            }
-        }
+        uint256Array[0] = id;
+        uint256Array[1] = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("orderNum", id)
+        );
 
-        revert("Node Type does not exist");
+        uint256Array[2] = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("cpuNum", id)
+        );
+        uint256Array[3] = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("memoryNum", id)
+        );
+
+        uint256Array[4] = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("diskNum", id)
+        );
+
+        uint256Array[5] = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("nodeType", id)
+        );
+
+        uint256Array[6] = hyperdustStorage.getUint(
+            hyperdustStorage.genKey("videoMemory", id)
+        );
+
+        return (uint256Array, strArray);
     }
 
     function deleteNodeType(uint256 id) public {
@@ -158,20 +245,45 @@ contract Hyperdust_Node_Type is Ownable {
             "not admin role"
         );
 
-        uint256 index = 0;
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
 
-        for (uint i = 0; i < _nodeTypes.length; i++) {
-            if (_nodeTypes[i].id == id) {
-                index = i + 1;
-                break;
-            }
-        }
+        string memory name = hyperdustStorage.getString(
+            hyperdustStorage.genKey("name", id)
+        );
 
-        require(index > 0, "not found");
-        _nodeTypes[index - 1] = _nodeTypes[_nodeTypes.length - 1];
-        _nodeTypes.pop();
+        require(bytes(name).length > 0, "not found");
+
+        hyperdustStorage.setString(hyperdustStorage.genKey("name", id), "");
 
         emit eveDelete(id);
+    }
+
+    function getNodeTypeList() public view returns (NodeType[] memory) {
+        NodeType[] memory list = new NodeType[](_ids.length);
+        for (uint i = 0; i < _ids.length; i++) {
+            uint256 id = _ids[i];
+            (
+                uint256[] memory uint256Array,
+                string[] memory strArray
+            ) = getNodeType(id);
+            list[i] = NodeType(
+                uint256Array[0],
+                uint256Array[1],
+                strArray[0],
+                uint256Array[2],
+                uint256Array[3],
+                uint256Array[4],
+                uint256Array[5],
+                uint256Array[6],
+                strArray[1],
+                strArray[2],
+                strArray[3]
+            );
+        }
+
+        return list;
     }
 
     function getNodeTypeId(
@@ -181,7 +293,7 @@ contract Hyperdust_Node_Type is Ownable {
         uint256 cudaNum,
         uint256 videoMemory
     ) public view returns (uint256) {
-        NodeType[] memory sortedData = _nodeTypes;
+        NodeType[] memory sortedData = getNodeTypeList();
         uint n = sortedData.length;
 
         if (n > 1) {

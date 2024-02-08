@@ -2,30 +2,34 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "@openzeppelin/contracts/access/Ownable.sol";
-
-import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+
 import "../utils/StrUtil.sol";
+
+import "../Hyperdust_Storage.sol";
 
 abstract contract IHyperdustRolesCfg {
     function hasAdminRole(address account) public view returns (bool) {}
 }
 
-contract Hyperdust_BaseReward_Release is Ownable {
+contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
-
-    using Counters for Counters.Counter;
-    Counters.Counter private _id;
 
     address public _rolesCfgAddress;
     address public _erc20Address;
 
-    uint256 public _intervalTime = 30 days;
+    uint256 public _intervalTime;
 
-    uint256 public _intervalCount = 12;
+    uint256 public _intervalCount;
+
+    address public _HyperdustStorageAddress;
+
+    uint256 public _dayTime;
 
     event eveSave(
         uint256[] amounts,
@@ -33,6 +37,13 @@ contract Hyperdust_BaseReward_Release is Ownable {
         uint256[] releaseTimes,
         address account
     );
+
+    function initialize(address onlyOwner) public initializer {
+        _intervalTime = 30 days;
+        _intervalCount = 12;
+        _dayTime = 1 days;
+        __Ownable_init(onlyOwner);
+    }
 
     mapping(string => uint256[] amount) public _baseRewardReleaseRecordsMap;
 
@@ -42,6 +53,12 @@ contract Hyperdust_BaseReward_Release is Ownable {
 
     function setERC20Address(address erc20Address) public onlyOwner {
         _erc20Address = erc20Address;
+    }
+
+    function setHyperdustStorageAddress(
+        address hyperdustStorageAddress
+    ) public onlyOwner {
+        _HyperdustStorageAddress = hyperdustStorageAddress;
     }
 
     function setIntervalTime(uint256 intervalTime) public onlyOwner {
@@ -57,6 +74,7 @@ contract Hyperdust_BaseReward_Release is Ownable {
     ) public onlyOwner {
         _rolesCfgAddress = contractaddressArray[0];
         _erc20Address = contractaddressArray[1];
+        _HyperdustStorageAddress = contractaddressArray[2];
     }
 
     function addBaseRewardReleaseRecord(
@@ -66,6 +84,10 @@ contract Hyperdust_BaseReward_Release is Ownable {
         require(
             IHyperdustRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
             "not admin role"
+        );
+
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
         );
 
         uint256 time = getStartOfToday();
@@ -85,18 +107,20 @@ contract Hyperdust_BaseReward_Release is Ownable {
                 time.toString().toSlice()
             );
 
-            uint256[] memory amountArray = _baseRewardReleaseRecordsMap[key];
+            string memory amountKey = key.toSlice().concat("_amount".toSlice());
+            string memory releaseAmountKey = key.toSlice().concat(
+                "_releaseAmount".toSlice()
+            );
 
-            if (amountArray.length == 0) {
-                amountArray = new uint256[](2);
-            }
+            uint256 _amount = hyperdustStorage.getUint(amountKey) + avgAmount;
 
-            amountArray[0] += avgAmount;
+            hyperdustStorage.setUint(amountKey, _amount);
+
+            uint256 releaseAmount = hyperdustStorage.getUint(releaseAmountKey);
+
             releaseTimes[i] = time;
-            amounts[i] = amountArray[0];
-            releaseAmounts[i] = amountArray[1];
-
-            _baseRewardReleaseRecordsMap[key] = amountArray;
+            amounts[i] = _amount;
+            releaseAmounts[i] = releaseAmount;
 
             time += _intervalTime;
         }
@@ -105,6 +129,10 @@ contract Hyperdust_BaseReward_Release is Ownable {
     }
 
     function release(uint256[] memory times) public {
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
+
         uint256 totalReleaseAmount = 0;
 
         uint256[] memory amounts = new uint256[](times.length);
@@ -120,27 +148,25 @@ contract Hyperdust_BaseReward_Release is Ownable {
                 time.toString().toSlice()
             );
 
-            uint256[] memory amountArray = _baseRewardReleaseRecordsMap[key];
+            string memory amountKey = key.toSlice().concat("_amount".toSlice());
+            string memory releaseAmountKey = key.toSlice().concat(
+                "_releaseAmount".toSlice()
+            );
 
-            if (amountArray.length == 0) {
+            uint256 amount = hyperdustStorage.getUint(amountKey);
+
+            uint256 releaseAmount = hyperdustStorage.getUint(releaseAmountKey);
+            if (amount == releaseAmount) {
                 continue;
             }
 
-            uint256 releaseAmount = amountArray[0] - amountArray[1];
+            totalReleaseAmount += (amount - releaseAmount);
 
-            if (releaseAmount == 0) {
-                continue;
-            }
+            hyperdustStorage.setUint(releaseAmountKey, amount);
 
-            amountArray[1] += releaseAmount;
-
-            _baseRewardReleaseRecordsMap[key] = amountArray;
-
-            totalReleaseAmount += releaseAmount;
-
-            amounts[i] = amountArray[0];
+            amounts[i] = amount;
             releaseTimes[i] = time;
-            releaseAmounts[i] = amountArray[1];
+            releaseAmounts[i] = amount;
         }
 
         IERC20(_erc20Address).transfer(msg.sender, totalReleaseAmount);
@@ -150,7 +176,37 @@ contract Hyperdust_BaseReward_Release is Ownable {
 
     function getStartOfToday() private view returns (uint256) {
         uint256 currentTime = block.timestamp;
-        uint256 startOfDay = currentTime - (currentTime % 1 days);
+        if(_dayTime == 0){
+            return currentTime;
+        }
+        uint256 startOfDay = currentTime - (currentTime % _dayTime);
         return startOfDay;
+    }
+
+    function findAmount(
+        address account,
+        uint256 time
+    ) public view returns (uint256, uint256) {
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
+            _HyperdustStorageAddress
+        );
+
+        string memory key = account.toHexString().toSlice().concat(
+            time.toString().toSlice()
+        );
+
+        string memory amountKey = key.toSlice().concat("_amount".toSlice());
+        string memory releaseAmountKey = key.toSlice().concat(
+            "_releaseAmount".toSlice()
+        );
+
+        uint256 amount = hyperdustStorage.getUint(amountKey);
+        uint256 releaseAmount = hyperdustStorage.getUint(releaseAmountKey);
+
+        return (amount, releaseAmount);
+    }
+
+    function setDayTime(uint256 dayTime) public onlyOwner {
+        _dayTime = dayTime;
     }
 }
