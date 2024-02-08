@@ -672,107 +672,107 @@ describe("Hyperdust_Token", () => {
 
 
 
-    // it("GPUMining Mint Recursive halving test", async () => {
+    it("GPUMining Mint Recursive halving test", async () => {
 
 
 
 
-    //     const accounts = await ethers.getSigners();
+        const accounts = await ethers.getSigners();
 
-    //     const contract = await ethers.deployContract("Hyperdust_Token_Test", ["Hyperdust Private Token Test", "HYPT test", accounts[0].address]);
-    //     await contract.waitForDeployment()
+        const contract = await ethers.deployContract("Hyperdust_Token", ["Hyperdust Private Token Test", "HYPT test", accounts[0].address]);
+        await contract.waitForDeployment()
 
-    //     await (await contract.startTGETimestamp()).wait()
+        await (await contract.startTGETimestamp()).wait()
 
-    //     const TGE_timestamp = await contract.TGE_timestamp()
-    //     console.info("TGE_timestamp:", TGE_timestamp)
-    //     await (await contract.setGPUMiningAddress(accounts[0].address)).wait()
-
-
-    //     const _GPUMiningTotalAward = await contract._GPUMiningTotalAward();
+        const TGE_timestamp = await contract.TGE_timestamp()
+        console.info("TGE_timestamp:", TGE_timestamp)
+        await (await contract.setGPUMiningAddress(accounts[0].address)).wait()
 
 
-    //     // 创建一个新的工作簿
-    //     let workbook = new ExcelJS.Workbook();
-
-    //     // 添加一个新的工作表
-    //     let worksheet = workbook.addWorksheet('My Sheet');
+        const _GPUMiningTotalAward = await contract._GPUMiningTotalAward();
 
 
-    //     worksheet.addRow(['Mint时间', 'Mint金额', 'Epoch金额', '释放比例', "允许释放时间", "年度", "上次比例减半释放时间", "年度可释放金额", "年度总计可释放金额", "总计金额", "已释放金额"]);
+        // 创建一个新的工作簿
+        let workbook = new ExcelJS.Workbook();
+
+        // 添加一个新的工作表
+        let worksheet = workbook.addWorksheet('My Sheet');
 
 
-
-
-    //     for (let i = 1; i <= 21; i++) {
-
-
-    //         const privateProperty = await contract.getPrivateProperty();
+        worksheet.addRow(['Mint时间', 'Mint金额', 'Epoch金额', '释放比例', "允许释放时间", "年度", "上次比例减半释放时间", "年度可释放金额", "年度总计可释放金额", "总计金额", "已释放金额"]);
 
 
 
 
-    //         const list = [];
-
-    //         let latestBlock = await ethers.provider.getBlock('latest');
-    //         // 从区块中获取时间戳
-    //         let timestamp = latestBlock ? latestBlock.timestamp : 0;
-
-    //         const createDate = dayjs.unix(parseInt(timestamp.toString())).format("YYYY-MM-DD HH:mm:ss");
+        for (let i = 1; i <= 21; i++) {
 
 
-    //         const GPUMiningCurrAllowMintTotalNum = await contract.getGPUMiningCurrAllowMintTotalNum();
-
-
-    //         const _epochAward = GPUMiningCurrAllowMintTotalNum[2];
-
-
-    //         const _GPUMiningCurrAward = await contract._GPUMiningCurrAward();
-
-    //         const mintNum = ethers.formatEther(GPUMiningCurrAllowMintTotalNum[0])
-
-    //         await (await contract.GPUMiningMint(ethers.parseEther((parseFloat(mintNum) * 0.8).toString()))).wait();
-
-    //         const GPUMiningCurrMiningRatio = await contract.getGPUMiningCurrMiningRatio();
-    //         const _GPUMiningAllowReleaseTime = await contract._GPUMiningAllowReleaseTime();
-
-
-    //         list.push(createDate);
-    //         list.push(parseFloat(mintNum) * 0.8);
-    //         list.push(ethers.formatEther(_epochAward));
-    //         list.push((parseInt(GPUMiningCurrMiningRatio) / 100000000));
-    //         list.push(dayjs.unix(parseInt(_GPUMiningAllowReleaseTime.toString())).format("YYYY-MM-DD HH:mm:ss"));
-    //         list.push(i);
-    //         list.push(dayjs.unix(parseInt(privateProperty[6].toString())).format("YYYY-MM-DD HH:mm:ss"));
-    //         list.push(ethers.formatEther(GPUMiningCurrAllowMintTotalNum[0]));
-    //         list.push(ethers.formatEther(GPUMiningCurrAllowMintTotalNum[1]));
-    //         list.push(ethers.formatEther(_GPUMiningTotalAward));
-    //         list.push(ethers.formatEther(_GPUMiningCurrAward));
-
-    //         worksheet.addRow(list);
-
-    //         await network.provider.send("evm_increaseTime", [_yearTime]);
-    //         await network.provider.send("evm_mine");
-
-    //         console.info(i);
-
-    //         console.info(list)
+            const privateProperty = await contract.getPrivateProperty();
 
 
 
 
-    //     }
-    //     // 写入Excel文件
-    //     await workbook.xlsx.writeFile(`D:\\file\\Hyperdust.xlsx`);
+            const list = [];
+
+            let latestBlock = await ethers.provider.getBlock('latest');
+            // 从区块中获取时间戳
+            let timestamp = latestBlock ? latestBlock.timestamp : 0;
+
+            const createDate = dayjs.unix(parseInt(timestamp.toString())).format("YYYY-MM-DD HH:mm:ss");
 
 
+            const GPUMiningCurrAllowMintTotalNum = await contract.getGPUMiningCurrAllowMintTotalNum();
+
+
+            const _epochAward = GPUMiningCurrAllowMintTotalNum[2];
+
+
+            const _GPUMiningCurrAward = await contract._GPUMiningCurrAward();
+
+            const mintNum = ethers.formatEther(GPUMiningCurrAllowMintTotalNum[0])
+
+            await (await contract.GPUMiningMint(ethers.parseEther((parseFloat(mintNum) * 0.8).toString()))).wait();
+
+            const GPUMiningCurrMiningRatio = await contract.getGPUMiningCurrMiningRatio();
+            const _GPUMiningAllowReleaseTime = await contract._GPUMiningAllowReleaseTime();
+
+
+            list.push(createDate);
+            list.push(parseFloat(mintNum) * 0.8);
+            list.push(ethers.formatEther(_epochAward));
+            list.push((parseInt(GPUMiningCurrMiningRatio) / 100000000));
+            list.push(dayjs.unix(parseInt(_GPUMiningAllowReleaseTime.toString())).format("YYYY-MM-DD HH:mm:ss"));
+            list.push(i);
+            list.push(dayjs.unix(parseInt(privateProperty[6].toString())).format("YYYY-MM-DD HH:mm:ss"));
+            list.push(ethers.formatEther(GPUMiningCurrAllowMintTotalNum[0]));
+            list.push(ethers.formatEther(GPUMiningCurrAllowMintTotalNum[1]));
+            list.push(ethers.formatEther(_GPUMiningTotalAward));
+            list.push(ethers.formatEther(_GPUMiningCurrAward));
+
+            worksheet.addRow(list);
+
+            await network.provider.send("evm_increaseTime", [_yearTime]);
+            await network.provider.send("evm_mine");
+
+            console.info(i);
+
+            console.info(list)
+
+
+
+
+        }
+        // 写入Excel文件
+        await workbook.xlsx.writeFile(`D:\\file\\Hyperdust.xlsx`);
 
 
 
 
 
 
-    // })
+
+
+    })
 
 
 
@@ -976,33 +976,35 @@ describe("Hyperdust_Token", () => {
 
 
 
-        const accounts = await ethers.getSigners();
+        // const accounts = await ethers.getSigners();
 
-        const contract = await ethers.deployContract("Hyperdust_Token_Test", ["Hyperdust Private Token Test", "HYPT test", accounts[0].address]);
+        // const contract = await ethers.deployContract("Hyperdust_Token", ["Hyperdust Private Token Test", "HYPT test", accounts[0].address]);
 
-        await contract.waitForDeployment()
+        // await contract.waitForDeployment()
 
-        await (await contract.startTGETimestamp()).wait();
-        await (await contract.setAirdropAddress(accounts[0].address)).wait();
-
-
-
-        for (let i = 0; i < 30; i++) {
+        // await (await contract.startTGETimestamp()).wait();
+        // await (await contract.setAdvisorAddress(accounts[0].address)).wait();
 
 
 
-            await network.provider.send("evm_increaseTime", [600 * 6]);
-            await network.provider.send("evm_mine")
+        // for (let i = 0; i < 3; i++) {
 
-            await (await contract.mint()).wait();
 
-            const a = await contract.getAirdropCurrAllowMintTotalNum();
 
-            const _AirdropTotalAward = await contract._AirdropTotalAward();
-            const _AirdropCurrAward = await contract._AirdropCurrAward();
+        //     await network.provider.send("evm_increaseTime", [_monthTime]);
+        //     await network.provider.send("evm_mine")
 
-            console.info(ethers.formatEther(_AirdropTotalAward), ethers.formatEther(_AirdropCurrAward))
-        }
+        //     await (await contract.mint()).wait();
+
+        //     const a = await contract.getAdvisorCurrAllowMintTotalNum();
+
+        //     if (parseInt(a[0].toString()) > 0) {
+        //         await (await contract.mint(a[0])).wait()
+        //     }
+
+
+        //     console.info(ethers.formatEther(a[0]), ethers.formatEther(a[1]))
+        // }
 
 
 

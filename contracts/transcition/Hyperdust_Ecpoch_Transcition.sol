@@ -60,8 +60,8 @@ contract Hyperdust_Ecpoch_Transcition is OwnableUpgradeable {
         _erc20Address = erc20Address;
     }
 
-    function initialize() public initializer {
-        __Ownable_init(msg.sender);
+    function initialize(address onlyOwner) public initializer {
+        __Ownable_init(onlyOwner);
     }
 
     function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {

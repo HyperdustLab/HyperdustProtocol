@@ -36,8 +36,8 @@ contract Hyperdust_Node_Type is OwnableUpgradeable {
         string remark;
     }
 
-    function initialize() public initializer {
-        __Ownable_init(msg.sender);
+    function initialize(address onlyOwner) public initializer {
+        __Ownable_init(onlyOwner);
     }
 
     event eveSave(uint256 id);

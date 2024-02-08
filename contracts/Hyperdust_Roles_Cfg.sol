@@ -43,8 +43,4 @@ contract Hyperdust_Roles_Cfg is OwnableUpgradeable {
     function deleteAdmin(address account) public onlyOwner {
         _adminRole[account] = false;
     }
-
-    function deleteAdmin1(address account) public onlyOwner {
-        _adminRole[account] = false;
-    }
 }

@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
 import "../utils/StrUtil.sol";
 
-contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
+contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
     constructor(
         string memory name_,
         string memory symbol_,
@@ -297,7 +297,7 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
             "GPUMiningTotalAward is not enough"
         );
 
-        require(_epochAward >= mintNum, "epochAward is not enough");
+        // require(_epochAward >= mintNum, "epochAward is not enough");
 
         _GPUMiningCurrYearTotalAward += mintNum;
         _GPUMiningCurrAward += mintNum;
@@ -1088,7 +1088,6 @@ contract Hyperdust_Token_Test is ERC20, ERC20Burnable, Ownable {
     }
 
     function startTGETimestamp() public onlyOwner {
-
         require(TGE_timestamp == 0, "TGE_timestamp is not 0");
 
         TGE_timestamp = block.timestamp;

@@ -86,9 +86,9 @@ contract Hyperdust_Ecpoch_Awards is OwnableUpgradeable {
         uint256 nonce
     );
 
-    function initialize() public initializer {
+    function initialize(address onlyOwner) public initializer {
         _rand = 1;
-        __Ownable_init(msg.sender);
+        __Ownable_init(onlyOwner);
     }
 
     function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {

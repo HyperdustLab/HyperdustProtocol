@@ -10,7 +10,7 @@ contract Hyperdust_Storage is Ownable {
     using Strings for *;
     using StrUtil for *;
 
-    constructor() Ownable(msg.sender) {}
+    constructor(address onlyOwner) Ownable(onlyOwner) {}
 
     mapping(string => uint256) public uintStorage;
     mapping(string => address) public addressStorage;
@@ -126,7 +126,7 @@ contract Hyperdust_Storage is Ownable {
         bytes32Storage[key] = value;
     }
 
-    function getBytes32(string memory key) public returns (bytes32) {
+    function getBytes32(string memory key) public view returns (bytes32) {
         return bytes32Storage[key];
     }
 
