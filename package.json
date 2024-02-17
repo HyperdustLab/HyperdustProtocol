@@ -10,6 +10,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "@arbitrum/sdk": "^3.3.0",
     "@chainlink/contracts": "^0.8.0",
     "@confluxfans/contracts": "^0.3.3",
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",

@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@arbitrum/sdk':
+    specifier: ^3.3.0
+    version: 3.3.0
   '@chainlink/contracts':
     specifier: ^0.8.0
     version: 0.8.0(ethers@6.9.2)
@@ -73,6 +76,20 @@ packages:
   /@adraffy/ens-normalize@1.10.0:
     resolution: {integrity: sha512-nA9XHtlAkYfJxY7bce8DcN7eKxWWCWkU+1GR9d+U6MbNpfwQp8TI7vqOsBsMcHoT4mBu2kypKoSKnghEzOOq5Q==}
 
+  /@arbitrum/sdk@3.3.0:
+    resolution: {integrity: sha512-0sqyjcZgf+6Y4XWi0GQdHxjFR+FMh1i7NdjW1KPHSM1iRk21ChdkCm028m75pk1CRtkrxhc9BdMDzV5heoy3/A==}
+    engines: {node: '>=v11', npm: please-use-yarn, yarn: '>= 1.0.0'}
+    dependencies:
+      '@ethersproject/address': 5.7.0
+      '@ethersproject/bignumber': 5.7.0
+      '@ethersproject/bytes': 5.7.0
+      async-mutex: 0.4.1
+      ethers: 5.7.2
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+    dev: false
+
   /@aws-crypto/sha256-js@1.2.2:
     resolution: {integrity: sha512-Nr1QJIbW/afYYGzYvrF70LtaHrIRtd4TNAglX8BvlfxJLZ45SAmueIKYl5tWoNBPzp65ymXGFK0Bb1vZUpuc9g==}
     dependencies:
@@ -100,7 +117,7 @@ packages:
   /@aws-sdk/util-utf8-browser@3.259.0:
     resolution: {integrity: sha512-UvFa/vR+e19XookZF8RzFZBrw2EUkQWxiBW0yYQAhvk3C+QVGl0H3ouca8LDBlBfQKXwmW3huo/59H8rwb1wJw==}
     dependencies:
-      tslib: 2.4.0
+      tslib: 2.6.2
     dev: false
 
   /@babel/code-frame@7.23.5:
@@ -1636,6 +1653,12 @@ packages:
   /astral-regex@2.0.0:
     resolution: {integrity: sha512-Z7tMw1ytTXt5jqMcOP+OQteU1VuNK9Y02uuJtKQ1Sv69jXQKKg5cibLwGJow8yzZP+eAc18EmLGPal0bp36rvQ==}
     engines: {node: '>=8'}
+    dev: false
+
+  /async-mutex@0.4.1:
+    resolution: {integrity: sha512-WfoBo4E/TbCX1G95XTjbWTE3X2XLG0m1Xbv2cwOtuPdyH9CZvnaA5nCt1ucjaKEgW2A5IF71hxrRhr83Je5xjA==}
+    dependencies:
+      tslib: 2.6.2
     dev: false
 
   /async-retry@1.3.3:
