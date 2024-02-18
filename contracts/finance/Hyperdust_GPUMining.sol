@@ -1,5 +1,3 @@
-import {DateTime} from "@quant-finance/solidity-datetime/contracts/DateTime.sol";
-
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -8,18 +6,18 @@ import "@openzeppelin/contracts/utils/math/Math.sol";
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
+import "@openzeppelin/contracts/utils/Strings.sol";
+
+import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
+
 import "../utils/StrUtil.sol";
 import "./Hyperdust_Token.sol";
 
-contract Hyperdust_GPUMining is OwnableUpgradeable {
+contract Hyperdust_GPUMining is OwnableUpgradeable, AccessControlUpgradeable {
     using Strings for *;
     using StrUtil for *;
 
     using Math for uint256;
-
-    uint256 public TGE_timestamp;
-
-    uint256 public _yearTime;
 
     uint256 public _GPUMiningTotalAward;
 
@@ -47,7 +45,27 @@ contract Hyperdust_GPUMining is OwnableUpgradeable {
 
     address public _HyperdustTokenAddress;
 
-    address public _HyperdustEcpochAwardsAddress;
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+
+    function initialize(
+        address onlyOwner,
+        uint256 GPUMiningReleaseInterval
+    ) public initializer {
+        __Ownable_init(onlyOwner);
+        _grantRole(DEFAULT_ADMIN_ROLE, onlyOwner);
+        _GPUMiningTotalAward = (200000000 ether * 68) / 100;
+        _GPUMiningCurrMiningRatio = 10 * 10 ** 18;
+        _GPUMiningCurrYearTotalSupply = Math.mulDiv(
+            _GPUMiningTotalAward,
+            _GPUMiningCurrMiningRatio,
+            FACTOR
+        );
+
+        _epochAward = _GPUMiningCurrYearTotalSupply / 365 / 225;
+
+        _GPUMiningReleaseInterval = GPUMiningReleaseInterval;
+        _GPUMiningRateInterval = 4 * GPUMiningReleaseInterval;
+    }
 
     function getGPUMiningCurrAllowMintTotalNum()
         public
@@ -108,58 +126,28 @@ contract Hyperdust_GPUMining is OwnableUpgradeable {
         }
     }
 
-    function initialize(
-        address onlyOwner,
-        uint256 yearTime
-    ) public initializer {
-        __Ownable_init(onlyOwner);
-        _yearTime = yearTime;
-        _GPUMiningTotalAward = (200000000 ether * 68) / 100;
-        _GPUMiningCurrMiningRatio = 10 * 10 ** 18;
-        _GPUMiningCurrYearTotalSupply = Math.mulDiv(
-            _GPUMiningTotalAward,
-            _GPUMiningCurrMiningRatio,
-            FACTOR
-        );
-
-        _epochAward = _GPUMiningCurrYearTotalSupply / 365 / 225;
-
-        _GPUMiningReleaseInterval = yearTime;
-        _GPUMiningRateInterval = 4 * _yearTime;
-    }
-
     function setHyperdustTokenAddress(
         address HyperdustTokenAddress
     ) public onlyOwner {
         _HyperdustTokenAddress = HyperdustTokenAddress;
     }
 
-    function setHyperdustEcpochAwardsAddress(
-        address HyperdustEcpochAwardsAddress
-    ) public onlyOwner {
-        _HyperdustEcpochAwardsAddress = HyperdustEcpochAwardsAddress;
-    }
-
-    function setContractAddress(
-        address[] memory contractaddressArray
-    ) public onlyOwner {
-        _HyperdustTokenAddress = contractaddressArray[0];
-        _HyperdustEcpochAwardsAddress = contractaddressArray[1];
-    }
-
-    function startTGETimestamp() public onlyOwner {
-        require(TGE_timestamp == 0, "TGE_timestamp is not 0");
-
-        TGE_timestamp = block.timestamp;
-        _GPUMiningAllowReleaseTime = TGE_timestamp;
-        _lastGPUMiningRateTime = TGE_timestamp;
-    }
-
-    function mint(address account, uint256 mintNum) public {
-        require(
-            msg.sender == _HyperdustEcpochAwardsAddress,
-            "msg.sender is not allowed"
+    function mint(
+        address account,
+        uint256 mintNum
+    ) public onlyRole(MINTER_ROLE) {
+        Hyperdust_Token hyperdust_Token = Hyperdust_Token(
+            _HyperdustTokenAddress
         );
+
+        uint256 TGE_timestamp = hyperdust_Token.TGE_timestamp();
+
+        require(TGE_timestamp > 0, "TGE_timestamp is not started");
+
+        if (_GPUMiningAllowReleaseTime == 0) {
+            _GPUMiningAllowReleaseTime = TGE_timestamp;
+            _lastGPUMiningMintTime = TGE_timestamp;
+        }
 
         if (
             block.timestamp >= _lastGPUMiningRateTime + _GPUMiningRateInterval
@@ -207,8 +195,10 @@ contract Hyperdust_GPUMining is OwnableUpgradeable {
 
         _lastGPUMiningMintTime = block.timestamp;
 
-        Hyperdust_Token(_HyperdustTokenAddress).mint(mintNum);
+        hyperdust_Token.mint(mintNum);
 
         IERC20(_HyperdustTokenAddress).transfer(account, mintNum);
     }
+
+
 }
