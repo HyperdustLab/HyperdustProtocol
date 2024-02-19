@@ -21,10 +21,10 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
     bytes32 public constant PUBLIC_SALE = keccak256("PUBLIC_SALE");
     bytes32 public constant AIRDROP = keccak256("AIRDROP");
 
-    mapping(bytes32 => uint256) public _totalAward;
-    mapping(bytes32 => uint256) public _currAward;
-    mapping(bytes32 => address) public _minterAddeess;
-    mapping(address => bytes32) public _bytes32Address;
+    mapping(bytes32 => uint256) private _totalAward;
+    mapping(bytes32 => uint256) private _currAward;
+    mapping(bytes32 => address) private _minterAddeess;
+    mapping(address => bytes32) private _bytes32Address;
 
     constructor(
         string memory name_,
@@ -87,5 +87,23 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
 
     function totalSupply() public view override returns (uint256) {
         return _totalSupply;
+    }
+
+    function totalAward(bytes32 name) public view returns (uint256) {
+        return _totalAward[name];
+    }
+
+    function currAward(bytes32 name) public view returns (uint256) {
+        return _currAward[name];
+    }
+
+    function minterAddeess(bytes32 name) public view returns (address) {
+        return _minterAddeess[name];
+    }
+
+    function bytes32Address(
+        address minterAddeess
+    ) public view returns (bytes32) {
+        return _bytes32Address[minterAddeess];
     }
 }

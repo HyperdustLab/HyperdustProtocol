@@ -38,12 +38,15 @@ contract Hyperdust_VestingWallet is
 
     uint256 public _linearVestingNum;
 
+    bytes32 public _businessName;
+
     function initialize(
         address onlyOwner,
         uint256 releaseInterval,
         uint256 delayVestingNum,
         uint256 firestRate,
-        uint256 linearVestingNum
+        uint256 linearVestingNum,
+        bytes32 businessName
     ) public initializer {
         __Ownable_init(onlyOwner);
         _grantRole(MINTER_ROLE, onlyOwner);
@@ -52,26 +55,15 @@ contract Hyperdust_VestingWallet is
         _delayVestingNum = delayVestingNum;
         _firestRate = firestRate;
         _linearVestingNum = linearVestingNum;
-    }
-
-    function totalAllocation() public view returns (uint256) {
-        return totalAllocation(msg.sender);
+        _businessName = businessName;
     }
 
     function totalAllocation(address account) public view returns (uint256) {
         return _accountTotalAllocation[account];
     }
 
-    function released() public view returns (uint256) {
-        return released(msg.sender);
-    }
-
     function released(address account) public view returns (uint256) {
         return _accountReleased[account];
-    }
-
-    function releasable() public view returns (uint256) {
-        return releasable(msg.sender);
     }
 
     function releasable(address account) public view returns (uint256) {
@@ -110,16 +102,13 @@ contract Hyperdust_VestingWallet is
         }
 
         uint256 elapsed = block.timestamp - start;
-        uint256 cycles = elapsed / _releaseInterval + 1;
+
+        uint256 active = elapsed / _releaseInterval;
         if (elapsed % _releaseInterval > 0) {
-            cycles += 1;
+            active += 1;
+        } else {
+            active++;
         }
-
-        if (cycles == 0) {
-            return 0;
-        }
-
-        uint256 active = cycles - _delayVestingNum;
 
         if (active == 0) {
             return 0;
@@ -166,6 +155,8 @@ contract Hyperdust_VestingWallet is
 
         _totalReleased += amount;
 
+        _accountReleased[msg.sender] += amount;
+
         IERC20(hyperdust_Token).transfer(msg.sender, amount);
     }
 
@@ -193,5 +184,13 @@ contract Hyperdust_VestingWallet is
                 amount;
             _totalAllocation = _totalAllocation + amount;
         }
+
+        Hyperdust_Token hyperdust_Token = Hyperdust_Token(
+            _HyperdustTokenAddress
+        );
+
+        uint256 totalAward = hyperdust_Token.totalAward(_businessName);
+
+        require(_totalAllocation <= totalAward, "totalAward is not enough");
     }
 }
