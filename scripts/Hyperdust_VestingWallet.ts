@@ -1,10 +1,16 @@
 /** @format */
 
-import { ethers, run, upgrades } from "hardhat";
+import hardhat from "hardhat";
+
+const { ethers, run, upgrades } = hardhat;
+
 
 async function main() {
 
     const mouthTime = 600;
+
+    const accounts = await ethers.getSigners();
+
 
 
 
@@ -70,6 +76,21 @@ async function main() {
 
     console.info("AIRDROP:", AIRDROP.target)
 
+
+
+    await (await Hyperdust_Token.connect(accounts[1]).setMinterAddeess(ethers.keccak256(ethers.toUtf8Bytes("CORE_TEAM")), CORE_TEAM.target)).wait()
+
+    await (await Hyperdust_Token.connect(accounts[1]).setMinterAddeess(ethers.keccak256(ethers.toUtf8Bytes("FOUNDATION")), FOUNDATION.target)).wait()
+
+    await (await Hyperdust_Token.connect(accounts[1]).setMinterAddeess(ethers.keccak256(ethers.toUtf8Bytes("ADVISOR")), ADVISOR.target)).wait()
+
+    await (await Hyperdust_Token.connect(accounts[1]).setMinterAddeess(ethers.keccak256(ethers.toUtf8Bytes("SEED")), SEED.target)).wait()
+
+    await (await Hyperdust_Token.connect(accounts[1]).setMinterAddeess(ethers.keccak256(ethers.toUtf8Bytes("PRIVATE_SALE")), PRIVATE_SALE.target)).wait()
+
+    await (await Hyperdust_Token.connect(accounts[1]).setMinterAddeess(ethers.keccak256(ethers.toUtf8Bytes("PUBLIC_SALE")), PUBLIC_SALE.target)).wait()
+
+    await (await Hyperdust_Token.connect(accounts[1]).setMinterAddeess(ethers.keccak256(ethers.toUtf8Bytes("AIRDROP")), AIRDROP.target)).wait()
 
 
 }

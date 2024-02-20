@@ -19,8 +19,8 @@ contract Hyperdust_VestingWallet is
 
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-    mapping(address => uint256) public _accountTotalAllocation;
-    mapping(address => uint256) public _accountReleased;
+    mapping(address => uint256) private _accountTotalAllocation;
+    mapping(address => uint256) private _accountReleased;
 
     address public _HyperdustTokenAddress;
 
@@ -98,7 +98,7 @@ contract Hyperdust_VestingWallet is
         }
 
         if (block.timestamp >= end) {
-            return _totalAllocation - _released;
+            return accountTotalAllocation - _released;
         }
 
         uint256 elapsed = block.timestamp - start;
@@ -193,5 +193,22 @@ contract Hyperdust_VestingWallet is
         uint256 totalAward = hyperdust_Token.totalAward(_businessName);
 
         require(_totalAllocation <= totalAward, "totalAward is not enough");
+    }
+
+    function revokeAccountTotalAllocation(
+        address account,
+        uint256 amount
+    ) public onlyRole(MINTER_ROLE) {
+        uint256 accountReleased = released(account);
+        uint256 accountTotalAllocation = totalAllocation(account);
+
+        require(
+            accountTotalAllocation >= accountReleased + amount,
+            "accountTotalAllocation is not enough"
+        );
+
+        _accountTotalAllocation[account] = accountTotalAllocation - amount;
+
+        _totalAllocation -= amount;
     }
 }

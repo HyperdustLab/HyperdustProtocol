@@ -1,6 +1,7 @@
 {
   "devDependencies": {
     "@nomicfoundation/hardhat-ethers": "^3.0.5",
+    "@nomicfoundation/hardhat-verify": "^2.0.4",
     "@typechain/ethers-v6": "^0.5.1",
     "@types/jest": "^29.5.8",
     "ethers": "^6.9.2",

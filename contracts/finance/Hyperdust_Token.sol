@@ -41,13 +41,10 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
         _totalAward[AIRDROP] = (_totalSupply * 2) / 100;
     }
 
-    function setMinterAddeess(
-        bytes32 name,
-        address minterAddeess
-    ) public onlyOwner {
-        _minterAddeess[name] = minterAddeess;
+    function setMinterAddeess(bytes32 name, address account) public onlyOwner {
+        _minterAddeess[name] = account;
 
-        _bytes32Address[minterAddeess] = name;
+        _bytes32Address[account] = name;
     }
 
     function mint(uint256 mintNum) public {
@@ -101,9 +98,7 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
         return _minterAddeess[name];
     }
 
-    function bytes32Address(
-        address minterAddeess
-    ) public view returns (bytes32) {
-        return _bytes32Address[minterAddeess];
+    function bytes32Address(address account) public view returns (bytes32) {
+        return _bytes32Address[account];
     }
 }
