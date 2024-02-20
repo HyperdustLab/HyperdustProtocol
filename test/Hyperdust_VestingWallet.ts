@@ -14,19 +14,14 @@ describe("Hyperdust_VestingWallet", () => {
 
 
             const _Hyperdust_VestingWallet = await ethers.getContractFactory("Hyperdust_VestingWallet");
-            const Hyperdust_VestingWallet = await upgrades.deployProxy(_Hyperdust_VestingWallet, [accounts[0].address, 600, 3, 0, 48,
-            ethers.keccak256(ethers.toUtf8Bytes("CORE_TEAM"))
+            const Hyperdust_VestingWallet = await upgrades.deployProxy(_Hyperdust_VestingWallet, [accounts[0].address, 600, 0, 500, 19,
+            ethers.keccak256(ethers.toUtf8Bytes("SEED"))
             ]);
 
 
-            const PRIVATE_SALE = await Hyperdust_Token.PRIVATE_SALE();
+            const SEED = await Hyperdust_Token.SEED();
 
-
-
-
-
-
-            await (await Hyperdust_Token.setMinterAddeess(PRIVATE_SALE, Hyperdust_VestingWallet.target)).wait();
+            await (await Hyperdust_Token.setMinterAddeess(SEED, Hyperdust_VestingWallet.target)).wait();
 
 
 
@@ -42,7 +37,7 @@ describe("Hyperdust_VestingWallet", () => {
             await (await Hyperdust_VestingWallet.setHyperdustTokenAddress(Hyperdust_Token.target)).wait()
 
 
-            await (await Hyperdust_VestingWallet.appendAccountTotalAllocation([accounts[0].address], [ethers.parseEther("23000000.00")])).wait()
+            await (await Hyperdust_VestingWallet.appendAccountTotalAllocation([accounts[0].address], [ethers.parseEther("2500000.00")])).wait()
 
             const totalAllocation = await Hyperdust_VestingWallet.totalAllocation(accounts[0].address);
 
@@ -55,12 +50,17 @@ describe("Hyperdust_VestingWallet", () => {
             console.info("released:", ethers.formatEther(released));
 
 
+            let releasable = await Hyperdust_VestingWallet.releasable(accounts[0].address);
+
+            console.info("releasable:", ethers.formatEther(releasable));
 
 
-            await network.provider.send("evm_increaseTime", [600 * 3]);
+
+
+            await network.provider.send("evm_increaseTime", [600 * 1]);
             await network.provider.send("evm_mine");
 
-            let releasable = await Hyperdust_VestingWallet.releasable(accounts[0].address);
+            releasable = await Hyperdust_VestingWallet.releasable(accounts[0].address);
 
             console.info("releasable:", ethers.formatEther(releasable));
 

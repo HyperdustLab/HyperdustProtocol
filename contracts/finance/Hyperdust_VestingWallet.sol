@@ -74,9 +74,9 @@ contract Hyperdust_VestingWallet is
         uint256 start = _start;
         uint256 end = _end;
 
-        uint256 totalAllocation = totalAllocation(account);
+        uint256 accountTotalAllocation = totalAllocation(account);
 
-        if (totalAllocation == 0) {
+        if (accountTotalAllocation == 0) {
             return 0;
         }
 
@@ -91,14 +91,14 @@ contract Hyperdust_VestingWallet is
             }
         }
 
-        uint256 released = released(account);
+        uint256 _released = released(account);
 
         if (block.timestamp < start) {
             return 0;
         }
 
         if (block.timestamp >= end) {
-            return totalAllocation - released;
+            return _totalAllocation - _released;
         }
 
         uint256 elapsed = block.timestamp - start;
@@ -120,17 +120,18 @@ contract Hyperdust_VestingWallet is
 
         if (_firestRate > 0) {
             active--;
-            firestRateAmount = (totalAllocation * _firestRate) / 10000;
+            linearVestingNum--;
+            firestRateAmount = (accountTotalAllocation * _firestRate) / 10000;
         }
 
-        uint256 releaseIntervalAmount = (totalAllocation - firestRateAmount) /
-            linearVestingNum;
+        uint256 releaseIntervalAmount = (accountTotalAllocation -
+            firestRateAmount) / linearVestingNum;
 
         uint256 activeAmount = releaseIntervalAmount *
             active +
             firestRateAmount;
 
-        return activeAmount - released;
+        return activeAmount - _released;
     }
 
     function release() public {
