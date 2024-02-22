@@ -1,13 +1,20 @@
 {
   "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.6",
     "@nomicfoundation/hardhat-ethers": "^3.0.5",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.10",
     "@nomicfoundation/hardhat-verify": "^2.0.4",
     "@typechain/ethers-v6": "^0.5.1",
+    "@typechain/hardhat": "^8.0.3",
+    "@types/chai": "^4.3.11",
     "@types/jest": "^29.5.8",
+    "@types/mocha": "^10.0.6",
     "ethers": "^6.9.2",
-    "hardhat": "^2.18.1",
+    "hardhat": "^2.20.1",
     "hardhat-gas-reporter": "^1.0.9",
+    "solidity-coverage": "^0.8.8",
     "ts-node": "^10.9.1",
+    "typechain": "^8.3.2",
     "typescript": "^5.2.2"
   },
   "dependencies": {
