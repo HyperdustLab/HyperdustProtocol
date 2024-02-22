@@ -11,6 +11,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 
 import "../utils/StrUtil.sol";
+
 import "./Hyperdust_Token.sol";
 
 contract Hyperdust_GPUMining is OwnableUpgradeable, AccessControlUpgradeable {
@@ -53,6 +54,7 @@ contract Hyperdust_GPUMining is OwnableUpgradeable, AccessControlUpgradeable {
     ) public initializer {
         __Ownable_init(onlyOwner);
         _grantRole(DEFAULT_ADMIN_ROLE, onlyOwner);
+
         _GPUMiningTotalAward = (200000000 ether * 68) / 100;
         _GPUMiningCurrMiningRatio = 10 * 10 ** 18;
         _GPUMiningCurrYearTotalSupply = Math.mulDiv(
@@ -188,17 +190,13 @@ contract Hyperdust_GPUMining is OwnableUpgradeable, AccessControlUpgradeable {
             "GPUMiningTotalAward is not enough"
         );
 
-        // require(_epochAward >= mintNum, "epochAward is not enough");
+        require(_epochAward >= mintNum, "epochAward is not enough");
 
         _GPUMiningCurrYearTotalAward += mintNum;
         _GPUMiningCurrAward += mintNum;
 
         _lastGPUMiningMintTime = block.timestamp;
 
-        hyperdust_Token.mint(mintNum);
-
         IERC20(_HyperdustTokenAddress).transfer(account, mintNum);
     }
-
-
 }

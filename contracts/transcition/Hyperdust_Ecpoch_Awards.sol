@@ -18,6 +18,10 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
+import "../finance/Hyperdust_GPUMining.sol";
+
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 abstract contract IHyperdustRolesCfg {
     function hasAdminRole(address account) public view returns (bool) {}
 }
@@ -40,16 +44,6 @@ abstract contract IHyperdustNodeMgr {
 
 abstract contract IHyperdustSecurityDeposit {
     function addSecurityDeposit(uint256 nodeId, uint256 amount) public {}
-}
-
-abstract contract IHyperdustToken {
-    function _epochAward() public view returns (uint256) {}
-
-    function mint(uint256 amount) public {}
-
-    function transfer(address to, uint256 amount) external returns (bool) {}
-
-    function GPUMiningMint(uint256 amount) public {}
 }
 
 abstract contract IHyperdustBaseRewardRelease {
@@ -75,7 +69,9 @@ contract Hyperdust_Ecpoch_Awards is OwnableUpgradeable {
 
     address public _hyperdustBaseRewardRelease;
 
-    address public _HyperdustTokenAddress;
+    address public _HyperdustGPUMiningAddress;
+
+    address public _erc20Address;
 
     uint256 private _rand;
 
@@ -113,10 +109,25 @@ contract Hyperdust_Ecpoch_Awards is OwnableUpgradeable {
         _hyperdustBaseRewardRelease = hyperdustBaseRewardRelease;
     }
 
-    function setHyperdustTokenAddress(
-        address HyperdustTokenAddress
+    function setHyperdustGPUMiningAddress(
+        address HyperdustGPUMiningAddress
     ) public onlyOwner {
-        _HyperdustTokenAddress = HyperdustTokenAddress;
+        _HyperdustGPUMiningAddress = HyperdustGPUMiningAddress;
+    }
+
+    function setErc20Address(address erc20Address) public onlyOwner {
+        _erc20Address = erc20Address;
+    }
+
+    function setContractAddress(
+        address[] memory contractaddressArray
+    ) public onlyOwner {
+        _rolesCfgAddress = contractaddressArray[0];
+        _hyperdustNodeMgrAddress = contractaddressArray[1];
+        _hyperdustSecurityDeposit = contractaddressArray[2];
+        _hyperdustBaseRewardRelease = contractaddressArray[3];
+        _HyperdustGPUMiningAddress = contractaddressArray[4];
+        _erc20Address = contractaddressArray[5];
     }
 
     function rewards(bytes32[] memory nodeStatus, uint256 nonce) public {
@@ -135,11 +146,11 @@ contract Hyperdust_Ecpoch_Awards is OwnableUpgradeable {
             _hyperdustNodeMgrAddress
         );
 
-        IHyperdustToken hyperdustToken = IHyperdustToken(
-            _HyperdustTokenAddress
+        Hyperdust_GPUMining hyperdust_GPUMining = Hyperdust_GPUMining(
+            _HyperdustGPUMiningAddress
         );
 
-        uint256 epochAward = hyperdustToken._epochAward();
+        uint256 epochAward = hyperdust_GPUMining._epochAward();
 
         if (_totalNum < 10) {
             _totalNum = 10;
@@ -161,14 +172,13 @@ contract Hyperdust_Ecpoch_Awards is OwnableUpgradeable {
         uint256 securityDeposit = actualEpochAward / 10;
         uint256 baseRewardReleaseAward = actualEpochAward - securityDeposit;
 
-        hyperdustToken.GPUMiningMint(actualEpochAward);
+        hyperdust_GPUMining.mint(address(this), actualEpochAward);
 
-        hyperdustToken.transfer(
-            _hyperdustBaseRewardRelease,
-            baseRewardReleaseAward
-        );
+        IERC20 erc20 = IERC20(_erc20Address);
 
-        hyperdustToken.transfer(_hyperdustSecurityDeposit, securityDeposit);
+        erc20.transfer(_hyperdustBaseRewardRelease, baseRewardReleaseAward);
+
+        erc20.transfer(_hyperdustSecurityDeposit, securityDeposit);
 
         IHyperdustSecurityDeposit(_hyperdustSecurityDeposit).addSecurityDeposit(
                 nodeId,
@@ -244,15 +254,5 @@ contract Hyperdust_Ecpoch_Awards is OwnableUpgradeable {
         random = (random % _length) + _start;
         _rand++;
         return random;
-    }
-
-    function setContractAddress(
-        address[] memory contractaddressArray
-    ) public onlyOwner {
-        _rolesCfgAddress = contractaddressArray[0];
-        _hyperdustNodeMgrAddress = contractaddressArray[1];
-        _hyperdustSecurityDeposit = contractaddressArray[2];
-        _hyperdustBaseRewardRelease = contractaddressArray[3];
-        _HyperdustTokenAddress = contractaddressArray[4];
     }
 }

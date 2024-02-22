@@ -8,14 +8,13 @@ async function main() {
 
 
   const contract = await ethers.getContractFactory("Hyperdust_GPUMining");
-  const instance = await upgrades.deployProxy(contract, ["0xC619a8e80F485f5cCCb87041BAd2D2b0aCC843e2", 600]);
+  const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address, 60 * 60 * 24 * 365]);
   await instance.waitForDeployment();
 
+  await (await instance.setHyperdustTokenAddress("0xfcb8A945DC86D72f906D9C63222Dc470b5A35548")).wait()
 
 
   console.info("contractFactory address:", instance.target);
-
-
 
 
 }

@@ -40,6 +40,13 @@ contract Hyperdust_VestingWallet is
 
     bytes32 public _businessName;
 
+    event eveUpdate(
+        bytes32 businessName,
+        address[] accounts,
+        uint256[] totalAllocations,
+        uint256[] releaseds
+    );
+
     function initialize(
         address onlyOwner,
         uint256 releaseInterval,
@@ -159,6 +166,16 @@ contract Hyperdust_VestingWallet is
         _accountReleased[msg.sender] += amount;
 
         IERC20(hyperdust_Token).transfer(msg.sender, amount);
+
+        address[] memory accounts = new address[](1);
+        uint256[] memory totalAllocations = new uint256[](1);
+        uint256[] memory releaseds = new uint256[](1);
+
+        accounts[0] = msg.sender;
+        totalAllocations[0] = _accountTotalAllocation[msg.sender];
+        releaseds[0] = _accountReleased[msg.sender];
+
+        emit eveUpdate(_businessName, accounts, totalAllocations, releaseds);
     }
 
     function setHyperdustTokenAddress(
@@ -175,6 +192,8 @@ contract Hyperdust_VestingWallet is
             accounts.length == amounts.length,
             "accounts.length != amounts.length"
         );
+        uint256[] memory totalAllocations = new uint256[](accounts.length);
+        uint256[] memory releaseds = new uint256[](accounts.length);
 
         for (uint256 i = 0; i < accounts.length; i++) {
             address account = accounts[i];
@@ -184,6 +203,9 @@ contract Hyperdust_VestingWallet is
                 _accountTotalAllocation[account] +
                 amount;
             _totalAllocation = _totalAllocation + amount;
+
+            totalAllocations[i] = _accountTotalAllocation[account];
+            releaseds[i] = _accountReleased[account];
         }
 
         Hyperdust_Token hyperdust_Token = Hyperdust_Token(
@@ -193,6 +215,8 @@ contract Hyperdust_VestingWallet is
         uint256 totalAward = hyperdust_Token.totalAward(_businessName);
 
         require(_totalAllocation <= totalAward, "totalAward is not enough");
+
+        emit eveUpdate(_businessName, accounts, totalAllocations, releaseds);
     }
 
     function revokeAccountTotalAllocation(
@@ -210,5 +234,15 @@ contract Hyperdust_VestingWallet is
         _accountTotalAllocation[account] = accountTotalAllocation - amount;
 
         _totalAllocation -= amount;
+
+        address[] memory accounts = new address[](1);
+        uint256[] memory totalAllocations = new uint256[](1);
+        uint256[] memory releaseds = new uint256[](1);
+
+        accounts[0] = account;
+        totalAllocations[0] = _accountTotalAllocation[account];
+        releaseds[0] = _accountReleased[account];
+
+        emit eveUpdate(_businessName, accounts, totalAllocations, releaseds);
     }
 }

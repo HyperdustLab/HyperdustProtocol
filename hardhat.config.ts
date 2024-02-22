@@ -39,7 +39,7 @@ const config: HardhatUserConfig = {
     sepolia: {
       url: process.env.SEPOLIA_RPC_URL,
       loggingEnabled: true,
-      accounts: [process.env.PRIVATE_KEY],
+      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
     },
     arbitrumSepolia: {
       url: process.env.Arbitrum_Sepolia_Testnet_RPC_URL,

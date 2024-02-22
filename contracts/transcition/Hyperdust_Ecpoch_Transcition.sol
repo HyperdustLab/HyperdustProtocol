@@ -3,14 +3,6 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 abstract contract IHyperdustNodeMgr {
-    struct Node {
-        address incomeAddress;
-        string ip; //Node public network IP
-        uint256[] uint256Array; //id,nodeType,cpuNum,memoryNum,diskNum,cudaNum,videoMemory
-    }
-
-    function getNodeObj(uint256 id) public view returns (Node memory) {}
-
     function getStatisticalIndex()
         public
         view
@@ -119,15 +111,9 @@ contract Hyperdust_Ecpoch_Transcition is OwnableUpgradeable {
             "not set GasFeeCollectionWallet"
         );
 
-        checkRenderTranscition(msg.sender);
-        checkRenderNode(nodeId);
-
         IHyperdustNodeMgr nodeMgr = IHyperdustNodeMgr(_nodeMgrAddress);
 
         IERC20 erc20 = IERC20(_erc20Address);
-        IHyperdustNodeMgr.Node memory node = nodeMgr.getNodeObj(nodeId);
-
-        require(node.uint256Array[0] != 0, "The miner node inexistence");
 
         uint256 commission = IHyperdustTransactionCfg(_transactionCfgAddress)
             .getGasFee("epoch");
@@ -155,14 +141,11 @@ contract Hyperdust_Ecpoch_Transcition is OwnableUpgradeable {
         uint256 id = hyperdustStorage.getNextId();
 
         hyperdustStorage.setAddress(
-            hyperdustStorage.genKey("serviceAccount", id),
-            node.incomeAddress
-        );
-
-        hyperdustStorage.setAddress(
             hyperdustStorage.genKey("account", id),
             msg.sender
         );
+
+        hyperdustStorage.setUint(hyperdustStorage.genKey("nodeId", id), nodeId);
 
         hyperdustStorage.setUint(hyperdustStorage.genKey("epoch", id), epoch);
         hyperdustStorage.setUint(hyperdustStorage.genKey("useEpoch", id), 1);
@@ -217,56 +200,9 @@ contract Hyperdust_Ecpoch_Transcition is OwnableUpgradeable {
             hyperdustStorage.setUintArray("runingRenderTranscitions", id);
         }
 
-        hyperdustStorage.setUint(msg.sender.toHexString(), id);
-        hyperdustStorage.setUint(nodeId.toString(), id);
-
         emit eveRenderTranscitionSave(id);
 
         return id;
-    }
-
-    function checkRenderTranscition(address account) private view {
-        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
-            _HyperdustStorageAddress
-        );
-        uint256 _runingRenderTranscitionId = hyperdustStorage.getUint(
-            account.toHexString()
-        );
-        if (_runingRenderTranscitionId == 0) {
-            return;
-        }
-        bytes1 status = hyperdustStorage.getBytes1(
-            hyperdustStorage.genKey("status", _runingRenderTranscitionId)
-        );
-        uint256 nextEndTime = hyperdustStorage.getUint(
-            hyperdustStorage.genKey("nextEndTime", _runingRenderTranscitionId)
-        );
-        require(
-            status == 0x11 && block.timestamp > nextEndTime,
-            "You have an Render Transcition running"
-        );
-    }
-
-    function checkRenderNode(uint256 nodeId) private view {
-        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
-            _HyperdustStorageAddress
-        );
-        uint256 _runingRenderTranscitionId = hyperdustStorage.getUint(
-            nodeId.toString()
-        );
-        if (_runingRenderTranscitionId == 0) {
-            return;
-        }
-        bytes1 status = hyperdustStorage.getBytes1(
-            hyperdustStorage.genKey("status", _runingRenderTranscitionId)
-        );
-        uint256 nextEndTime = hyperdustStorage.getUint(
-            hyperdustStorage.genKey("nextEndTime", _runingRenderTranscitionId)
-        );
-        require(
-            status == 0x11 && block.timestamp > nextEndTime,
-            "The render node is already in use"
-        );
     }
 
     function updateEpoch() public {
@@ -469,7 +405,6 @@ contract Hyperdust_Ecpoch_Transcition is OwnableUpgradeable {
         view
         returns (
             address,
-            address,
             uint256[] memory,
             bytes1,
             uint256[] memory,
@@ -511,9 +446,6 @@ contract Hyperdust_Ecpoch_Transcition is OwnableUpgradeable {
         );
 
         return (
-            hyperdustStorage.getAddress(
-                hyperdustStorage.genKey("serviceAccount", id)
-            ),
             hyperdustStorage.getAddress(hyperdustStorage.genKey("account", id)),
             uint256Array,
             hyperdustStorage.getBytes1(hyperdustStorage.genKey("status", id)),
@@ -536,25 +468,5 @@ contract Hyperdust_Ecpoch_Transcition is OwnableUpgradeable {
         );
 
         return hyperdustStorage.getUintArray("runingRenderTranscitions");
-    }
-
-    function getRuningRenderAccounts(
-        address account
-    ) public view returns (uint256) {
-        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
-            _HyperdustStorageAddress
-        );
-
-        return hyperdustStorage.getUint(account.toHexString());
-    }
-
-    function getRuningRenderNodes(
-        uint256 nodeId
-    ) public view returns (uint256) {
-        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
-            _HyperdustStorageAddress
-        );
-
-        return hyperdustStorage.getUint(nodeId.toString());
     }
 }
