@@ -8,7 +8,7 @@ async function main() {
 
   const Hyperdust_Faucet = await ethers.getContractFactory("Hyperdust_GPUMining");
 
-  const upgraded = await upgrades.upgradeProxy("0xb7f89B8dF2523034C664CD768eE587Fe729B0E1b", Hyperdust_Faucet);
+  const upgraded = await upgrades.upgradeProxy("0x08B6E87284b8B31b591C8Bd5488f433996D4dfc2", Hyperdust_Faucet);
 
 
 

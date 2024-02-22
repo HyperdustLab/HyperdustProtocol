@@ -14,6 +14,7 @@ describe("Hyperdust_HYDT_Price", () => {
 
             // 打印钱包的私钥
             console.log("Wallet private key:", wallet.privateKey);
+            console.log("Wallet private key:", wallet.address);
 
         });
     });

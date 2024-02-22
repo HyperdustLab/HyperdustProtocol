@@ -12,8 +12,6 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 
 import "../utils/StrUtil.sol";
 
-import "./Hyperdust_Token.sol";
-
 contract Hyperdust_GPUMining is OwnableUpgradeable, AccessControlUpgradeable {
     using Strings for *;
     using StrUtil for *;
@@ -47,6 +45,8 @@ contract Hyperdust_GPUMining is OwnableUpgradeable, AccessControlUpgradeable {
     address public _HyperdustTokenAddress;
 
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+
+    uint256 public _TGE_timestamp;
 
     function initialize(
         address onlyOwner,
@@ -138,18 +138,7 @@ contract Hyperdust_GPUMining is OwnableUpgradeable, AccessControlUpgradeable {
         address account,
         uint256 mintNum
     ) public onlyRole(MINTER_ROLE) {
-        Hyperdust_Token hyperdust_Token = Hyperdust_Token(
-            _HyperdustTokenAddress
-        );
-
-        uint256 TGE_timestamp = hyperdust_Token.TGE_timestamp();
-
-        require(TGE_timestamp > 0, "TGE_timestamp is not started");
-
-        if (_GPUMiningAllowReleaseTime == 0) {
-            _GPUMiningAllowReleaseTime = TGE_timestamp;
-            _lastGPUMiningMintTime = TGE_timestamp;
-        }
+        require(_TGE_timestamp > 0, "TGE_timestamp is not started");
 
         if (
             block.timestamp >= _lastGPUMiningRateTime + _GPUMiningRateInterval
@@ -198,5 +187,13 @@ contract Hyperdust_GPUMining is OwnableUpgradeable, AccessControlUpgradeable {
         _lastGPUMiningMintTime = block.timestamp;
 
         IERC20(_HyperdustTokenAddress).transfer(account, mintNum);
+    }
+
+    function setTGETimestamp(uint256 TGE_timestamp) public onlyOwner {
+        require(_TGE_timestamp == 0, "TGE_timestamp is already set");
+        _TGE_timestamp = TGE_timestamp;
+
+        _GPUMiningAllowReleaseTime = TGE_timestamp;
+        _lastGPUMiningMintTime = TGE_timestamp;
     }
 }
