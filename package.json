@@ -21,6 +21,8 @@
     "@arbitrum/sdk": "^3.3.0",
     "@chainlink/contracts": "^0.8.0",
     "@confluxfans/contracts": "^0.3.3",
+    "@eth-optimism/contracts-bedrock": "^0.17.1",
+    "@eth-optimism/sdk": "^3.2.0",
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",
     "@openzeppelin/contracts": "^5.0.1",
     "@openzeppelin/contracts-upgradeable": "^5.0.1",

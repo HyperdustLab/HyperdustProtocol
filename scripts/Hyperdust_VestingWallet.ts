@@ -7,7 +7,7 @@ const { ethers, run, upgrades } = hardhat;
 
 async function main() {
 
-    const mouthTime = 600;
+    const mouthTime = 60 * 60;
 
     const accounts = await ethers.getSigners();
 

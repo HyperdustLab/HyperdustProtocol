@@ -14,15 +14,15 @@ async function main() {
     const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address]);
     await instance.waitForDeployment();
 
-    // await (await Hyperdust_Storage.setServiceAddress(instance.target)).wait()
+    await (await Hyperdust_Storage.setServiceAddress(instance.target)).wait()
 
-    // await (await instance.setContractAddress(
-    //     ["0x9bDaf3912e7b4794fE8aF2E748C35898265D5615",
-    //         "0x1a41f86248E33e5327B26092b898bDfe04C6d8b4",
-    //         Hyperdust_Storage.target,
-    //         "0x1e89b67D2075D4E1973B832203f12F5960C371E1"
-    //     ])
-    // ).wait()
+    await (await instance.setContractAddress(
+        ["0x9bDaf3912e7b4794fE8aF2E748C35898265D5615",
+            "0xfcb8A945DC86D72f906D9C63222Dc470b5A35548",
+            Hyperdust_Storage.target,
+            "0xeCBD8E9349B1d96b86b834f5F404cc3B9a03DA6c"
+        ])
+    ).wait()
 
     console.info("Hyperdust_Storage:", Hyperdust_Storage.target)
 

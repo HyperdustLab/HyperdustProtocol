@@ -26,6 +26,9 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
     mapping(bytes32 => address) private _minterAddeess;
     mapping(address => bytes32) private _bytes32Address;
 
+    uint256 public _lastGPU_MINING_mint_time;
+    uint256 public _maxMININGMintNum = 1133334 ether;
+
     constructor(
         string memory name_,
         string memory symbol_,
@@ -68,6 +71,17 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
             _totalAward[name] >= _currAward[name],
             "totalAward is not enough"
         );
+
+        if (name == GPU_MINING) {
+            require(
+                block.timestamp >= _lastGPU_MINING_mint_time + 30 days,
+                "GPU_MINING mint time is not enough"
+            );
+
+            require(mintNum <= _maxMININGMintNum, "mintNum is not enough");
+
+            _lastGPU_MINING_mint_time = block.timestamp;
+        }
 
         _mintNum += mintNum;
 

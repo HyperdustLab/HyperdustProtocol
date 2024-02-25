@@ -11,13 +11,13 @@ async function main() {
 
 
 
-    // await (await instance.setContractAddress(["0x9bDaf3912e7b4794fE8aF2E748C35898265D5615", "0x1e89b67D2075D4E1973B832203f12F5960C371E1"])).wait();
-    // await (await instance.add("epoch", 38000)).wait();
-    // await (await instance.add("mintNFT", 38000)).wait();
+    await (await instance.setContractAddress(["0x9bDaf3912e7b4794fE8aF2E748C35898265D5615", "0xeCBD8E9349B1d96b86b834f5F404cc3B9a03DA6c"])).wait();
+    await (await instance.add("epoch", 38000)).wait();
+    await (await instance.setMinGasFee("epoch", 1000000000000)).wait();
 
-    //const Hyperdust_Render_Transcition = await ethers.getContractAt("Hyperdust_Render_Transcition", "0x5c28a0EF89e5e341c5C9a87aDF72EbEAB5B3a9d5")
+    // const Hyperdust_Render_Transcition = await ethers.getContractAt("Hyperdust_Render_Transcition", "0x5546C5Da8fC0b52A319EB684A768A00ceE7D0862")
 
-    //await (await Hyperdust_Render_Transcition.setTransactionCfg(contract.target)).wait()
+    // await (await Hyperdust_Render_Transcition.setTransactionCfg(contract.target)).wait()
 
 
 

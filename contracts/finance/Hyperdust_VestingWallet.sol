@@ -73,6 +73,58 @@ contract Hyperdust_VestingWallet is
         return _accountReleased[account];
     }
 
+    function releasableTime(address account) public view returns (uint256) {
+        uint256 accountTotalAllocation = totalAllocation(account);
+
+        if (accountTotalAllocation == 0) {
+            return 0;
+        }
+
+        Hyperdust_Token hyperdust_Token = Hyperdust_Token(
+            _HyperdustTokenAddress
+        );
+
+        uint256 start = _start;
+        uint256 end = _end;
+
+        uint256 TGE_timestamp = hyperdust_Token.TGE_timestamp();
+
+        if (TGE_timestamp == 0) {
+            return 0;
+        } else {
+            if (start == 0) {
+                start = TGE_timestamp + _delayVestingNum * _releaseInterval;
+                end = start + _linearVestingNum * _releaseInterval;
+            }
+        }
+
+        uint256 _released = released(account);
+
+        if (_released == 0) {
+            return start;
+        }
+
+        if (accountTotalAllocation == _released) {
+            return 0;
+        }
+
+        if (block.timestamp >= end) {
+            return end;
+        }
+
+        uint256 _releasable = releasable(account);
+
+        if (_releasable > 0) {
+            uint256 elapsed = (block.timestamp - start) % _releaseInterval;
+
+            return block.timestamp - elapsed;
+        } else {
+            uint256 elapsed = (block.timestamp - start) % _releaseInterval;
+
+            return block.timestamp + _releaseInterval - elapsed;
+        }
+    }
+
     function releasable(address account) public view returns (uint256) {
         Hyperdust_Token hyperdust_Token = Hyperdust_Token(
             _HyperdustTokenAddress

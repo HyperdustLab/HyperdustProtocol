@@ -65,7 +65,10 @@ describe("Hyperdust_VestingWallet", () => {
             console.info("releasable:", ethers.formatEther(releasable));
 
 
+            const releasableTime = await Hyperdust_VestingWallet.releasableTime(accounts[0].address);
 
+
+            console.info("releasableTime:", new Date(parseInt(releasableTime) * 1000).toLocaleString());
 
 
 
