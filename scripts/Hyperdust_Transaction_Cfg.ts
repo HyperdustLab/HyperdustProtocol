@@ -11,9 +11,9 @@ async function main() {
 
 
 
-    await (await instance.setContractAddress(["0x9bDaf3912e7b4794fE8aF2E748C35898265D5615", "0xeCBD8E9349B1d96b86b834f5F404cc3B9a03DA6c"])).wait();
+    await (await instance.setContractAddress(["0xfFeB583D2AAc8Faf258CA546DF65aa7A46ad3D2c", "0x213b5E4FF6B805dC5C9AF66B0e1f84A035Fa80D5"])).wait();
     await (await instance.add("epoch", 38000)).wait();
-    await (await instance.setMinGasFee("epoch", 1000000000000)).wait();
+    await (await instance.setMinGasFee("epoch", 100000000000)).wait();
 
     // const Hyperdust_Render_Transcition = await ethers.getContractAt("Hyperdust_Render_Transcition", "0x5546C5Da8fC0b52A319EB684A768A00ceE7D0862")
 

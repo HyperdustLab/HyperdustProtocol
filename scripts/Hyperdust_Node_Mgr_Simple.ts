@@ -1,9 +1,10 @@
 /** @format */
 
-import { ethers, run } from "hardhat";
+import { ethers, run, upgrades } from "hardhat";
 
 async function main() {
-    const contract = await ethers.deployContract("Hyperdust_20", ["Hyperdust Token", "HYPT Test"]);
+
+    const contract = await ethers.deployContract("Hyperdust_Node_Mgr_Simple", [process.env.ADMIN_Wallet_Address]);
     await contract.waitForDeployment()
 
 
