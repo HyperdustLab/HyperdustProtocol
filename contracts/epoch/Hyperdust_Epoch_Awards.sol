@@ -57,7 +57,7 @@ abstract contract IHyperdustRenderTranscitionAddress {
     function updateEpoch() public {}
 }
 
-contract Hyperdust_Ecpoch_Awards is OwnableUpgradeable {
+contract Hyperdust_Epoch_Awards is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 

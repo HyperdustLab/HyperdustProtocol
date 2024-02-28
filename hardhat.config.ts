@@ -5,9 +5,9 @@ import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-gas-reporter";
 import '@openzeppelin/hardhat-upgrades';
 
-const { ProxyAgent, setGlobalDispatcher } = require("undici");
-const proxyAgent = new ProxyAgent("http://127.0.0.1:7890");
-setGlobalDispatcher(proxyAgent);
+// const { ProxyAgent, setGlobalDispatcher } = require("undici");
+// const proxyAgent = new ProxyAgent("http://127.0.0.1:7890");
+// setGlobalDispatcher(proxyAgent);
 
 
 const config: HardhatUserConfig = {

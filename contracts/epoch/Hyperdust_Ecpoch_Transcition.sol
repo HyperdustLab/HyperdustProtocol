@@ -31,7 +31,7 @@ import {StrUtil} from "../utils/StrUtil.sol";
 import "./../Hyperdust_Storage.sol";
 import "../Hyperdust_Wallet_Account.sol";
 
-contract Hyperdust_Ecpoch_Transcition is OwnableUpgradeable {
+contract Hyperdust_Epoch_Transcition is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 

@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 import {StrUtil} from "../utils/StrUtil.sol";
 
-contract Hyperdust_Node_Mgr_Simple is Ownable {
+contract Hyperdust_Node_Mgr_Stub is Ownable {
     using Strings for *;
     using StrUtil for *;
 
