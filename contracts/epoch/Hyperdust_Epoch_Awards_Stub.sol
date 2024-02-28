@@ -26,7 +26,7 @@ abstract contract IHyperdustNodeMgr {
     function setStatisticalIndex(uint256 totalNum, uint256 activeNum) public {}
 }
 
-contract Hyperdust_Ecpoch_Awards_Simple is OwnableUpgradeable {
+contract Hyperdust_Epoch_Awards_Simple is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 
