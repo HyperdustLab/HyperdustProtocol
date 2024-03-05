@@ -48,6 +48,8 @@ contract Hyperdust_Epoch_Transcition is OwnableUpgradeable {
 
     event eveNodeStatistical(uint256 totalNum, uint256 activeNum);
 
+    event eveDifficuty(uint256 difficuty);
+
     function setErc20Address(address erc20Address) public onlyOwner {
         _erc20Address = erc20Address;
     }
@@ -120,7 +122,11 @@ contract Hyperdust_Epoch_Transcition is OwnableUpgradeable {
 
         (, uint256 totalNum, uint256 activeNum) = nodeMgr.getStatisticalIndex();
 
-        emit eveNodeStatistical(totalNum, activeNum);
+        if (activeNum == 0) {
+            emit eveDifficuty(0);
+        } else {
+            emit eveDifficuty((totalNum * 10 ** 6) / activeNum);
+        }
 
         uint256 amount = erc20.allowance(msg.sender, address(this));
 
@@ -237,7 +243,11 @@ contract Hyperdust_Epoch_Transcition is OwnableUpgradeable {
 
         (, uint256 totalNum, uint256 activeNum) = nodeMgr.getStatisticalIndex();
 
-        emit eveNodeStatistical(totalNum, activeNum);
+        if (activeNum == 0) {
+            emit eveDifficuty(0);
+        } else {
+            emit eveDifficuty((totalNum * 10 ** 6) / activeNum);
+        }
 
         uint256 totalAmount = 0;
 
