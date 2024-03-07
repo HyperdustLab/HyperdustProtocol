@@ -42,11 +42,9 @@ contract Hyperdust_Epoch_Transcition is OwnableUpgradeable {
     address public _walletAccountAddress;
     address public _HyperdustStorageAddress;
 
-    event eveRenderTranscitionSave(uint256 id);
+    event eveEpochTranscitionSave(uint256 id);
 
-    event eveUpdateRenderEpoch(uint256[] success, uint256[] fail);
-
-    event eveNodeStatistical(uint256 totalNum, uint256 activeNum);
+    event eveUpdateEpoch(uint256[] success, uint256[] fail);
 
     event eveDifficuty(uint256 difficuty);
 
@@ -93,7 +91,7 @@ contract Hyperdust_Epoch_Transcition is OwnableUpgradeable {
         _HyperdustStorageAddress = contractaddressArray[5];
     }
 
-    function createRenderTranscition(
+    function createEpochTranscition(
         uint256 nodeId,
         uint256 epoch
     ) public returns (uint256) {
@@ -203,10 +201,10 @@ contract Hyperdust_Epoch_Transcition is OwnableUpgradeable {
         );
 
         if (epoch > 1) {
-            hyperdustStorage.setUintArray("runingRenderTranscitions", id);
+            hyperdustStorage.setUintArray("runingEpochTranscitions", id);
         }
 
-        emit eveRenderTranscitionSave(id);
+        emit eveEpochTranscitionSave(id);
 
         return id;
     }
@@ -225,10 +223,10 @@ contract Hyperdust_Epoch_Transcition is OwnableUpgradeable {
             _HyperdustStorageAddress
         );
 
-        uint256[] memory _runingRenderTranscitions = hyperdustStorage
-            .getUintArray("runingRenderTranscitions");
+        uint256[] memory _runingEpochTranscitions = hyperdustStorage
+            .getUintArray("runingEpochTranscitions");
 
-        uint256 last = _runingRenderTranscitions.length;
+        uint256 last = _runingEpochTranscitions.length;
 
         if (last == 0) {
             return;
@@ -252,19 +250,19 @@ contract Hyperdust_Epoch_Transcition is OwnableUpgradeable {
         uint256 totalAmount = 0;
 
         uint256[] memory success = new uint256[](
-            _runingRenderTranscitions.length
+            _runingEpochTranscitions.length
         );
 
-        uint256[] memory runingRenderTranscitions = hyperdustStorage
-            .getUintArray("runingRenderTranscitions");
+        uint256[] memory runingEpochTranscitions = hyperdustStorage
+            .getUintArray("runingEpochTranscitions");
 
-        uint256[] memory fail = new uint256[](runingRenderTranscitions.length);
+        uint256[] memory fail = new uint256[](runingEpochTranscitions.length);
 
         uint32 successIndex = 0;
         uint32 failIndex = 0;
 
-        for (uint i = 0; i < runingRenderTranscitions.length; i++) {
-            uint256 id = runingRenderTranscitions[i];
+        for (uint i = 0; i < runingEpochTranscitions.length; i++) {
+            uint256 id = runingEpochTranscitions[i];
 
             address account = hyperdustStorage.getAddress(
                 hyperdustStorage.genKey("account", id)
@@ -340,20 +338,12 @@ contract Hyperdust_Epoch_Transcition is OwnableUpgradeable {
                 successIndex++;
 
                 if (useEpoch >= epoch) {
-                    cleanRuningRenderTranscitions(
-                        id,
-                        _runingRenderTranscitions,
-                        last
-                    );
+                    cleanRuningTranscitions(id, _runingEpochTranscitions, last);
 
                     last--;
                 }
             } else {
-                cleanRuningRenderTranscitions(
-                    id,
-                    _runingRenderTranscitions,
-                    last
-                );
+                cleanRuningTranscitions(id, _runingEpochTranscitions, last);
 
                 last--;
 
@@ -383,12 +373,12 @@ contract Hyperdust_Epoch_Transcition is OwnableUpgradeable {
             _fail[i] = fail[i];
         }
 
-        emit eveUpdateRenderEpoch(_success, _fail);
+        emit eveUpdateEpoch(_success, _fail);
     }
 
-    function cleanRuningRenderTranscitions(
+    function cleanRuningTranscitions(
         uint256 id,
-        uint256[] memory runingRenderTranscitions,
+        uint256[] memory runingEpochTranscitions,
         uint256 last
     ) private {
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
@@ -398,17 +388,15 @@ contract Hyperdust_Epoch_Transcition is OwnableUpgradeable {
         hyperdustStorage.setBytes1(hyperdustStorage.genKey("status", id), 0x11);
 
         for (uint i = 0; i < last; i++) {
-            if (runingRenderTranscitions[i] == id) {
-                runingRenderTranscitions[i] = runingRenderTranscitions[
-                    last - 1
-                ];
+            if (runingEpochTranscitions[i] == id) {
+                runingEpochTranscitions[i] = runingEpochTranscitions[last - 1];
 
-                hyperdustStorage.removeUintArray("runingRenderTranscitions", i);
+                hyperdustStorage.removeUintArray("runingEpochTranscitions", i);
             }
         }
     }
 
-    function getRenderTranscition(
+    function getEpochTranscition(
         uint256 id
     )
         public
@@ -468,7 +456,7 @@ contract Hyperdust_Epoch_Transcition is OwnableUpgradeable {
         );
     }
 
-    function getRuningRenderTranscitions()
+    function getRuningEpochTranscitions()
         public
         view
         returns (uint256[] memory)
@@ -477,6 +465,6 @@ contract Hyperdust_Epoch_Transcition is OwnableUpgradeable {
             _HyperdustStorageAddress
         );
 
-        return hyperdustStorage.getUintArray("runingRenderTranscitions");
+        return hyperdustStorage.getUintArray("runingEpochTranscitions");
     }
 }

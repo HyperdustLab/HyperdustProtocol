@@ -5,9 +5,9 @@ import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-gas-reporter";
 import '@openzeppelin/hardhat-upgrades';
 
-// const { ProxyAgent, setGlobalDispatcher } = require("undici");
-// const proxyAgent = new ProxyAgent("http://127.0.0.1:7890");
-// setGlobalDispatcher(proxyAgent);
+const { ProxyAgent, setGlobalDispatcher } = require("undici");
+const proxyAgent = new ProxyAgent("http://127.0.0.1:7890");
+setGlobalDispatcher(proxyAgent);
 
 
 const config: HardhatUserConfig = {
@@ -33,7 +33,9 @@ const config: HardhatUserConfig = {
   },
   networks: {
     dev: {
-      url: "HTTP://127.0.0.1:8545"
+      url: "HTTP://127.0.0.1:8545",
+      loggingEnabled: true,
+      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
     },
     sepolia: {
       url: process.env.SEPOLIA_RPC_URL,

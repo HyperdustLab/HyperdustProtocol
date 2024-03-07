@@ -12,7 +12,7 @@ async function main() {
 
 
 
-    const contract = await ethers.getContractFactory("Hyperdust_Ecpoch_Transcition");
+    const contract = await ethers.getContractFactory("Hyperdust_Epoch_Transcition");
     const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address]);
     await instance.waitForDeployment();
 
