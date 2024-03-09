@@ -1,29 +1,27 @@
 /** @format */
 
-import { ethers, run, upgrades } from "hardhat";
+import {ethers, run, upgrades} from "hardhat";
 
 async function main() {
 
 
+    const _Hyperdust_Storage = await ethers.getContractFactory("Hyperdust_Storage");
+    const Hyperdust_Storage = await upgrades.deployProxy(_Hyperdust_Storage, [process.env.ADMIN_Wallet_Address]);
+    await Hyperdust_Storage.waitForDeployment();
 
 
-  const Hyperdust_Storage = await ethers.deployContract("Hyperdust_Storage", [process.env.ADMIN_Wallet_Address]);
-  await Hyperdust_Storage.waitForDeployment()
+    const contract = await ethers.getContractFactory("Hyperdust_Space");
+    const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address]);
+    await instance.waitForDeployment();
+
+    console.info("Hyperdust_Storage:", Hyperdust_Storage.target)
 
 
+    await (await Hyperdust_Storage.setServiceAddress(instance.target)).wait()
 
-  const contract = await ethers.getContractFactory("Hyperdust_Space");
-  const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address]);
-  await instance.waitForDeployment();
+    await (await instance.setHyperdustStorageAddress(Hyperdust_Storage.target)).wait()
 
-  console.info("Hyperdust_Storage:", Hyperdust_Storage.target)
-
-
-  await (await Hyperdust_Storage.setServiceAddress(instance.target)).wait()
-
-  await (await instance.setHyperdustStorageAddress(Hyperdust_Storage.target)).wait()
-
-  console.info("contractFactory address:", instance.target);
+    console.info("contractFactory address:", instance.target);
 
 
 }
@@ -31,6 +29,6 @@ async function main() {
 // We recommend this pattern to be able to use async/await everywhere q
 // and properly handle errors.
 main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
+    console.error(error);
+    process.exitCode = 1;
 });

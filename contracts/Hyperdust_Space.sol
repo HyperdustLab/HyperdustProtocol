@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.1;
+
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "./utils/StrUtil.sol";
@@ -10,11 +11,17 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
+abstract contract IHyperdustRolesCfg {
+    function hasAdminRole(address account) public view returns (bool) {}
+}
+
 contract Hyperdust_Space is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 
     address public _HyperdustStorageAddress;
+
+    address public _HyperdustRolesCfgAddress;
 
     event eveSave(bytes32 sid);
 
@@ -30,6 +37,10 @@ contract Hyperdust_Space is OwnableUpgradeable {
         _HyperdustStorageAddress = hyperdustStorageAddress;
     }
 
+    function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
+        _HyperdustRolesCfgAddress = rolesCfgAddress;
+    }
+
     function add(
         string memory name,
         string memory coverImage,
@@ -43,9 +54,7 @@ contract Hyperdust_Space is OwnableUpgradeable {
 
         bytes32 sid = generateUniqueHash(id);
 
-        string memory sidStr = bytes32ToString(sid);
-
-        hyperdustStorage.setUint(sidStr, id);
+        hyperdustStorage.setBytes32Uint(sid, id);
         hyperdustStorage.setAddress(
             hyperdustStorage.genKey("account", id),
             msg.sender
@@ -69,23 +78,22 @@ contract Hyperdust_Space is OwnableUpgradeable {
     function get(
         bytes32 sid
     )
-        public
-        view
-        returns (
-            bytes32 _sid,
-            address,
-            string memory,
-            string memory,
-            string memory
-        )
+    public
+    view
+    returns (
+        bytes32,
+        address,
+        string memory,
+        string memory,
+        string memory
+    )
     {
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
             _HyperdustStorageAddress
         );
 
-        string memory sidStr = bytes32ToString(sid);
 
-        uint256 id = hyperdustStorage.getUint(sidStr);
+        uint256 id = hyperdustStorage.getBytes32Uint(sid);
 
         require(id > 0, "not found");
 
@@ -117,10 +125,7 @@ contract Hyperdust_Space is OwnableUpgradeable {
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
             _HyperdustStorageAddress
         );
-
-        string memory sidStr = bytes32ToString(sid);
-
-        uint256 id = hyperdustStorage.getUint(sidStr);
+        uint256 id = hyperdustStorage.getBytes32Uint(sid);
 
         require(id > 0, "not found");
 
@@ -128,7 +133,13 @@ contract Hyperdust_Space is OwnableUpgradeable {
             hyperdustStorage.genKey("account", id)
         );
 
-        require(account == msg.sender, "You don't have permission to operate");
+        require(
+            account == msg.sender ||
+            IHyperdustRolesCfg(_HyperdustRolesCfgAddress).hasAdminRole(
+                msg.sender
+            ),
+            "You don't have permission to operate"
+        );
 
         hyperdustStorage.setString(hyperdustStorage.genKey("name", id), name);
         hyperdustStorage.setString(
@@ -149,9 +160,8 @@ contract Hyperdust_Space is OwnableUpgradeable {
             _HyperdustStorageAddress
         );
 
-        string memory sidStr = bytes32ToString(sid);
 
-        uint256 id = hyperdustStorage.getUint(sidStr);
+        uint256 id = hyperdustStorage.getBytes32Uint(sid);
 
         require(id > 0, "not found");
 
@@ -159,9 +169,15 @@ contract Hyperdust_Space is OwnableUpgradeable {
             hyperdustStorage.genKey("account", id)
         );
 
-        require(account == msg.sender, "You don't have permission to operate");
+        require(
+            account == msg.sender ||
+            IHyperdustRolesCfg(_HyperdustRolesCfgAddress).hasAdminRole(
+                msg.sender
+            ),
+            "You don't have permission to operate"
+        );
 
-        hyperdustStorage.setUint(sidStr, 0);
+        hyperdustStorage.setBytes32Uint(sid, 0);
 
         emit eveDelete(sid);
     }
@@ -169,21 +185,9 @@ contract Hyperdust_Space is OwnableUpgradeable {
     function generateUniqueHash(uint256 nextId) private view returns (bytes32) {
         return
             keccak256(
-                abi.encodePacked(block.timestamp, block.difficulty, nextId)
-            );
+            abi.encodePacked(block.timestamp, block.difficulty, nextId)
+        );
     }
 
-    function bytes32ToString(
-        bytes32 _bytes32
-    ) private pure returns (string memory) {
-        uint8 i = 0;
-        while (i < 32 && _bytes32[i] != 0) {
-            i++;
-        }
-        bytes memory bytesArray = new bytes(i);
-        for (i = 0; i < 32 && _bytes32[i] != 0; i++) {
-            bytesArray[i] = _bytes32[i];
-        }
-        return string(bytesArray);
-    }
+
 }
