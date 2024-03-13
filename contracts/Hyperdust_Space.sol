@@ -41,9 +41,17 @@ contract Hyperdust_Space is OwnableUpgradeable {
         _HyperdustRolesCfgAddress = rolesCfgAddress;
     }
 
+    function setContractAddress(
+        address[] memory contractaddressArray
+    ) public onlyOwner {
+        _HyperdustStorageAddress = contractaddressArray[0];
+        _HyperdustRolesCfgAddress = contractaddressArray[1];
+    }
+
     function add(
         string memory name,
         string memory coverImage,
+        string memory image,
         string memory remark
     ) public returns (bytes32) {
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
@@ -65,6 +73,8 @@ contract Hyperdust_Space is OwnableUpgradeable {
             coverImage
         );
 
+        hyperdustStorage.setString(hyperdustStorage.genKey("image", id), image);
+
         hyperdustStorage.setString(
             hyperdustStorage.genKey("remark", id),
             remark
@@ -78,20 +88,20 @@ contract Hyperdust_Space is OwnableUpgradeable {
     function get(
         bytes32 sid
     )
-    public
-    view
-    returns (
-        bytes32,
-        address,
-        string memory,
-        string memory,
-        string memory
-    )
+        public
+        view
+        returns (
+            bytes32,
+            address,
+            string memory,
+            string memory,
+            string memory,
+            string memory
+        )
     {
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
             _HyperdustStorageAddress
         );
-
 
         uint256 id = hyperdustStorage.getBytes32Uint(sid);
 
@@ -113,13 +123,18 @@ contract Hyperdust_Space is OwnableUpgradeable {
             hyperdustStorage.genKey("remark", id)
         );
 
-        return (sid, account, name, coverImage, remark);
+        string memory image = hyperdustStorage.getString(
+            hyperdustStorage.genKey("image", id)
+        );
+
+        return (sid, account, name, coverImage, image, remark);
     }
 
     function edit(
         bytes32 sid,
         string memory name,
         string memory coverImage,
+        string memory image,
         string memory remark
     ) public {
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
@@ -135,9 +150,9 @@ contract Hyperdust_Space is OwnableUpgradeable {
 
         require(
             account == msg.sender ||
-            IHyperdustRolesCfg(_HyperdustRolesCfgAddress).hasAdminRole(
-                msg.sender
-            ),
+                IHyperdustRolesCfg(_HyperdustRolesCfgAddress).hasAdminRole(
+                    msg.sender
+                ),
             "You don't have permission to operate"
         );
 
@@ -146,6 +161,8 @@ contract Hyperdust_Space is OwnableUpgradeable {
             hyperdustStorage.genKey("coverImage", id),
             coverImage
         );
+
+        hyperdustStorage.setString(hyperdustStorage.genKey("image", id), image);
 
         hyperdustStorage.setString(
             hyperdustStorage.genKey("remark", id),
@@ -160,7 +177,6 @@ contract Hyperdust_Space is OwnableUpgradeable {
             _HyperdustStorageAddress
         );
 
-
         uint256 id = hyperdustStorage.getBytes32Uint(sid);
 
         require(id > 0, "not found");
@@ -171,9 +187,9 @@ contract Hyperdust_Space is OwnableUpgradeable {
 
         require(
             account == msg.sender ||
-            IHyperdustRolesCfg(_HyperdustRolesCfgAddress).hasAdminRole(
-                msg.sender
-            ),
+                IHyperdustRolesCfg(_HyperdustRolesCfgAddress).hasAdminRole(
+                    msg.sender
+                ),
             "You don't have permission to operate"
         );
 
@@ -185,9 +201,7 @@ contract Hyperdust_Space is OwnableUpgradeable {
     function generateUniqueHash(uint256 nextId) private view returns (bytes32) {
         return
             keccak256(
-            abi.encodePacked(block.timestamp, block.difficulty, nextId)
-        );
+                abi.encodePacked(block.timestamp, block.difficulty, nextId)
+            );
     }
-
-
 }

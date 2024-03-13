@@ -1,21 +1,20 @@
 /** @format */
-require("dotenv").config()
+require("dotenv").config();
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-gas-reporter";
-import '@openzeppelin/hardhat-upgrades';
+import "@openzeppelin/hardhat-upgrades";
 
 const { ProxyAgent, setGlobalDispatcher } = require("undici");
 const proxyAgent = new ProxyAgent("http://127.0.0.1:7890");
 setGlobalDispatcher(proxyAgent);
-
 
 const config: HardhatUserConfig = {
   solidity: {
     version: "0.8.20",
     settings: {
       metadata: {
-        useLiteralContent: true
+        useLiteralContent: true,
       },
       optimizer: {
         enabled: true,
@@ -24,8 +23,8 @@ const config: HardhatUserConfig = {
           yul: true,
           yulDetails: {
             stackAllocation: true,
-            optimizerSteps: "dhfoDgvulfnTUtnIf"
-          }
+            optimizerSteps: "dhfoDgvulfnTUtnIf",
+          },
         },
       },
       viaIR: true,
@@ -35,7 +34,7 @@ const config: HardhatUserConfig = {
     dev: {
       url: "HTTP://127.0.0.1:8545",
       loggingEnabled: true,
-      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
+      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1, process.env.PRIVATE_KEY3],
     },
     sepolia: {
       url: process.env.SEPOLIA_RPC_URL,
@@ -44,7 +43,7 @@ const config: HardhatUserConfig = {
     },
     arbitrumSepolia: {
       url: process.env.Arbitrum_Sepolia_Testnet_RPC_URL,
-      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
+      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1, process.env.PRIVATE_KEY2],
       loggingEnabled: true,
     },
     arbitrumMainnet: {
@@ -56,14 +55,14 @@ const config: HardhatUserConfig = {
       url: process.env.Optimism_Sepolia_Testnet_RPC_URL,
       accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
       loggingEnabled: true,
-    }
+    },
   },
   etherscan: {
     apiKey: {
       sepolia: process.env.ETHERSCAN_API_KEY,
       optimismSepolia: process.env.Optimism_Sepolia_KEY,
       arbitrumSepolia: process.env.Arbitrum_Sepolia_KEY,
-      arbitrumMainnet: process.env.Arbitrum_Mainnet_KEY
+      arbitrumMainnet: process.env.Arbitrum_Mainnet_KEY,
     },
     customChains: [
       {
@@ -98,9 +97,6 @@ const config: HardhatUserConfig = {
           browserURL: "https://sepolia-optimism.etherscan.io/",
         },
       },
-
-
-
     ],
   },
   sourcify: {
