@@ -88,16 +88,16 @@ contract Hyperdust_Space is OwnableUpgradeable {
     function get(
         bytes32 sid
     )
-        public
-        view
-        returns (
-            bytes32,
-            address,
-            string memory,
-            string memory,
-            string memory,
-            string memory
-        )
+    public
+    view
+    returns (
+        bytes32,
+        address,
+        string memory,
+        string memory,
+        string memory,
+        string memory
+    )
     {
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
             _HyperdustStorageAddress
@@ -148,13 +148,15 @@ contract Hyperdust_Space is OwnableUpgradeable {
             hyperdustStorage.genKey("account", id)
         );
 
+
         require(
             account == msg.sender ||
-                IHyperdustRolesCfg(_HyperdustRolesCfgAddress).hasAdminRole(
-                    msg.sender
-                ),
+            IHyperdustRolesCfg(_HyperdustRolesCfgAddress).hasAdminRole(
+                msg.sender
+            ),
             "You don't have permission to operate"
         );
+
 
         hyperdustStorage.setString(hyperdustStorage.genKey("name", id), name);
         hyperdustStorage.setString(
@@ -187,9 +189,9 @@ contract Hyperdust_Space is OwnableUpgradeable {
 
         require(
             account == msg.sender ||
-                IHyperdustRolesCfg(_HyperdustRolesCfgAddress).hasAdminRole(
-                    msg.sender
-                ),
+            IHyperdustRolesCfg(_HyperdustRolesCfgAddress).hasAdminRole(
+                msg.sender
+            ),
             "You don't have permission to operate"
         );
 
@@ -201,7 +203,7 @@ contract Hyperdust_Space is OwnableUpgradeable {
     function generateUniqueHash(uint256 nextId) private view returns (bytes32) {
         return
             keccak256(
-                abi.encodePacked(block.timestamp, block.difficulty, nextId)
-            );
+            abi.encodePacked(block.timestamp, block.difficulty, nextId)
+        );
     }
 }
