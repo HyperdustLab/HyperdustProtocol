@@ -27,17 +27,11 @@ abstract contract IHyperdustRolesCfg {
 }
 
 abstract contract IHyperdustNodeMgr {
-    function getNode(
-        uint256 id
-    ) public view returns (address, string memory, uint256[] memory) {}
+    function getNode(uint256 id) public view returns (address, string memory, uint256[] memory) {}
 
     function getIdByIndex(uint256 index) public view returns (uint256) {}
 
-    function getStatisticalIndex()
-        public
-        view
-        returns (uint256, uint256, uint256)
-    {}
+    function getStatisticalIndex() public view returns (uint256, uint256, uint256) {}
 
     function setStatisticalIndex(uint256 totalNum, uint256 activeNum) public {}
 }
@@ -47,10 +41,7 @@ abstract contract IHyperdustSecurityDeposit {
 }
 
 abstract contract IHyperdustBaseRewardRelease {
-    function addBaseRewardReleaseRecord(
-        uint256 amount,
-        address account
-    ) public {}
+    function addBaseRewardReleaseRecord(uint256 amount, address account) public {}
 }
 
 abstract contract IHyperdustRenderTranscitionAddress {
@@ -75,12 +66,7 @@ contract Hyperdust_Epoch_Awards is OwnableUpgradeable {
 
     uint256 private _rand;
 
-    event eveRewards(
-        uint256 nodeId,
-        uint256 epochAward,
-        uint256 rand,
-        uint256 nonce
-    );
+    event eveRewards(uint256 nodeId, uint256 epochAward, uint256 rand, uint256 nonce);
 
     function initialize(address onlyOwner) public initializer {
         _rand = 1;
@@ -91,27 +77,19 @@ contract Hyperdust_Epoch_Awards is OwnableUpgradeable {
         _rolesCfgAddress = rolesCfgAddress;
     }
 
-    function setHyperdustNodeMgrAddress(
-        address hyperdustNodeMgrAddress
-    ) public onlyOwner {
+    function setHyperdustNodeMgrAddress(address hyperdustNodeMgrAddress) public onlyOwner {
         _hyperdustNodeMgrAddress = hyperdustNodeMgrAddress;
     }
 
-    function setHyperdustSecurityDeposit(
-        address hyperdustSecurityDeposit
-    ) public onlyOwner {
+    function setHyperdustSecurityDeposit(address hyperdustSecurityDeposit) public onlyOwner {
         _hyperdustSecurityDeposit = hyperdustSecurityDeposit;
     }
 
-    function setHyperdustBaseRewardRelease(
-        address hyperdustBaseRewardRelease
-    ) public onlyOwner {
+    function setHyperdustBaseRewardRelease(address hyperdustBaseRewardRelease) public onlyOwner {
         _hyperdustBaseRewardRelease = hyperdustBaseRewardRelease;
     }
 
-    function setHyperdustGPUMiningAddress(
-        address HyperdustGPUMiningAddress
-    ) public onlyOwner {
+    function setHyperdustGPUMiningAddress(address HyperdustGPUMiningAddress) public onlyOwner {
         _HyperdustGPUMiningAddress = HyperdustGPUMiningAddress;
     }
 
@@ -119,9 +97,7 @@ contract Hyperdust_Epoch_Awards is OwnableUpgradeable {
         _erc20Address = erc20Address;
     }
 
-    function setContractAddress(
-        address[] memory contractaddressArray
-    ) public onlyOwner {
+    function setContractAddress(address[] memory contractaddressArray) public onlyOwner {
         _rolesCfgAddress = contractaddressArray[0];
         _hyperdustNodeMgrAddress = contractaddressArray[1];
         _hyperdustSecurityDeposit = contractaddressArray[2];
@@ -131,28 +107,13 @@ contract Hyperdust_Epoch_Awards is OwnableUpgradeable {
     }
 
     function rewards(bytes32[] memory nodeStatus, uint256 nonce) public {
-        require(
-            IHyperdustRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
-            "not admin role"
-        );
+        require(IHyperdustRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
 
-        (
-            uint256[] memory activeNodes,
-            uint256 _totalNum,
-            uint256 _activeNum
-        ) = countActiveNode(nodeStatus);
+        (uint256[] memory activeNodes, uint256 _totalNum, uint256 _activeNum) = countActiveNode(nodeStatus);
 
-        IHyperdustNodeMgr hyperdustNodeMgrAddress = IHyperdustNodeMgr(
-            _hyperdustNodeMgrAddress
-        );
+        IHyperdustNodeMgr hyperdustNodeMgrAddress = IHyperdustNodeMgr(_hyperdustNodeMgrAddress);
 
-
-
-
-
-        Hyperdust_GPUMining hyperdust_GPUMining = Hyperdust_GPUMining(
-            _HyperdustGPUMiningAddress
-        );
+        Hyperdust_GPUMining hyperdust_GPUMining = Hyperdust_GPUMining(_HyperdustGPUMiningAddress);
 
         uint256 epochAward = hyperdust_GPUMining._epochAward();
 
@@ -184,25 +145,17 @@ contract Hyperdust_Epoch_Awards is OwnableUpgradeable {
 
         erc20.transfer(_hyperdustSecurityDeposit, securityDeposit);
 
-        IHyperdustSecurityDeposit(_hyperdustSecurityDeposit).addSecurityDeposit(
-                nodeId,
-                securityDeposit
-            );
+        IHyperdustSecurityDeposit(_hyperdustSecurityDeposit).addSecurityDeposit(nodeId, securityDeposit);
 
         (address incomeAddress, , ) = hyperdustNodeMgrAddress.getNode(nodeId);
 
-        IHyperdustBaseRewardRelease(_hyperdustBaseRewardRelease)
-            .addBaseRewardReleaseRecord(baseRewardReleaseAward, incomeAddress);
+        IHyperdustBaseRewardRelease(_hyperdustBaseRewardRelease).addBaseRewardReleaseRecord(baseRewardReleaseAward, incomeAddress);
 
         emit eveRewards(nodeId, actualEpochAward, index, nonce);
     }
 
-    function countActiveNode(
-        bytes32[] memory nodeStatus
-    ) private returns (uint256[] memory, uint256, uint256) {
-        IHyperdustNodeMgr hyperdustNodeMgrAddress = IHyperdustNodeMgr(
-            _hyperdustNodeMgrAddress
-        );
+    function countActiveNode(bytes32[] memory nodeStatus) private returns (uint256[] memory, uint256, uint256) {
+        IHyperdustNodeMgr hyperdustNodeMgrAddress = IHyperdustNodeMgr(_hyperdustNodeMgrAddress);
 
         uint256 activeNum = 0;
         uint256 totalNum = 0;
@@ -242,19 +195,12 @@ contract Hyperdust_Epoch_Awards is OwnableUpgradeable {
         return (activeNodes, totalNum, activeNum);
     }
 
-    function _getRandom(
-        uint256 _start,
-        uint256 _end
-    ) private returns (uint256) {
+    function _getRandom(uint256 _start, uint256 _end) private returns (uint256) {
         if (_start == _end) {
             return _start;
         }
         uint256 _length = _end - _start;
-        uint256 random = uint256(
-            keccak256(
-                abi.encodePacked(block.difficulty, block.timestamp, _rand)
-            )
-        );
+        uint256 random = uint256(keccak256(abi.encodePacked(block.difficulty, block.timestamp, _rand)));
         random = (random % _length) + _start;
         _rand++;
         return random;

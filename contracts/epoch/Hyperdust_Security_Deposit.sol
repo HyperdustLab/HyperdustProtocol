@@ -39,9 +39,7 @@ contract Hyperdust_Security_Deposit is OwnableUpgradeable {
         _rolesCfgAddress = rolesCfgAddress;
     }
 
-    function setHyperdustStorageAddress(
-        address hyperdustStorageAddress
-    ) public onlyOwner {
+    function setHyperdustStorageAddress(address hyperdustStorageAddress) public onlyOwner {
         _HyperdustStorageAddress = hyperdustStorageAddress;
     }
 
@@ -49,15 +47,11 @@ contract Hyperdust_Security_Deposit is OwnableUpgradeable {
         _erc20Address = erc20Address;
     }
 
-    function setHyperdustNodeMgrAddress(
-        address HyperdustNodeMgrAddress
-    ) public onlyOwner {
+    function setHyperdustNodeMgrAddress(address HyperdustNodeMgrAddress) public onlyOwner {
         _HyperdustNodeMgrAddress = HyperdustNodeMgrAddress;
     }
 
-    function setContractAddress(
-        address[] memory contractaddressArray
-    ) public onlyOwner {
+    function setContractAddress(address[] memory contractaddressArray) public onlyOwner {
         _rolesCfgAddress = contractaddressArray[0];
         _erc20Address = contractaddressArray[1];
         _HyperdustStorageAddress = contractaddressArray[2];
@@ -65,18 +59,11 @@ contract Hyperdust_Security_Deposit is OwnableUpgradeable {
     }
 
     function addSecurityDeposit(uint256 nodeId, uint256 amount) public {
-        require(
-            IHyperdustNodeMgr(_rolesCfgAddress).hasAdminRole(msg.sender),
-            "not admin role"
-        );
+        require(IHyperdustNodeMgr(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
 
-        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
-            _HyperdustStorageAddress
-        );
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(_HyperdustStorageAddress);
 
-        Hyperdust_Node_Mgr hyperdustNodeMgr = Hyperdust_Node_Mgr(
-            _HyperdustNodeMgrAddress
-        );
+        Hyperdust_Node_Mgr hyperdustNodeMgr = Hyperdust_Node_Mgr(_HyperdustNodeMgrAddress);
 
         (address incomeAddress, , ) = hyperdustNodeMgr.getNode(nodeId);
 
@@ -86,54 +73,31 @@ contract Hyperdust_Security_Deposit is OwnableUpgradeable {
 
         hyperdustStorage.setUint(key, _amount);
 
-        hyperdustStorage.setUint(
-            incomeAddress.toHexString(),
-            hyperdustStorage.getUint(incomeAddress.toHexString()) + amount
-        );
+        hyperdustStorage.setUint(incomeAddress.toHexString(), hyperdustStorage.getUint(incomeAddress.toHexString()) + amount);
 
-        string memory incomeAddressIndexKey = incomeAddress
-            .toHexString()
-            .toSlice()
-            .concat("_index".toSlice());
+        string memory incomeAddressIndexKey = incomeAddress.toHexString().toSlice().concat("_index".toSlice());
 
-        uint256 incomeAddressIndex = hyperdustStorage.getUint(
-            incomeAddressIndexKey
-        );
+        uint256 incomeAddressIndex = hyperdustStorage.getUint(incomeAddressIndexKey);
 
         if (incomeAddressIndex == 0) {
-            hyperdustStorage.setAddressArray(
-                "incomeAddressList",
-                incomeAddress
-            );
+            hyperdustStorage.setAddressArray("incomeAddressList", incomeAddress);
 
-            uint256 incomeAddressListTotal = hyperdustStorage.getUint(
-                "incomeAddressListTotal"
-            );
+            uint256 incomeAddressListTotal = hyperdustStorage.getUint("incomeAddressListTotal");
 
-            hyperdustStorage.setUint(
-                incomeAddressIndexKey,
-                incomeAddressListTotal
-            );
+            hyperdustStorage.setUint(incomeAddressIndexKey, incomeAddressListTotal);
 
             incomeAddressListTotal++;
 
-            hyperdustStorage.setUint(
-                "incomeAddressListTotal",
-                incomeAddressListTotal + 1
-            );
+            hyperdustStorage.setUint("incomeAddressListTotal", incomeAddressListTotal + 1);
         }
 
         emit eveSave(nodeId, _amount, amount);
     }
 
     function applyWithdrawal(uint256 nodeId) public {
-        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
-            _HyperdustStorageAddress
-        );
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(_HyperdustStorageAddress);
 
-        Hyperdust_Node_Mgr hyperdustNodeMgr = Hyperdust_Node_Mgr(
-            _HyperdustNodeMgrAddress
-        );
+        Hyperdust_Node_Mgr hyperdustNodeMgr = Hyperdust_Node_Mgr(_HyperdustNodeMgrAddress);
 
         (address incomeAddress, , ) = hyperdustNodeMgr.getNode(nodeId);
 
@@ -151,13 +115,9 @@ contract Hyperdust_Security_Deposit is OwnableUpgradeable {
     }
 
     function cancelWithdrawal(uint256 nodeId) public {
-        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
-            _HyperdustStorageAddress
-        );
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(_HyperdustStorageAddress);
 
-        Hyperdust_Node_Mgr hyperdustNodeMgr = Hyperdust_Node_Mgr(
-            _HyperdustNodeMgrAddress
-        );
+        Hyperdust_Node_Mgr hyperdustNodeMgr = Hyperdust_Node_Mgr(_HyperdustNodeMgrAddress);
 
         (address incomeAddress, , ) = hyperdustNodeMgr.getNode(nodeId);
 
@@ -171,13 +131,9 @@ contract Hyperdust_Security_Deposit is OwnableUpgradeable {
     }
 
     function withdrawal(uint256 nodeId) public {
-        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
-            _HyperdustStorageAddress
-        );
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(_HyperdustStorageAddress);
 
-        Hyperdust_Node_Mgr hyperdustNodeMgr = Hyperdust_Node_Mgr(
-            _HyperdustNodeMgrAddress
-        );
+        Hyperdust_Node_Mgr hyperdustNodeMgr = Hyperdust_Node_Mgr(_HyperdustNodeMgrAddress);
 
         (address incomeAddress, , ) = hyperdustNodeMgr.getNode(nodeId);
 
@@ -187,20 +143,11 @@ contract Hyperdust_Security_Deposit is OwnableUpgradeable {
 
         require(amount > 0, "There is no amount to withdraw");
 
-        string memory applyWithdrawalKey = hyperdustStorage.genKey(
-            "applyWithdrawal_",
-            nodeId
-        );
+        string memory applyWithdrawalKey = hyperdustStorage.genKey("applyWithdrawal_", nodeId);
 
-        uint256 applyWithdrawalTime = hyperdustStorage.getUint(
-            applyWithdrawalKey
-        );
+        uint256 applyWithdrawalTime = hyperdustStorage.getUint(applyWithdrawalKey);
 
-        require(
-            applyWithdrawalTime > 0 &&
-                applyWithdrawalTime + _withdrawalInterval < block.timestamp,
-            "not apply withdrawal or not reach withdrawal time"
-        );
+        require(applyWithdrawalTime > 0 && applyWithdrawalTime + _withdrawalInterval < block.timestamp, "not apply withdrawal or not reach withdrawal time");
 
         hyperdustStorage.setUint(applyWithdrawalKey, 0);
 
@@ -208,77 +155,49 @@ contract Hyperdust_Security_Deposit is OwnableUpgradeable {
 
         string memory incomeAddressKey = incomeAddress.toHexString();
 
-        uint256 incomeAddressAmount = hyperdustStorage.getUint(
-            incomeAddressKey
-        );
+        uint256 incomeAddressAmount = hyperdustStorage.getUint(incomeAddressKey);
 
         incomeAddressAmount -= amount;
 
         hyperdustStorage.setUint(incomeAddressKey, incomeAddressAmount);
 
         if (incomeAddressAmount == 0) {
-            uint256 incomeAddressListTotal = hyperdustStorage.getUint(
-                "incomeAddressListTotal"
-            );
+            uint256 incomeAddressListTotal = hyperdustStorage.getUint("incomeAddressListTotal");
 
             incomeAddressListTotal--;
 
-            string memory incomeAddressIndexKey = incomeAddress
-                .toHexString()
-                .toSlice()
-                .concat("_index".toSlice());
+            string memory incomeAddressIndexKey = incomeAddress.toHexString().toSlice().concat("_index".toSlice());
 
-            uint256 incomeAddressIndex = hyperdustStorage.getUint(
-                incomeAddressIndexKey
-            );
+            uint256 incomeAddressIndex = hyperdustStorage.getUint(incomeAddressIndexKey);
 
-            hyperdustStorage.removeAddressArray(
-                "incomeAddressList",
-                incomeAddressIndex
-            );
+            hyperdustStorage.removeAddressArray("incomeAddressList", incomeAddressIndex);
 
-            if (
-                incomeAddressListTotal > 0 ||
-                incomeAddressIndex != incomeAddressListTotal
-            ) {
-                address newAddress = hyperdustStorage.getAddressArray(
-                    "incomeAddressList"
-                )[incomeAddressIndex];
+            if (incomeAddressListTotal > 0 || incomeAddressIndex != incomeAddressListTotal) {
+                address newAddress = hyperdustStorage.getAddressArray("incomeAddressList")[incomeAddressIndex];
 
                 hyperdustStorage.setAddress(incomeAddressIndexKey, newAddress);
             }
 
-            hyperdustStorage.setUint(
-                "incomeAddressListTotal",
-                incomeAddressListTotal
-            );
+            hyperdustStorage.setUint("incomeAddressListTotal", incomeAddressListTotal);
         }
 
         IERC20(_erc20Address).transfer(incomeAddress, amount);
     }
 
-    function getNodeSecurityDeposit(
-        uint256 nodeId
-    ) public view returns (uint256) {
-        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
-            _HyperdustStorageAddress
-        );
+    function getNodeSecurityDeposit(uint256 nodeId) public view returns (uint256) {
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(_HyperdustStorageAddress);
 
         return hyperdustStorage.getUint(nodeId.toString());
     }
 
     function getIncomeAddressList() public view returns (address[] memory) {
-        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
-            _HyperdustStorageAddress
-        );
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(_HyperdustStorageAddress);
 
         return hyperdustStorage.getAddressArray("incomeAddressList");
     }
 
     function getSecurityDeposit(address account) public view returns (uint256) {
-        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
-            _HyperdustStorageAddress
-        );
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(_HyperdustStorageAddress);
 
         return hyperdustStorage.getUint(account.toHexString());
     }

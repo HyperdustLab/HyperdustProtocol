@@ -31,12 +31,7 @@ contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
 
     uint256 public _dayTime;
 
-    event eveSave(
-        uint256[] amounts,
-        uint256[] releaseAmounts,
-        uint256[] releaseTimes,
-        address account
-    );
+    event eveSave(uint256[] amounts, uint256[] releaseAmounts, uint256[] releaseTimes, address account);
 
     function initialize(address onlyOwner) public initializer {
         _intervalTime = 30 days;
@@ -55,9 +50,7 @@ contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
         _erc20Address = erc20Address;
     }
 
-    function setHyperdustStorageAddress(
-        address hyperdustStorageAddress
-    ) public onlyOwner {
+    function setHyperdustStorageAddress(address hyperdustStorageAddress) public onlyOwner {
         _HyperdustStorageAddress = hyperdustStorageAddress;
     }
 
@@ -69,26 +62,16 @@ contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
         _intervalCount = intervalCount;
     }
 
-    function setContractAddress(
-        address[] memory contractaddressArray
-    ) public onlyOwner {
+    function setContractAddress(address[] memory contractaddressArray) public onlyOwner {
         _rolesCfgAddress = contractaddressArray[0];
         _erc20Address = contractaddressArray[1];
         _HyperdustStorageAddress = contractaddressArray[2];
     }
 
-    function addBaseRewardReleaseRecord(
-        uint256 amount,
-        address account
-    ) public {
-        require(
-            IHyperdustRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
-            "not admin role"
-        );
+    function addBaseRewardReleaseRecord(uint256 amount, address account) public {
+        require(IHyperdustRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
 
-        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
-            _HyperdustStorageAddress
-        );
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(_HyperdustStorageAddress);
 
         uint256 time = getStartOfToday();
 
@@ -103,14 +86,10 @@ contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
         uint256[] memory releaseAmounts = new uint256[](_intervalCount);
 
         for (uint256 i = 0; i < _intervalCount; i++) {
-            string memory key = account.toHexString().toSlice().concat(
-                time.toString().toSlice()
-            );
+            string memory key = account.toHexString().toSlice().concat(time.toString().toSlice());
 
             string memory amountKey = key.toSlice().concat("_amount".toSlice());
-            string memory releaseAmountKey = key.toSlice().concat(
-                "_releaseAmount".toSlice()
-            );
+            string memory releaseAmountKey = key.toSlice().concat("_releaseAmount".toSlice());
 
             uint256 _amount = hyperdustStorage.getUint(amountKey) + avgAmount;
 
@@ -129,9 +108,7 @@ contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
     }
 
     function release(uint256[] memory times) public {
-        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
-            _HyperdustStorageAddress
-        );
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(_HyperdustStorageAddress);
 
         uint256 totalReleaseAmount = 0;
 
@@ -144,14 +121,10 @@ contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
 
             require(block.timestamp >= time, "time error");
 
-            string memory key = msg.sender.toHexString().toSlice().concat(
-                time.toString().toSlice()
-            );
+            string memory key = msg.sender.toHexString().toSlice().concat(time.toString().toSlice());
 
             string memory amountKey = key.toSlice().concat("_amount".toSlice());
-            string memory releaseAmountKey = key.toSlice().concat(
-                "_releaseAmount".toSlice()
-            );
+            string memory releaseAmountKey = key.toSlice().concat("_releaseAmount".toSlice());
 
             uint256 amount = hyperdustStorage.getUint(amountKey);
 
@@ -183,22 +156,13 @@ contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
         return startOfDay;
     }
 
-    function findAmount(
-        address account,
-        uint256 time
-    ) public view returns (uint256, uint256) {
-        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
-            _HyperdustStorageAddress
-        );
+    function findAmount(address account, uint256 time) public view returns (uint256, uint256) {
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(_HyperdustStorageAddress);
 
-        string memory key = account.toHexString().toSlice().concat(
-            time.toString().toSlice()
-        );
+        string memory key = account.toHexString().toSlice().concat(time.toString().toSlice());
 
         string memory amountKey = key.toSlice().concat("_amount".toSlice());
-        string memory releaseAmountKey = key.toSlice().concat(
-            "_releaseAmount".toSlice()
-        );
+        string memory releaseAmountKey = key.toSlice().concat("_releaseAmount".toSlice());
 
         uint256 amount = hyperdustStorage.getUint(amountKey);
         uint256 releaseAmount = hyperdustStorage.getUint(releaseAmountKey);

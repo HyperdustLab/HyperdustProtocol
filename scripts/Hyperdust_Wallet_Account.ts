@@ -1,30 +1,20 @@
 /** @format */
 
-import { ethers, run, upgrades } from "hardhat";
+import { ethers, run, upgrades } from 'hardhat'
 
 async function main() {
+  const contract = await ethers.getContractFactory('Hyperdust_Wallet_Account')
+  const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address])
+  await instance.waitForDeployment()
 
+  await (await instance.setContractAddress(['0x213b5E4FF6B805dC5C9AF66B0e1f84A035Fa80D5', '0x61Ce9e4A31bFEe62e100Ef128f757EeE9012786f'])).wait()
 
-    const contract = await ethers.getContractFactory("Hyperdust_Wallet_Account");
-    const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address]);
-    await instance.waitForDeployment();
-
-
-
-    await (await instance.setContractAddress(
-        ["0xfFeB583D2AAc8Faf258CA546DF65aa7A46ad3D2c",
-            "0x9bDaf3912e7b4794fE8aF2E748C35898265D5615"])
-    ).wait()
-
-
-    console.info("contractFactory address:", instance.target);
-
-
+  console.info('contractFactory address:', instance.target)
 }
 
 // We recommend this pattern to be able to use async/await everywhere q
 // and properly handle errors.
-main().catch((error) => {
-    console.error(error);
-    process.exitCode = 1;
-});
+main().catch(error => {
+  console.error(error)
+  process.exitCode = 1
+})

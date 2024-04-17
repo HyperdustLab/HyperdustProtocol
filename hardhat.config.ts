@@ -68,6 +68,7 @@ const config: HardhatUserConfig = {
       optimismSepolia: process.env.Optimism_Sepolia_KEY,
       arbitrumSepolia: process.env.Arbitrum_Sepolia_KEY,
       arbitrumMainnet: process.env.Arbitrum_Mainnet_KEY,
+      BEVMTest: '123',
     },
     customChains: [
       {
@@ -103,7 +104,7 @@ const config: HardhatUserConfig = {
         },
       },
       {
-        network: 'BEVM TestNet',
+        network: 'BEVMTest',
         chainId: 11503,
         urls: {
           apiURL: 'https://scan-testnet-api.bevm.io/api',
