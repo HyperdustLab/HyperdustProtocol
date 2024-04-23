@@ -2,7 +2,8 @@
 
 ![image](https://github.com/HyperdustLab/HyperdustProtocol/blob/main/AI_On-chain.png)
 
-A decentralized AI computing platform.Hyperdust Protocol offers GPU computing, decentralized rendering for 3D and XR assets, and computational power for fine-tuning and inference of decentralized AI models.
+A decentralized platform to use and build LLM driven embodied Agent in 3D AI Gyms. 
+
 
 
 The details of token issurence and gas price update refer to 
