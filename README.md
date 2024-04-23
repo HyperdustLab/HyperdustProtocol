@@ -1,6 +1,6 @@
 ## Hyperdust Protocol
 
-![image](https://github.com/HyperdustLab/HyperdustProtocol/blob/main/AI_On-chain.png)
+![image](https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HYPERDUST.svg)
 
 A decentralized platform to use and build LLM driven embodied Agent in 3D AI Gyms. 
 
