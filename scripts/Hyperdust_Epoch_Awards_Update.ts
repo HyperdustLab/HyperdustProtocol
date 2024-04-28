@@ -1,29 +1,23 @@
 /** @format */
 
-import { ethers, run, upgrades } from "hardhat";
+import { ethers, run, upgrades } from 'hardhat'
 
 async function main() {
+  const Hyperdust_Epoch_Awards = await ethers.getContractAt('Hyperdust_Epoch_Awards', '0x1803EE20F036B0ab1d8dD499df6bAa8BbCB4ed23')
+  const Hyperdust_GPUMining = await ethers.getContractAt('Hyperdust_GPUMining', '0x12991d54B51945c167b8d6Eb378290F1e83fc1D9')
 
+  const hasRole1 = await Hyperdust_GPUMining.hasRole('0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6', '0x1803EE20F036B0ab1d8dD499df6bAa8BbCB4ed23')
 
+  console.info(hasRole1)
 
+  //   const Hyperdust_Epoch_Awards = await upgrades.upgradeProxy('0x1803EE20F036B0ab1d8dD499df6bAa8BbCB4ed23', _Hyperdust_Epoch_Awards)
 
-    const Hyperdust_Ecpoch_Awards = await ethers.getContractFactory("Hyperdust_Ecpoch_Awards");
-
-    const upgraded = await upgrades.upgradeProxy("0x7FaED49F26bC0332806Cd7Ab20154824eCF3F72f", Hyperdust_Ecpoch_Awards);
-
-
-    await (await upgraded.setContractAddress([
-        "0x9bDaf3912e7b4794fE8aF2E748C35898265D5615",
-        "0x1e89b67D2075D4E1973B832203f12F5960C371E1",
-        "0xa1011ae8964fEc89303EA37D95f3eCAFF5Ac7695",
-        "0x9c41D5d1Da6acd0f0033A9e5Bf7B0303a9c3280a",
-        "0x830d8588F06E9E58B68d0fb8E6122180Fd9711Fe"
-    ])).wait()
+  await (await Hyperdust_Epoch_Awards.rewards(['0x1100000000000000000000000000000000000000000000000000000000000000'], 1)).wait()
 }
 
 // We recommend this pattern to be able to use async/await everywhere q
 // and properly handle errors.
-main().catch((error) => {
-    console.error(error);
-    process.exitCode = 1;
-});
+main().catch(error => {
+  console.error(error)
+  process.exitCode = 1
+})
