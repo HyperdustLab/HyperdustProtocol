@@ -26,15 +26,11 @@ contract Hyperdust_Promotion_Incentive is OwnableUpgradeable {
 
     address public _ERC20Address;
 
-    function setHyperdustRolesCfgAddress(
-        address HyperdustRolesCfgAddress
-    ) public onlyOwner {
+    function setHyperdustRolesCfgAddress(address HyperdustRolesCfgAddress) public onlyOwner {
         _HyperdustRolesCfgAddress = HyperdustRolesCfgAddress;
     }
 
-    function setHyperdustStorageAddress(
-        address hyperdustStorageAddress
-    ) public onlyOwner {
+    function setHyperdustStorageAddress(address hyperdustStorageAddress) public onlyOwner {
         _HyperdustStorageAddress = hyperdustStorageAddress;
     }
 
@@ -46,9 +42,7 @@ contract Hyperdust_Promotion_Incentive is OwnableUpgradeable {
         _ERC20Address = ERC20Address;
     }
 
-    function setContractAddress(
-        address[] memory contractaddressArray
-    ) public onlyOwner {
+    function setContractAddress(address[] memory contractaddressArray) public onlyOwner {
         _HyperdustRolesCfgAddress = contractaddressArray[0];
         _HyperdustStorageAddress = contractaddressArray[1];
         _FromAddress = contractaddressArray[2];
@@ -61,32 +55,15 @@ contract Hyperdust_Promotion_Incentive is OwnableUpgradeable {
         __Ownable_init(msg.sender);
     }
 
-    function release(
-        uint256[] memory nodeServiceIds,
-        address[] memory users,
-        uint256[] memory amounts
-    ) public {
-        require(
-            Hyperdust_Roles_Cfg(_HyperdustRolesCfgAddress).hasAdminRole(
-                msg.sender
-            ),
-            "not admin role"
-        );
+    function release(uint256[] memory nodeServiceIds, address[] memory users, uint256[] memory amounts) public {
+        require(Hyperdust_Roles_Cfg(_HyperdustRolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
 
-        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
-            _HyperdustStorageAddress
-        );
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(_HyperdustStorageAddress);
 
         IERC20 erc20 = IERC20(_ERC20Address);
 
         for (uint256 i = 0; i < nodeServiceIds.length; i++) {
-            string memory key = string(
-                abi.encodePacked(
-                    users[i].toHexString(),
-                    "_",
-                    nodeServiceIds[i].toString()
-                )
-            );
+            string memory key = string(abi.encodePacked(users[i].toHexString(), "_", nodeServiceIds[i].toString()));
             bool b = hyperdustStorage.getBool(key);
 
             require(!b, string(abi.encodePacked(key, " already release")));

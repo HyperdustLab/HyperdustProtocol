@@ -789,6 +789,171 @@
       "address": "0x0779f2687f0eb4EA70acA2A065eAdE9aFb0F24bF",
       "txHash": "0x048cd45484599b0bbf3f2cbc8e723ddf338182528319cff79760e6d0e2c4e0d1",
       "kind": "transparent"
+    },
+    {
+      "address": "0x177b43BF44Fd254850805b207E67712dA2eF1e13",
+      "txHash": "0x4f534296f9ad096068d11fa88d05a83834ccb9770088dd7c92ab4eed950f7811",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xd073E54f217AeE329B5c5f6107284DCf735fC275",
+      "txHash": "0x24ffa11235a2ee02fbbfb9483994c6b5237ee85f1d859e2bf4e2faf485a86d55",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xAe4d409d3455d8700457a94F76A5e6F5Ed5361b8",
+      "txHash": "0xeac3ac381f4dc34531ac45cd90ed3f8924653e689031e69cb379ac943ce1f9a5",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xf4bB4d5B8E2F2eAD108AbAd02657a3C218d8a76e",
+      "txHash": "0xb436460db617acf6cf70a6172259840682c78ee742382f992f9d290e5286567d",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xA3a6484f1B07E4354dcD5473C16C7E9f48F66645",
+      "txHash": "0x37f3aeff9c9ca56297f27e862faac6d1aee03838aa186e188a04de1076940caa",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x921bcde5B27963F76c0c28B124c4079357696740",
+      "txHash": "0x75ae72433466c8cfd24ce1d8507f64fc166b366391dd4474381f2e5d13eb9c39",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xe77B797d939fEaf2b91E6ad5722e61a7a7AaFaB0",
+      "txHash": "0x6383dbb2e9cc19478180c2fd6358278197cdc38a2d35ce5e59e3701daccb111c",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x70E918317D95e1D0d8F9933B4AeF4Ae5B00728b0",
+      "txHash": "0x7701a9a137c1edc3044f1be93468b6ccca8449734c28780bf2b77364563abb8d",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x08ff290a9B1064b00CCE7b386AfFc55285A2FCEd",
+      "txHash": "0x7f05aa392d17ef71f3dc994fa476883cc8c8c9d40e1c87e1ff82e45851ae3747",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x88a91F4bFc49aD52b06Cbc7408fB6f25e0E02716",
+      "txHash": "0x0641c0a9176d0eecf7469ca2dd718c45e83c30114f3e06478249b0a6f8f86b7b",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xf730dAE82183e96F0780e0e868406dd163AED793",
+      "txHash": "0xe5846e6dfd996acce8e09921930581335834f0529422f1ccefad007252133e73",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x2C2000405599F0A607E948D6781625610c07A5C7",
+      "txHash": "0x05b9ad71f47e1d71da5edbabdc3e8c59f8917f13ef6292ec66d97e6091a78630",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x8f1cDf8491c76cb6c192D7C4d552b3588A30C3fF",
+      "txHash": "0x40f6bcd0f950e152ae4d8b486287d7c1ac4106ffd24891544eb63f3838253501",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x0c6253E9a4fe4DF17Aaa0478145CAB6E03A47F1e",
+      "txHash": "0xf2742e17a11fe87255fca6aff87b36db3e1327f4fd7f807227666697b4b3be35",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x3a1A56F8129967147BdCb6a000839AcEE959fC2c",
+      "txHash": "0x80124d2a0824689ceadb81340a1be4df2d857fca9dc6e179d8105918820f8a77",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xCa7DF365EC2D478a7e9b674Ac95dCedAa3635c0d",
+      "txHash": "0x2be785e3a8fc41806ae3d6292882482fc9aa6fa64dff668fd53ee5d7fe48da17",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x02f977a851004208544160469cd96AA944BEb9Cd",
+      "txHash": "0x5fd482a862065c480326578e05e8b829550849cf7149eee985af9648413730b4",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x948f466Ca218D3597292822771fBB9d37877D428",
+      "txHash": "0xbf6746312a116f5af1360649f5cd624b49f7bf368f754791046d0873877b0641",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x994715613A64702b6d256DDE6897F045eAd14Ae2",
+      "txHash": "0xef9780e3c8d46891bf6958f2604189da3c6fe7ea175676fa94183b3933688d35",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xc7407e31e6E0d1DBf0542F1E754e58bbF933E113",
+      "txHash": "0xcf180553ef444795566a00a01438d11dad42245f606ab26dfd8da0b465af5461",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x8F66EE35025e8722f51a9588b31a35AA02900845",
+      "txHash": "0x2fe5d91bedcfd32009813ecd94fb258c73d1ed52cf1154879a0e7e8816da5318",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xFF5C94Aaaf19394f7E058f8bE78c6aC128c15429",
+      "txHash": "0xd583f22634b7d89fbe1f969423603221515cd2314a9b11faba6bb8feea0c6821",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x734494A5D41B41B84074977Fd210dCa0fddc6b37",
+      "txHash": "0xdf2963fbda563473fb39ef289331c493c882ae2f20fa5e9deacac21a3d6c950f",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xE6B6E764f5b1C336B0837ff843A750122C3bA9D3",
+      "txHash": "0x7635bc0053c29789912d3a515941365badd49d494af666cc9432fcc6740f244c",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x2E8d7608E7fedF465e2feC743C54751A60bdEd48",
+      "txHash": "0x7a1dda8d0d68459cc4d2665ae9e94ae0917968a9997535b0e4055918a5b25c04",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x390830E0AC8Eb190247D081188E5F93d405255Ad",
+      "txHash": "0xf3e0fa43267244d9dbcdb3e7702dc68bb84faef7b0f97cbe0bc4e2bfecd6a45a",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xe3f43F7626d838c162C82326C331be5db768f0A1",
+      "txHash": "0x916f8ea46866559d723f97d23a9ae76864eb89992b6a70b49e3b463a78535e5e",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x967Fe57C81642bbF8292a16101De93c4794f8D41",
+      "txHash": "0x17a1dde9121010866002fa370e2f4e9676b2645b4116247b70c4720dae49add9",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x451c058A180EA9ee90D586776058d02453d54770",
+      "txHash": "0x6ce41f74332222566fbf6d5bcf86cc3ed814b807fefbaba38fb56a2a26e311f6",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x9bA43b72C7bfdeEBb056aC78a9012daF0529EA24",
+      "txHash": "0xc63feb29e0244846e38b38cbaa4d35b07dc98038663784a77f530db68a94f360",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x1a69296F93cD87E82Bd851BC65519097a089e9b1",
+      "txHash": "0x7a41ebf89a2b5d2bcfc7d735d541d7b3e4fd8202b6b4af8826acd6fdfb6a2236",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xd537A0E6B9982321fC4d4C7422AA6D4457E0A82f",
+      "txHash": "0x692ef37b43ae12ef587e664c34982d30f97f479bbd48e459d8097603e5329538",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x068aD13aFa73F742533fDf4fDDc577f8A9925E65",
+      "txHash": "0x35a4872887255c7e6f4d0b2272ab2417b63a9cf0418185ed527c41aaad27cbaf",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -12807,6 +12972,1940 @@
           "t_uint64": {
             "label": "uint64",
             "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "281b1d5c22a1525e953cee82cabe053c70ba35f801fb55156599cd4ac65e57f6": {
+      "address": "0x01463F20A140F78C4cc2E067cB9D03c225a5a9CF",
+      "txHash": "0xf432830e7e4e7d114f426cd73756c68fdd4e00c9f05bd12782e6d0fc5bd11a8e",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "uintStorage",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_mapping(t_string_memory_ptr,t_uint256)",
+            "contract": "Hyperdust_Storage",
+            "src": "contracts\\Hyperdust_Storage.sol:21"
+          },
+          {
+            "label": "addressStorage",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_mapping(t_string_memory_ptr,t_address)",
+            "contract": "Hyperdust_Storage",
+            "src": "contracts\\Hyperdust_Storage.sol:22"
+          },
+          {
+            "label": "stringStorage",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_mapping(t_string_memory_ptr,t_string_storage)",
+            "contract": "Hyperdust_Storage",
+            "src": "contracts\\Hyperdust_Storage.sol:23"
+          },
+          {
+            "label": "bytesStorage",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_mapping(t_string_memory_ptr,t_bytes_storage)",
+            "contract": "Hyperdust_Storage",
+            "src": "contracts\\Hyperdust_Storage.sol:24"
+          },
+          {
+            "label": "bytes1Storage",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_mapping(t_string_memory_ptr,t_bytes1)",
+            "contract": "Hyperdust_Storage",
+            "src": "contracts\\Hyperdust_Storage.sol:25"
+          },
+          {
+            "label": "bytes32Storage",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_mapping(t_string_memory_ptr,t_bytes32)",
+            "contract": "Hyperdust_Storage",
+            "src": "contracts\\Hyperdust_Storage.sol:26"
+          },
+          {
+            "label": "boolStorage",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_mapping(t_string_memory_ptr,t_bool)",
+            "contract": "Hyperdust_Storage",
+            "src": "contracts\\Hyperdust_Storage.sol:28"
+          },
+          {
+            "label": "uintArrayStorage",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_mapping(t_string_memory_ptr,t_array(t_uint256)dyn_storage)",
+            "contract": "Hyperdust_Storage",
+            "src": "contracts\\Hyperdust_Storage.sol:30"
+          },
+          {
+            "label": "addressArrayStorage",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_mapping(t_string_memory_ptr,t_array(t_address)dyn_storage)",
+            "contract": "Hyperdust_Storage",
+            "src": "contracts\\Hyperdust_Storage.sol:31"
+          },
+          {
+            "label": "stringArrayStorage",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_mapping(t_string_memory_ptr,t_array(t_string_storage)dyn_storage)",
+            "contract": "Hyperdust_Storage",
+            "src": "contracts\\Hyperdust_Storage.sol:32"
+          },
+          {
+            "label": "bytesArrayStorage",
+            "offset": 0,
+            "slot": "10",
+            "type": "t_mapping(t_string_memory_ptr,t_array(t_bytes_storage)dyn_storage)",
+            "contract": "Hyperdust_Storage",
+            "src": "contracts\\Hyperdust_Storage.sol:33"
+          },
+          {
+            "label": "boolArrayStorage",
+            "offset": 0,
+            "slot": "11",
+            "type": "t_mapping(t_string_memory_ptr,t_array(t_bool)dyn_storage)",
+            "contract": "Hyperdust_Storage",
+            "src": "contracts\\Hyperdust_Storage.sol:34"
+          },
+          {
+            "label": "bytes32UintStorage",
+            "offset": 0,
+            "slot": "12",
+            "type": "t_mapping(t_bytes32,t_uint256)",
+            "contract": "Hyperdust_Storage",
+            "src": "contracts\\Hyperdust_Storage.sol:35"
+          },
+          {
+            "label": "bytes32StringStorage",
+            "offset": 0,
+            "slot": "13",
+            "type": "t_mapping(t_bytes32,t_string_storage)",
+            "contract": "Hyperdust_Storage",
+            "src": "contracts\\Hyperdust_Storage.sol:36"
+          },
+          {
+            "label": "_id",
+            "offset": 0,
+            "slot": "14",
+            "type": "t_uint256",
+            "contract": "Hyperdust_Storage",
+            "src": "contracts\\Hyperdust_Storage.sol:38"
+          },
+          {
+            "label": "_serviceAddress",
+            "offset": 0,
+            "slot": "15",
+            "type": "t_address",
+            "contract": "Hyperdust_Storage",
+            "src": "contracts\\Hyperdust_Storage.sol:40"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)95_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)45_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_array(t_address)dyn_storage": {
+            "label": "address[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_bool)dyn_storage": {
+            "label": "bool[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_bytes_storage)dyn_storage": {
+            "label": "bytes[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_string_storage)dyn_storage": {
+            "label": "string[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)dyn_storage": {
+            "label": "uint256[]",
+            "numberOfBytes": "32"
+          },
+          "t_bytes1": {
+            "label": "bytes1",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_bytes_storage": {
+            "label": "bytes",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_string_storage)": {
+            "label": "mapping(bytes32 => string)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_uint256)": {
+            "label": "mapping(bytes32 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_address)": {
+            "label": "mapping(string => address)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_array(t_address)dyn_storage)": {
+            "label": "mapping(string => address[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_array(t_bool)dyn_storage)": {
+            "label": "mapping(string => bool[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_array(t_bytes_storage)dyn_storage)": {
+            "label": "mapping(string => bytes[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_array(t_string_storage)dyn_storage)": {
+            "label": "mapping(string => string[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_array(t_uint256)dyn_storage)": {
+            "label": "mapping(string => uint256[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_bool)": {
+            "label": "mapping(string => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_bytes1)": {
+            "label": "mapping(string => bytes1)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_bytes32)": {
+            "label": "mapping(string => bytes32)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_bytes_storage)": {
+            "label": "mapping(string => bytes)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_string_storage)": {
+            "label": "mapping(string => string)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_uint256)": {
+            "label": "mapping(string => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_string_memory_ptr": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_string_storage": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "f6b5da8980a5c1af86df868db3a6416589456618782ae36e72b01cd90312e814": {
+      "address": "0x4b6Acd4D02FD998727C6dB42dba6985D69651E05",
+      "txHash": "0x2be4a9ed45edd1d28aaa3aa723f3f443455d4ab1aae8330db1e99d7afd295d22",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_HyperdustRolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Product",
+            "src": "contracts\\node\\Hyperdust_Minner_Product.sol:21"
+          },
+          {
+            "label": "_HyperdustStorageAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Product",
+            "src": "contracts\\node\\Hyperdust_Minner_Product.sol:22"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)95_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)45_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "fb3a1917a373b443ed10ad32f8d4ff7f04e8b4000d16551c3a34e4443c482d5a": {
+      "address": "0x910Af7d7983ebA70c1BD30238aD43A54dCc63A38",
+      "txHash": "0xa85db50ae2961545eea14be52308bd8110b5e5f13e88e446a719e38c98d6aac2",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_HyperdustRolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:24"
+          },
+          {
+            "label": "_erc20Address",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:25"
+          },
+          {
+            "label": "_HyperdustMinnerProductAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:26"
+          },
+          {
+            "label": "_creditedAccount",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:27"
+          },
+          {
+            "label": "_HyperdustStorageAddress",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:28"
+          },
+          {
+            "label": "_Hyperdust1155Address",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:29"
+          },
+          {
+            "label": "_tokenID",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_uint256",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:30"
+          },
+          {
+            "label": "_tokenURI",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_string_storage",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:31"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)95_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)45_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_string_storage": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "8dc6778f9f5ac5c1f827d95bcbf6aabf0a25e7d053dcb0027a48bab9311e744e": {
+      "address": "0xa4ca8e25181418F47a919c1FA2979e0eab8f9653",
+      "txHash": "0xd791ff7875a2efb253d2e0909b0f240c27d9f6a00375c9ffd814a6c51d05363a",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_HyperdustRolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Product",
+            "src": "contracts\\node\\Hyperdust_Minner_Product.sol:21"
+          },
+          {
+            "label": "_HyperdustStorageAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Product",
+            "src": "contracts\\node\\Hyperdust_Minner_Product.sol:22"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)95_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)45_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "3445d0765d95f9ea4f78c67aea3188774fe5f3beef44357ac1be9f1be704a581": {
+      "address": "0xe8A420e47063615Ad9B799eF0eF7c45ebB482299",
+      "txHash": "0x2998d40d0a9dadf286bc83088b534cb4c8327b010c844bb728b690bddde975c7",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_HyperdustRolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:24"
+          },
+          {
+            "label": "_erc20Address",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:25"
+          },
+          {
+            "label": "_HyperdustMinnerProductAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:26"
+          },
+          {
+            "label": "_creditedAccount",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:27"
+          },
+          {
+            "label": "_HyperdustStorageAddress",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:28"
+          },
+          {
+            "label": "_Hyperdust1155Address",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:29"
+          },
+          {
+            "label": "_tokenID",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_uint256",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:30"
+          },
+          {
+            "label": "_tokenURI",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_string_storage",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:31"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)95_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)45_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_string_storage": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "c8f5336cd8c0dcc93e21b020df31094430a0ef35ccd7878bf63e3e0e0d09feb3": {
+      "address": "0xec6a90F29623cE16CE861c3271593e60F3E14bc2",
+      "txHash": "0x31ec9b67e85dac53edab60a2f3ad2eebe0045a5d6c71c72ae63d9935fd85862f",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_HyperdustRolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Product",
+            "src": "contracts\\node\\Hyperdust_Minner_Product.sol:21"
+          },
+          {
+            "label": "_HyperdustStorageAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Product",
+            "src": "contracts\\node\\Hyperdust_Minner_Product.sol:22"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)95_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)45_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "8bd04899a1463e3406951659a46d10e899c1df2ee0827dba2567bcfc8ace7b90": {
+      "address": "0x35317FF8BA53f011b1eEaa15c6723Df579afbD6D",
+      "txHash": "0x94ba1e0007d434a8d9b6a08bdcd0de9db6e390f8d284a0fb8c69cbdee2e8fd97",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_HyperdustRolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Product",
+            "src": "contracts\\node\\Hyperdust_Minner_Product.sol:21"
+          },
+          {
+            "label": "_HyperdustStorageAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Product",
+            "src": "contracts\\node\\Hyperdust_Minner_Product.sol:22"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)95_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)45_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "99a53922ff2a147a70282a54e78f55729f26b8bcdfc6721676b119f38466a58c": {
+      "address": "0x2511341F11c840a9B208C5f7eAc497C570E5E339",
+      "txHash": "0xf84b1d067bd1d91bfef6258c82d348d766689139b9386ea73b456fd16fb48c41",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_HyperdustRolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:24"
+          },
+          {
+            "label": "_erc20Address",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:25"
+          },
+          {
+            "label": "_HyperdustMinnerProductAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:26"
+          },
+          {
+            "label": "_creditedAccount",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:27"
+          },
+          {
+            "label": "_HyperdustStorageAddress",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:28"
+          },
+          {
+            "label": "_Hyperdust1155Address",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:29"
+          },
+          {
+            "label": "_tokenID",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_uint256",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:30"
+          },
+          {
+            "label": "_tokenURI",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_string_storage",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:31"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)95_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)45_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_string_storage": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "c8123debba68488ac7d8faf57133f656be973b845247c241aeec78a69a63612b": {
+      "address": "0xBD184D99Ade13c215D62F8d16C7297DB035031B1",
+      "txHash": "0xdaa15be93418369e9281dafb7322c451b5ecfc83f1fbaeeaed91bfd8484b4658",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_HyperdustRolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Product",
+            "src": "contracts\\node\\Hyperdust_Minner_Product.sol:21"
+          },
+          {
+            "label": "_HyperdustStorageAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Product",
+            "src": "contracts\\node\\Hyperdust_Minner_Product.sol:22"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)95_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)45_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "117f6d3314ce9eef33b07504cb924704aadca9117a27940061878119e9d5ea95": {
+      "address": "0xFedF278368115B143777ADB4aB7931b348350a09",
+      "txHash": "0x45a40587081d02f2cf768aaae8d550d64d989886eb213a60bc456a63e84f8fa6",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_HyperdustRolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Product",
+            "src": "contracts\\node\\Hyperdust_Minner_Product.sol:21"
+          },
+          {
+            "label": "_HyperdustStorageAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Product",
+            "src": "contracts\\node\\Hyperdust_Minner_Product.sol:22"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)95_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)45_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "72a7ef6640d527ce2c7ef01b8ffbd06e60096211402668b9a3d79f3bfc49d73b": {
+      "address": "0xF6Be07FfFA0a11cE5Ec207ba3F0E209285DeEAad",
+      "txHash": "0x1483c00c315a0d132f81d708068584e6667940aa5bf2c832dbf7d7c8ef196533",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_HyperdustRolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Product",
+            "src": "contracts\\node\\Hyperdust_Minner_Product.sol:21"
+          },
+          {
+            "label": "_HyperdustStorageAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Product",
+            "src": "contracts\\node\\Hyperdust_Minner_Product.sol:22"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)95_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)45_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "955e7f417e282a88e20e5587a25d0f4705739d597c8b41a897637335e673c946": {
+      "address": "0x0Da2203846569F18e9bF2F51cd68E448Bc65d9F1",
+      "txHash": "0x8c05c7fc4208049c5c5c9d5d2e823802615ad09934937fd5c6c86e7c698f58c7",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_HyperdustRolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:24"
+          },
+          {
+            "label": "_erc20Address",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:25"
+          },
+          {
+            "label": "_HyperdustMinnerProductAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:26"
+          },
+          {
+            "label": "_creditedAccount",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:27"
+          },
+          {
+            "label": "_HyperdustStorageAddress",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:28"
+          },
+          {
+            "label": "_Hyperdust1155Address",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:29"
+          },
+          {
+            "label": "_tokenID",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_uint256",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:30"
+          },
+          {
+            "label": "_tokenURI",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_string_storage",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:31"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)95_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)45_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_string_storage": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "e9c22c4d88e5fae5e7a845870f9f92c99d513a2d9532dee1192ad5a8564c27d6": {
+      "address": "0x941A2b80E4beacB3eCEC142D1Be9A980Ab94f733",
+      "txHash": "0x751db95df1f4eea071fb642e2c880128159434fc94ae166d74590d9612706a4e",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_HyperdustRolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:24"
+          },
+          {
+            "label": "_erc20Address",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:25"
+          },
+          {
+            "label": "_HyperdustMinnerProductAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:26"
+          },
+          {
+            "label": "_creditedAccount",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:27"
+          },
+          {
+            "label": "_HyperdustStorageAddress",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:28"
+          },
+          {
+            "label": "_Hyperdust1155Address",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:29"
+          },
+          {
+            "label": "_tokenID",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_uint256",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:30"
+          },
+          {
+            "label": "_tokenURI",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_string_storage",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:31"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)95_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)45_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_string_storage": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "9be64056488d0ab5b0fa805013ecbd693e210879ad0e252c5a939f2a9f44cbb9": {
+      "address": "0xdDbF6ca090A10966ae25B9772F8D5D8BDE29DbC1",
+      "txHash": "0xfb5e17b59c3aa07efe254fa80bad98e4be8f5601fd3ec550d30cb7c4c64b72ae",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_HyperdustRolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:24"
+          },
+          {
+            "label": "_erc20Address",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:25"
+          },
+          {
+            "label": "_HyperdustMinnerProductAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:26"
+          },
+          {
+            "label": "_creditedAccount",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:27"
+          },
+          {
+            "label": "_HyperdustStorageAddress",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:28"
+          },
+          {
+            "label": "_Hyperdust1155Address",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_address",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:29"
+          },
+          {
+            "label": "_tokenID",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_uint256",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:30"
+          },
+          {
+            "label": "_tokenURI",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_string_storage",
+            "contract": "Hyperdust_Minner_Service",
+            "src": "contracts\\node\\Hyperdust_Minner_Service.sol:31"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)95_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)45_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_string_storage": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
           }
         },
         "namespaces": {
