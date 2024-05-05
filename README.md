@@ -14,7 +14,7 @@ The smart contracts of the Hyperdust Protocol are the core of the Hyperdust Prot
 
 - `Hyperdust_Roles_Cfg.sol`: The role management contract of the Hyperdust Protocol, responsible for the determination of global administrator roles and the maintenance of administrator roles.
 
-- `Hyperdust_Space.sol`: The space contract of the Hyperdust Protocol, responsible for managing all Hyperspaces and generating a SID for each Hyperspace.
+- `Hyperdust_GYM_Space.sol`: The space contract of the Hyperdust Protocol, responsible for managing all Hyperspaces and generating a SID for each Hyperspace.
 
 - `Hyperdust_Transaction_Cfg.sol`: The transaction configuration contract of the Hyperdust Protocol, responsible for storing the HYPT Gas costs for different sections and configuring the minimum GAS charge authorization.
 
