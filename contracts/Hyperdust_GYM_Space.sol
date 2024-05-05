@@ -15,7 +15,7 @@ abstract contract IHyperdustRolesCfg {
     function hasAdminRole(address account) public view returns (bool) {}
 }
 
-contract Hyperdust_Space is OwnableUpgradeable {
+contract Hyperdust_GYM_Space is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 

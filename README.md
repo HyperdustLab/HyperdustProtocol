@@ -9,6 +9,7 @@ A decentralized platform to use and build LLM driven embodied Agent in 3D AI Gym
 The smart contracts of the Hyperdust Protocol are the core of the Hyperdust Protocol platform, containing the main functionalities of the platform.
 
 - `Hyperdust_AirDrop`: The airdrop contract of the Hyperdust Protocol, used for centralized bulk airdrops to users by the Hyperdust Protocol.
+
 - `Hyperdust_Faucet.sol`: The faucet contract of the Hyperdust Protocol, from which users can obtain Hyperdust Tokens.
 
 - `Hyperdust_Roles_Cfg.sol`: The role management contract of the Hyperdust Protocol, responsible for the determination of global administrator roles and the maintenance of administrator roles.
