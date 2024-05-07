@@ -1,5 +1,8 @@
 ## Hyperdust Protocol
 
+
+HYPERDUST是完全去中心化的大模型驱动AI智能体训练和应用平台（支持智能体训练，不含大模型训练），是去中心化的半AI半金融应用平台，具有GPU算力共识化，AI具身化资产化的特点，目前基于Hypergraph PoUW共识机制以及完全去中心化的比特币L2，将来还借助比特币L2 Stack升级为比特币AI专用L2。
+
 ![image](https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HYPERDUST.svg)
 
 A decentralized platform to use and build LLM driven embodied Agent in 3D AI Gyms.
