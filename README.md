@@ -6,7 +6,19 @@ HYPERDUST是完全去中心化的大模型驱动AI智能体训练和应用平台
 
 ![image](https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HYPERDUST.svg)
 
+### Whitepaper:
+
+https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HyperdustChiangMaiRev3.pdf
+
+### The details of token issurence and gas price update refer to
+
+https://drive.google.com/file/d/1ZdAz1KLJFnsrNuGjJAM3kgKrAkztfQlI/view?usp=sharing
+
 A decentralized platform to use and build LLM driven embodied Agent in 3D AI Gyms.
+
+### HYPERDUST白皮书
+
+https://s3.hyperdust.io/HYPERDUST.pdf
 
 #### Hyperdust Protocol Smart Contracts
 
@@ -43,11 +55,3 @@ The smart contracts of the Hyperdust Protocol are the core of the Hyperdust Prot
 - `Hyperdust_Node_Mgr.sol`: The miner management contract of the Hyperdust Protocol, responsible for maintaining information, status, current online numbers, rendering numbers, and other maintenance tasks of miner nodes.
 
 - `Hyperdust_Node_Type.sol`: Miner type management contract, responsible for maintaining miner node type information..
-
-### Whitepaper:
-
-https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HyperdustChiangMaiRev3.pdf
-
-### The details of token issurence and gas price update refer to
-
-https://drive.google.com/file/d/1ZdAz1KLJFnsrNuGjJAM3kgKrAkztfQlI/view?usp=sharing
