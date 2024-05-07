@@ -13,7 +13,6 @@ artifacts
 test/Test*.ts
 contracts/Test*.sol
 
-epoch
 
 
 
