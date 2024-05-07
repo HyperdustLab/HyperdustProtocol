@@ -10,7 +10,7 @@ files
 cache
 artifacts
 
-test/Test.ts
+test/Test*.ts
 
 epoch
 
