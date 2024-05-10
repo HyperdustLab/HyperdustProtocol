@@ -14,7 +14,7 @@ import "../utils/StrUtil.sol";
 
 import "./../Hyperdust_Storage.sol";
 
-contract Hyperdust_Minner_Product is OwnableUpgradeable {
+contract Hyperdust_Miner_Product is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 
@@ -55,6 +55,7 @@ contract Hyperdust_Minner_Product is OwnableUpgradeable {
         hyperdustStorage.setUint(hyperdustStorage.genKey("price", id), price);
         hyperdustStorage.setUint(hyperdustStorage.genKey("limitNum", id), limitNum);
         hyperdustStorage.setUint(hyperdustStorage.genKey("putawayNum", id), putawayNum);
+        hyperdustStorage.setBytes1(hyperdustStorage.genKey("status", id), status);
 
         hyperdustStorage.setString(hyperdustStorage.genKey("coverImage", id), coverImage);
 

@@ -13,27 +13,30 @@ import "../Hyperdust_Roles_Cfg.sol";
 import "../utils/StrUtil.sol";
 
 import "./../Hyperdust_Storage.sol";
-import "./Hyperdust_Minner_Product.sol";
+import "./Hyperdust_Miner_Product.sol";
 
 import "./../token/Hyperdust_1155.sol";
 
-contract Hyperdust_Minner_Service is OwnableUpgradeable {
+contract Hyperdust_Miner_Service is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 
     address public _HyperdustRolesCfgAddress;
     address public _erc20Address;
-    address public _HyperdustMinnerProductAddress;
+    address public _HyperdustMinerProductAddress;
     address public _creditedAccount;
     address public _HyperdustStorageAddress;
     address public _Hyperdust1155Address;
     uint256 public _tokenID;
     string public _tokenURI;
+    uint256 public _scale;
 
     function initialize(address onlyOwner) public initializer {
         _tokenID = 1;
 
         _tokenURI = "https://ipfs.hyperdust.io/ipfs/QmSvQZ9i4NmcuujgsryEPWqU8Kc8gt9cYTYiDv5QYi6s82?suffix=json";
+
+        _scale = 100;
 
         __Ownable_init(onlyOwner);
     }
@@ -42,8 +45,8 @@ contract Hyperdust_Minner_Service is OwnableUpgradeable {
         _HyperdustRolesCfgAddress = HyperdustRolesCfgAddress;
     }
 
-    function setHyperdustMinnerProductAddress(address HyperdustMinnerProductAddress) public onlyOwner {
-        _HyperdustMinnerProductAddress = HyperdustMinnerProductAddress;
+    function setHyperdustMinerProductAddress(address HyperdustMinerProductAddress) public onlyOwner {
+        _HyperdustMinerProductAddress = HyperdustMinerProductAddress;
     }
 
     function setErc20Address(address erc20Address) public onlyOwner {
@@ -58,10 +61,14 @@ contract Hyperdust_Minner_Service is OwnableUpgradeable {
         _Hyperdust1155Address = Hyperdust1155Address;
     }
 
+    function setScale(uint256 scale) public onlyOwner {
+        _scale = scale;
+    }
+
     function setContractAddress(address[] memory contractaddressArray) public onlyOwner {
         _HyperdustRolesCfgAddress = contractaddressArray[0];
         _erc20Address = contractaddressArray[1];
-        _HyperdustMinnerProductAddress = contractaddressArray[2];
+        _HyperdustMinerProductAddress = contractaddressArray[2];
         _creditedAccount = contractaddressArray[3];
         _HyperdustStorageAddress = contractaddressArray[4];
         _Hyperdust1155Address = contractaddressArray[5];
@@ -79,18 +86,25 @@ contract Hyperdust_Minner_Service is OwnableUpgradeable {
         _tokenURI = tokenURI;
     }
 
-    event eveTransactionRecord(uint256 price, uint256 num, uint256 productId, address tokenAddress, uint256 tokenId, address account, uint256 payAmount, string tokenURI);
+    event eveTransactionRecord(uint256 price, uint256 num, uint256 productId, address tokenAddress, uint256 tokenId, address account, uint256 payAmount, string tokenURI, uint256 invitationAmount, address invitationAddress);
 
     event eveInvitationCode(address account, bytes32 invitationCode);
+
+    function stringToAddress(string memory str) public pure returns (address) {
+        bytes32 tmp = keccak256(abi.encodePacked(str));
+        return address(uint160(uint256(tmp)));
+    }
 
     function buy(bytes32 invitationCode, uint256 productId, uint256 num) public {
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(_HyperdustStorageAddress);
 
         Hyperdust_1155 erc1155 = Hyperdust_1155(_Hyperdust1155Address);
 
-        Hyperdust_Minner_Product hyperdust_Minner_Product = Hyperdust_Minner_Product(_HyperdustMinnerProductAddress);
+        IERC20 erc20 = IERC20(_erc20Address);
 
-        (, uint256 price, uint256 limitNum, bytes1 status, , , ) = hyperdust_Minner_Product.get(productId);
+        Hyperdust_Miner_Product hyperdust_Miner_Product = Hyperdust_Miner_Product(_HyperdustMinerProductAddress);
+
+        (, uint256 price, uint256 limitNum, bytes1 status, , , ) = hyperdust_Miner_Product.get(productId);
 
         require(status == bytes1(0x01), "Product not on sale");
 
@@ -104,11 +118,23 @@ contract Hyperdust_Minner_Service is OwnableUpgradeable {
 
         require(num > 0, "num must > 0");
 
-        hyperdust_Minner_Product.addSellNum(productId, num);
+        hyperdust_Miner_Product.addSellNum(productId, num);
 
         string memory invitationAddress = hyperdustStorage.getBytes32String(invitationCode);
 
-        IERC20 erc20 = IERC20(_erc20Address);
+        uint256 invitationAmount;
+
+        address _invitationAddress;
+
+        if (bytes(invitationAddress).length != 0) {
+            _invitationAddress = stringToAddress(invitationAddress);
+
+            require(msg.sender != _invitationAddress, "You can't invite yourself");
+
+            invitationAmount = (price * num * _scale) / 1000;
+
+            erc20.transferFrom(msg.sender, _invitationAddress, invitationAmount);
+        }
 
         uint256 amount = erc20.allowance(msg.sender, address(this));
 
@@ -134,7 +160,7 @@ contract Hyperdust_Minner_Service is OwnableUpgradeable {
             emit eveInvitationCode(msg.sender, invitationCodeByte);
         }
 
-        emit eveTransactionRecord(price, num, productId, _Hyperdust1155Address, _tokenID, msg.sender, payAmount, _tokenURI);
+        emit eveTransactionRecord(price, num, productId, _Hyperdust1155Address, _tokenID, msg.sender, payAmount, _tokenURI, invitationAmount, _invitationAddress);
     }
 
     function generateUniqueHash() private view returns (bytes32) {

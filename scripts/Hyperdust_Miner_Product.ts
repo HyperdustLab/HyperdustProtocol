@@ -7,7 +7,7 @@ async function main() {
   const Hyperdust_Storage = await upgrades.deployProxy(_Hyperdust_Storage, [process.env.ADMIN_Wallet_Address])
   await Hyperdust_Storage.waitForDeployment()
 
-  const contract = await ethers.getContractFactory('Hyperdust_Minner_Product')
+  const contract = await ethers.getContractFactory('Hyperdust_Miner_Product')
   const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address])
   await instance.waitForDeployment()
 
