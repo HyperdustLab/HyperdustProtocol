@@ -14,6 +14,8 @@ import "../utils/StrUtil.sol";
 
 import "./../Hyperdust_Storage.sol";
 
+import "./../node/Hyperdust_Node_Mgr.sol";
+
 contract Hyperdust_Miner_NFT_Pledge is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
@@ -22,6 +24,7 @@ contract Hyperdust_Miner_NFT_Pledge is OwnableUpgradeable {
     address public _HyperdustStorageAddress;
     address public _Hyperdust721Address;
     uint256 public _pledgeTime;
+    address public _HyperdustNodeMgrAddress;
 
     function initialize(address onlyOwner) public initializer {
         __Ownable_init(onlyOwner);
@@ -40,10 +43,15 @@ contract Hyperdust_Miner_NFT_Pledge is OwnableUpgradeable {
         _Hyperdust721Address = hyperdust721Address;
     }
 
+    function setHyperdustNodeMgrAddress(address hyperdustNodeMgrAddress) public onlyOwner {
+        _HyperdustNodeMgrAddress = hyperdustNodeMgrAddress;
+    }
+
     function setContractAddress(address[] memory contractaddressArray) public onlyOwner {
         _HyperdustRolesCfgAddress = contractaddressArray[0];
         _HyperdustStorageAddress = contractaddressArray[1];
         _Hyperdust721Address = contractaddressArray[2];
+        _HyperdustNodeMgrAddress = contractaddressArray[3];
     }
 
     event evePledge(address account, address tokenAddress, uint256 tokenId, uint256 allowedRedemptionTime);
@@ -77,6 +85,9 @@ contract Hyperdust_Miner_NFT_Pledge is OwnableUpgradeable {
 
     function redemption(uint256 tokenId) public {
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(_HyperdustStorageAddress);
+
+        Hyperdust_Node_Mgr hyperdustNodeMgr = Hyperdust_Node_Mgr(_HyperdustNodeMgrAddress);
+
         IERC721 erc721 = IERC721(_Hyperdust721Address);
         string memory key = hyperdustStorage.genKey(_Hyperdust721Address.toHexString(), tokenId);
         address ownerAdress = hyperdustStorage.getAddress(key);
@@ -93,6 +104,10 @@ contract Hyperdust_Miner_NFT_Pledge is OwnableUpgradeable {
         string memory accountKey = msg.sender.toHexString();
 
         uint256 pledgeNum = hyperdustStorage.getUint(accountKey);
+
+        uint256 nodeNum = hyperdustNodeMgr.getAccountNodeNum(msg.sender);
+
+        require(nodeNum <= pledgeNum - 1, "The node must be offline before NFT assets can be redeemed");
 
         hyperdustStorage.setUint(accountKey, pledgeNum - 1);
 

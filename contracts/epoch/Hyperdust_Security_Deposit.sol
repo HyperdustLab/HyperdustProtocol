@@ -38,6 +38,8 @@ contract Hyperdust_Security_Deposit is OwnableUpgradeable {
 
     event eveSave(uint256 nodeId, uint256 totalSecurityAmount, uint256 amount);
 
+    event eveApplyWithdrawal(uint256 nodeId, uint256 allowedWithdrawalTime);
+
     function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
         _rolesCfgAddress = rolesCfgAddress;
     }
@@ -56,6 +58,10 @@ contract Hyperdust_Security_Deposit is OwnableUpgradeable {
 
     function setHyperdustMinerNFTPledgeAddress(address hyperdustMinerNFTPledgeAddress) public onlyOwner {
         _hyperdustMinerNFTPledgeAddress = hyperdustMinerNFTPledgeAddress;
+    }
+
+    function setWithdrawalInterval(uint32 withdrawalInterval) public onlyOwner {
+        _withdrawalInterval = withdrawalInterval;
     }
 
     function setContractAddress(address[] memory contractaddressArray) public onlyOwner {
@@ -117,9 +123,13 @@ contract Hyperdust_Security_Deposit is OwnableUpgradeable {
 
         require(time == 0, "already apply");
 
-        hyperdustStorage.setUint(key, block.timestamp);
+        uint256 allowedWithdrawalTime = block.timestamp + _withdrawalInterval;
+
+        hyperdustStorage.setUint(key, allowedWithdrawalTime);
 
         hyperdustNodeMgr.updateStatus(nodeId, true);
+
+        emit eveApplyWithdrawal(nodeId, allowedWithdrawalTime);
     }
 
     function cancelWithdrawal(uint256 nodeId) public {
@@ -144,6 +154,8 @@ contract Hyperdust_Security_Deposit is OwnableUpgradeable {
         hyperdustStorage.setUint(key, 0);
 
         hyperdustNodeMgr.updateStatus(nodeId, false);
+
+        emit eveApplyWithdrawal(nodeId, 0);
     }
 
     function withdrawal(uint256 nodeId) public {
@@ -163,7 +175,7 @@ contract Hyperdust_Security_Deposit is OwnableUpgradeable {
 
         uint256 applyWithdrawalTime = hyperdustStorage.getUint(applyWithdrawalKey);
 
-        require(applyWithdrawalTime > 0 && applyWithdrawalTime + _withdrawalInterval < block.timestamp, "not apply withdrawal or not reach withdrawal time");
+        require(applyWithdrawalTime > 0 && applyWithdrawalTime < block.timestamp, "not apply withdrawal or not reach withdrawal time");
 
         hyperdustStorage.setUint(applyWithdrawalKey, 0);
 
@@ -198,6 +210,8 @@ contract Hyperdust_Security_Deposit is OwnableUpgradeable {
         }
 
         IERC20(_erc20Address).transfer(incomeAddress, amount);
+
+        emit eveApplyWithdrawal(nodeId, 0);
     }
 
     function getNodeSecurityDeposit(uint256 nodeId) public view returns (uint256) {

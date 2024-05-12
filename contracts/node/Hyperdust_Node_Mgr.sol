@@ -96,7 +96,7 @@ contract Hyperdust_Node_Mgr is OwnableUpgradeable {
 
         add(id, nodeTypeId, incomeAddress, ip, hardwareInfos);
 
-        hyperdustStorage.setUint(accountKey, nodeNum);
+        hyperdustStorage.setUint(accountKey, nodeNum + 1);
 
         return id;
     }
@@ -231,7 +231,24 @@ contract Hyperdust_Node_Mgr is OwnableUpgradeable {
 
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(_HyperdustStorageAddress);
 
+        Hyperdust_Miner_NFT_Pledge hyperdustMinerNFTPledge = Hyperdust_Miner_NFT_Pledge(_hyperdustMinerNFTPledgeAddress);
+
+        address incomeAddress = hyperdustStorage.getAddress(hyperdustStorage.genKey("incomeAddress", nodeId));
+
+        uint256 pledgeNum = hyperdustMinerNFTPledge.getAccountPledgeNum(incomeAddress);
+
+        string memory accountKey = incomeAddress.toHexString();
+
         hyperdustStorage.setBool(hyperdustStorage.genKey("isOffine", nodeId), isOffine);
+
+        uint256 nodeNum = hyperdustStorage.getUint(accountKey);
+
+        if (isOffine) {
+            hyperdustStorage.setUint(accountKey, nodeNum - 1);
+        } else {
+            require(nodeNum + 1 >= pledgeNum, "The amount of pledged NFT is insufficient, please pledge the NFT first");
+            hyperdustStorage.setUint(accountKey, nodeNum + 1);
+        }
 
         emit eveSave(nodeId);
     }
