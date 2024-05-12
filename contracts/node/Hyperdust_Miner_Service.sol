@@ -15,7 +15,7 @@ import "../utils/StrUtil.sol";
 import "./../Hyperdust_Storage.sol";
 import "./Hyperdust_Miner_Product.sol";
 
-import "./../token/Hyperdust_1155.sol";
+import "./../token/Hyperdust_721.sol";
 
 contract Hyperdust_Miner_Service is OwnableUpgradeable {
     using Strings for *;
@@ -26,14 +26,11 @@ contract Hyperdust_Miner_Service is OwnableUpgradeable {
     address public _HyperdustMinerProductAddress;
     address public _creditedAccount;
     address public _HyperdustStorageAddress;
-    address public _Hyperdust1155Address;
-    uint256 public _tokenID;
+    address public _Hyperdust721Address;
     string public _tokenURI;
     uint256 public _scale;
 
     function initialize(address onlyOwner) public initializer {
-        _tokenID = 1;
-
         _tokenURI = "https://ipfs.hyperdust.io/ipfs/QmSvQZ9i4NmcuujgsryEPWqU8Kc8gt9cYTYiDv5QYi6s82?suffix=json";
 
         _scale = 100;
@@ -41,12 +38,12 @@ contract Hyperdust_Miner_Service is OwnableUpgradeable {
         __Ownable_init(onlyOwner);
     }
 
-    function setHyperdustRolesCfgAddress(address HyperdustRolesCfgAddress) public onlyOwner {
-        _HyperdustRolesCfgAddress = HyperdustRolesCfgAddress;
+    function setHyperdustRolesCfgAddress(address hyperdustRolesCfgAddress) public onlyOwner {
+        _HyperdustRolesCfgAddress = hyperdustRolesCfgAddress;
     }
 
-    function setHyperdustMinerProductAddress(address HyperdustMinerProductAddress) public onlyOwner {
-        _HyperdustMinerProductAddress = HyperdustMinerProductAddress;
+    function setHyperdustMinerProductAddress(address hyperdustMinerProductAddress) public onlyOwner {
+        _HyperdustMinerProductAddress = hyperdustMinerProductAddress;
     }
 
     function setErc20Address(address erc20Address) public onlyOwner {
@@ -57,8 +54,8 @@ contract Hyperdust_Miner_Service is OwnableUpgradeable {
         _creditedAccount = creditedAccount;
     }
 
-    function setHyperdust1155Address(address Hyperdust1155Address) public onlyOwner {
-        _Hyperdust1155Address = Hyperdust1155Address;
+    function setHyperdust721Address(address hyperdust721Address) public onlyOwner {
+        _Hyperdust721Address = hyperdust721Address;
     }
 
     function setScale(uint256 scale) public onlyOwner {
@@ -71,34 +68,30 @@ contract Hyperdust_Miner_Service is OwnableUpgradeable {
         _HyperdustMinerProductAddress = contractaddressArray[2];
         _creditedAccount = contractaddressArray[3];
         _HyperdustStorageAddress = contractaddressArray[4];
-        _Hyperdust1155Address = contractaddressArray[5];
+        _Hyperdust721Address = contractaddressArray[5];
     }
 
     function setHyperdustStorageAddress(address hyperdustStorageAddress) public onlyOwner {
         _HyperdustStorageAddress = hyperdustStorageAddress;
     }
 
-    function setTokenId(uint256 tokenId) public onlyOwner {
-        _tokenID = tokenId;
-    }
-
     function setTokenURI(string memory tokenURI) public onlyOwner {
         _tokenURI = tokenURI;
     }
 
-    event eveTransactionRecord(uint256 price, uint256 num, uint256 productId, address tokenAddress, uint256 tokenId, address account, uint256 payAmount, string tokenURI, uint256 invitationAmount, address invitationAddress);
+    event eveTransactionRecord(uint256 price, uint256 num, uint256 productId, address tokenAddress, uint256[] tokenIds, address account, uint256 payAmount, string tokenURI, uint256 invitationAmount, address invitationAddress);
 
-    event eveInvitationCode(address account, bytes32 invitationCode);
+    event eveInvitationCode(address account, string invitationCode);
 
     function stringToAddress(string memory str) public pure returns (address) {
         bytes32 tmp = keccak256(abi.encodePacked(str));
         return address(uint160(uint256(tmp)));
     }
 
-    function buy(bytes32 invitationCode, uint256 productId, uint256 num) public {
+    function buy(string memory invitationCode, uint256 productId, uint256 num) public {
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(_HyperdustStorageAddress);
 
-        Hyperdust_1155 erc1155 = Hyperdust_1155(_Hyperdust1155Address);
+        Hyperdust_721 erc721 = Hyperdust_721(_Hyperdust721Address);
 
         IERC20 erc20 = IERC20(_erc20Address);
 
@@ -120,20 +113,35 @@ contract Hyperdust_Miner_Service is OwnableUpgradeable {
 
         hyperdust_Miner_Product.addSellNum(productId, num);
 
-        string memory invitationAddress = hyperdustStorage.getBytes32String(invitationCode);
-
         uint256 invitationAmount;
+        address invitationAddress;
 
-        address _invitationAddress;
+        hyperdustStorage.setUint(accountLimitNumKey, accountLimitNum + num);
 
-        if (bytes(invitationAddress).length != 0) {
-            _invitationAddress = stringToAddress(invitationAddress);
+        string memory genInvitationCode = hyperdustStorage.getString(invitationCodeKey);
 
-            require(msg.sender != _invitationAddress, "You can't invite yourself");
+        if (bytes(genInvitationCode).length == 0) {
+            uint256 nextId = hyperdustStorage.getNextId();
+
+            genInvitationCode = string(abi.encodePacked(block.timestamp.toString(), nextId.toString()));
+
+            hyperdustStorage.setString(invitationCodeKey, genInvitationCode);
+
+            hyperdustStorage.setAddress(genInvitationCode, msg.sender);
+
+            emit eveInvitationCode(msg.sender, genInvitationCode);
+        }
+
+        if (bytes(invitationCode).length > 0) {
+            invitationAddress = hyperdustStorage.getAddress(invitationCode);
+
+            require(invitationAddress != address(0), "Invitation code does not exist");
+
+            require(msg.sender != invitationAddress, "You can't invite yourself");
 
             invitationAmount = (price * num * _scale) / 1000;
 
-            erc20.transferFrom(msg.sender, _invitationAddress, invitationAmount);
+            erc20.transferFrom(msg.sender, invitationAddress, invitationAmount);
         }
 
         uint256 amount = erc20.allowance(msg.sender, address(this));
@@ -142,28 +150,15 @@ contract Hyperdust_Miner_Service is OwnableUpgradeable {
 
         require(amount >= payAmount, "Insufficient authorized amount");
 
-        erc20.transferFrom(msg.sender, _creditedAccount, payAmount);
+        uint256[] memory _tokenID = new uint256[](num);
 
-        erc1155.mint(msg.sender, _tokenID, num, _tokenURI, "0x");
-
-        hyperdustStorage.setUint(accountLimitNumKey, accountLimitNum + num);
-
-        bytes32 invitationCodeByte = hyperdustStorage.getBytes32(invitationCodeKey);
-
-        if (invitationCodeByte == bytes32(0)) {
-            invitationCodeByte = generateUniqueHash();
-
-            hyperdustStorage.setBytes32(invitationCodeKey, invitationCodeByte);
-
-            hyperdustStorage.setBytes32String(invitationCodeByte, msg.sender.toHexString());
-
-            emit eveInvitationCode(msg.sender, invitationCodeByte);
+        for (uint256 i = 0; i < num; i++) {
+            uint256 tokenID = erc721.safeMint(msg.sender, _tokenURI);
+            _tokenID[i] = tokenID;
         }
 
-        emit eveTransactionRecord(price, num, productId, _Hyperdust1155Address, _tokenID, msg.sender, payAmount, _tokenURI, invitationAmount, _invitationAddress);
-    }
+        erc20.transferFrom(msg.sender, _creditedAccount, payAmount - invitationAmount);
 
-    function generateUniqueHash() private view returns (bytes32) {
-        return keccak256(abi.encodePacked(block.timestamp, block.difficulty));
+        emit eveTransactionRecord(price, num, productId, _Hyperdust721Address, _tokenID, msg.sender, payAmount, _tokenURI, invitationAmount, invitationAddress);
     }
 }

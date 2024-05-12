@@ -14,6 +14,8 @@ import "../Hyperdust_Storage.sol";
 
 import "../node/Hyperdust_Node_Mgr.sol";
 
+import "../node/Hyperdust_Miner_NFT_Pledge.sol";
+
 abstract contract IHyperdustNodeMgr {
     function hasAdminRole(address account) public view returns (bool) {}
 }
@@ -27,6 +29,7 @@ contract Hyperdust_Security_Deposit is OwnableUpgradeable {
     address public _HyperdustStorageAddress;
     address public _HyperdustNodeMgrAddress;
     uint32 public _withdrawalInterval;
+    address public _hyperdustMinerNFTPledgeAddress;
 
     function initialize(address onlyOwner) public initializer {
         __Ownable_init(onlyOwner);
@@ -51,11 +54,16 @@ contract Hyperdust_Security_Deposit is OwnableUpgradeable {
         _HyperdustNodeMgrAddress = HyperdustNodeMgrAddress;
     }
 
+    function setHyperdustMinerNFTPledgeAddress(address hyperdustMinerNFTPledgeAddress) public onlyOwner {
+        _hyperdustMinerNFTPledgeAddress = hyperdustMinerNFTPledgeAddress;
+    }
+
     function setContractAddress(address[] memory contractaddressArray) public onlyOwner {
         _rolesCfgAddress = contractaddressArray[0];
         _erc20Address = contractaddressArray[1];
         _HyperdustStorageAddress = contractaddressArray[2];
         _HyperdustNodeMgrAddress = contractaddressArray[3];
+        _hyperdustMinerNFTPledgeAddress = contractaddressArray[4];
     }
 
     function addSecurityDeposit(uint256 nodeId, uint256 amount) public {
@@ -65,7 +73,7 @@ contract Hyperdust_Security_Deposit is OwnableUpgradeable {
 
         Hyperdust_Node_Mgr hyperdustNodeMgr = Hyperdust_Node_Mgr(_HyperdustNodeMgrAddress);
 
-        (address incomeAddress, , ) = hyperdustNodeMgr.getNode(nodeId);
+        (address incomeAddress, , , ) = hyperdustNodeMgr.getNode(nodeId);
 
         string memory key = nodeId.toString();
 
@@ -99,7 +107,7 @@ contract Hyperdust_Security_Deposit is OwnableUpgradeable {
 
         Hyperdust_Node_Mgr hyperdustNodeMgr = Hyperdust_Node_Mgr(_HyperdustNodeMgrAddress);
 
-        (address incomeAddress, , ) = hyperdustNodeMgr.getNode(nodeId);
+        (address incomeAddress, , , ) = hyperdustNodeMgr.getNode(nodeId);
 
         require(incomeAddress == msg.sender, "not income address");
 
@@ -119,7 +127,15 @@ contract Hyperdust_Security_Deposit is OwnableUpgradeable {
 
         Hyperdust_Node_Mgr hyperdustNodeMgr = Hyperdust_Node_Mgr(_HyperdustNodeMgrAddress);
 
-        (address incomeAddress, , ) = hyperdustNodeMgr.getNode(nodeId);
+        Hyperdust_Miner_NFT_Pledge hyperdustMinerNFTPledge = Hyperdust_Miner_NFT_Pledge(_hyperdustMinerNFTPledgeAddress);
+
+        (address incomeAddress, , , ) = hyperdustNodeMgr.getNode(nodeId);
+
+        uint256 pledgeNum = hyperdustMinerNFTPledge.getAccountPledgeNum(incomeAddress);
+
+        uint256 nodeNum = hyperdustNodeMgr.getAccountNodeNum(incomeAddress);
+
+        require(nodeNum - 1 >= pledgeNum, "The amount of pledged NFT is insufficient, please pledge the NFT first");
 
         require(incomeAddress == msg.sender, "not income address");
 
@@ -135,7 +151,7 @@ contract Hyperdust_Security_Deposit is OwnableUpgradeable {
 
         Hyperdust_Node_Mgr hyperdustNodeMgr = Hyperdust_Node_Mgr(_HyperdustNodeMgrAddress);
 
-        (address incomeAddress, , ) = hyperdustNodeMgr.getNode(nodeId);
+        (address incomeAddress, , , ) = hyperdustNodeMgr.getNode(nodeId);
 
         require(incomeAddress == msg.sender, "not income address");
 

@@ -34,7 +34,7 @@ const config: HardhatUserConfig = {
     dev: {
       url: 'HTTP://127.0.0.1:8545',
       loggingEnabled: true,
-      accounts: [process.env.PRIVATE_KEY],
+      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY_PROD],
     },
     sepolia: {
       url: process.env.SEPOLIA_RPC_URL,
@@ -43,7 +43,7 @@ const config: HardhatUserConfig = {
     },
     arbitrumSepolia: {
       url: process.env.Arbitrum_Sepolia_Testnet_RPC_URL,
-      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
+      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY_PROD],
       loggingEnabled: true,
     },
     arbitrumMainnet: {

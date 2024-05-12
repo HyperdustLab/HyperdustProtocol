@@ -3,7 +3,7 @@
 import { ethers, run } from 'hardhat'
 
 async function main() {
-  const contract = await ethers.deployContract('Hyperdust_1155', ['Hyperdust Minner NFT', 'MNFT', process.env.ADMIN_Wallet_Address])
+  const contract = await ethers.deployContract('Hyperdust_721', ['Hyperdust Miner NFT', 'HMN', process.env.ADMIN_Wallet_Address])
   await contract.waitForDeployment()
 
   console.info('contractFactory address:', contract.target)
