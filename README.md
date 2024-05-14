@@ -8,6 +8,10 @@ https://ipfs.hyperdust.io/ipfs/QmQGxiYHYLcCN4tekHvPQNhDHrV3vTcLhgAve9oBih3oZW?su
 
 ### HYPERDUST Whitepaper:
 
+https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HyperdustChiangMaiRev3.pdf
+
+### Light Paper of HYPERDUST:
+
 https://ipfs.hyperdust.io/ipfs/QmX9uMFS4VhCfkiDqMUQw1zMRhkTZtJjVZXWrDtr8GP4ox?suffix=pdf
 
 ### The details of token issurence and gas price update refer to
