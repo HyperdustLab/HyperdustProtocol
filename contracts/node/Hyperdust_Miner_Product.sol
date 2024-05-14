@@ -67,9 +67,9 @@ contract Hyperdust_Miner_Product is OwnableUpgradeable {
 
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(_HyperdustStorageAddress);
 
-        string memory name = hyperdustStorage.getString(hyperdustStorage.genKey("name", id));
+        string memory _name = hyperdustStorage.getString(hyperdustStorage.genKey("name", id));
 
-        require(bytes(name).length > 0, "not found");
+        require(bytes(_name).length > 0, "not found");
 
         hyperdustStorage.setString(hyperdustStorage.genKey("name", id), name);
         hyperdustStorage.setString(hyperdustStorage.genKey("coverImage", id), coverImage);

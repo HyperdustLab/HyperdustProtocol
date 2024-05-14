@@ -4,11 +4,11 @@ HYPERDUST是完全去中心化的大模型驱动AI智能体训练和应用平台
 
 ### HYPERDUST白皮书（中文版）
 
-https://s3.hyperdust.io/HYPERDUST.pdf
+https://ipfs.hyperdust.io/ipfs/QmQGxiYHYLcCN4tekHvPQNhDHrV3vTcLhgAve9oBih3oZW?suffix=pdf
 
 ### HYPERDUST Whitepaper:
 
-https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HyperdustChiangMaiRev3.pdf
+https://ipfs.hyperdust.io/ipfs/QmX9uMFS4VhCfkiDqMUQw1zMRhkTZtJjVZXWrDtr8GP4ox?suffix=pdf
 
 ### The details of token issurence and gas price update refer to
 
