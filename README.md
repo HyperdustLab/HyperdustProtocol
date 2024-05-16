@@ -10,7 +10,7 @@ https://ipfs.hyperdust.io/ipfs/QmQGxiYHYLcCN4tekHvPQNhDHrV3vTcLhgAve9oBih3oZW?su
 
 https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HyperdustChiangMaiRev3.pdf
 
-### Light Paper of HYPERDUST:
+### Light Paper of HyperAGI:
 
 https://ipfs.hyperdust.io/ipfs/QmX9uMFS4VhCfkiDqMUQw1zMRhkTZtJjVZXWrDtr8GP4ox?suffix=pdf
 
