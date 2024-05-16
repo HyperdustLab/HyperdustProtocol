@@ -1,12 +1,12 @@
-## Hyperdust Protocol
+## HyperAGI
 
-HYPERDUST是完全去中心化的大模型驱动AI智能体训练和应用平台（支持智能体训练，不含大模型训练），是去中心化的半AI半金融应用平台，具有GPU算力共识化，AI具身化资产化的特点，目前基于Hypergraph PoUW共识机制以及完全去中心化的比特币L2，将来还借助比特币L2 Stack升级为比特币AI专用L2
+HyperAGI 是完全去中心化的大模型驱动AI智能体训练和应用平台（支持智能体训练，不含大模型训练），是去中心化的半AI半金融应用平台，具有GPU算力共识化，AI具身化资产化的特点，目前基于Hypergraph PoUW共识机制以及完全去中心化的比特币L2，将来还借助比特币L2 Stack升级为比特币AI专用L2
 
-### HYPERDUST白皮书（中文版）
+### HyperAGI白皮书（中文版）
 
 https://ipfs.hyperdust.io/ipfs/QmQGxiYHYLcCN4tekHvPQNhDHrV3vTcLhgAve9oBih3oZW?suffix=pdf
 
-### HYPERDUST Whitepaper:
+### HyperAGI Whitepaper:
 
 https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HyperdustChiangMaiRev3.pdf
 
@@ -24,9 +24,9 @@ A decentralized platform to use and build LLM driven embodied Agent in 3D AI Gym
 
 ![image](https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HYPERDUST.svg)
 
-#### Hyperdust Protocol Smart Contracts
+#### HyperAGI Smart Contracts
 
-The smart contracts of the Hyperdust Protocol are the core of the Hyperdust Protocol platform, containing the main functionalities of the platform.
+The smart contracts of the HyperAGI are the core of the HyperAGI  platform, containing the main functionalities of the platform.
 
 - `Hyperdust_AirDrop`: The airdrop contract of the Hyperdust Protocol, used for centralized bulk airdrops to users by the Hyperdust Protocol.
 
