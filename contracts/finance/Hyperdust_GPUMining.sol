@@ -46,6 +46,8 @@ contract Hyperdust_GPUMining is OwnableUpgradeable, AccessControlUpgradeable {
 
     address public _HyperdustTokenAddress;
 
+    uint256 public _TGE_timestamp;
+
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
     function initialize(address onlyOwner, uint256 GPUMiningReleaseInterval) public initializer {
@@ -102,16 +104,7 @@ contract Hyperdust_GPUMining is OwnableUpgradeable, AccessControlUpgradeable {
     }
 
     function mint(address account, uint256 mintNum) public onlyRole(MINTER_ROLE) {
-        Hyperdust_Token hyperdust_Token = Hyperdust_Token(_HyperdustTokenAddress);
-
-        uint256 TGE_timestamp = hyperdust_Token.TGE_timestamp();
-
-        require(TGE_timestamp > 0, "TGE_timestamp is not started");
-
-        if (_GPUMiningAllowReleaseTime == 0) {
-            _GPUMiningAllowReleaseTime = TGE_timestamp;
-            _lastGPUMiningMintTime = TGE_timestamp;
-        }
+        require(_TGE_timestamp > 0, "TGE_timestamp is not started");
 
         if (block.timestamp >= _lastGPUMiningRateTime + _GPUMiningRateInterval) {
             _GPUMiningCurrMiningRatio = _GPUMiningCurrMiningRatio / 2;
@@ -142,5 +135,14 @@ contract Hyperdust_GPUMining is OwnableUpgradeable, AccessControlUpgradeable {
         _lastGPUMiningMintTime = block.timestamp;
 
         IERC20(_HyperdustTokenAddress).transfer(account, mintNum);
+    }
+
+    function startTGE(uint256 TGE_timestamp) public onlyOwner {
+        require(_TGE_timestamp == 0, "TGE_timestamp is started");
+
+        _TGE_timestamp = TGE_timestamp;
+
+        _GPUMiningAllowReleaseTime = TGE_timestamp;
+        _lastGPUMiningMintTime = TGE_timestamp;
     }
 }

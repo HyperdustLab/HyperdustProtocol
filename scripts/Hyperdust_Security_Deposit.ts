@@ -13,7 +13,7 @@ async function main() {
 
   await (await Hyperdust_Storage.setServiceAddress(instance.target)).wait()
 
-  await (await instance.setContractAddress(['0x9bDaf3912e7b4794fE8aF2E748C35898265D5615', '0x01778569225bA43FFDABF872607e1df2Bc83f102', Hyperdust_Storage.target, '0x9b7339B4FE58A2541d4e87FC6e6e35Dc9cBc77D5', '0x53b4AcFB7f48C23cE760Bb6d8c6AB03CAe6aB981'])).wait()
+  await (await instance.setContractAddress(['0x9bDaf3912e7b4794fE8aF2E748C35898265D5615', '0x4e09099bBf643b22fDfc9405189B05D90FCCDa3B', Hyperdust_Storage.target, '0x9b7339B4FE58A2541d4e87FC6e6e35Dc9cBc77D5', '0xFc64b7e8A0062693B4dE78D6d5014DcA677B4372'])).wait()
 
   const Hyperdust_Roles_Cfg = await ethers.getContractAt('Hyperdust_Roles_Cfg', '0x9bDaf3912e7b4794fE8aF2E748C35898265D5615')
   await (await Hyperdust_Roles_Cfg.addAdmin(instance.target)).wait()

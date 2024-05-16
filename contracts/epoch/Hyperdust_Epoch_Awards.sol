@@ -14,6 +14,8 @@ import {StrUtil} from "../utils/StrUtil.sol";
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 
+import "hardhat/console.sol";
+
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -109,7 +111,7 @@ contract Hyperdust_Epoch_Awards is OwnableUpgradeable {
     function rewards(bytes32[] memory nodeStatus, uint256 nonce) public {
         require(IHyperdustRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
 
-        (uint256[] memory activeNodes, uint256 _totalNum, uint256 _activeNum) = countActiveNode(nodeStatus);
+        (uint256[] memory activeNodes, uint256[] memory onlineNodes, uint256 _totalNum, uint256 _activeNum) = countActiveNode(nodeStatus);
 
         IHyperdustNodeMgr hyperdustNodeMgrAddress = IHyperdustNodeMgr(_hyperdustNodeMgrAddress);
 
@@ -117,23 +119,35 @@ contract Hyperdust_Epoch_Awards is OwnableUpgradeable {
 
         uint256 epochAward = hyperdust_GPUMining._epochAward();
 
+        uint256 totalNum = _totalNum;
+
         if (_totalNum < 10) {
             _totalNum = 10;
         }
 
-        if (_activeNum == 0 || epochAward == 0) {
+        if (epochAward == 0) {
             return;
         }
 
-        uint index = _getRandom(0, _activeNum);
+        uint256 nodeId;
+        uint256 index;
 
-        uint256 nodeId = activeNodes[index];
+        if (_activeNum == 0) {
+            _activeNum = 1;
+
+            index = _getRandom(0, totalNum);
+
+            nodeId = onlineNodes[index];
+        } else {
+            index = _getRandom(0, _activeNum);
+            nodeId = activeNodes[index];
+        }
 
         uint32 accuracy = 1000000;
 
-        uint256 difficuty = (_totalNum * accuracy) / _activeNum;
+        uint256 difficulty = (_totalNum * accuracy) / _activeNum;
 
-        uint256 actualEpochAward = (epochAward * accuracy) / difficuty;
+        uint256 actualEpochAward = epochAward / 2 + (epochAward * accuracy) / difficulty / 2;
         uint256 securityDeposit = actualEpochAward / 10;
         uint256 baseRewardReleaseAward = actualEpochAward - securityDeposit;
 
@@ -147,14 +161,18 @@ contract Hyperdust_Epoch_Awards is OwnableUpgradeable {
 
         IHyperdustSecurityDeposit(_hyperdustSecurityDeposit).addSecurityDeposit(nodeId, securityDeposit);
 
+        console.log("nodeId:%s,securityDeposit:%s", nodeId.toString(), securityDeposit.toString());
+
         (address incomeAddress, , ) = hyperdustNodeMgrAddress.getNode(nodeId);
+
+        console.log("_hyperdustBaseRewardRelease:%s,baseRewardReleaseAward:%s,incomeAddress:%s", _hyperdustBaseRewardRelease.toHexString(), baseRewardReleaseAward.toString(), incomeAddress.toHexString());
 
         IHyperdustBaseRewardRelease(_hyperdustBaseRewardRelease).addBaseRewardReleaseRecord(baseRewardReleaseAward, incomeAddress);
 
         emit eveRewards(nodeId, actualEpochAward, index, nonce);
     }
 
-    function countActiveNode(bytes32[] memory nodeStatus) private returns (uint256[] memory, uint256, uint256) {
+    function countActiveNode(bytes32[] memory nodeStatus) private returns (uint256[] memory, uint256[] memory, uint256, uint256) {
         IHyperdustNodeMgr hyperdustNodeMgrAddress = IHyperdustNodeMgr(_hyperdustNodeMgrAddress);
 
         uint256 activeNum = 0;
@@ -163,6 +181,7 @@ contract Hyperdust_Epoch_Awards is OwnableUpgradeable {
         (uint256 totalSize, , ) = hyperdustNodeMgrAddress.getStatisticalIndex();
 
         uint256[] memory activeNodes = new uint256[](totalSize);
+        uint256[] memory onlineNodes = new uint256[](totalSize);
 
         uint256 index = 0;
         uint256 activeIndex = 0;
@@ -178,7 +197,11 @@ contract Hyperdust_Epoch_Awards is OwnableUpgradeable {
                 bytes1 status = bytes1(nodeStatus[i][j]);
 
                 if (status != 0x00) {
+                    onlineNodes[totalNum] = nodeId;
+
                     totalNum++;
+
+                    console.log(totalNum.toString());
 
                     if (status == 0x11) {
                         activeNum++;
@@ -192,7 +215,7 @@ contract Hyperdust_Epoch_Awards is OwnableUpgradeable {
 
         hyperdustNodeMgrAddress.setStatisticalIndex(totalNum, activeNum);
 
-        return (activeNodes, totalNum, activeNum);
+        return (activeNodes, onlineNodes, totalNum, activeNum);
     }
 
     function _getRandom(uint256 _start, uint256 _end) private returns (uint256) {

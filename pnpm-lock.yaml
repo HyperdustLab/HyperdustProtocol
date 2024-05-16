@@ -59,6 +59,9 @@ dependencies:
   request:
     specifier: ^2.88.2
     version: 2.88.2
+  undici:
+    specifier: ^6.16.1
+    version: 6.16.1
 
 devDependencies:
   '@nomicfoundation/hardhat-chai-matchers':
@@ -1106,7 +1109,7 @@ packages:
     dev: false
 
   /@openzeppelin/contracts@3.4.2:
-    resolution: {integrity: sha512-z0zMCjyhhp4y7XKAcDAi3Vgms4T2PstwBdahiO0+9NaGICQKjynK3wduSRplTgk4LXmoO1yfDGO5RbjKYxtuxA==, tarball: https://r2.cnpmjs.org/@openzeppelin/contracts/-/contracts-3.4.2.tgz}
+    resolution: {integrity: sha512-z0zMCjyhhp4y7XKAcDAi3Vgms4T2PstwBdahiO0+9NaGICQKjynK3wduSRplTgk4LXmoO1yfDGO5RbjKYxtuxA==}
     dev: false
 
   /@openzeppelin/contracts@4.1.0:
@@ -4762,7 +4765,7 @@ packages:
       source-map: 0.6.1
 
   /source-map@0.2.0:
-    resolution: {integrity: sha512-CBdZ2oa/BHhS4xj5DlhjWNHcan57/5YuvfdLf17iVmIpd9KRm+DFLmC6nBNj+6Ua7Kt3TmOjDpQT1aTYOQtoUA==, tarball: https://r2.cnpmjs.org/source-map/-/source-map-0.2.0.tgz}
+    resolution: {integrity: sha512-CBdZ2oa/BHhS4xj5DlhjWNHcan57/5YuvfdLf17iVmIpd9KRm+DFLmC6nBNj+6Ua7Kt3TmOjDpQT1aTYOQtoUA==}
     engines: {node: '>=0.8.0'}
     requiresBuild: true
     dependencies:
@@ -5237,6 +5240,11 @@ packages:
     engines: {node: '>=14.0'}
     dependencies:
       '@fastify/busboy': 2.1.0
+
+  /undici@6.16.1:
+    resolution: {integrity: sha512-NeNiTT7ixpeiL1qOIU/xTVpHpVP0svmI6PwoCKaMGaI5AsHOaRdwqU/f7Fi9eyU4u03nd5U/BC8wmRMnS9nqoA==}
+    engines: {node: '>=18.17'}
+    dev: false
 
   /unfetch@4.2.0:
     resolution: {integrity: sha512-F9p7yYCn6cIW9El1zi0HI6vqpeIvBsr3dSuRO6Xuppb1u5rXpCPmMvLSyECLhybr9isec8Ohl0hPekMVrEinDA==}

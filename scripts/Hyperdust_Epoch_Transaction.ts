@@ -7,19 +7,19 @@ async function main() {
   const Hyperdust_Storage = await upgrades.deployProxy(_Hyperdust_Storage, [process.env.ADMIN_Wallet_Address])
   await Hyperdust_Storage.waitForDeployment()
 
-  const contract = await ethers.getContractFactory('Hyperdust_Epoch_Transcition')
+  const contract = await ethers.getContractFactory('Hyperdust_Epoch_Transaction')
   const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address])
   await instance.waitForDeployment()
 
   console.info('Hyperdust_Storage:', Hyperdust_Storage.target)
 
   await (
-    await instance.setContractAddress(['0x213b5E4FF6B805dC5C9AF66B0e1f84A035Fa80D5', '0x1a41f86248E33e5327B26092b898bDfe04C6d8b4', '0x7a798E8eC045f911684dAa28B38a54b883b9523C', '0x9c9294920f180321FC0Aa4EE090E4e96FbeB98Ac', '0xDa3e9fD7d9b447fbaf1383E61458B1FA55Bff94F', Hyperdust_Storage.target])
+    await instance.setContractAddress(['0x9bDaf3912e7b4794fE8aF2E748C35898265D5615', '0xfcb8A945DC86D72f906D9C63222Dc470b5A35548', '0x9b7339B4FE58A2541d4e87FC6e6e35Dc9cBc77D5', '0xe8ADeF97900b154f89417817C6621cd33D39d009', '0x6b3F5603cbD8909cEBD804638E7E29D73e5334dA', Hyperdust_Storage.target])
   ).wait()
 
   await (await Hyperdust_Storage.setServiceAddress(instance.target)).wait()
 
-  const Hyperdust_Roles_Cfg = await ethers.getContractAt('Hyperdust_Roles_Cfg', '0x213b5E4FF6B805dC5C9AF66B0e1f84A035Fa80D5')
+  const Hyperdust_Roles_Cfg = await ethers.getContractAt('Hyperdust_Roles_Cfg', '0x9bDaf3912e7b4794fE8aF2E748C35898265D5615')
   await (await Hyperdust_Roles_Cfg.addAdmin(instance.target)).wait()
 
   console.info('contractFactory address:', instance.target)

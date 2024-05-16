@@ -38,11 +38,11 @@ contract Hyperdust_Epoch_Transaction is OwnableUpgradeable {
     address public _walletAccountAddress;
     address public _HyperdustStorageAddress;
 
-    event eveEpochTranscitionSave(uint256 id);
+    event eveEpochTransactionSave(uint256 id);
 
     event eveUpdateEpoch(uint256[] success, uint256[] fail);
 
-    event eveDifficuty(uint256 difficuty);
+    event eveDifficulty(uint256 difficulty);
 
     function setErc20Address(address erc20Address) public onlyOwner {
         _erc20Address = erc20Address;
@@ -81,7 +81,7 @@ contract Hyperdust_Epoch_Transaction is OwnableUpgradeable {
         _HyperdustStorageAddress = contractaddressArray[5];
     }
 
-    function createEpochTranscition(uint256 nodeId, uint256 epoch) public returns (uint256) {
+    function createEpochTransaction(uint256 nodeId, uint256 epoch) public returns (uint256) {
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(_HyperdustStorageAddress);
 
         Hyperdust_Wallet_Account walletAccount = Hyperdust_Wallet_Account(_walletAccountAddress);
@@ -99,9 +99,9 @@ contract Hyperdust_Epoch_Transaction is OwnableUpgradeable {
         (, uint256 totalNum, uint256 activeNum) = nodeMgr.getStatisticalIndex();
 
         if (activeNum == 0) {
-            emit eveDifficuty(0);
+            emit eveDifficulty(0);
         } else {
-            emit eveDifficuty((totalNum * 10 ** 6) / activeNum);
+            emit eveDifficulty((totalNum * 10 ** 6) / activeNum);
         }
 
         uint256 amount = erc20.allowance(msg.sender, address(this));
@@ -152,10 +152,11 @@ contract Hyperdust_Epoch_Transaction is OwnableUpgradeable {
         hyperdustStorage.setUintArray(hyperdustStorage.genKey("epochTimes", id), epochTimes);
 
         if (epoch > 1) {
-            hyperdustStorage.setUintArray("runingEpochTranscitions", id);
+            hyperdustStorage.setUintArray("runningEpochTransactions", id);
+            hyperdustStorage.setBool(hyperdustStorage.genKey("running", id), true);
         }
 
-        emit eveEpochTranscitionSave(id);
+        emit eveEpochTransactionSave(id);
 
         return id;
     }
@@ -167,9 +168,9 @@ contract Hyperdust_Epoch_Transaction is OwnableUpgradeable {
 
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(_HyperdustStorageAddress);
 
-        uint256[] memory _runingEpochTranscitions = hyperdustStorage.getUintArray("runingEpochTranscitions");
+        uint256[] memory _runningEpochTransactions = hyperdustStorage.getUintArray("runningEpochTransactions");
 
-        uint256 last = _runingEpochTranscitions.length;
+        uint256 last = _runningEpochTransactions.length;
 
         if (last == 0) {
             return;
@@ -184,24 +185,24 @@ contract Hyperdust_Epoch_Transaction is OwnableUpgradeable {
         (, uint256 totalNum, uint256 activeNum) = nodeMgr.getStatisticalIndex();
 
         if (activeNum == 0) {
-            emit eveDifficuty(0);
+            emit eveDifficulty(0);
         } else {
-            emit eveDifficuty((totalNum * 10 ** 6) / activeNum);
+            emit eveDifficulty((totalNum * 10 ** 6) / activeNum);
         }
 
         uint256 totalAmount = 0;
 
-        uint256[] memory success = new uint256[](_runingEpochTranscitions.length);
+        uint256[] memory success = new uint256[](_runningEpochTransactions.length);
 
-        uint256[] memory runingEpochTranscitions = hyperdustStorage.getUintArray("runingEpochTranscitions");
+        uint256[] memory runningEpochTransactions = hyperdustStorage.getUintArray("runningEpochTransactions");
 
-        uint256[] memory fail = new uint256[](runingEpochTranscitions.length);
+        uint256[] memory fail = new uint256[](runningEpochTransactions.length);
 
         uint32 successIndex = 0;
         uint32 failIndex = 0;
 
-        for (uint i = 0; i < runingEpochTranscitions.length; i++) {
-            uint256 id = runingEpochTranscitions[i];
+        for (uint i = 0; i < runningEpochTransactions.length; i++) {
+            uint256 id = runningEpochTransactions[i];
 
             address account = hyperdustStorage.getAddress(hyperdustStorage.genKey("account", id));
 
@@ -244,12 +245,12 @@ contract Hyperdust_Epoch_Transaction is OwnableUpgradeable {
                 successIndex++;
 
                 if (useEpoch >= epoch) {
-                    cleanRuningTranscitions(id, _runingEpochTranscitions, last);
+                    cleanRunningTransactions(id, _runningEpochTransactions, last);
 
                     last--;
                 }
             } else {
-                cleanRuningTranscitions(id, _runingEpochTranscitions, last);
+                cleanRunningTransactions(id, _runningEpochTransactions, last);
 
                 last--;
 
@@ -279,21 +280,23 @@ contract Hyperdust_Epoch_Transaction is OwnableUpgradeable {
         emit eveUpdateEpoch(_success, _fail);
     }
 
-    function cleanRuningTranscitions(uint256 id, uint256[] memory runingEpochTranscitions, uint256 last) private {
+    function cleanRunningTransactions(uint256 id, uint256[] memory runningEpochTransactions, uint256 last) private {
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(_HyperdustStorageAddress);
 
         hyperdustStorage.setBytes1(hyperdustStorage.genKey("status", id), 0x11);
 
-        for (uint i = 0; i < last; i++) {
-            if (runingEpochTranscitions[i] == id) {
-                runingEpochTranscitions[i] = runingEpochTranscitions[last - 1];
+        hyperdustStorage.setBool(hyperdustStorage.genKey("running", id), false);
 
-                hyperdustStorage.removeUintArray("runingEpochTranscitions", i);
+        for (uint i = 0; i < last; i++) {
+            if (runningEpochTransactions[i] == id) {
+                runningEpochTransactions[i] = runningEpochTransactions[last - 1];
+
+                hyperdustStorage.removeUintArray("runningEpochTransactions", i);
             }
         }
     }
 
-    function getEpochTranscition(uint256 id) public view returns (address, uint256[] memory, bytes1, uint256[] memory, uint256[] memory) {
+    function getEpochTransaction(uint256 id) public view returns (address, uint256[] memory, bytes1, uint256[] memory, uint256[] memory) {
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(_HyperdustStorageAddress);
 
         uint256 createTime = hyperdustStorage.getUint(hyperdustStorage.genKey("createTime", id));
@@ -321,9 +324,57 @@ contract Hyperdust_Epoch_Transaction is OwnableUpgradeable {
         );
     }
 
-    function getRuningEpochTranscitions() public view returns (uint256[] memory) {
+    function getRunningEpochTransactions() public view returns (uint256[] memory) {
         Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(_HyperdustStorageAddress);
 
-        return hyperdustStorage.getUintArray("runingEpochTranscitions");
+        return hyperdustStorage.getUintArray("runningEpochTransactions");
+    }
+
+    function renewal(uint256 orderId, uint256 epochNum) public {
+        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(_HyperdustStorageAddress);
+
+        address account = hyperdustStorage.getAddress(hyperdustStorage.genKey("account", orderId));
+
+        uint256 createTime = hyperdustStorage.getUint(hyperdustStorage.genKey("createTime", orderId));
+
+        require(createTime > 0, "not found");
+
+        require(msg.sender == account, "not owner");
+
+        uint256 endTime = hyperdustStorage.getUint(hyperdustStorage.genKey("endTime", orderId));
+
+        require(block.timestamp < endTime, "order expired");
+
+        hyperdustStorage.setUint(hyperdustStorage.genKey("endTime", orderId), endTime + (epochNum * 60 * 64) / 10);
+
+        uint256 epoch = hyperdustStorage.getUint(hyperdustStorage.genKey("epoch", orderId));
+
+        epoch += epochNum;
+
+        hyperdustStorage.setUint(hyperdustStorage.genKey("epoch", orderId), epoch);
+
+        bool running = hyperdustStorage.getBool(hyperdustStorage.genKey("running", orderId));
+
+        if (!running) {
+            hyperdustStorage.setUintArray("runningEpochTransactions", orderId);
+            hyperdustStorage.setBool(hyperdustStorage.genKey("running", orderId), true);
+        }
+
+        uint256[] memory epochAmounts = new uint256[](epoch);
+        uint256[] memory epochTimes = new uint256[](epoch);
+
+        uint256[] memory _epochAmounts = hyperdustStorage.getUintArray(hyperdustStorage.genKey("epochAmounts", orderId));
+        uint256[] memory _epochTimes = hyperdustStorage.getUintArray(hyperdustStorage.genKey("epochTimes", orderId));
+
+        for (uint i = 0; i < _epochAmounts.length; i++) {
+            epochAmounts[i] = _epochAmounts[i];
+            epochTimes[i] = _epochTimes[i];
+        }
+
+        hyperdustStorage.setUintArray(hyperdustStorage.genKey("epochAmounts", orderId), epochAmounts);
+
+        hyperdustStorage.setUintArray(hyperdustStorage.genKey("epochTimes", orderId), epochTimes);
+
+        emit eveEpochTransactionSave(orderId);
     }
 }
