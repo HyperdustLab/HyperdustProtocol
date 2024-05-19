@@ -1,28 +1,40 @@
 ## HyperAGI
 
-HyperAGI 是完全去中心化的大模型驱动AI智能体训练和应用平台（支持智能体训练，不含大模型训练），是去中心化的半AI半金融应用平台，具有GPU算力共识化，AI具身化资产化的特点，目前基于Hypergraph PoUW共识机制以及完全去中心化的比特币L2，将来还借助比特币L2 Stack升级为比特币AI专用L2
+HyperAGI (was Hyperdust) is a Layer 2 solution on Bitcoin, focusing on decentralized AGI applications and fostering an autonomous cryptocurrency economy, with the ultimate goal of establishing Unconditional Basic Agent Income (UBAI). It inherits Bitcoin's robust security and decentralization, enhanced by the innovative Proof of Useful Work (PoUW) consensus mechanism.
 
-### HyperAGI白皮书（中文版）
+Consumer-grade GPU nodes are invited to join the network without permission, enabling them to mine the native token, $HYPT, by performing PoUW tasks such as AI inference and 3D rendering.
+
+Users can utilize various tools to develop their LLM-driven Proof of Personhood (PoP) AGI agents. These agents can be configured as chatbots or as 3D/XR entities within the metaverse. AI developers can instantly utilize or deploy LLM AI microservices, facilitating the creation of programmable, autonomous on-chain agents.
+
+These programmable agents are capable of issuing or owning cryptocurrency assets, and can continuously operate or trade, contributing to a vibrant, autonomous crypto economy that supports the realization of UBAI.
+
+Owners of at least one Hyper•AGI•Agent runes token on Bitcoin Layer 1 qualify to create a PoP agent on Hyper Chain and may soon be eligible for UBAI benefits.
+
+![image](https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HYPERDUST.svg)
+
+Official Website : www.hyperagi.network
+Social media : https://linktr.ee/hyperagi 
+
+The first AI Runes [HYPER•AGI•AGENT]:
+https://unisat.io/runes/market?tick=HYPER%E2%80%A2AGI%E2%80%A2AGENT
+
+
+### HyperAGI Lightpaper（in Chinese）
 
 https://ipfs.hyperdust.io/ipfs/QmQGxiYHYLcCN4tekHvPQNhDHrV3vTcLhgAve9oBih3oZW?suffix=pdf
-
-### HyperAGI Whitepaper:
-
-https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HyperdustChiangMaiRev3.pdf
 
 ### Light Paper of HyperAGI:
 
 https://ipfs.hyperdust.io/ipfs/QmX9uMFS4VhCfkiDqMUQw1zMRhkTZtJjVZXWrDtr8GP4ox?suffix=pdf
 
+### HyperAGI Whitepaper (full version):
+
+https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HyperdustChiangMaiRev3.pdf
+
 ### The details of token issurence and gas price update refer to
 
 https://drive.google.com/file/d/1ZdAz1KLJFnsrNuGjJAM3kgKrAkztfQlI/view?usp=sharing
 
-A decentralized platform to use and build LLM driven embodied Agent in 3D AI Gyms.
-
-[![Alt text](https://ipfs.hyperdust.io/ipfs/QmSEoCq5kCJ2uMNMKKsWyibAc7HcrdYG1ssF4KJZQLJvmW?suffix=png)](https://youtu.be/8h12hFUe0dU)
-
-![image](https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HYPERDUST.svg)
 
 #### HyperAGI Smart Contracts
 
@@ -58,4 +70,11 @@ The smart contracts of the HyperAGI are the core of the HyperAGI  platform, cont
 
 - `Hyperdust_Node_Mgr.sol`: The miner management contract of the Hyperdust Protocol, responsible for maintaining information, status, current online numbers, rendering numbers, and other maintenance tasks of miner nodes.
 
-- `Hyperdust_Node_Type.sol`: Miner type management contract, responsible for maintaining miner node type information..
+- `Hyperdust_Node_Type.sol`: Miner type management contract, responsible for maintaining miner node type information.
+
+Testnet video
+
+
+[![Alt text](https://ipfs.hyperdust.io/ipfs/QmSEoCq5kCJ2uMNMKKsWyibAc7HcrdYG1ssF4KJZQLJvmW?suffix=png)](https://youtu.be/8h12hFUe0dU)
+
+
