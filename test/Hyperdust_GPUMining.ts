@@ -14,8 +14,6 @@ describe('Hyperdust_Transaction_Cfg', () => {
       const contract = await ethers.getContractFactory('Hyperdust_GPUMining')
       const instance = await upgrades.deployProxy(contract, [accounts[0].address, 600])
       await instance.waitForDeployment()
-
-      Hyperdust_Token.setG
     })
   })
 })

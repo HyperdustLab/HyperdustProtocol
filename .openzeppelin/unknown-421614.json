@@ -1194,6 +1194,11 @@
       "address": "0x4b1c9048C8E0ee9cC62b6f1095F79a84Cdf7C8B7",
       "txHash": "0xbbc0c23981562fe894a8131d2caff7476bd57a742f5308a2c58b7e908236d151",
       "kind": "transparent"
+    },
+    {
+      "address": "0xc4Dc07cfc73915c831725f763ED408c343B0913A",
+      "txHash": "0x5b5a72c4fe919a7ce0caf9bd5fecfdc63c6d46cbf9e95c67c0102f059a121902",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -18101,6 +18106,113 @@
           "t_uint256": {
             "label": "uint256",
             "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "4325d6d751a19a705f16e65fc65106c82f47aa6aae1bd78b5145b4aba35bbe45": {
+      "address": "0x3c19125107C517c45A0c85242841E1B0e4A0F5E2",
+      "txHash": "0x33d48738f808da3983ddab65a707963371b0723fc1648fc04c2ab1c0e6763028",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_HyperdustTokenAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "Hyperdust_Faucet",
+            "src": "contracts\\Hyperdust_Faucet.sol:20"
+          },
+          {
+            "label": "_fromAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "Hyperdust_Faucet",
+            "src": "contracts\\Hyperdust_Faucet.sol:21"
+          },
+          {
+            "label": "_HyperdustRolesCfgAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "Hyperdust_Faucet",
+            "src": "contracts\\Hyperdust_Faucet.sol:22"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
           }
         },
         "namespaces": {
