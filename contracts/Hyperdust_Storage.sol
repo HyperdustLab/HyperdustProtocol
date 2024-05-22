@@ -6,11 +6,17 @@ import "./utils/StrUtil.sol";
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract Hyperdust_Storage is Ownable {
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+
+contract Hyperdust_Storage is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 
-    constructor() Ownable(msg.sender) {}
+    function initialize(address ownable) public initializer {
+        __Ownable_init(ownable);
+    }
 
     mapping(string => uint256) public uintStorage;
     mapping(string => address) public addressStorage;
@@ -26,6 +32,8 @@ contract Hyperdust_Storage is Ownable {
     mapping(string => string[]) public stringArrayStorage;
     mapping(string => bytes[]) public bytesArrayStorage;
     mapping(string => bool[]) public boolArrayStorage;
+    mapping(bytes32 => uint256) public bytes32UintStorage;
+    mapping(bytes32 => string) public bytes32StringStorage;
 
     uint256 public _id;
 
@@ -86,10 +94,7 @@ contract Hyperdust_Storage is Ownable {
         return _id;
     }
 
-    function setUintArray(
-        string memory key,
-        uint256[] memory uint256Array
-    ) public {
+    function setUintArray(string memory key, uint256[] memory uint256Array) public {
         require(msg.sender == _serviceAddress, "only service can set");
         uintArrayStorage[key] = uint256Array;
     }
@@ -99,11 +104,7 @@ contract Hyperdust_Storage is Ownable {
         uintArrayStorage[key].push(value);
     }
 
-    function setUintArray(
-        string memory key,
-        uint256 index,
-        uint256 value
-    ) public {
+    function setUintArray(string memory key, uint256 index, uint256 value) public {
         require(msg.sender == _serviceAddress, "only service can set");
         require(index < uintArrayStorage[key].length, "Index out of bounds");
         uintArrayStorage[key][index] = value;
@@ -114,9 +115,7 @@ contract Hyperdust_Storage is Ownable {
 
         require(index < uintArrayStorage[key].length, "Index out of bounds");
 
-        uintArrayStorage[key][index] = uintArrayStorage[key][
-            uintArrayStorage[key].length - 1
-        ];
+        uintArrayStorage[key][index] = uintArrayStorage[key][uintArrayStorage[key].length - 1];
 
         uintArrayStorage[key].pop();
     }
@@ -126,20 +125,15 @@ contract Hyperdust_Storage is Ownable {
         bytes32Storage[key] = value;
     }
 
-    function getBytes32(string memory key) public returns (bytes32) {
+    function getBytes32(string memory key) public view returns (bytes32) {
         return bytes32Storage[key];
     }
 
-    function getUintArray(
-        string memory key
-    ) public view returns (uint256[] memory) {
+    function getUintArray(string memory key) public view returns (uint256[] memory) {
         return uintArrayStorage[key];
     }
 
-    function setAddressArray(
-        string memory key,
-        address[] memory addressArray
-    ) public {
+    function setAddressArray(string memory key, address[] memory addressArray) public {
         require(msg.sender == _serviceAddress, "only service can set");
         addressArrayStorage[key] = addressArray;
     }
@@ -149,11 +143,7 @@ contract Hyperdust_Storage is Ownable {
         addressArrayStorage[key].push(value);
     }
 
-    function setAddressArray(
-        string memory key,
-        uint256 index,
-        address value
-    ) public {
+    function setAddressArray(string memory key, uint256 index, address value) public {
         require(msg.sender == _serviceAddress, "only service can set");
 
         require(index < addressArrayStorage[key].length, "Index out of bounds");
@@ -165,23 +155,16 @@ contract Hyperdust_Storage is Ownable {
 
         require(index < addressArrayStorage[key].length, "Index out of bounds");
 
-        addressArrayStorage[key][index] = addressArrayStorage[key][
-            addressArrayStorage[key].length - 1
-        ];
+        addressArrayStorage[key][index] = addressArrayStorage[key][addressArrayStorage[key].length - 1];
 
         addressArrayStorage[key].pop();
     }
 
-    function getAddressArray(
-        string memory key
-    ) public view returns (address[] memory) {
+    function getAddressArray(string memory key) public view returns (address[] memory) {
         return addressArrayStorage[key];
     }
 
-    function setStringArray(
-        string memory key,
-        string[] memory stringArray
-    ) public {
+    function setStringArray(string memory key, string[] memory stringArray) public {
         require(msg.sender == _serviceAddress, "only service can set");
         stringArrayStorage[key] = stringArray;
     }
@@ -191,11 +174,7 @@ contract Hyperdust_Storage is Ownable {
         stringArrayStorage[key].push(value);
     }
 
-    function setStringArray(
-        string memory key,
-        uint256 index,
-        string memory value
-    ) public {
+    function setStringArray(string memory key, uint256 index, string memory value) public {
         require(msg.sender == _serviceAddress, "only service can set");
         require(index < stringArrayStorage[key].length, "Index out of bounds");
         stringArrayStorage[key][index] = value;
@@ -206,23 +185,16 @@ contract Hyperdust_Storage is Ownable {
 
         require(index < stringArrayStorage[key].length, "Index out of bounds");
 
-        stringArrayStorage[key][index] = stringArrayStorage[key][
-            stringArrayStorage[key].length - 1
-        ];
+        stringArrayStorage[key][index] = stringArrayStorage[key][stringArrayStorage[key].length - 1];
 
         stringArrayStorage[key].pop();
     }
 
-    function getStringArray(
-        string memory key
-    ) public view returns (string[] memory) {
+    function getStringArray(string memory key) public view returns (string[] memory) {
         return stringArrayStorage[key];
     }
 
-    function setBytesArray(
-        string memory key,
-        bytes[] memory bytesArray
-    ) public {
+    function setBytesArray(string memory key, bytes[] memory bytesArray) public {
         require(msg.sender == _serviceAddress, "only service can set");
         bytesArrayStorage[key] = bytesArray;
     }
@@ -232,11 +204,7 @@ contract Hyperdust_Storage is Ownable {
         bytesArrayStorage[key].push(value);
     }
 
-    function setBytesArray(
-        string memory key,
-        uint256 index,
-        bytes memory value
-    ) public {
+    function setBytesArray(string memory key, uint256 index, bytes memory value) public {
         require(msg.sender == _serviceAddress, "only service can set");
         require(index < bytesArrayStorage[key].length, "Index out of bounds");
         bytesArrayStorage[key][index] = value;
@@ -247,16 +215,12 @@ contract Hyperdust_Storage is Ownable {
 
         require(index < bytesArrayStorage[key].length, "Index out of bounds");
 
-        bytesArrayStorage[key][index] = bytesArrayStorage[key][
-            bytesArrayStorage[key].length - 1
-        ];
+        bytesArrayStorage[key][index] = bytesArrayStorage[key][bytesArrayStorage[key].length - 1];
 
         bytesArrayStorage[key].pop();
     }
 
-    function getBytesArray(
-        string memory key
-    ) public view returns (bytes[] memory) {
+    function getBytesArray(string memory key) public view returns (bytes[] memory) {
         return bytesArrayStorage[key];
     }
 
@@ -281,16 +245,12 @@ contract Hyperdust_Storage is Ownable {
 
         require(index < boolArrayStorage[key].length, "Index out of bounds");
 
-        boolArrayStorage[key][index] = boolArrayStorage[key][
-            boolArrayStorage[key].length - 1
-        ];
+        boolArrayStorage[key][index] = boolArrayStorage[key][boolArrayStorage[key].length - 1];
 
         boolArrayStorage[key].pop();
     }
 
-    function getBoolArray(
-        string memory key
-    ) public view returns (bool[] memory) {
+    function getBoolArray(string memory key) public view returns (bool[] memory) {
         return boolArrayStorage[key];
     }
 
@@ -303,10 +263,25 @@ contract Hyperdust_Storage is Ownable {
         return bytes1Storage[key];
     }
 
-    function genKey(
-        string memory key,
-        uint256 id
-    ) public pure returns (string memory) {
+    function genKey(string memory key, uint256 id) public pure returns (string memory) {
         return string(abi.encodePacked(key, "_", id.toString()));
+    }
+
+    function setBytes32Uint(bytes32 key, uint256 value) public {
+        require(msg.sender == _serviceAddress, "only service can set");
+        bytes32UintStorage[key] = value;
+    }
+
+    function getBytes32Uint(bytes32 key) public view returns (uint256) {
+        return bytes32UintStorage[key];
+    }
+
+    function setBytes32String(bytes32 key, string memory value) public {
+        require(msg.sender == _serviceAddress, "only service can set");
+        bytes32StringStorage[key] = value;
+    }
+
+    function getBytes32String(bytes32 key) public view returns (string memory) {
+        return bytes32StringStorage[key];
     }
 }

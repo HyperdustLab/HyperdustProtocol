@@ -16,8 +16,16 @@ describe("MGN_Render_Transcition", () => {
             await Hyperdust_Roles_Cfg.waitForDeployment()
 
 
+            
 
-            const Hyperdust_Token = await ethers.deployContract("Hyperdust_Token_Test", [accounts[0].address, accounts[1].address, accounts[2].address]);
+
+
+            const Hyperdust_Token = await ethers.deployContract("Hyperdust_Token_Test",
+
+                [accounts[0].address, accounts[1].address, accounts[2].address]);
+
+            
+            
             await Hyperdust_Token.waitForDeployment()
 
 

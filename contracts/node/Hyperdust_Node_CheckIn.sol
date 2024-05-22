@@ -12,8 +12,8 @@ contract Hyperdust_Node_CheckIn is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 
-    function initialize() public initializer {
-        __Ownable_init(msg.sender);
+    function initialize(address onlyOwner) public initializer {
+        __Ownable_init(onlyOwner);
     }
 
     function check(address incomeAddress) public view returns (bool) {

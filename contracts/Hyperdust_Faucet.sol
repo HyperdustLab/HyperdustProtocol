@@ -4,6 +4,8 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 
+import "hardhat/console.sol";
+
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
@@ -24,13 +26,11 @@ contract Hyperdust_Faucet is OwnableUpgradeable {
 
     event eveTransfer(address[]);
 
-    function initialize() public initializer {
-        __Ownable_init(msg.sender);
+    function initialize(address onlyOwner) public initializer {
+        __Ownable_init(onlyOwner);
     }
 
-    function setHyperdustTokenAddress(
-        address HyperdustTokenAddress
-    ) public onlyOwner {
+    function setHyperdustTokenAddress(address HyperdustTokenAddress) public onlyOwner {
         _HyperdustTokenAddress = HyperdustTokenAddress;
     }
 
@@ -38,23 +38,11 @@ contract Hyperdust_Faucet is OwnableUpgradeable {
         _fromAddress = fromAddress;
     }
 
-    function transfer(
-        address[] memory accounts,
-        uint256[] memory amounts
-    ) public {
-        require(
-            IHyperdustRolesCfg(_HyperdustRolesCfgAddress).hasAdminRole(
-                msg.sender
-            ),
-            "not admin role"
-        );
+    function transfer(address[] memory accounts, uint256[] memory amounts) public {
+        require(IHyperdustRolesCfg(_HyperdustRolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
 
         for (uint256 i = 0; i < accounts.length; i++) {
-            IERC20(_HyperdustTokenAddress).transferFrom(
-                _fromAddress,
-                accounts[i],
-                amounts[i]
-            );
+            IERC20(_HyperdustTokenAddress).transferFrom(_fromAddress, accounts[i], amounts[i]);
         }
 
         emit eveTransfer(accounts);

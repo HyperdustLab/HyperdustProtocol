@@ -28,24 +28,17 @@ contract Hyperdust_Wallet_Account is OwnableUpgradeable {
         _rolesCfgAddress = rolesCfgAddress;
     }
 
-    function setGasFeeCollectionWallet(
-        address gasFeeCollectionWallet
-    ) public onlyOwner {
+    function setGasFeeCollectionWallet(address gasFeeCollectionWallet) public onlyOwner {
         _GasFeeCollectionWallet = gasFeeCollectionWallet;
     }
 
-    function setContractAddress(
-        address[] memory contractaddressArray
-    ) public onlyOwner {
+    function setContractAddress(address[] memory contractaddressArray) public onlyOwner {
         _rolesCfgAddress = contractaddressArray[0];
         _GasFeeCollectionWallet = contractaddressArray[1];
     }
 
     function addAmount(uint256 amount) public {
-        require(
-            Hyperdust_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender),
-            "not admin role"
-        );
+        require(Hyperdust_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
         emit eveGasFee(amount, block.timestamp);
     }
 }

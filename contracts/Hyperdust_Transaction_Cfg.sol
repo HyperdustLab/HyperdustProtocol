@@ -38,8 +38,8 @@ contract Hyperdust_Transaction_Cfg is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 
-    function initialize() public initializer {
-        __Ownable_init(msg.sender);
+    function initialize(address onlyOwner) public initializer {
+        __Ownable_init(onlyOwner);
     }
 
     function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {

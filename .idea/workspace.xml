@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="7b6087ee-c569-4eb2-8cdc-2a7f82db6aeb" name="更改" comment=".">
+      <change beforePath="$PROJECT_DIR$/contracts/Hyperdust_Space.sol" beforeDir="false" afterPath="$PROJECT_DIR$/contracts/Hyperdust_Space.sol" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hardhat.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/hardhat.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/Test1.ts" beforeDir="false" afterPath="$PROJECT_DIR$/test/Test1.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2czC10FN9k5gGHtXs5f82ajmheh" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/project/HyperdustProtocol&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;app.aicomit.ApplicationSettingsConfigurable&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;E:\\project\\HyperdustProtocol\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="7b6087ee-c569-4eb2-8cdc-2a7f82db6aeb" name="更改" comment="" />
+      <created>1709104806251</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1709104806251</updated>
+      <workItem from="1709104810778" duration="4090000" />
+      <workItem from="1709121258413" duration="1901000" />
+      <workItem from="1709127179971" duration="1055000" />
+      <workItem from="1709138923074" duration="1037000" />
+      <workItem from="1709947120361" duration="2197000" />
+      <workItem from="1710006403135" duration="252000" />
+      <workItem from="1710006676308" duration="1147000" />
+      <workItem from="1710748009698" duration="4241000" />
+      <workItem from="1710990295463" duration="844000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="." />
+    <option name="LAST_COMMIT_MESSAGE" value="." />
+  </component>
+</project>

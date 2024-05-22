@@ -4,9 +4,15 @@ coverage
 coverage.json
 typechain
 typechain-types
+files
 
 # Hardhat files
 cache
 artifacts
 
-test/Test.ts
+test/Test*.ts
+contracts/Test*.sol
+
+
+
+
