@@ -61,8 +61,8 @@ const config: HardhatUserConfig = {
       accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
       loggingEnabled: true,
     },
-    hypedustTest: {
-      url: 'https://bitcoin-l2-813183-testnet.tc.l2aas.com/rpc',
+    rootstockTest: {
+      url: process.env.RootstockTest_RPC_URL,
       accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
       loggingEnabled: true,
     },

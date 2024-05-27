@@ -12,7 +12,7 @@ async function main() {
 
   await (await Hyperdust_Storage.setServiceAddress(instance.target)).wait()
 
-  await (await instance.setRolesCfgAddress(process.env.RolesCfgAddress)).wait()
+  await (await instance.setRolesCfgAddress('0x9D88106Ba510D3852eC03B22b8F754F2bcd16739')).wait()
   await (await instance.setHyperdustStorageAddress(Hyperdust_Storage.target)).wait()
 
   console.info('Hyperdust_Storage:', Hyperdust_Storage.target)

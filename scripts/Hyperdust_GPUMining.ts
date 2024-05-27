@@ -7,7 +7,7 @@ async function main() {
   const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address, 60 * 60 * 24 * 365])
   await instance.waitForDeployment()
 
-  await (await instance.setHyperdustTokenAddress('0x4e09099bBf643b22fDfc9405189B05D90FCCDa3B')).wait()
+  await (await instance.setHyperdustTokenAddress('0xaea9e80F367363c4255A055cA11080DaA5BB840B')).wait()
 
   await (await instance.startTGE(1715827656)).wait()
 

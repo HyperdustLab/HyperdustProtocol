@@ -15,7 +15,7 @@ async function main() {
 
   await (await Hyperdust_Storage.setServiceAddress(instance.target)).wait()
 
-  await (await instance.setContractAddress(['0x9bDaf3912e7b4794fE8aF2E748C35898265D5615', '0x294d309282F5c9Ef061eD83E4A5bC7102FB3AeE6', Hyperdust_Storage.target, '0x53b4AcFB7f48C23cE760Bb6d8c6AB03CAe6aB981'])).wait()
+  await (await instance.setContractAddress(['0x2D2a3648D73BE67ac8e6a3a925E33E94c029679F', '0x2D2a3648D73BE67ac8e6a3a925E33E94c029679F', Hyperdust_Storage.target, '0xad20ce3a9dce85708074BD7a0E6F4b355151e040'])).wait()
 
   console.info('contractFactory address:', instance.target)
 }
