@@ -10,7 +10,7 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-contract Hyperdust_Storage is OwnableUpgradeable {
+contract HyperAGI_Storage is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 

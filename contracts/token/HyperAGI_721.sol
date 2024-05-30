@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 
-contract Hyperdust_721 is ERC721, ERC721URIStorage, ERC721Burnable, AccessControl {
+contract HyperAGI_721 is ERC721, ERC721URIStorage, ERC721Burnable, AccessControl {
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
     uint256 private _tokenIdCounter;
 

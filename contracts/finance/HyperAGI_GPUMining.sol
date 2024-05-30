@@ -4,17 +4,13 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 import "@openzeppelin/contracts/utils/math/Math.sol";
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 
 import "../utils/StrUtil.sol";
 
-import "./Hyperdust_Token.sol";
-
-contract Hyperdust_GPUMining is OwnableUpgradeable, AccessControlUpgradeable {
+contract HyperAGI_GPUMining is OwnableUpgradeable, AccessControlUpgradeable {
     using Strings for *;
     using StrUtil for *;
 
@@ -44,8 +40,6 @@ contract Hyperdust_GPUMining is OwnableUpgradeable, AccessControlUpgradeable {
 
     uint256 public _GPUMiningCurrAward;
 
-    address public _HyperdustTokenAddress;
-
     uint256 public _TGE_timestamp;
 
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
@@ -54,7 +48,7 @@ contract Hyperdust_GPUMining is OwnableUpgradeable, AccessControlUpgradeable {
         __Ownable_init(onlyOwner);
         _grantRole(DEFAULT_ADMIN_ROLE, onlyOwner);
 
-        _GPUMiningTotalAward = (200000000 ether * 68) / 100;
+        _GPUMiningTotalAward = (210000000 ether * 57) / 100;
         _GPUMiningCurrMiningRatio = 10 * 10 ** 18;
         _GPUMiningCurrYearTotalSupply = Math.mulDiv(_GPUMiningTotalAward, _GPUMiningCurrMiningRatio, FACTOR);
 
@@ -99,11 +93,7 @@ contract Hyperdust_GPUMining is OwnableUpgradeable, AccessControlUpgradeable {
         }
     }
 
-    function setHyperdustTokenAddress(address HyperdustTokenAddress) public onlyOwner {
-        _HyperdustTokenAddress = HyperdustTokenAddress;
-    }
-
-    function mint(address account, uint256 mintNum) public onlyRole(MINTER_ROLE) {
+    function mint(address payable account, uint256 mintNum) public onlyRole(MINTER_ROLE) {
         require(_TGE_timestamp > 0, "TGE_timestamp is not started");
 
         if (block.timestamp >= _lastGPUMiningRateTime + _GPUMiningRateInterval) {
@@ -134,7 +124,7 @@ contract Hyperdust_GPUMining is OwnableUpgradeable, AccessControlUpgradeable {
 
         _lastGPUMiningMintTime = block.timestamp;
 
-        IERC20(_HyperdustTokenAddress).transfer(account, mintNum);
+        transferETH(account, mintNum);
     }
 
     function startTGE(uint256 TGE_timestamp) public onlyOwner {
@@ -144,5 +134,10 @@ contract Hyperdust_GPUMining is OwnableUpgradeable, AccessControlUpgradeable {
 
         _GPUMiningAllowReleaseTime = TGE_timestamp;
         _lastGPUMiningMintTime = TGE_timestamp;
+    }
+
+    function transferETH(address payable recipient, uint256 amount) private {
+        require(address(this).balance >= amount, "Insufficient balance in contract");
+        recipient.transfer(amount);
     }
 }

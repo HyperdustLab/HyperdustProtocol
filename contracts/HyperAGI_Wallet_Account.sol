@@ -9,9 +9,9 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import "./utils/StrUtil.sol";
-import "./Hyperdust_Roles_Cfg.sol";
+import "./HyperAGI_Roles_Cfg.sol";
 
-contract Hyperdust_Wallet_Account is OwnableUpgradeable {
+contract HyperAGI_Wallet_Account is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 
@@ -38,7 +38,7 @@ contract Hyperdust_Wallet_Account is OwnableUpgradeable {
     }
 
     function addAmount(uint256 amount) public {
-        require(Hyperdust_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
+        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
         emit eveGasFee(amount, block.timestamp);
     }
 }

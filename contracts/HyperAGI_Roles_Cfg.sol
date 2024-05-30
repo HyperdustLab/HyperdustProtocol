@@ -6,14 +6,11 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-import "./utils/StrUtil.sol";
-
-contract Hyperdust_Roles_Cfg is OwnableUpgradeable {
+contract HyperAGI_Roles_Cfg is OwnableUpgradeable {
     using Strings for *;
-    using StrUtil for *;
 
     mapping(address => bool) public _adminRole;
-    mapping(address => bool) public _superAsdminRole;
+    mapping(address => bool) public _superAdminRole;
 
     function initialize(address onlyOwner) public initializer {
         __Ownable_init(onlyOwner);
@@ -26,12 +23,12 @@ contract Hyperdust_Roles_Cfg is OwnableUpgradeable {
     }
 
     function addSuperAdmin(address account) public onlyOwner {
-        require(!_superAsdminRole[account], "administrator already exists");
-        _superAsdminRole[account] = true;
+        require(!_superAdminRole[account], "administrator already exists");
+        _superAdminRole[account] = true;
     }
 
     function addAdmin2(address account) public {
-        require(_superAsdminRole[msg.sender], "not super admin role");
+        require(_superAdminRole[msg.sender], "not super admin role");
         require(!_adminRole[account], "administrator already exists");
         _adminRole[account] = true;
     }
@@ -41,10 +38,6 @@ contract Hyperdust_Roles_Cfg is OwnableUpgradeable {
     }
 
     function deleteAdmin(address account) public onlyOwner {
-        _adminRole[account] = false;
-    }
-
-    function deleteAdmin1(address account) public onlyOwner {
         _adminRole[account] = false;
     }
 }

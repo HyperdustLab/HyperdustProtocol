@@ -8,27 +8,10 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 import "./utils/StrUtil.sol";
 
-abstract contract IHyperdustRolesCfg {
-    function hasAdminRole(address account) public view returns (bool) {}
-}
+import "./HyperAGI_Roles_Cfg.sol";
+import "./node/HyperAGI_Node_Mgr.sol";
 
-abstract contract IHyperdustNodeMgr {
-    struct Node {
-        address incomeAddress;
-        string ip; //Node public network IP
-        uint256[] uint256Array; //id,nodeType,cpuNum,memoryNum,diskNum,cudaNum,videoMemory
-    }
-
-    function getNodeObj(uint256 id) public view returns (Node memory) {}
-
-    function getStatisticalIndex()
-        public
-        view
-        returns (uint256, uint32, uint32)
-    {}
-}
-
-contract Hyperdust_Transaction_Cfg is OwnableUpgradeable {
+contract HyperAGI_Transaction_Cfg is OwnableUpgradeable {
     address public _rolesCfgAddress;
 
     address public _nodeMgrAddress;
@@ -50,9 +33,7 @@ contract Hyperdust_Transaction_Cfg is OwnableUpgradeable {
         _nodeMgrAddress = nodeMgrAddress;
     }
 
-    function setContractAddress(
-        address[] memory contractaddressArray
-    ) public onlyOwner {
+    function setContractAddress(address[] memory contractaddressArray) public onlyOwner {
         _rolesCfgAddress = contractaddressArray[0];
         _nodeMgrAddress = contractaddressArray[1];
     }
@@ -60,18 +41,12 @@ contract Hyperdust_Transaction_Cfg is OwnableUpgradeable {
     mapping(string => uint256) public _transactionProceduresMap;
 
     function add(string memory func, uint256 rate) public {
-        require(
-            IHyperdustRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
-            "not admin role"
-        );
+        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
         _transactionProceduresMap[func] = rate;
     }
 
     function del(string memory func) public {
-        require(
-            IHyperdustRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
-            "not admin role"
-        );
+        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
         delete _transactionProceduresMap[func];
     }
 
@@ -80,9 +55,7 @@ contract Hyperdust_Transaction_Cfg is OwnableUpgradeable {
     }
 
     function getGasFee(string memory func) public view returns (uint256) {
-        (, uint32 _totalNum, uint32 _activeNum) = IHyperdustNodeMgr(
-            _nodeMgrAddress
-        ).getStatisticalIndex();
+        (, uint256 _totalNum, uint256 _activeNum) = HyperAGI_Node_Mgr(_nodeMgrAddress).getStatisticalIndex();
         uint256 renderPrice = _transactionProceduresMap[func];
 
         if (_activeNum == 0 || renderPrice == 0) {
@@ -95,9 +68,9 @@ contract Hyperdust_Transaction_Cfg is OwnableUpgradeable {
 
         uint256 accuracy = 10000000000000;
 
-        uint256 difficuty = (_totalNum * accuracy) / _activeNum;
+        uint256 difficulty = (_totalNum * accuracy) / _activeNum;
 
-        uint256 gasPrice = (renderPrice * accuracy) / difficuty;
+        uint256 gasPrice = (renderPrice * accuracy) / difficulty;
 
         uint256 gasFee = (renderPrice * gasPrice * 1 ether) / accuracy;
 
@@ -105,10 +78,7 @@ contract Hyperdust_Transaction_Cfg is OwnableUpgradeable {
     }
 
     function setMinGasFee(string memory key, uint256 minGasFee) public {
-        require(
-            IHyperdustRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
-            "not admin role"
-        );
+        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
 
         _minGasFeeMap[key] = minGasFee;
     }

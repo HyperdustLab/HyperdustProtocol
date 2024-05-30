@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 import "@confluxfans/contracts/token/CRC1155/extensions/CRC1155Metadata.sol";
 
-contract Hyperdust_1155 is ERC1155, ERC1155Burnable, AccessControl, ERC1155Supply, CRC1155Metadata {
+contract HyperAGI_1155 is ERC1155, ERC1155Burnable, AccessControl, ERC1155Supply, CRC1155Metadata {
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
     mapping(uint256 => string) private _tokenURIs;

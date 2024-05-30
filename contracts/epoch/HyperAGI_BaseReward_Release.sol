@@ -2,41 +2,33 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 import "../utils/StrUtil.sol";
 
-import "../Hyperdust_Storage.sol";
+import "../HyperAGI_Storage.sol";
 
-abstract contract IHyperdustRolesCfg {
-    function hasAdminRole(address account) public view returns (bool) {}
-}
+import "./../node/HyperAGI_Node_Mgr.sol";
 
-contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
+import "../HyperAGI_Roles_Cfg.sol";
+
+contract HyperAGI_BaseReward_Release is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 
     address public _rolesCfgAddress;
-    address public _erc20Address;
 
     uint256 public _intervalTime;
 
     uint256 public _intervalCount;
 
-    address public _HyperdustStorageAddress;
+    address public _storageAddress;
 
     uint256 public _dayTime;
 
-    event eveSave(
-        uint256[] amounts,
-        uint256[] releaseAmounts,
-        uint256[] releaseTimes,
-        address account
-    );
+    event eveSave(uint256[] amounts, uint256[] releaseAmounts, uint256[] releaseTimes, address account);
 
     function initialize(address onlyOwner) public initializer {
         _intervalTime = 30 days;
@@ -51,14 +43,8 @@ contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
         _rolesCfgAddress = rolesCfgAddress;
     }
 
-    function setERC20Address(address erc20Address) public onlyOwner {
-        _erc20Address = erc20Address;
-    }
-
-    function setHyperdustStorageAddress(
-        address hyperdustStorageAddress
-    ) public onlyOwner {
-        _HyperdustStorageAddress = hyperdustStorageAddress;
+    function setStorageAddress(address storageAddress) public onlyOwner {
+        _storageAddress = storageAddress;
     }
 
     function setIntervalTime(uint256 intervalTime) public onlyOwner {
@@ -69,26 +55,16 @@ contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
         _intervalCount = intervalCount;
     }
 
-    function setContractAddress(
-        address[] memory contractaddressArray
-    ) public onlyOwner {
+    function setContractAddress(address[] memory contractaddressArray) public onlyOwner {
         _rolesCfgAddress = contractaddressArray[0];
-        _erc20Address = contractaddressArray[1];
-        _HyperdustStorageAddress = contractaddressArray[2];
+
+        _storageAddress = contractaddressArray[1];
     }
 
-    function addBaseRewardReleaseRecord(
-        uint256 amount,
-        address account
-    ) public {
-        require(
-            IHyperdustRolesCfg(_rolesCfgAddress).hasAdminRole(msg.sender),
-            "not admin role"
-        );
+    function addBaseRewardReleaseRecord(uint256 amount, address account) public {
+        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
 
-        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
-            _HyperdustStorageAddress
-        );
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
 
         uint256 time = getStartOfToday();
 
@@ -103,20 +79,16 @@ contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
         uint256[] memory releaseAmounts = new uint256[](_intervalCount);
 
         for (uint256 i = 0; i < _intervalCount; i++) {
-            string memory key = account.toHexString().toSlice().concat(
-                time.toString().toSlice()
-            );
+            string memory key = account.toHexString().toSlice().concat(time.toString().toSlice());
 
             string memory amountKey = key.toSlice().concat("_amount".toSlice());
-            string memory releaseAmountKey = key.toSlice().concat(
-                "_releaseAmount".toSlice()
-            );
+            string memory releaseAmountKey = key.toSlice().concat("_releaseAmount".toSlice());
 
-            uint256 _amount = hyperdustStorage.getUint(amountKey) + avgAmount;
+            uint256 _amount = storageAddress.getUint(amountKey) + avgAmount;
 
-            hyperdustStorage.setUint(amountKey, _amount);
+            storageAddress.setUint(amountKey, _amount);
 
-            uint256 releaseAmount = hyperdustStorage.getUint(releaseAmountKey);
+            uint256 releaseAmount = storageAddress.getUint(releaseAmountKey);
 
             releaseTimes[i] = time;
             amounts[i] = _amount;
@@ -129,9 +101,7 @@ contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
     }
 
     function release(uint256[] memory times) public {
-        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
-            _HyperdustStorageAddress
-        );
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
 
         uint256 totalReleaseAmount = 0;
 
@@ -144,69 +114,61 @@ contract Hyperdust_BaseReward_Release is OwnableUpgradeable {
 
             require(block.timestamp >= time, "time error");
 
-            string memory key = msg.sender.toHexString().toSlice().concat(
-                time.toString().toSlice()
-            );
+            string memory key = msg.sender.toHexString().toSlice().concat(time.toString().toSlice());
 
             string memory amountKey = key.toSlice().concat("_amount".toSlice());
-            string memory releaseAmountKey = key.toSlice().concat(
-                "_releaseAmount".toSlice()
-            );
+            string memory releaseAmountKey = key.toSlice().concat("_releaseAmount".toSlice());
 
-            uint256 amount = hyperdustStorage.getUint(amountKey);
+            uint256 amount = storageAddress.getUint(amountKey);
 
-            uint256 releaseAmount = hyperdustStorage.getUint(releaseAmountKey);
+            uint256 releaseAmount = storageAddress.getUint(releaseAmountKey);
             if (amount == releaseAmount) {
                 continue;
             }
 
             totalReleaseAmount += (amount - releaseAmount);
 
-            hyperdustStorage.setUint(releaseAmountKey, amount);
+            storageAddress.setUint(releaseAmountKey, amount);
 
             amounts[i] = amount;
             releaseTimes[i] = time;
             releaseAmounts[i] = amount;
         }
 
-        IERC20(_erc20Address).transfer(msg.sender, totalReleaseAmount);
+        transferETH(payable(msg.sender), totalReleaseAmount);
 
         emit eveSave(amounts, releaseAmounts, releaseTimes, msg.sender);
     }
 
     function getStartOfToday() private view returns (uint256) {
         uint256 currentTime = block.timestamp;
-        if(_dayTime == 0){
+        if (_dayTime == 0) {
             return currentTime;
         }
         uint256 startOfDay = currentTime - (currentTime % _dayTime);
         return startOfDay;
     }
 
-    function findAmount(
-        address account,
-        uint256 time
-    ) public view returns (uint256, uint256) {
-        Hyperdust_Storage hyperdustStorage = Hyperdust_Storage(
-            _HyperdustStorageAddress
-        );
+    function findAmount(address account, uint256 time) public view returns (uint256, uint256) {
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
 
-        string memory key = account.toHexString().toSlice().concat(
-            time.toString().toSlice()
-        );
+        string memory key = account.toHexString().toSlice().concat(time.toString().toSlice());
 
         string memory amountKey = key.toSlice().concat("_amount".toSlice());
-        string memory releaseAmountKey = key.toSlice().concat(
-            "_releaseAmount".toSlice()
-        );
+        string memory releaseAmountKey = key.toSlice().concat("_releaseAmount".toSlice());
 
-        uint256 amount = hyperdustStorage.getUint(amountKey);
-        uint256 releaseAmount = hyperdustStorage.getUint(releaseAmountKey);
+        uint256 amount = storageAddress.getUint(amountKey);
+        uint256 releaseAmount = storageAddress.getUint(releaseAmountKey);
 
         return (amount, releaseAmount);
     }
 
     function setDayTime(uint256 dayTime) public onlyOwner {
         _dayTime = dayTime;
+    }
+
+    function transferETH(address payable recipient, uint256 amount) private {
+        require(address(this).balance >= amount, "Insufficient balance in contract");
+        recipient.transfer(amount);
     }
 }
