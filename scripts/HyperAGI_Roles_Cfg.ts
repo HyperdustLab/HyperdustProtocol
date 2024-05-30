@@ -2,12 +2,13 @@
 
 import { ethers, run, upgrades } from 'hardhat'
 
-async function main() {
-  const contract = await ethers.getContractFactory('Hyperdust_Wallet_Account')
-  const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address])
-  await instance.waitForDeployment()
+require('dotenv').config()
 
-  await (await instance.setContractAddress(['0x9bDaf3912e7b4794fE8aF2E748C35898265D5615', '0x61Ce9e4A31bFEe62e100Ef128f757EeE9012786f'])).wait()
+async function main() {
+  const contract = await ethers.getContractFactory('HyperAGI_Roles_Cfg')
+  const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address])
+
+  await instance.waitForDeployment()
 
   console.info('contractFactory address:', instance.target)
 }

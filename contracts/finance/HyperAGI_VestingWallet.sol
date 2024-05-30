@@ -11,10 +11,7 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 import "./Hyperdust_Token.sol";
 import "../utils/StrUtil.sol";
 
-contract Hyperdust_VestingWallet is
-    OwnableUpgradeable,
-    AccessControlUpgradeable
-{
+contract HyperAGI_VestingWallet is OwnableUpgradeable, AccessControlUpgradeable {
     using Strings for *;
 
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
@@ -40,21 +37,9 @@ contract Hyperdust_VestingWallet is
 
     bytes32 public _businessName;
 
-    event eveUpdate(
-        bytes32 businessName,
-        address[] accounts,
-        uint256[] totalAllocations,
-        uint256[] releaseds
-    );
+    event eveUpdate(bytes32 businessName, address[] accounts, uint256[] totalAllocations, uint256[] releaseds);
 
-    function initialize(
-        address onlyOwner,
-        uint256 releaseInterval,
-        uint256 delayVestingNum,
-        uint256 firestRate,
-        uint256 linearVestingNum,
-        bytes32 businessName
-    ) public initializer {
+    function initialize(address onlyOwner, uint256 releaseInterval, uint256 delayVestingNum, uint256 firestRate, uint256 linearVestingNum, bytes32 businessName) public initializer {
         __Ownable_init(onlyOwner);
         _grantRole(MINTER_ROLE, onlyOwner);
         _grantRole(DEFAULT_ADMIN_ROLE, onlyOwner);
@@ -80,9 +65,7 @@ contract Hyperdust_VestingWallet is
             return 0;
         }
 
-        Hyperdust_Token hyperdust_Token = Hyperdust_Token(
-            _HyperdustTokenAddress
-        );
+        Hyperdust_Token hyperdust_Token = Hyperdust_Token(_HyperdustTokenAddress);
 
         uint256 start = _start;
         uint256 end = _end;
@@ -126,9 +109,7 @@ contract Hyperdust_VestingWallet is
     }
 
     function releasable(address account) public view returns (uint256) {
-        Hyperdust_Token hyperdust_Token = Hyperdust_Token(
-            _HyperdustTokenAddress
-        );
+        Hyperdust_Token hyperdust_Token = Hyperdust_Token(_HyperdustTokenAddress);
 
         uint256 start = _start;
         uint256 end = _end;
@@ -183,20 +164,15 @@ contract Hyperdust_VestingWallet is
             firestRateAmount = (accountTotalAllocation * _firestRate) / 10000;
         }
 
-        uint256 releaseIntervalAmount = (accountTotalAllocation -
-            firestRateAmount) / linearVestingNum;
+        uint256 releaseIntervalAmount = (accountTotalAllocation - firestRateAmount) / linearVestingNum;
 
-        uint256 activeAmount = releaseIntervalAmount *
-            active +
-            firestRateAmount;
+        uint256 activeAmount = releaseIntervalAmount * active + firestRateAmount;
 
         return activeAmount - _released;
     }
 
     function release() public {
-        Hyperdust_Token hyperdust_Token = Hyperdust_Token(
-            _HyperdustTokenAddress
-        );
+        Hyperdust_Token hyperdust_Token = Hyperdust_Token(_HyperdustTokenAddress);
 
         uint256 TGE_timestamp = hyperdust_Token.TGE_timestamp();
 
@@ -230,20 +206,12 @@ contract Hyperdust_VestingWallet is
         emit eveUpdate(_businessName, accounts, totalAllocations, releaseds);
     }
 
-    function setHyperdustTokenAddress(
-        address HyperdustTokenAddress
-    ) public onlyOwner {
+    function setHyperdustTokenAddress(address HyperdustTokenAddress) public onlyOwner {
         _HyperdustTokenAddress = HyperdustTokenAddress;
     }
 
-    function appendAccountTotalAllocation(
-        address[] memory accounts,
-        uint256[] memory amounts
-    ) public onlyRole(MINTER_ROLE) {
-        require(
-            accounts.length == amounts.length,
-            "accounts.length != amounts.length"
-        );
+    function appendAccountTotalAllocation(address[] memory accounts, uint256[] memory amounts) public onlyRole(MINTER_ROLE) {
+        require(accounts.length == amounts.length, "accounts.length != amounts.length");
         uint256[] memory totalAllocations = new uint256[](accounts.length);
         uint256[] memory releaseds = new uint256[](accounts.length);
 
@@ -251,18 +219,14 @@ contract Hyperdust_VestingWallet is
             address account = accounts[i];
             uint256 amount = amounts[i];
 
-            _accountTotalAllocation[account] =
-                _accountTotalAllocation[account] +
-                amount;
+            _accountTotalAllocation[account] = _accountTotalAllocation[account] + amount;
             _totalAllocation = _totalAllocation + amount;
 
             totalAllocations[i] = _accountTotalAllocation[account];
             releaseds[i] = _accountReleased[account];
         }
 
-        Hyperdust_Token hyperdust_Token = Hyperdust_Token(
-            _HyperdustTokenAddress
-        );
+        Hyperdust_Token hyperdust_Token = Hyperdust_Token(_HyperdustTokenAddress);
 
         uint256 totalAward = hyperdust_Token.totalAward(_businessName);
 
@@ -271,17 +235,11 @@ contract Hyperdust_VestingWallet is
         emit eveUpdate(_businessName, accounts, totalAllocations, releaseds);
     }
 
-    function revokeAccountTotalAllocation(
-        address account,
-        uint256 amount
-    ) public onlyRole(MINTER_ROLE) {
+    function revokeAccountTotalAllocation(address account, uint256 amount) public onlyRole(MINTER_ROLE) {
         uint256 accountReleased = released(account);
         uint256 accountTotalAllocation = totalAllocation(account);
 
-        require(
-            accountTotalAllocation >= accountReleased + amount,
-            "accountTotalAllocation is not enough"
-        );
+        require(accountTotalAllocation >= accountReleased + amount, "accountTotalAllocation is not enough");
 
         _accountTotalAllocation[account] = accountTotalAllocation - amount;
 

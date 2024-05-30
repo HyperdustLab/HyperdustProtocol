@@ -4,6 +4,7 @@ import { HardhatUserConfig } from 'hardhat/config'
 import '@nomicfoundation/hardhat-toolbox'
 import 'hardhat-gas-reporter'
 import '@openzeppelin/hardhat-upgrades'
+require('./tasks/extract-metadata')
 
 const { ProxyAgent, setGlobalDispatcher } = require('undici')
 const proxyAgent = new ProxyAgent('http://127.0.0.1:7890')
@@ -56,12 +57,7 @@ const config: HardhatUserConfig = {
       accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
       loggingEnabled: true,
     },
-    BEVMTest: {
-      url: 'https://testnet.bevm.io',
-      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
-      loggingEnabled: true,
-    },
-    hypedustTest: {
+    bvmTest: {
       url: 'https://bitcoin-l2-813183-testnet.tc.l2aas.com/rpc',
       accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
       loggingEnabled: true,

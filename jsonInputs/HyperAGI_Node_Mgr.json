@@ -1,0 +1,697 @@
+{
+  "compiler": {
+    "version": "0.8.20+commit.a1b79de6"
+  },
+  "language": "Solidity",
+  "output": {
+    "abi": [
+      {
+        "inputs": [],
+        "name": "InvalidInitialization",
+        "type": "error"
+      },
+      {
+        "inputs": [],
+        "name": "NotInitializing",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "owner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnableInvalidOwner",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "OwnableUnauthorizedAccount",
+        "type": "error"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "value",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "length",
+            "type": "uint256"
+          }
+        ],
+        "name": "StringsInsufficientHexLength",
+        "type": "error"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint64",
+            "name": "version",
+            "type": "uint64"
+          }
+        ],
+        "name": "Initialized",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "previousOwner",
+            "type": "address"
+          },
+          {
+            "indexed": true,
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "OwnershipTransferred",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          }
+        ],
+        "name": "eveDelete",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          }
+        ],
+        "name": "eveSave",
+        "type": "event"
+      },
+      {
+        "inputs": [],
+        "name": "_activeNum",
+        "outputs": [
+          {
+            "internalType": "uint32",
+            "name": "",
+            "type": "uint32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "_minerNFTPledgeAddress",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "_nodeTypeAddress",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "_rolesCfgAddress",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "_storageAddress",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "_totalNum",
+        "outputs": [
+          {
+            "internalType": "uint32",
+            "name": "",
+            "type": "uint32"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "incomeAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "ip",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "hardwareInfos",
+            "type": "uint256[]"
+          }
+        ],
+        "name": "addNode",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          }
+        ],
+        "name": "deleteNode",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "account",
+            "type": "address"
+          }
+        ],
+        "name": "getAccountNodeNum",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "index",
+            "type": "uint256"
+          }
+        ],
+        "name": "getIdByIndex",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          }
+        ],
+        "name": "getNode",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "",
+            "type": "string"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "bool",
+            "name": "",
+            "type": "bool"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          }
+        ],
+        "name": "getNodeObj",
+        "outputs": [
+          {
+            "components": [
+              {
+                "internalType": "address",
+                "name": "incomeAddress",
+                "type": "address"
+              },
+              {
+                "internalType": "string",
+                "name": "ip",
+                "type": "string"
+              },
+              {
+                "internalType": "uint256[]",
+                "name": "uint256Array",
+                "type": "uint256[]"
+              },
+              {
+                "internalType": "bool",
+                "name": "isOffline",
+                "type": "bool"
+              }
+            ],
+            "internalType": "struct HyperAGI_Node_Mgr.Node",
+            "name": "",
+            "type": "tuple"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "getStatisticalIndex",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "onlyOwner",
+            "type": "address"
+          }
+        ],
+        "name": "initialize",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "owner",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "renounceOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address[]",
+            "name": "contractaddressArray",
+            "type": "address[]"
+          }
+        ],
+        "name": "setContractAddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256[]",
+            "name": "idList",
+            "type": "uint256[]"
+          }
+        ],
+        "name": "setIdList",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "minerNFTPledgeAddress",
+            "type": "address"
+          }
+        ],
+        "name": "setMinerNFTPledgeAddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "nodeTypeAddress",
+            "type": "address"
+          }
+        ],
+        "name": "setNodeTypeAddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "rolesCfgAddress",
+            "type": "address"
+          }
+        ],
+        "name": "setRolesCfgAddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "totalNum",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "activeNum",
+            "type": "uint256"
+          }
+        ],
+        "name": "setStatisticalIndex",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "storageAddress",
+            "type": "address"
+          }
+        ],
+        "name": "setStorageAddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "newOwner",
+            "type": "address"
+          }
+        ],
+        "name": "transferOwnership",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "nodeId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "bool",
+            "name": "isOffline",
+            "type": "bool"
+          }
+        ],
+        "name": "updateStatus",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      }
+    ],
+    "devdoc": {
+      "errors": {
+        "InvalidInitialization()": [
+          {
+            "details": "The contract is already initialized."
+          }
+        ],
+        "NotInitializing()": [
+          {
+            "details": "The contract is not initializing."
+          }
+        ],
+        "OwnableInvalidOwner(address)": [
+          {
+            "details": "The owner is not a valid owner account. (eg. `address(0)`)"
+          }
+        ],
+        "OwnableUnauthorizedAccount(address)": [
+          {
+            "details": "The caller account is not authorized to perform an operation."
+          }
+        ],
+        "StringsInsufficientHexLength(uint256,uint256)": [
+          {
+            "details": "The `value` string doesn't fit in the specified `length`."
+          }
+        ]
+      },
+      "events": {
+        "Initialized(uint64)": {
+          "details": "Triggered when the contract has been initialized or reinitialized."
+        }
+      },
+      "kind": "dev",
+      "methods": {
+        "owner()": {
+          "details": "Returns the address of the current owner."
+        },
+        "renounceOwnership()": {
+          "details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+        },
+        "transferOwnership(address)": {
+          "details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+        }
+      },
+      "version": 1
+    },
+    "userdoc": {
+      "kind": "user",
+      "methods": {},
+      "version": 1
+    }
+  },
+  "settings": {
+    "compilationTarget": {
+      "contracts/node/HyperAGI_Node_Mgr.sol": "HyperAGI_Node_Mgr"
+    },
+    "evmVersion": "paris",
+    "libraries": {},
+    "metadata": {
+      "bytecodeHash": "ipfs",
+      "useLiteralContent": true
+    },
+    "optimizer": {
+      "details": {
+        "constantOptimizer": true,
+        "cse": true,
+        "deduplicate": true,
+        "inliner": true,
+        "jumpdestRemover": true,
+        "orderLiterals": true,
+        "peephole": true,
+        "yul": true,
+        "yulDetails": {
+          "optimizerSteps": "dhfoDgvulfnTUtnIf:fDnTOc",
+          "stackAllocation": true
+        }
+      },
+      "runs": 2000
+    },
+    "remappings": [],
+    "viaIR": true
+  },
+  "sources": {
+    "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts (last updated v5.0.0) (access/Ownable.sol)\n\npragma solidity ^0.8.20;\n\nimport {ContextUpgradeable} from \"../utils/ContextUpgradeable.sol\";\nimport {Initializable} from \"../proxy/utils/Initializable.sol\";\n\n/**\n * @dev Contract module which provides a basic access control mechanism, where\n * there is an account (an owner) that can be granted exclusive access to\n * specific functions.\n *\n * The initial owner is set to the address provided by the deployer. This can\n * later be changed with {transferOwnership}.\n *\n * This module is used through inheritance. It will make available the modifier\n * `onlyOwner`, which can be applied to your functions to restrict their use to\n * the owner.\n */\nabstract contract OwnableUpgradeable is Initializable, ContextUpgradeable {\n    /// @custom:storage-location erc7201:openzeppelin.storage.Ownable\n    struct OwnableStorage {\n        address _owner;\n    }\n\n    // keccak256(abi.encode(uint256(keccak256(\"openzeppelin.storage.Ownable\")) - 1)) & ~bytes32(uint256(0xff))\n    bytes32 private constant OwnableStorageLocation = 0x9016d09d72d40fdae2fd8ceac6b6234c7706214fd39c1cd1e609a0528c199300;\n\n    function _getOwnableStorage() private pure returns (OwnableStorage storage $) {\n        assembly {\n            $.slot := OwnableStorageLocation\n        }\n    }\n\n    /**\n     * @dev The caller account is not authorized to perform an operation.\n     */\n    error OwnableUnauthorizedAccount(address account);\n\n    /**\n     * @dev The owner is not a valid owner account. (eg. `address(0)`)\n     */\n    error OwnableInvalidOwner(address owner);\n\n    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\n\n    /**\n     * @dev Initializes the contract setting the address provided by the deployer as the initial owner.\n     */\n    function __Ownable_init(address initialOwner) internal onlyInitializing {\n        __Ownable_init_unchained(initialOwner);\n    }\n\n    function __Ownable_init_unchained(address initialOwner) internal onlyInitializing {\n        if (initialOwner == address(0)) {\n            revert OwnableInvalidOwner(address(0));\n        }\n        _transferOwnership(initialOwner);\n    }\n\n    /**\n     * @dev Throws if called by any account other than the owner.\n     */\n    modifier onlyOwner() {\n        _checkOwner();\n        _;\n    }\n\n    /**\n     * @dev Returns the address of the current owner.\n     */\n    function owner() public view virtual returns (address) {\n        OwnableStorage storage $ = _getOwnableStorage();\n        return $._owner;\n    }\n\n    /**\n     * @dev Throws if the sender is not the owner.\n     */\n    function _checkOwner() internal view virtual {\n        if (owner() != _msgSender()) {\n            revert OwnableUnauthorizedAccount(_msgSender());\n        }\n    }\n\n    /**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby disabling any functionality that is only available to the owner.\n     */\n    function renounceOwnership() public virtual onlyOwner {\n        _transferOwnership(address(0));\n    }\n\n    /**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n    function transferOwnership(address newOwner) public virtual onlyOwner {\n        if (newOwner == address(0)) {\n            revert OwnableInvalidOwner(address(0));\n        }\n        _transferOwnership(newOwner);\n    }\n\n    /**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Internal function without access restriction.\n     */\n    function _transferOwnership(address newOwner) internal virtual {\n        OwnableStorage storage $ = _getOwnableStorage();\n        address oldOwner = $._owner;\n        $._owner = newOwner;\n        emit OwnershipTransferred(oldOwner, newOwner);\n    }\n}\n",
+      "keccak256": "0xc163fcf9bb10138631a9ba5564df1fa25db9adff73bd9ee868a8ae1858fe093a",
+      "license": "MIT"
+    },
+    "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts (last updated v5.0.0) (proxy/utils/Initializable.sol)\n\npragma solidity ^0.8.20;\n\n/**\n * @dev This is a base contract to aid in writing upgradeable contracts, or any kind of contract that will be deployed\n * behind a proxy. Since proxied contracts do not make use of a constructor, it's common to move constructor logic to an\n * external initializer function, usually called `initialize`. It then becomes necessary to protect this initializer\n * function so it can only be called once. The {initializer} modifier provided by this contract will have this effect.\n *\n * The initialization functions use a version number. Once a version number is used, it is consumed and cannot be\n * reused. This mechanism prevents re-execution of each \"step\" but allows the creation of new initialization steps in\n * case an upgrade adds a module that needs to be initialized.\n *\n * For example:\n *\n * [.hljs-theme-light.nopadding]\n * ```solidity\n * contract MyToken is ERC20Upgradeable {\n *     function initialize() initializer public {\n *         __ERC20_init(\"MyToken\", \"MTK\");\n *     }\n * }\n *\n * contract MyTokenV2 is MyToken, ERC20PermitUpgradeable {\n *     function initializeV2() reinitializer(2) public {\n *         __ERC20Permit_init(\"MyToken\");\n *     }\n * }\n * ```\n *\n * TIP: To avoid leaving the proxy in an uninitialized state, the initializer function should be called as early as\n * possible by providing the encoded function call as the `_data` argument to {ERC1967Proxy-constructor}.\n *\n * CAUTION: When used with inheritance, manual care must be taken to not invoke a parent initializer twice, or to ensure\n * that all initializers are idempotent. This is not verified automatically as constructors are by Solidity.\n *\n * [CAUTION]\n * ====\n * Avoid leaving a contract uninitialized.\n *\n * An uninitialized contract can be taken over by an attacker. This applies to both a proxy and its implementation\n * contract, which may impact the proxy. To prevent the implementation contract from being used, you should invoke\n * the {_disableInitializers} function in the constructor to automatically lock it when it is deployed:\n *\n * [.hljs-theme-light.nopadding]\n * ```\n * /// @custom:oz-upgrades-unsafe-allow constructor\n * constructor() {\n *     _disableInitializers();\n * }\n * ```\n * ====\n */\nabstract contract Initializable {\n    /**\n     * @dev Storage of the initializable contract.\n     *\n     * It's implemented on a custom ERC-7201 namespace to reduce the risk of storage collisions\n     * when using with upgradeable contracts.\n     *\n     * @custom:storage-location erc7201:openzeppelin.storage.Initializable\n     */\n    struct InitializableStorage {\n        /**\n         * @dev Indicates that the contract has been initialized.\n         */\n        uint64 _initialized;\n        /**\n         * @dev Indicates that the contract is in the process of being initialized.\n         */\n        bool _initializing;\n    }\n\n    // keccak256(abi.encode(uint256(keccak256(\"openzeppelin.storage.Initializable\")) - 1)) & ~bytes32(uint256(0xff))\n    bytes32 private constant INITIALIZABLE_STORAGE = 0xf0c57e16840df040f15088dc2f81fe391c3923bec73e23a9662efc9c229c6a00;\n\n    /**\n     * @dev The contract is already initialized.\n     */\n    error InvalidInitialization();\n\n    /**\n     * @dev The contract is not initializing.\n     */\n    error NotInitializing();\n\n    /**\n     * @dev Triggered when the contract has been initialized or reinitialized.\n     */\n    event Initialized(uint64 version);\n\n    /**\n     * @dev A modifier that defines a protected initializer function that can be invoked at most once. In its scope,\n     * `onlyInitializing` functions can be used to initialize parent contracts.\n     *\n     * Similar to `reinitializer(1)`, except that in the context of a constructor an `initializer` may be invoked any\n     * number of times. This behavior in the constructor can be useful during testing and is not expected to be used in\n     * production.\n     *\n     * Emits an {Initialized} event.\n     */\n    modifier initializer() {\n        // solhint-disable-next-line var-name-mixedcase\n        InitializableStorage storage $ = _getInitializableStorage();\n\n        // Cache values to avoid duplicated sloads\n        bool isTopLevelCall = !$._initializing;\n        uint64 initialized = $._initialized;\n\n        // Allowed calls:\n        // - initialSetup: the contract is not in the initializing state and no previous version was\n        //                 initialized\n        // - construction: the contract is initialized at version 1 (no reininitialization) and the\n        //                 current contract is just being deployed\n        bool initialSetup = initialized == 0 && isTopLevelCall;\n        bool construction = initialized == 1 && address(this).code.length == 0;\n\n        if (!initialSetup && !construction) {\n            revert InvalidInitialization();\n        }\n        $._initialized = 1;\n        if (isTopLevelCall) {\n            $._initializing = true;\n        }\n        _;\n        if (isTopLevelCall) {\n            $._initializing = false;\n            emit Initialized(1);\n        }\n    }\n\n    /**\n     * @dev A modifier that defines a protected reinitializer function that can be invoked at most once, and only if the\n     * contract hasn't been initialized to a greater version before. In its scope, `onlyInitializing` functions can be\n     * used to initialize parent contracts.\n     *\n     * A reinitializer may be used after the original initialization step. This is essential to configure modules that\n     * are added through upgrades and that require initialization.\n     *\n     * When `version` is 1, this modifier is similar to `initializer`, except that functions marked with `reinitializer`\n     * cannot be nested. If one is invoked in the context of another, execution will revert.\n     *\n     * Note that versions can jump in increments greater than 1; this implies that if multiple reinitializers coexist in\n     * a contract, executing them in the right order is up to the developer or operator.\n     *\n     * WARNING: Setting the version to 2**64 - 1 will prevent any future reinitialization.\n     *\n     * Emits an {Initialized} event.\n     */\n    modifier reinitializer(uint64 version) {\n        // solhint-disable-next-line var-name-mixedcase\n        InitializableStorage storage $ = _getInitializableStorage();\n\n        if ($._initializing || $._initialized >= version) {\n            revert InvalidInitialization();\n        }\n        $._initialized = version;\n        $._initializing = true;\n        _;\n        $._initializing = false;\n        emit Initialized(version);\n    }\n\n    /**\n     * @dev Modifier to protect an initialization function so that it can only be invoked by functions with the\n     * {initializer} and {reinitializer} modifiers, directly or indirectly.\n     */\n    modifier onlyInitializing() {\n        _checkInitializing();\n        _;\n    }\n\n    /**\n     * @dev Reverts if the contract is not in an initializing state. See {onlyInitializing}.\n     */\n    function _checkInitializing() internal view virtual {\n        if (!_isInitializing()) {\n            revert NotInitializing();\n        }\n    }\n\n    /**\n     * @dev Locks the contract, preventing any future reinitialization. This cannot be part of an initializer call.\n     * Calling this in the constructor of a contract will prevent that contract from being initialized or reinitialized\n     * to any version. It is recommended to use this to lock implementation contracts that are designed to be called\n     * through proxies.\n     *\n     * Emits an {Initialized} event the first time it is successfully executed.\n     */\n    function _disableInitializers() internal virtual {\n        // solhint-disable-next-line var-name-mixedcase\n        InitializableStorage storage $ = _getInitializableStorage();\n\n        if ($._initializing) {\n            revert InvalidInitialization();\n        }\n        if ($._initialized != type(uint64).max) {\n            $._initialized = type(uint64).max;\n            emit Initialized(type(uint64).max);\n        }\n    }\n\n    /**\n     * @dev Returns the highest version that has been initialized. See {reinitializer}.\n     */\n    function _getInitializedVersion() internal view returns (uint64) {\n        return _getInitializableStorage()._initialized;\n    }\n\n    /**\n     * @dev Returns `true` if the contract is currently initializing. See {onlyInitializing}.\n     */\n    function _isInitializing() internal view returns (bool) {\n        return _getInitializableStorage()._initializing;\n    }\n\n    /**\n     * @dev Returns a pointer to the storage namespace.\n     */\n    // solhint-disable-next-line var-name-mixedcase\n    function _getInitializableStorage() private pure returns (InitializableStorage storage $) {\n        assembly {\n            $.slot := INITIALIZABLE_STORAGE\n        }\n    }\n}\n",
+      "keccak256": "0x631188737069917d2f909d29ce62c4d48611d326686ba6683e26b72a23bfac0b",
+      "license": "MIT"
+    },
+    "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)\n\npragma solidity ^0.8.20;\nimport {Initializable} from \"../proxy/utils/Initializable.sol\";\n\n/**\n * @dev Provides information about the current execution context, including the\n * sender of the transaction and its data. While these are generally available\n * via msg.sender and msg.data, they should not be accessed in such a direct\n * manner, since when dealing with meta-transactions the account sending and\n * paying for execution may not be the actual sender (as far as an application\n * is concerned).\n *\n * This contract is only required for intermediate, library-like contracts.\n */\nabstract contract ContextUpgradeable is Initializable {\n    function __Context_init() internal onlyInitializing {\n    }\n\n    function __Context_init_unchained() internal onlyInitializing {\n    }\n    function _msgSender() internal view virtual returns (address) {\n        return msg.sender;\n    }\n\n    function _msgData() internal view virtual returns (bytes calldata) {\n        return msg.data;\n    }\n\n    function _contextSuffixLength() internal view virtual returns (uint256) {\n        return 0;\n    }\n}\n",
+      "keccak256": "0xdbef5f0c787055227243a7318ef74c8a5a1108ca3a07f2b3a00ef67769e1e397",
+      "license": "MIT"
+    },
+    "@openzeppelin/contracts/access/Ownable.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts (last updated v5.0.0) (access/Ownable.sol)\n\npragma solidity ^0.8.20;\n\nimport {Context} from \"../utils/Context.sol\";\n\n/**\n * @dev Contract module which provides a basic access control mechanism, where\n * there is an account (an owner) that can be granted exclusive access to\n * specific functions.\n *\n * The initial owner is set to the address provided by the deployer. This can\n * later be changed with {transferOwnership}.\n *\n * This module is used through inheritance. It will make available the modifier\n * `onlyOwner`, which can be applied to your functions to restrict their use to\n * the owner.\n */\nabstract contract Ownable is Context {\n    address private _owner;\n\n    /**\n     * @dev The caller account is not authorized to perform an operation.\n     */\n    error OwnableUnauthorizedAccount(address account);\n\n    /**\n     * @dev The owner is not a valid owner account. (eg. `address(0)`)\n     */\n    error OwnableInvalidOwner(address owner);\n\n    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);\n\n    /**\n     * @dev Initializes the contract setting the address provided by the deployer as the initial owner.\n     */\n    constructor(address initialOwner) {\n        if (initialOwner == address(0)) {\n            revert OwnableInvalidOwner(address(0));\n        }\n        _transferOwnership(initialOwner);\n    }\n\n    /**\n     * @dev Throws if called by any account other than the owner.\n     */\n    modifier onlyOwner() {\n        _checkOwner();\n        _;\n    }\n\n    /**\n     * @dev Returns the address of the current owner.\n     */\n    function owner() public view virtual returns (address) {\n        return _owner;\n    }\n\n    /**\n     * @dev Throws if the sender is not the owner.\n     */\n    function _checkOwner() internal view virtual {\n        if (owner() != _msgSender()) {\n            revert OwnableUnauthorizedAccount(_msgSender());\n        }\n    }\n\n    /**\n     * @dev Leaves the contract without owner. It will not be possible to call\n     * `onlyOwner` functions. Can only be called by the current owner.\n     *\n     * NOTE: Renouncing ownership will leave the contract without an owner,\n     * thereby disabling any functionality that is only available to the owner.\n     */\n    function renounceOwnership() public virtual onlyOwner {\n        _transferOwnership(address(0));\n    }\n\n    /**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Can only be called by the current owner.\n     */\n    function transferOwnership(address newOwner) public virtual onlyOwner {\n        if (newOwner == address(0)) {\n            revert OwnableInvalidOwner(address(0));\n        }\n        _transferOwnership(newOwner);\n    }\n\n    /**\n     * @dev Transfers ownership of the contract to a new account (`newOwner`).\n     * Internal function without access restriction.\n     */\n    function _transferOwnership(address newOwner) internal virtual {\n        address oldOwner = _owner;\n        _owner = newOwner;\n        emit OwnershipTransferred(oldOwner, newOwner);\n    }\n}\n",
+      "keccak256": "0xff6d0bb2e285473e5311d9d3caacb525ae3538a80758c10649a4d61029b017bb",
+      "license": "MIT"
+    },
+    "@openzeppelin/contracts/token/ERC1155/IERC1155.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts (last updated v5.0.1) (token/ERC1155/IERC1155.sol)\n\npragma solidity ^0.8.20;\n\nimport {IERC165} from \"../../utils/introspection/IERC165.sol\";\n\n/**\n * @dev Required interface of an ERC1155 compliant contract, as defined in the\n * https://eips.ethereum.org/EIPS/eip-1155[EIP].\n */\ninterface IERC1155 is IERC165 {\n    /**\n     * @dev Emitted when `value` amount of tokens of type `id` are transferred from `from` to `to` by `operator`.\n     */\n    event TransferSingle(address indexed operator, address indexed from, address indexed to, uint256 id, uint256 value);\n\n    /**\n     * @dev Equivalent to multiple {TransferSingle} events, where `operator`, `from` and `to` are the same for all\n     * transfers.\n     */\n    event TransferBatch(\n        address indexed operator,\n        address indexed from,\n        address indexed to,\n        uint256[] ids,\n        uint256[] values\n    );\n\n    /**\n     * @dev Emitted when `account` grants or revokes permission to `operator` to transfer their tokens, according to\n     * `approved`.\n     */\n    event ApprovalForAll(address indexed account, address indexed operator, bool approved);\n\n    /**\n     * @dev Emitted when the URI for token type `id` changes to `value`, if it is a non-programmatic URI.\n     *\n     * If an {URI} event was emitted for `id`, the standard\n     * https://eips.ethereum.org/EIPS/eip-1155#metadata-extensions[guarantees] that `value` will equal the value\n     * returned by {IERC1155MetadataURI-uri}.\n     */\n    event URI(string value, uint256 indexed id);\n\n    /**\n     * @dev Returns the value of tokens of token type `id` owned by `account`.\n     *\n     * Requirements:\n     *\n     * - `account` cannot be the zero address.\n     */\n    function balanceOf(address account, uint256 id) external view returns (uint256);\n\n    /**\n     * @dev xref:ROOT:erc1155.adoc#batch-operations[Batched] version of {balanceOf}.\n     *\n     * Requirements:\n     *\n     * - `accounts` and `ids` must have the same length.\n     */\n    function balanceOfBatch(\n        address[] calldata accounts,\n        uint256[] calldata ids\n    ) external view returns (uint256[] memory);\n\n    /**\n     * @dev Grants or revokes permission to `operator` to transfer the caller's tokens, according to `approved`,\n     *\n     * Emits an {ApprovalForAll} event.\n     *\n     * Requirements:\n     *\n     * - `operator` cannot be the caller.\n     */\n    function setApprovalForAll(address operator, bool approved) external;\n\n    /**\n     * @dev Returns true if `operator` is approved to transfer ``account``'s tokens.\n     *\n     * See {setApprovalForAll}.\n     */\n    function isApprovedForAll(address account, address operator) external view returns (bool);\n\n    /**\n     * @dev Transfers a `value` amount of tokens of type `id` from `from` to `to`.\n     *\n     * WARNING: This function can potentially allow a reentrancy attack when transferring tokens\n     * to an untrusted contract, when invoking {onERC1155Received} on the receiver.\n     * Ensure to follow the checks-effects-interactions pattern and consider employing\n     * reentrancy guards when interacting with untrusted contracts.\n     *\n     * Emits a {TransferSingle} event.\n     *\n     * Requirements:\n     *\n     * - `to` cannot be the zero address.\n     * - If the caller is not `from`, it must have been approved to spend ``from``'s tokens via {setApprovalForAll}.\n     * - `from` must have a balance of tokens of type `id` of at least `value` amount.\n     * - If `to` refers to a smart contract, it must implement {IERC1155Receiver-onERC1155Received} and return the\n     * acceptance magic value.\n     */\n    function safeTransferFrom(address from, address to, uint256 id, uint256 value, bytes calldata data) external;\n\n    /**\n     * @dev xref:ROOT:erc1155.adoc#batch-operations[Batched] version of {safeTransferFrom}.\n     *\n     * WARNING: This function can potentially allow a reentrancy attack when transferring tokens\n     * to an untrusted contract, when invoking {onERC1155BatchReceived} on the receiver.\n     * Ensure to follow the checks-effects-interactions pattern and consider employing\n     * reentrancy guards when interacting with untrusted contracts.\n     *\n     * Emits either a {TransferSingle} or a {TransferBatch} event, depending on the length of the array arguments.\n     *\n     * Requirements:\n     *\n     * - `ids` and `values` must have the same length.\n     * - If `to` refers to a smart contract, it must implement {IERC1155Receiver-onERC1155BatchReceived} and return the\n     * acceptance magic value.\n     */\n    function safeBatchTransferFrom(\n        address from,\n        address to,\n        uint256[] calldata ids,\n        uint256[] calldata values,\n        bytes calldata data\n    ) external;\n}\n",
+      "keccak256": "0x6caffc9cfdc623eca9f87a686071708af5d5c17454d65022843fdddbc53c0cce",
+      "license": "MIT"
+    },
+    "@openzeppelin/contracts/token/ERC721/IERC721.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts (last updated v5.0.0) (token/ERC721/IERC721.sol)\n\npragma solidity ^0.8.20;\n\nimport {IERC165} from \"../../utils/introspection/IERC165.sol\";\n\n/**\n * @dev Required interface of an ERC721 compliant contract.\n */\ninterface IERC721 is IERC165 {\n    /**\n     * @dev Emitted when `tokenId` token is transferred from `from` to `to`.\n     */\n    event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);\n\n    /**\n     * @dev Emitted when `owner` enables `approved` to manage the `tokenId` token.\n     */\n    event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);\n\n    /**\n     * @dev Emitted when `owner` enables or disables (`approved`) `operator` to manage all of its assets.\n     */\n    event ApprovalForAll(address indexed owner, address indexed operator, bool approved);\n\n    /**\n     * @dev Returns the number of tokens in ``owner``'s account.\n     */\n    function balanceOf(address owner) external view returns (uint256 balance);\n\n    /**\n     * @dev Returns the owner of the `tokenId` token.\n     *\n     * Requirements:\n     *\n     * - `tokenId` must exist.\n     */\n    function ownerOf(uint256 tokenId) external view returns (address owner);\n\n    /**\n     * @dev Safely transfers `tokenId` token from `from` to `to`.\n     *\n     * Requirements:\n     *\n     * - `from` cannot be the zero address.\n     * - `to` cannot be the zero address.\n     * - `tokenId` token must exist and be owned by `from`.\n     * - If the caller is not `from`, it must be approved to move this token by either {approve} or {setApprovalForAll}.\n     * - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon\n     *   a safe transfer.\n     *\n     * Emits a {Transfer} event.\n     */\n    function safeTransferFrom(address from, address to, uint256 tokenId, bytes calldata data) external;\n\n    /**\n     * @dev Safely transfers `tokenId` token from `from` to `to`, checking first that contract recipients\n     * are aware of the ERC721 protocol to prevent tokens from being forever locked.\n     *\n     * Requirements:\n     *\n     * - `from` cannot be the zero address.\n     * - `to` cannot be the zero address.\n     * - `tokenId` token must exist and be owned by `from`.\n     * - If the caller is not `from`, it must have been allowed to move this token by either {approve} or\n     *   {setApprovalForAll}.\n     * - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon\n     *   a safe transfer.\n     *\n     * Emits a {Transfer} event.\n     */\n    function safeTransferFrom(address from, address to, uint256 tokenId) external;\n\n    /**\n     * @dev Transfers `tokenId` token from `from` to `to`.\n     *\n     * WARNING: Note that the caller is responsible to confirm that the recipient is capable of receiving ERC721\n     * or else they may be permanently lost. Usage of {safeTransferFrom} prevents loss, though the caller must\n     * understand this adds an external call which potentially creates a reentrancy vulnerability.\n     *\n     * Requirements:\n     *\n     * - `from` cannot be the zero address.\n     * - `to` cannot be the zero address.\n     * - `tokenId` token must be owned by `from`.\n     * - If the caller is not `from`, it must be approved to move this token by either {approve} or {setApprovalForAll}.\n     *\n     * Emits a {Transfer} event.\n     */\n    function transferFrom(address from, address to, uint256 tokenId) external;\n\n    /**\n     * @dev Gives permission to `to` to transfer `tokenId` token to another account.\n     * The approval is cleared when the token is transferred.\n     *\n     * Only a single account can be approved at a time, so approving the zero address clears previous approvals.\n     *\n     * Requirements:\n     *\n     * - The caller must own the token or be an approved operator.\n     * - `tokenId` must exist.\n     *\n     * Emits an {Approval} event.\n     */\n    function approve(address to, uint256 tokenId) external;\n\n    /**\n     * @dev Approve or remove `operator` as an operator for the caller.\n     * Operators can call {transferFrom} or {safeTransferFrom} for any token owned by the caller.\n     *\n     * Requirements:\n     *\n     * - The `operator` cannot be the address zero.\n     *\n     * Emits an {ApprovalForAll} event.\n     */\n    function setApprovalForAll(address operator, bool approved) external;\n\n    /**\n     * @dev Returns the account approved for `tokenId` token.\n     *\n     * Requirements:\n     *\n     * - `tokenId` must exist.\n     */\n    function getApproved(uint256 tokenId) external view returns (address operator);\n\n    /**\n     * @dev Returns if the `operator` is allowed to manage all of the assets of `owner`.\n     *\n     * See {setApprovalForAll}\n     */\n    function isApprovedForAll(address owner, address operator) external view returns (bool);\n}\n",
+      "keccak256": "0x5ef46daa3b58ef2702279d514780316efaa952915ee1aa3396f041ee2982b0b4",
+      "license": "MIT"
+    },
+    "@openzeppelin/contracts/utils/Context.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)\n\npragma solidity ^0.8.20;\n\n/**\n * @dev Provides information about the current execution context, including the\n * sender of the transaction and its data. While these are generally available\n * via msg.sender and msg.data, they should not be accessed in such a direct\n * manner, since when dealing with meta-transactions the account sending and\n * paying for execution may not be the actual sender (as far as an application\n * is concerned).\n *\n * This contract is only required for intermediate, library-like contracts.\n */\nabstract contract Context {\n    function _msgSender() internal view virtual returns (address) {\n        return msg.sender;\n    }\n\n    function _msgData() internal view virtual returns (bytes calldata) {\n        return msg.data;\n    }\n\n    function _contextSuffixLength() internal view virtual returns (uint256) {\n        return 0;\n    }\n}\n",
+      "keccak256": "0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2",
+      "license": "MIT"
+    },
+    "@openzeppelin/contracts/utils/Strings.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts (last updated v5.0.0) (utils/Strings.sol)\n\npragma solidity ^0.8.20;\n\nimport {Math} from \"./math/Math.sol\";\nimport {SignedMath} from \"./math/SignedMath.sol\";\n\n/**\n * @dev String operations.\n */\nlibrary Strings {\n    bytes16 private constant HEX_DIGITS = \"0123456789abcdef\";\n    uint8 private constant ADDRESS_LENGTH = 20;\n\n    /**\n     * @dev The `value` string doesn't fit in the specified `length`.\n     */\n    error StringsInsufficientHexLength(uint256 value, uint256 length);\n\n    /**\n     * @dev Converts a `uint256` to its ASCII `string` decimal representation.\n     */\n    function toString(uint256 value) internal pure returns (string memory) {\n        unchecked {\n            uint256 length = Math.log10(value) + 1;\n            string memory buffer = new string(length);\n            uint256 ptr;\n            /// @solidity memory-safe-assembly\n            assembly {\n                ptr := add(buffer, add(32, length))\n            }\n            while (true) {\n                ptr--;\n                /// @solidity memory-safe-assembly\n                assembly {\n                    mstore8(ptr, byte(mod(value, 10), HEX_DIGITS))\n                }\n                value /= 10;\n                if (value == 0) break;\n            }\n            return buffer;\n        }\n    }\n\n    /**\n     * @dev Converts a `int256` to its ASCII `string` decimal representation.\n     */\n    function toStringSigned(int256 value) internal pure returns (string memory) {\n        return string.concat(value < 0 ? \"-\" : \"\", toString(SignedMath.abs(value)));\n    }\n\n    /**\n     * @dev Converts a `uint256` to its ASCII `string` hexadecimal representation.\n     */\n    function toHexString(uint256 value) internal pure returns (string memory) {\n        unchecked {\n            return toHexString(value, Math.log256(value) + 1);\n        }\n    }\n\n    /**\n     * @dev Converts a `uint256` to its ASCII `string` hexadecimal representation with fixed length.\n     */\n    function toHexString(uint256 value, uint256 length) internal pure returns (string memory) {\n        uint256 localValue = value;\n        bytes memory buffer = new bytes(2 * length + 2);\n        buffer[0] = \"0\";\n        buffer[1] = \"x\";\n        for (uint256 i = 2 * length + 1; i > 1; --i) {\n            buffer[i] = HEX_DIGITS[localValue & 0xf];\n            localValue >>= 4;\n        }\n        if (localValue != 0) {\n            revert StringsInsufficientHexLength(value, length);\n        }\n        return string(buffer);\n    }\n\n    /**\n     * @dev Converts an `address` with fixed length of 20 bytes to its not checksummed ASCII `string` hexadecimal\n     * representation.\n     */\n    function toHexString(address addr) internal pure returns (string memory) {\n        return toHexString(uint256(uint160(addr)), ADDRESS_LENGTH);\n    }\n\n    /**\n     * @dev Returns true if the two strings are equal.\n     */\n    function equal(string memory a, string memory b) internal pure returns (bool) {\n        return bytes(a).length == bytes(b).length && keccak256(bytes(a)) == keccak256(bytes(b));\n    }\n}\n",
+      "keccak256": "0x55f102ea785d8399c0e58d1108e2d289506dde18abc6db1b7f68c1f9f9bc5792",
+      "license": "MIT"
+    },
+    "@openzeppelin/contracts/utils/introspection/IERC165.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts (last updated v5.0.0) (utils/introspection/IERC165.sol)\n\npragma solidity ^0.8.20;\n\n/**\n * @dev Interface of the ERC165 standard, as defined in the\n * https://eips.ethereum.org/EIPS/eip-165[EIP].\n *\n * Implementers can declare support of contract interfaces, which can then be\n * queried by others ({ERC165Checker}).\n *\n * For an implementation, see {ERC165}.\n */\ninterface IERC165 {\n    /**\n     * @dev Returns true if this contract implements the interface defined by\n     * `interfaceId`. See the corresponding\n     * https://eips.ethereum.org/EIPS/eip-165#how-interfaces-are-identified[EIP section]\n     * to learn more about how these ids are created.\n     *\n     * This function call must use less than 30 000 gas.\n     */\n    function supportsInterface(bytes4 interfaceId) external view returns (bool);\n}\n",
+      "keccak256": "0x4296879f55019b23e135000eb36896057e7101fb7fb859c5ef690cf14643757b",
+      "license": "MIT"
+    },
+    "@openzeppelin/contracts/utils/math/Math.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts (last updated v5.0.0) (utils/math/Math.sol)\n\npragma solidity ^0.8.20;\n\n/**\n * @dev Standard math utilities missing in the Solidity language.\n */\nlibrary Math {\n    /**\n     * @dev Muldiv operation overflow.\n     */\n    error MathOverflowedMulDiv();\n\n    enum Rounding {\n        Floor, // Toward negative infinity\n        Ceil, // Toward positive infinity\n        Trunc, // Toward zero\n        Expand // Away from zero\n    }\n\n    /**\n     * @dev Returns the addition of two unsigned integers, with an overflow flag.\n     */\n    function tryAdd(uint256 a, uint256 b) internal pure returns (bool, uint256) {\n        unchecked {\n            uint256 c = a + b;\n            if (c < a) return (false, 0);\n            return (true, c);\n        }\n    }\n\n    /**\n     * @dev Returns the subtraction of two unsigned integers, with an overflow flag.\n     */\n    function trySub(uint256 a, uint256 b) internal pure returns (bool, uint256) {\n        unchecked {\n            if (b > a) return (false, 0);\n            return (true, a - b);\n        }\n    }\n\n    /**\n     * @dev Returns the multiplication of two unsigned integers, with an overflow flag.\n     */\n    function tryMul(uint256 a, uint256 b) internal pure returns (bool, uint256) {\n        unchecked {\n            // Gas optimization: this is cheaper than requiring 'a' not being zero, but the\n            // benefit is lost if 'b' is also tested.\n            // See: https://github.com/OpenZeppelin/openzeppelin-contracts/pull/522\n            if (a == 0) return (true, 0);\n            uint256 c = a * b;\n            if (c / a != b) return (false, 0);\n            return (true, c);\n        }\n    }\n\n    /**\n     * @dev Returns the division of two unsigned integers, with a division by zero flag.\n     */\n    function tryDiv(uint256 a, uint256 b) internal pure returns (bool, uint256) {\n        unchecked {\n            if (b == 0) return (false, 0);\n            return (true, a / b);\n        }\n    }\n\n    /**\n     * @dev Returns the remainder of dividing two unsigned integers, with a division by zero flag.\n     */\n    function tryMod(uint256 a, uint256 b) internal pure returns (bool, uint256) {\n        unchecked {\n            if (b == 0) return (false, 0);\n            return (true, a % b);\n        }\n    }\n\n    /**\n     * @dev Returns the largest of two numbers.\n     */\n    function max(uint256 a, uint256 b) internal pure returns (uint256) {\n        return a > b ? a : b;\n    }\n\n    /**\n     * @dev Returns the smallest of two numbers.\n     */\n    function min(uint256 a, uint256 b) internal pure returns (uint256) {\n        return a < b ? a : b;\n    }\n\n    /**\n     * @dev Returns the average of two numbers. The result is rounded towards\n     * zero.\n     */\n    function average(uint256 a, uint256 b) internal pure returns (uint256) {\n        // (a + b) / 2 can overflow.\n        return (a & b) + (a ^ b) / 2;\n    }\n\n    /**\n     * @dev Returns the ceiling of the division of two numbers.\n     *\n     * This differs from standard division with `/` in that it rounds towards infinity instead\n     * of rounding towards zero.\n     */\n    function ceilDiv(uint256 a, uint256 b) internal pure returns (uint256) {\n        if (b == 0) {\n            // Guarantee the same behavior as in a regular Solidity division.\n            return a / b;\n        }\n\n        // (a + b - 1) / b can overflow on addition, so we distribute.\n        return a == 0 ? 0 : (a - 1) / b + 1;\n    }\n\n    /**\n     * @notice Calculates floor(x * y / denominator) with full precision. Throws if result overflows a uint256 or\n     * denominator == 0.\n     * @dev Original credit to Remco Bloemen under MIT license (https://xn--2-umb.com/21/muldiv) with further edits by\n     * Uniswap Labs also under MIT license.\n     */\n    function mulDiv(uint256 x, uint256 y, uint256 denominator) internal pure returns (uint256 result) {\n        unchecked {\n            // 512-bit multiply [prod1 prod0] = x * y. Compute the product mod 2^256 and mod 2^256 - 1, then use\n            // use the Chinese Remainder Theorem to reconstruct the 512 bit result. The result is stored in two 256\n            // variables such that product = prod1 * 2^256 + prod0.\n            uint256 prod0 = x * y; // Least significant 256 bits of the product\n            uint256 prod1; // Most significant 256 bits of the product\n            assembly {\n                let mm := mulmod(x, y, not(0))\n                prod1 := sub(sub(mm, prod0), lt(mm, prod0))\n            }\n\n            // Handle non-overflow cases, 256 by 256 division.\n            if (prod1 == 0) {\n                // Solidity will revert if denominator == 0, unlike the div opcode on its own.\n                // The surrounding unchecked block does not change this fact.\n                // See https://docs.soliditylang.org/en/latest/control-structures.html#checked-or-unchecked-arithmetic.\n                return prod0 / denominator;\n            }\n\n            // Make sure the result is less than 2^256. Also prevents denominator == 0.\n            if (denominator <= prod1) {\n                revert MathOverflowedMulDiv();\n            }\n\n            ///////////////////////////////////////////////\n            // 512 by 256 division.\n            ///////////////////////////////////////////////\n\n            // Make division exact by subtracting the remainder from [prod1 prod0].\n            uint256 remainder;\n            assembly {\n                // Compute remainder using mulmod.\n                remainder := mulmod(x, y, denominator)\n\n                // Subtract 256 bit number from 512 bit number.\n                prod1 := sub(prod1, gt(remainder, prod0))\n                prod0 := sub(prod0, remainder)\n            }\n\n            // Factor powers of two out of denominator and compute largest power of two divisor of denominator.\n            // Always >= 1. See https://cs.stackexchange.com/q/138556/92363.\n\n            uint256 twos = denominator & (0 - denominator);\n            assembly {\n                // Divide denominator by twos.\n                denominator := div(denominator, twos)\n\n                // Divide [prod1 prod0] by twos.\n                prod0 := div(prod0, twos)\n\n                // Flip twos such that it is 2^256 / twos. If twos is zero, then it becomes one.\n                twos := add(div(sub(0, twos), twos), 1)\n            }\n\n            // Shift in bits from prod1 into prod0.\n            prod0 |= prod1 * twos;\n\n            // Invert denominator mod 2^256. Now that denominator is an odd number, it has an inverse modulo 2^256 such\n            // that denominator * inv = 1 mod 2^256. Compute the inverse by starting with a seed that is correct for\n            // four bits. That is, denominator * inv = 1 mod 2^4.\n            uint256 inverse = (3 * denominator) ^ 2;\n\n            // Use the Newton-Raphson iteration to improve the precision. Thanks to Hensel's lifting lemma, this also\n            // works in modular arithmetic, doubling the correct bits in each step.\n            inverse *= 2 - denominator * inverse; // inverse mod 2^8\n            inverse *= 2 - denominator * inverse; // inverse mod 2^16\n            inverse *= 2 - denominator * inverse; // inverse mod 2^32\n            inverse *= 2 - denominator * inverse; // inverse mod 2^64\n            inverse *= 2 - denominator * inverse; // inverse mod 2^128\n            inverse *= 2 - denominator * inverse; // inverse mod 2^256\n\n            // Because the division is now exact we can divide by multiplying with the modular inverse of denominator.\n            // This will give us the correct result modulo 2^256. Since the preconditions guarantee that the outcome is\n            // less than 2^256, this is the final result. We don't need to compute the high bits of the result and prod1\n            // is no longer required.\n            result = prod0 * inverse;\n            return result;\n        }\n    }\n\n    /**\n     * @notice Calculates x * y / denominator with full precision, following the selected rounding direction.\n     */\n    function mulDiv(uint256 x, uint256 y, uint256 denominator, Rounding rounding) internal pure returns (uint256) {\n        uint256 result = mulDiv(x, y, denominator);\n        if (unsignedRoundsUp(rounding) && mulmod(x, y, denominator) > 0) {\n            result += 1;\n        }\n        return result;\n    }\n\n    /**\n     * @dev Returns the square root of a number. If the number is not a perfect square, the value is rounded\n     * towards zero.\n     *\n     * Inspired by Henry S. Warren, Jr.'s \"Hacker's Delight\" (Chapter 11).\n     */\n    function sqrt(uint256 a) internal pure returns (uint256) {\n        if (a == 0) {\n            return 0;\n        }\n\n        // For our first guess, we get the biggest power of 2 which is smaller than the square root of the target.\n        //\n        // We know that the \"msb\" (most significant bit) of our target number `a` is a power of 2 such that we have\n        // `msb(a) <= a < 2*msb(a)`. This value can be written `msb(a)=2**k` with `k=log2(a)`.\n        //\n        // This can be rewritten `2**log2(a) <= a < 2**(log2(a) + 1)`\n        // → `sqrt(2**k) <= sqrt(a) < sqrt(2**(k+1))`\n        // → `2**(k/2) <= sqrt(a) < 2**((k+1)/2) <= 2**(k/2 + 1)`\n        //\n        // Consequently, `2**(log2(a) / 2)` is a good first approximation of `sqrt(a)` with at least 1 correct bit.\n        uint256 result = 1 << (log2(a) >> 1);\n\n        // At this point `result` is an estimation with one bit of precision. We know the true value is a uint128,\n        // since it is the square root of a uint256. Newton's method converges quadratically (precision doubles at\n        // every iteration). We thus need at most 7 iteration to turn our partial result with one bit of precision\n        // into the expected uint128 result.\n        unchecked {\n            result = (result + a / result) >> 1;\n            result = (result + a / result) >> 1;\n            result = (result + a / result) >> 1;\n            result = (result + a / result) >> 1;\n            result = (result + a / result) >> 1;\n            result = (result + a / result) >> 1;\n            result = (result + a / result) >> 1;\n            return min(result, a / result);\n        }\n    }\n\n    /**\n     * @notice Calculates sqrt(a), following the selected rounding direction.\n     */\n    function sqrt(uint256 a, Rounding rounding) internal pure returns (uint256) {\n        unchecked {\n            uint256 result = sqrt(a);\n            return result + (unsignedRoundsUp(rounding) && result * result < a ? 1 : 0);\n        }\n    }\n\n    /**\n     * @dev Return the log in base 2 of a positive value rounded towards zero.\n     * Returns 0 if given 0.\n     */\n    function log2(uint256 value) internal pure returns (uint256) {\n        uint256 result = 0;\n        unchecked {\n            if (value >> 128 > 0) {\n                value >>= 128;\n                result += 128;\n            }\n            if (value >> 64 > 0) {\n                value >>= 64;\n                result += 64;\n            }\n            if (value >> 32 > 0) {\n                value >>= 32;\n                result += 32;\n            }\n            if (value >> 16 > 0) {\n                value >>= 16;\n                result += 16;\n            }\n            if (value >> 8 > 0) {\n                value >>= 8;\n                result += 8;\n            }\n            if (value >> 4 > 0) {\n                value >>= 4;\n                result += 4;\n            }\n            if (value >> 2 > 0) {\n                value >>= 2;\n                result += 2;\n            }\n            if (value >> 1 > 0) {\n                result += 1;\n            }\n        }\n        return result;\n    }\n\n    /**\n     * @dev Return the log in base 2, following the selected rounding direction, of a positive value.\n     * Returns 0 if given 0.\n     */\n    function log2(uint256 value, Rounding rounding) internal pure returns (uint256) {\n        unchecked {\n            uint256 result = log2(value);\n            return result + (unsignedRoundsUp(rounding) && 1 << result < value ? 1 : 0);\n        }\n    }\n\n    /**\n     * @dev Return the log in base 10 of a positive value rounded towards zero.\n     * Returns 0 if given 0.\n     */\n    function log10(uint256 value) internal pure returns (uint256) {\n        uint256 result = 0;\n        unchecked {\n            if (value >= 10 ** 64) {\n                value /= 10 ** 64;\n                result += 64;\n            }\n            if (value >= 10 ** 32) {\n                value /= 10 ** 32;\n                result += 32;\n            }\n            if (value >= 10 ** 16) {\n                value /= 10 ** 16;\n                result += 16;\n            }\n            if (value >= 10 ** 8) {\n                value /= 10 ** 8;\n                result += 8;\n            }\n            if (value >= 10 ** 4) {\n                value /= 10 ** 4;\n                result += 4;\n            }\n            if (value >= 10 ** 2) {\n                value /= 10 ** 2;\n                result += 2;\n            }\n            if (value >= 10 ** 1) {\n                result += 1;\n            }\n        }\n        return result;\n    }\n\n    /**\n     * @dev Return the log in base 10, following the selected rounding direction, of a positive value.\n     * Returns 0 if given 0.\n     */\n    function log10(uint256 value, Rounding rounding) internal pure returns (uint256) {\n        unchecked {\n            uint256 result = log10(value);\n            return result + (unsignedRoundsUp(rounding) && 10 ** result < value ? 1 : 0);\n        }\n    }\n\n    /**\n     * @dev Return the log in base 256 of a positive value rounded towards zero.\n     * Returns 0 if given 0.\n     *\n     * Adding one to the result gives the number of pairs of hex symbols needed to represent `value` as a hex string.\n     */\n    function log256(uint256 value) internal pure returns (uint256) {\n        uint256 result = 0;\n        unchecked {\n            if (value >> 128 > 0) {\n                value >>= 128;\n                result += 16;\n            }\n            if (value >> 64 > 0) {\n                value >>= 64;\n                result += 8;\n            }\n            if (value >> 32 > 0) {\n                value >>= 32;\n                result += 4;\n            }\n            if (value >> 16 > 0) {\n                value >>= 16;\n                result += 2;\n            }\n            if (value >> 8 > 0) {\n                result += 1;\n            }\n        }\n        return result;\n    }\n\n    /**\n     * @dev Return the log in base 256, following the selected rounding direction, of a positive value.\n     * Returns 0 if given 0.\n     */\n    function log256(uint256 value, Rounding rounding) internal pure returns (uint256) {\n        unchecked {\n            uint256 result = log256(value);\n            return result + (unsignedRoundsUp(rounding) && 1 << (result << 3) < value ? 1 : 0);\n        }\n    }\n\n    /**\n     * @dev Returns whether a provided rounding mode is considered rounding up for unsigned integers.\n     */\n    function unsignedRoundsUp(Rounding rounding) internal pure returns (bool) {\n        return uint8(rounding) % 2 == 1;\n    }\n}\n",
+      "keccak256": "0x005ec64c6313f0555d59e278f9a7a5ab2db5bdc72a027f255a37c327af1ec02d",
+      "license": "MIT"
+    },
+    "@openzeppelin/contracts/utils/math/SignedMath.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts (last updated v5.0.0) (utils/math/SignedMath.sol)\n\npragma solidity ^0.8.20;\n\n/**\n * @dev Standard signed math utilities missing in the Solidity language.\n */\nlibrary SignedMath {\n    /**\n     * @dev Returns the largest of two signed numbers.\n     */\n    function max(int256 a, int256 b) internal pure returns (int256) {\n        return a > b ? a : b;\n    }\n\n    /**\n     * @dev Returns the smallest of two signed numbers.\n     */\n    function min(int256 a, int256 b) internal pure returns (int256) {\n        return a < b ? a : b;\n    }\n\n    /**\n     * @dev Returns the average of two signed numbers without overflow.\n     * The result is rounded towards zero.\n     */\n    function average(int256 a, int256 b) internal pure returns (int256) {\n        // Formula from the book \"Hacker's Delight\"\n        int256 x = (a & b) + ((a ^ b) >> 1);\n        return x + (int256(uint256(x) >> 255) & (a ^ b));\n    }\n\n    /**\n     * @dev Returns the absolute unsigned value of a signed value.\n     */\n    function abs(int256 n) internal pure returns (uint256) {\n        unchecked {\n            // must be unchecked in order to support `n = type(int256).min`\n            return uint256(n >= 0 ? n : -n);\n        }\n    }\n}\n",
+      "keccak256": "0x5f7e4076e175393767754387c962926577f1660dd9b810187b9002407656be72",
+      "license": "MIT"
+    },
+    "contracts/HyperAGI_Roles_Cfg.sol": {
+      "content": "pragma solidity ^0.8.0;\r\n\r\nimport \"@openzeppelin/contracts/utils/Strings.sol\";\r\n\r\nimport \"@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol\";\r\n\r\nimport \"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol\";\r\n\r\ncontract HyperAGI_Roles_Cfg is OwnableUpgradeable {\r\n    using Strings for *;\r\n\r\n    mapping(address => bool) public _adminRole;\r\n    mapping(address => bool) public _superAdminRole;\r\n\r\n    function initialize(address onlyOwner) public initializer {\r\n        __Ownable_init(onlyOwner);\r\n        _adminRole[onlyOwner] = true;\r\n    }\r\n\r\n    function addAdmin(address account) public onlyOwner {\r\n        require(!_adminRole[account], \"administrator already exists\");\r\n        _adminRole[account] = true;\r\n    }\r\n\r\n    function addSuperAdmin(address account) public onlyOwner {\r\n        require(!_superAdminRole[account], \"administrator already exists\");\r\n        _superAdminRole[account] = true;\r\n    }\r\n\r\n    function addAdmin2(address account) public {\r\n        require(_superAdminRole[msg.sender], \"not super admin role\");\r\n        require(!_adminRole[account], \"administrator already exists\");\r\n        _adminRole[account] = true;\r\n    }\r\n\r\n    function hasAdminRole(address account) public view returns (bool) {\r\n        return _adminRole[account];\r\n    }\r\n\r\n    function deleteAdmin(address account) public onlyOwner {\r\n        _adminRole[account] = false;\r\n    }\r\n}\r\n",
+      "keccak256": "0x1485c7fd940f91b878c314142d39ed9a53365b58dcdb0c3cf5f8e4d3032e8c99"
+    },
+    "contracts/HyperAGI_Storage.sol": {
+      "content": "pragma solidity ^0.8.0;\r\n\r\nimport \"@openzeppelin/contracts/access/Ownable.sol\";\r\n\r\nimport \"./utils/StrUtil.sol\";\r\n\r\nimport \"@openzeppelin/contracts/utils/Strings.sol\";\r\n\r\nimport \"@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol\";\r\n\r\nimport \"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol\";\r\n\r\ncontract HyperAGI_Storage is OwnableUpgradeable {\r\n    using Strings for *;\r\n    using StrUtil for *;\r\n\r\n    function initialize(address ownable) public initializer {\r\n        __Ownable_init(ownable);\r\n    }\r\n\r\n    mapping(string => uint256) public uintStorage;\r\n    mapping(string => address) public addressStorage;\r\n    mapping(string => string) public stringStorage;\r\n    mapping(string => bytes) public bytesStorage;\r\n    mapping(string => bytes1) public bytes1Storage;\r\n    mapping(string => bytes32) public bytes32Storage;\r\n\r\n    mapping(string => bool) public boolStorage;\r\n\r\n    mapping(string => uint256[]) public uintArrayStorage;\r\n    mapping(string => address[]) public addressArrayStorage;\r\n    mapping(string => string[]) public stringArrayStorage;\r\n    mapping(string => bytes[]) public bytesArrayStorage;\r\n    mapping(string => bool[]) public boolArrayStorage;\r\n    mapping(bytes32 => uint256) public bytes32UintStorage;\r\n    mapping(bytes32 => string) public bytes32StringStorage;\r\n\r\n    uint256 public _id;\r\n\r\n    address public _serviceAddress;\r\n\r\n    function setServiceAddress(address serviceAddress) public onlyOwner {\r\n        _serviceAddress = serviceAddress;\r\n    }\r\n\r\n    function setUint(string memory key, uint256 value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        uintStorage[key] = value;\r\n    }\r\n\r\n    function getUint(string memory key) public view returns (uint256) {\r\n        return uintStorage[key];\r\n    }\r\n\r\n    function setAddress(string memory key, address value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        addressStorage[key] = value;\r\n    }\r\n\r\n    function getAddress(string memory key) public view returns (address) {\r\n        return addressStorage[key];\r\n    }\r\n\r\n    function setString(string memory key, string memory value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        stringStorage[key] = value;\r\n    }\r\n\r\n    function getString(string memory key) public view returns (string memory) {\r\n        return stringStorage[key];\r\n    }\r\n\r\n    function setBytes(string memory key, bytes memory value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        bytesStorage[key] = value;\r\n    }\r\n\r\n    function getBytes(string memory key) public view returns (bytes memory) {\r\n        return bytesStorage[key];\r\n    }\r\n\r\n    function setBool(string memory key, bool value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        boolStorage[key] = value;\r\n    }\r\n\r\n    function getBool(string memory key) public view returns (bool) {\r\n        return boolStorage[key];\r\n    }\r\n\r\n    function getNextId() public returns (uint256) {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        _id++;\r\n        return _id;\r\n    }\r\n\r\n    function setUintArray(string memory key, uint256[] memory uint256Array) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        uintArrayStorage[key] = uint256Array;\r\n    }\r\n\r\n    function setUintArray(string memory key, uint256 value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        uintArrayStorage[key].push(value);\r\n    }\r\n\r\n    function setUintArray(string memory key, uint256 index, uint256 value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        require(index < uintArrayStorage[key].length, \"Index out of bounds\");\r\n        uintArrayStorage[key][index] = value;\r\n    }\r\n\r\n    function removeUintArray(string memory key, uint256 index) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n\r\n        require(index < uintArrayStorage[key].length, \"Index out of bounds\");\r\n\r\n        uintArrayStorage[key][index] = uintArrayStorage[key][uintArrayStorage[key].length - 1];\r\n\r\n        uintArrayStorage[key].pop();\r\n    }\r\n\r\n    function setBytes32(string memory key, bytes32 value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        bytes32Storage[key] = value;\r\n    }\r\n\r\n    function getBytes32(string memory key) public view returns (bytes32) {\r\n        return bytes32Storage[key];\r\n    }\r\n\r\n    function getUintArray(string memory key) public view returns (uint256[] memory) {\r\n        return uintArrayStorage[key];\r\n    }\r\n\r\n    function setAddressArray(string memory key, address[] memory addressArray) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        addressArrayStorage[key] = addressArray;\r\n    }\r\n\r\n    function setAddressArray(string memory key, address value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        addressArrayStorage[key].push(value);\r\n    }\r\n\r\n    function setAddressArray(string memory key, uint256 index, address value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n\r\n        require(index < addressArrayStorage[key].length, \"Index out of bounds\");\r\n        addressArrayStorage[key][index] = value;\r\n    }\r\n\r\n    function removeAddressArray(string memory key, uint256 index) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n\r\n        require(index < addressArrayStorage[key].length, \"Index out of bounds\");\r\n\r\n        addressArrayStorage[key][index] = addressArrayStorage[key][addressArrayStorage[key].length - 1];\r\n\r\n        addressArrayStorage[key].pop();\r\n    }\r\n\r\n    function getAddressArray(string memory key) public view returns (address[] memory) {\r\n        return addressArrayStorage[key];\r\n    }\r\n\r\n    function setStringArray(string memory key, string[] memory stringArray) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        stringArrayStorage[key] = stringArray;\r\n    }\r\n\r\n    function setStringArray(string memory key, string memory value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        stringArrayStorage[key].push(value);\r\n    }\r\n\r\n    function setStringArray(string memory key, uint256 index, string memory value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        require(index < stringArrayStorage[key].length, \"Index out of bounds\");\r\n        stringArrayStorage[key][index] = value;\r\n    }\r\n\r\n    function removeStringArray(string memory key, uint256 index) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n\r\n        require(index < stringArrayStorage[key].length, \"Index out of bounds\");\r\n\r\n        stringArrayStorage[key][index] = stringArrayStorage[key][stringArrayStorage[key].length - 1];\r\n\r\n        stringArrayStorage[key].pop();\r\n    }\r\n\r\n    function getStringArray(string memory key) public view returns (string[] memory) {\r\n        return stringArrayStorage[key];\r\n    }\r\n\r\n    function setBytesArray(string memory key, bytes[] memory bytesArray) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        bytesArrayStorage[key] = bytesArray;\r\n    }\r\n\r\n    function setBytesArray(string memory key, bytes memory value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        bytesArrayStorage[key].push(value);\r\n    }\r\n\r\n    function setBytesArray(string memory key, uint256 index, bytes memory value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        require(index < bytesArrayStorage[key].length, \"Index out of bounds\");\r\n        bytesArrayStorage[key][index] = value;\r\n    }\r\n\r\n    function removeBytesArray(string memory key, uint256 index) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n\r\n        require(index < bytesArrayStorage[key].length, \"Index out of bounds\");\r\n\r\n        bytesArrayStorage[key][index] = bytesArrayStorage[key][bytesArrayStorage[key].length - 1];\r\n\r\n        bytesArrayStorage[key].pop();\r\n    }\r\n\r\n    function getBytesArray(string memory key) public view returns (bytes[] memory) {\r\n        return bytesArrayStorage[key];\r\n    }\r\n\r\n    function setBoolArray(string memory key, bool[] memory boolArray) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        boolArrayStorage[key] = boolArray;\r\n    }\r\n\r\n    function setBoolArray(string memory key, bool value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        boolArrayStorage[key].push(value);\r\n    }\r\n\r\n    function setBoolArray(string memory key, uint256 index, bool value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        require(index < boolArrayStorage[key].length, \"Index out of bounds\");\r\n        boolArrayStorage[key][index] = value;\r\n    }\r\n\r\n    function removeBoolArray(string memory key, uint256 index) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n\r\n        require(index < boolArrayStorage[key].length, \"Index out of bounds\");\r\n\r\n        boolArrayStorage[key][index] = boolArrayStorage[key][boolArrayStorage[key].length - 1];\r\n\r\n        boolArrayStorage[key].pop();\r\n    }\r\n\r\n    function getBoolArray(string memory key) public view returns (bool[] memory) {\r\n        return boolArrayStorage[key];\r\n    }\r\n\r\n    function setBytes1(string memory key, bytes1 value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        bytes1Storage[key] = value;\r\n    }\r\n\r\n    function getBytes1(string memory key) public view returns (bytes1) {\r\n        return bytes1Storage[key];\r\n    }\r\n\r\n    function genKey(string memory key, uint256 id) public pure returns (string memory) {\r\n        return string(abi.encodePacked(key, \"_\", id.toString()));\r\n    }\r\n\r\n    function setBytes32Uint(bytes32 key, uint256 value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        bytes32UintStorage[key] = value;\r\n    }\r\n\r\n    function getBytes32Uint(bytes32 key) public view returns (uint256) {\r\n        return bytes32UintStorage[key];\r\n    }\r\n\r\n    function setBytes32String(bytes32 key, string memory value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        bytes32StringStorage[key] = value;\r\n    }\r\n\r\n    function getBytes32String(bytes32 key) public view returns (string memory) {\r\n        return bytes32StringStorage[key];\r\n    }\r\n}\r\n",
+      "keccak256": "0x2dac5937a3465909b288dbd120865eb066ce3d3b97014284a96ce42c6f046a02"
+    },
+    "contracts/node/HyperAGI_Miner_NFT_Pledge.sol": {
+      "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.1;\r\nimport \"@openzeppelin/contracts/utils/Strings.sol\";\r\n\r\nimport \"@openzeppelin/contracts/token/ERC721/IERC721.sol\";\r\n\r\nimport \"@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol\";\r\n\r\nimport \"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol\";\r\n\r\nimport \"../HyperAGI_Roles_Cfg.sol\";\r\n\r\nimport \"../utils/StrUtil.sol\";\r\n\r\nimport \"./../HyperAGI_Storage.sol\";\r\n\r\nimport \"./../node/HyperAGI_Node_Mgr.sol\";\r\n\r\ncontract HyperAGI_Miner_NFT_Pledge is OwnableUpgradeable {\r\n    using Strings for *;\r\n    using StrUtil for *;\r\n\r\n    address public _rolesCfgAddress;\r\n    address public _storageAddress;\r\n    address public _721Address;\r\n    uint256 public _pledgeTime;\r\n    address public _nodeMgrAddress;\r\n\r\n    function initialize(address onlyOwner) public initializer {\r\n        __Ownable_init(onlyOwner);\r\n        _pledgeTime = 365 days;\r\n    }\r\n\r\n    function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {\r\n        _rolesCfgAddress = rolesCfgAddress;\r\n    }\r\n\r\n    function setStorageAddress(address storageAddress) public onlyOwner {\r\n        _storageAddress = storageAddress;\r\n    }\r\n\r\n    function set721Address(address address721) public onlyOwner {\r\n        _721Address = address721;\r\n    }\r\n\r\n    function setNodeMgrAddress(address nodeMgrAddress) public onlyOwner {\r\n        _nodeMgrAddress = nodeMgrAddress;\r\n    }\r\n\r\n    function setPledgeTime(uint256 pledgeTime) public onlyOwner {\r\n        _pledgeTime = pledgeTime;\r\n    }\r\n\r\n    function setContractAddress(address[] memory contractaddressArray) public onlyOwner {\r\n        _rolesCfgAddress = contractaddressArray[0];\r\n        _storageAddress = contractaddressArray[1];\r\n        _721Address = contractaddressArray[2];\r\n        _nodeMgrAddress = contractaddressArray[3];\r\n    }\r\n\r\n    event evePledge(address account, address tokenAddress, uint256 tokenId, uint256 allowedRedemptionTime);\r\n    event eveRedemption(address account, address tokenAddress, uint256 tokenId);\r\n\r\n    function pledge(uint256 tokenId) public {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n        IERC721 erc721 = IERC721(_721Address);\r\n        require(erc721.ownerOf(tokenId) == msg.sender, \"not owner\");\r\n        string memory key = storageAddress.genKey(_721Address.toHexString(), tokenId);\r\n        storageAddress.setAddress(key, msg.sender);\r\n\r\n        string memory allowedRedemptionTimeKey = string(abi.encodePacked(key, \"allowedRedemptionTime\"));\r\n\r\n        uint256 allowedRedemptionTime = storageAddress.getUint(allowedRedemptionTimeKey);\r\n\r\n        if (allowedRedemptionTime == 0) {\r\n            storageAddress.setUint(allowedRedemptionTimeKey, block.timestamp + _pledgeTime);\r\n            allowedRedemptionTime = block.timestamp + _pledgeTime;\r\n        }\r\n        erc721.transferFrom(msg.sender, address(this), tokenId);\r\n\r\n        string memory accountKey = msg.sender.toHexString();\r\n\r\n        uint256 pledgeNum = storageAddress.getUint(accountKey);\r\n\r\n        storageAddress.setUint(accountKey, pledgeNum + 1);\r\n\r\n        emit evePledge(msg.sender, _721Address, tokenId, allowedRedemptionTime);\r\n    }\r\n\r\n    function redemption(uint256 tokenId) public {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        HyperAGI_Node_Mgr nodeMgrAddress = HyperAGI_Node_Mgr(_nodeMgrAddress);\r\n\r\n        IERC721 erc721 = IERC721(_721Address);\r\n        string memory key = storageAddress.genKey(_721Address.toHexString(), tokenId);\r\n        address ownerAddress = storageAddress.getAddress(key);\r\n        require(ownerAddress == msg.sender, \"not owner\");\r\n\r\n        string memory allowedRedemptionTimeKey = string(abi.encodePacked(key, \"allowedRedemptionTime\"));\r\n\r\n        uint256 allowedRedemptionTime = storageAddress.getUint(allowedRedemptionTimeKey);\r\n\r\n        require(block.timestamp > allowedRedemptionTime, \"not allowed time\");\r\n\r\n        erc721.transferFrom(address(this), msg.sender, tokenId);\r\n\r\n        string memory accountKey = msg.sender.toHexString();\r\n\r\n        uint256 pledgeNum = storageAddress.getUint(accountKey);\r\n\r\n        uint256 nodeNum = nodeMgrAddress.getAccountNodeNum(msg.sender);\r\n\r\n        require(nodeNum <= pledgeNum - 1, \"The node must be offline before NFT assets can be redeemed\");\r\n\r\n        storageAddress.setUint(accountKey, pledgeNum - 1);\r\n\r\n        emit eveRedemption(msg.sender, _721Address, tokenId);\r\n    }\r\n\r\n    function getAccountPledgeNum(address account) public view returns (uint256) {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        string memory accountKey = account.toHexString();\r\n        return storageAddress.getUint(accountKey);\r\n    }\r\n}\r\n",
+      "keccak256": "0x89164983971d76668b5bd0828702fd95de8a1536b639a20a7ba8c84d1fa35505",
+      "license": "MIT"
+    },
+    "contracts/node/HyperAGI_Node_Mgr.sol": {
+      "content": "pragma solidity ^0.8.2;\r\n\r\nimport \"@openzeppelin/contracts/utils/Strings.sol\";\r\n\r\nimport \"@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol\";\r\n\r\nimport \"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol\";\r\n\r\nimport \"@openzeppelin/contracts/token/ERC1155/IERC1155.sol\";\r\n\r\nimport {StrUtil} from \"../utils/StrUtil.sol\";\r\n\r\nimport \"./../HyperAGI_Storage.sol\";\r\n\r\nimport \"./HyperAGI_Miner_NFT_Pledge.sol\";\r\n\r\nimport \"./HyperAGI_Node_Type.sol\";\r\n\r\ncontract HyperAGI_Node_Mgr is OwnableUpgradeable {\r\n    using Strings for *;\r\n    using StrUtil for *;\r\n\r\n    address public _rolesCfgAddress;\r\n    address public _nodeTypeAddress;\r\n    address public _storageAddress;\r\n    address public _minerNFTPledgeAddress;\r\n    uint32 public _totalNum;\r\n    uint32 public _activeNum;\r\n\r\n    struct Node {\r\n        address incomeAddress;\r\n        string ip; //Node public network IP\r\n        uint256[] uint256Array; //id,nodeType,cpuNum,memoryNum,diskNum,cudaNum,videoMemory\r\n        bool isOffline;\r\n    }\r\n\r\n    event eveSave(uint256 id);\r\n\r\n    event eveDelete(uint256 id);\r\n\r\n    function initialize(address onlyOwner) public initializer {\r\n        __Ownable_init(onlyOwner);\r\n    }\r\n\r\n    function setNodeTypeAddress(address nodeTypeAddress) public onlyOwner {\r\n        _nodeTypeAddress = nodeTypeAddress;\r\n    }\r\n\r\n    function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {\r\n        _rolesCfgAddress = rolesCfgAddress;\r\n    }\r\n\r\n    function setStorageAddress(address storageAddress) public onlyOwner {\r\n        _storageAddress = storageAddress;\r\n    }\r\n\r\n    function setMinerNFTPledgeAddress(address minerNFTPledgeAddress) public onlyOwner {\r\n        _minerNFTPledgeAddress = minerNFTPledgeAddress;\r\n    }\r\n\r\n    function setContractAddress(address[] memory contractaddressArray) public onlyOwner {\r\n        _rolesCfgAddress = contractaddressArray[0];\r\n        _nodeTypeAddress = contractaddressArray[1];\r\n        _storageAddress = contractaddressArray[2];\r\n        _minerNFTPledgeAddress = contractaddressArray[3];\r\n    }\r\n\r\n    function addNode(address incomeAddress, string memory ip, uint256[] memory hardwareInfos) public returns (uint256) {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n        HyperAGI_Miner_NFT_Pledge minerNFTPledgeAddress = HyperAGI_Miner_NFT_Pledge(_minerNFTPledgeAddress);\r\n\r\n        uint256 pledgeNum = minerNFTPledgeAddress.getAccountPledgeNum(incomeAddress);\r\n\r\n        string memory accountKey = incomeAddress.toHexString();\r\n\r\n        uint256 nodeNum = storageAddress.getUint(accountKey);\r\n\r\n        require(nodeNum + 1 >= pledgeNum, \"The amount of pledged NFT is insufficient, please pledge the NFT first\");\r\n\r\n        require(!storageAddress.getBool(ip), \"ip already exists\");\r\n\r\n        HyperAGI_Node_Type nodeType = HyperAGI_Node_Type(_nodeTypeAddress);\r\n\r\n        uint256 nodeTypeId = nodeType.getNodeTypeId(hardwareInfos[0], hardwareInfos[1], hardwareInfos[2], hardwareInfos[3], hardwareInfos[4]);\r\n\r\n        require(nodeTypeId > 0, \"not found node type\");\r\n\r\n        uint256 id = storageAddress.getNextId();\r\n\r\n        add(id, nodeTypeId, incomeAddress, ip, hardwareInfos);\r\n\r\n        storageAddress.setUint(accountKey, nodeNum + 1);\r\n\r\n        return id;\r\n    }\r\n\r\n    function add(uint256 id, uint256 nodeTypeId, address incomeAddress, string memory ip, uint256[] memory hardwareInfos) private {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        uint256 count = storageAddress.getUint(\"count\");\r\n\r\n        storageAddress.setBool(ip, true);\r\n\r\n        storageAddress.setUint(\"count\", count + 1);\r\n\r\n        storageAddress.setUint(storageAddress.genKey(\"nodeTypeId\", id), nodeTypeId);\r\n\r\n        storageAddress.setUint(storageAddress.genKey(\"cpuNum\", id), hardwareInfos[0]);\r\n\r\n        storageAddress.setUint(storageAddress.genKey(\"memoryNum\", id), hardwareInfos[1]);\r\n\r\n        storageAddress.setUint(storageAddress.genKey(\"diskNum\", id), hardwareInfos[2]);\r\n\r\n        storageAddress.setUint(storageAddress.genKey(\"cudaNum\", id), hardwareInfos[3]);\r\n\r\n        storageAddress.setUint(storageAddress.genKey(\"videoMemory\", id), hardwareInfos[4]);\r\n\r\n        storageAddress.setAddress(storageAddress.genKey(\"incomeAddress\", id), incomeAddress);\r\n\r\n        storageAddress.setString(storageAddress.genKey(\"ip\", id), ip);\r\n\r\n        storageAddress.setUintArray(\"idList\", id);\r\n\r\n        emit eveSave(id);\r\n    }\r\n\r\n    function getNode(uint256 id) public view returns (address, string memory, uint256[] memory, bool) {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n        string memory ip = storageAddress.getString(storageAddress.genKey(\"ip\", id));\r\n\r\n        require(bytes(ip).length > 0, \"not found\");\r\n\r\n        address incomeAddress = storageAddress.getAddress(storageAddress.genKey(\"incomeAddress\", id));\r\n\r\n        uint256[] memory uint256Array = new uint256[](7);\r\n\r\n        uint256Array[0] = id;\r\n        uint256Array[1] = storageAddress.getUint(storageAddress.genKey(\"nodeTypeId\", id));\r\n        uint256Array[2] = storageAddress.getUint(storageAddress.genKey(\"cpuNum\", id));\r\n        uint256Array[3] = storageAddress.getUint(storageAddress.genKey(\"memoryNum\", id));\r\n        uint256Array[4] = storageAddress.getUint(storageAddress.genKey(\"diskNum\", id));\r\n        uint256Array[5] = storageAddress.getUint(storageAddress.genKey(\"cudaNum\", id));\r\n        uint256Array[6] = storageAddress.getUint(storageAddress.genKey(\"videoMemory\", id));\r\n\r\n        bool isOffline = storageAddress.getBool(storageAddress.genKey(\"isOffine\", id));\r\n\r\n        return (incomeAddress, ip, uint256Array, isOffline);\r\n    }\r\n\r\n    function getNodeObj(uint256 id) public view returns (Node memory) {\r\n        (address incomeAddress, string memory ip, uint256[] memory uint256Array, bool isOffline) = getNode(id);\r\n\r\n        Node memory node = Node({incomeAddress: incomeAddress, ip: ip, uint256Array: uint256Array, isOffline: isOffline});\r\n\r\n        return node;\r\n    }\r\n\r\n    function deleteNode(uint256 id) public {\r\n        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), \"not admin role\");\r\n\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        string memory ip = storageAddress.getString(storageAddress.genKey(\"ip\", id));\r\n\r\n        require(bytes(ip).length > 0, \"not found\");\r\n\r\n        storageAddress.setString(storageAddress.genKey(\"ip\", id), \"\");\r\n\r\n        uint256 count = storageAddress.getUint(\"count\");\r\n\r\n        storageAddress.setUint(\"count\", count - 1);\r\n\r\n        uint256[] memory idList = storageAddress.getUintArray(\"idList\");\r\n\r\n        for (uint i = 0; i < idList.length; i++) {\r\n            if (idList[i] == id) {\r\n                storageAddress.removeStringArray(\"idList\", i);\r\n                break;\r\n            }\r\n        }\r\n\r\n        emit eveDelete(id);\r\n    }\r\n\r\n    function getStatisticalIndex() public view returns (uint256, uint256, uint256) {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n        uint256 count = storageAddress.getUint(\"count\");\r\n        uint256 totalNum = storageAddress.getUint(\"totalNum\");\r\n        uint256 activeNum = storageAddress.getUint(\"activeNum\");\r\n\r\n        return (count, totalNum, activeNum);\r\n    }\r\n\r\n    function setStatisticalIndex(uint256 totalNum, uint256 activeNum) public {\r\n        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), \"not admin role\");\r\n\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        storageAddress.setUint(\"totalNum\", totalNum);\r\n        storageAddress.setUint(\"activeNum\", activeNum);\r\n    }\r\n\r\n    function getIdByIndex(uint256 index) public view returns (uint256) {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        uint256[] memory ids = storageAddress.getUintArray(\"idList\");\r\n\r\n        if (index + 1 > ids.length) {\r\n            return 0;\r\n        }\r\n\r\n        return ids[index];\r\n    }\r\n\r\n    function setIdList(uint256[] memory idList) public onlyOwner {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        storageAddress.setUintArray(\"idList\", idList);\r\n    }\r\n\r\n    function updateStatus(uint256 nodeId, bool isOffline) public {\r\n        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), \"not admin role\");\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        HyperAGI_Miner_NFT_Pledge minerNFTPledgeAddress = HyperAGI_Miner_NFT_Pledge(_minerNFTPledgeAddress);\r\n\r\n        address incomeAddress = storageAddress.getAddress(storageAddress.genKey(\"incomeAddress\", nodeId));\r\n\r\n        uint256 pledgeNum = minerNFTPledgeAddress.getAccountPledgeNum(incomeAddress);\r\n\r\n        string memory accountKey = incomeAddress.toHexString();\r\n\r\n        storageAddress.setBool(storageAddress.genKey(\"isOffline\", nodeId), isOffline);\r\n\r\n        uint256 nodeNum = storageAddress.getUint(accountKey);\r\n\r\n        if (isOffline) {\r\n            storageAddress.setUint(accountKey, nodeNum - 1);\r\n        } else {\r\n            require(nodeNum + 1 >= pledgeNum, \"The amount of pledged NFT is insufficient, please pledge the NFT first\");\r\n            storageAddress.setUint(accountKey, nodeNum + 1);\r\n        }\r\n\r\n        emit eveSave(nodeId);\r\n    }\r\n\r\n    function getAccountNodeNum(address account) public view returns (uint256) {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n        string memory accountKey = account.toHexString();\r\n        return storageAddress.getUint(accountKey);\r\n    }\r\n}\r\n",
+      "keccak256": "0xb6056ec35bead7787dea84fc66fd1e4d8ce4f587f82fd03acb51865769be8b9b"
+    },
+    "contracts/node/HyperAGI_Node_Type.sol": {
+      "content": "pragma solidity ^0.8.0;\r\n\r\nimport \"@openzeppelin/contracts/utils/Strings.sol\";\r\n\r\nimport \"@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol\";\r\n\r\nimport \"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol\";\r\n\r\nimport \"../utils/StrUtil.sol\";\r\n\r\nimport \"./../HyperAGI_Roles_Cfg.sol\";\r\nimport \"./../HyperAGI_Storage.sol\";\r\n\r\nimport \"./../node/HyperAGI_Node_Mgr.sol\";\r\n\r\ncontract HyperAGI_Node_Type is OwnableUpgradeable {\r\n    address public _rolesCfgAddress;\r\n    address public _storageAddress;\r\n\r\n    using Strings for *;\r\n    using StrUtil for *;\r\n\r\n    struct NodeType {\r\n        uint256 id;\r\n        uint256 orderNum;\r\n        string name;\r\n        uint256 cpuNum;\r\n        uint256 memoryNum;\r\n        uint256 diskNum;\r\n        uint256 cudaNum;\r\n        uint256 videoMemory;\r\n        string coverImage;\r\n        string frameRate;\r\n        string remark;\r\n    }\r\n\r\n    function initialize(address onlyOwner) public initializer {\r\n        __Ownable_init(onlyOwner);\r\n    }\r\n\r\n    event eveSave(uint256 id);\r\n\r\n    event eveDelete(uint256 id);\r\n\r\n    uint256[] public _ids;\r\n\r\n    function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {\r\n        _rolesCfgAddress = rolesCfgAddress;\r\n    }\r\n\r\n    function setStorageAddress(address storageAddress) public onlyOwner {\r\n        _storageAddress = storageAddress;\r\n    }\r\n\r\n    function setContractAddress(address[] memory contractaddressArray) public onlyOwner {\r\n        _storageAddress = contractaddressArray[0];\r\n        _rolesCfgAddress = contractaddressArray[1];\r\n    }\r\n\r\n    function addNodeType(uint256 orderNum, string memory name, uint256 cpuNum, uint256 memoryNum, uint256 diskNum, uint256 cudaNum, uint256 videoMemory, string memory coverImage, string memory frameRate, string memory remark) public returns (uint256) {\r\n        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), \"not admin role\");\r\n\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n        uint256 id = storageAddress.getNextId();\r\n\r\n        _ids.push(id);\r\n\r\n        storageAddress.setUint(storageAddress.genKey(\"orderNum\", id), orderNum);\r\n\r\n        storageAddress.setString(storageAddress.genKey(\"name\", id), name);\r\n        storageAddress.setUint(storageAddress.genKey(\"cpuNum\", id), cpuNum);\r\n        storageAddress.setUint(storageAddress.genKey(\"memoryNum\", id), memoryNum);\r\n        storageAddress.setUint(storageAddress.genKey(\"diskNum\", id), diskNum);\r\n        storageAddress.setUint(storageAddress.genKey(\"cudaNum\", id), cudaNum);\r\n        storageAddress.setUint(storageAddress.genKey(\"videoMemory\", id), videoMemory);\r\n        storageAddress.setString(storageAddress.genKey(\"coverImage\", id), coverImage);\r\n        storageAddress.setString(storageAddress.genKey(\"frameRate\", id), frameRate);\r\n        storageAddress.setString(storageAddress.genKey(\"remark\", id), remark);\r\n        emit eveSave(id);\r\n        return id;\r\n    }\r\n\r\n    function updateNodeType(uint256 id, uint256 orderNum, string memory name, uint256 cpuNum, uint256 memoryNum, uint256 diskNum, uint256 cudaNum, uint256 videoMemory, string memory coverImage, string memory frameRate, string memory remark) public {\r\n        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), \"not admin role\");\r\n\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        string memory _name = storageAddress.getString(storageAddress.genKey(\"name\", id));\r\n\r\n        require(bytes(_name).length > 0, \"not found\");\r\n\r\n        storageAddress.setUint(storageAddress.genKey(\"orderNum\", id), orderNum);\r\n\r\n        storageAddress.setString(storageAddress.genKey(\"name\", id), name);\r\n        storageAddress.setUint(storageAddress.genKey(\"cpuNum\", id), cpuNum);\r\n        storageAddress.setUint(storageAddress.genKey(\"memoryNum\", id), memoryNum);\r\n        storageAddress.setUint(storageAddress.genKey(\"diskNum\", id), diskNum);\r\n        storageAddress.setUint(storageAddress.genKey(\"cudaNum\", id), cudaNum);\r\n        storageAddress.setUint(storageAddress.genKey(\"videoMemory\", id), videoMemory);\r\n        storageAddress.setString(storageAddress.genKey(\"coverImage\", id), coverImage);\r\n        storageAddress.setString(storageAddress.genKey(\"frameRate\", id), frameRate);\r\n        storageAddress.setString(storageAddress.genKey(\"remark\", id), remark);\r\n\r\n        emit eveSave(id);\r\n    }\r\n\r\n    function getNodeType(uint256 id) public view returns (uint256[] memory, string[] memory) {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        string[] memory strArray = new string[](4);\r\n        uint256[] memory uint256Array = new uint256[](7);\r\n\r\n        strArray[0] = storageAddress.getString(storageAddress.genKey(\"name\", id));\r\n\r\n        require(bytes(strArray[0]).length > 0, \"not found\");\r\n\r\n        strArray[1] = storageAddress.getString(storageAddress.genKey(\"coverImage\", id));\r\n        strArray[2] = storageAddress.getString(storageAddress.genKey(\"frameRate\", id));\r\n        strArray[3] = storageAddress.getString(storageAddress.genKey(\"remark\", id));\r\n\r\n        uint256Array[0] = id;\r\n        uint256Array[1] = storageAddress.getUint(storageAddress.genKey(\"orderNum\", id));\r\n\r\n        uint256Array[2] = storageAddress.getUint(storageAddress.genKey(\"cpuNum\", id));\r\n        uint256Array[3] = storageAddress.getUint(storageAddress.genKey(\"memoryNum\", id));\r\n\r\n        uint256Array[4] = storageAddress.getUint(storageAddress.genKey(\"diskNum\", id));\r\n\r\n        uint256Array[5] = storageAddress.getUint(storageAddress.genKey(\"nodeType\", id));\r\n\r\n        uint256Array[6] = storageAddress.getUint(storageAddress.genKey(\"videoMemory\", id));\r\n\r\n        return (uint256Array, strArray);\r\n    }\r\n\r\n    function deleteNodeType(uint256 id) public {\r\n        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), \"not admin role\");\r\n\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        string memory name = storageAddress.getString(storageAddress.genKey(\"name\", id));\r\n\r\n        require(bytes(name).length > 0, \"not found\");\r\n\r\n        storageAddress.setString(storageAddress.genKey(\"name\", id), \"\");\r\n\r\n        emit eveDelete(id);\r\n    }\r\n\r\n    function getNodeTypeList() public view returns (NodeType[] memory) {\r\n        NodeType[] memory list = new NodeType[](_ids.length);\r\n        for (uint i = 0; i < _ids.length; i++) {\r\n            uint256 id = _ids[i];\r\n            (uint256[] memory uint256Array, string[] memory strArray) = getNodeType(id);\r\n            list[i] = NodeType(uint256Array[0], uint256Array[1], strArray[0], uint256Array[2], uint256Array[3], uint256Array[4], uint256Array[5], uint256Array[6], strArray[1], strArray[2], strArray[3]);\r\n        }\r\n\r\n        return list;\r\n    }\r\n\r\n    function getNodeTypeId(uint256 cpuNum, uint256 memoryNum, uint256 diskNum, uint256 cudaNum, uint256 videoMemory) public view returns (uint256) {\r\n        NodeType[] memory sortedData = getNodeTypeList();\r\n        uint n = sortedData.length;\r\n\r\n        if (n > 1) {\r\n            for (uint i = 0; i < n - 1; i++) {\r\n                for (uint j = 0; j < n - i - 1; j++) {\r\n                    if (sortedData[j].orderNum < sortedData[j + 1].orderNum) {\r\n                        // switch data elements\r\n                        (sortedData[j], sortedData[j + 1]) = (sortedData[j + 1], sortedData[j]);\r\n                    }\r\n                }\r\n            }\r\n        }\r\n\r\n        uint256 min = 0;\r\n\r\n        for (uint i = 0; i < n; i++) {\r\n            NodeType memory nodeType = sortedData[i];\r\n\r\n            if (cpuNum >= nodeType.cpuNum && memoryNum >= nodeType.memoryNum && diskNum >= nodeType.diskNum && cudaNum >= nodeType.cudaNum && videoMemory >= nodeType.videoMemory) {\r\n                min = nodeType.id;\r\n\r\n                break;\r\n            }\r\n        }\r\n\r\n        return min;\r\n    }\r\n}\r\n",
+      "keccak256": "0xef4e2243c9cfb6befa09e60e36c77d0dbe2d2db604b2ea578a8f4cfc095e08df"
+    },
+    "contracts/utils/StrUtil.sol": {
+      "content": "/*\r\n * @title String & slice utility library for Solidity contracts.\r\n * @author Nick Johnson <arachnid@notdot.net>\r\n *\r\n * @dev Functionality in this library is largely implemented using an\r\n *      abstraction called a 'slice'. A slice represents a part of a string -\r\n *      anything from the entire string to a single character, or even no\r\n *      characters at all (a 0-length slice). Since a slice only has to specify\r\n *      an offset and a length, copying and manipulating slices is a lot less\r\n *      expensive than copying and manipulating the strings they reference.\r\n *\r\n *      To further reduce gas costs, most functions on slice that need to return\r\n *      a slice modify the original one instead of allocating a new one; for\r\n *      instance, `s.split(\".\")` will return the text up to the first '.',\r\n *      modifying s to only contain the remainder of the string after the '.'.\r\n *      In situations where you do not want to modify the original slice, you\r\n *      can make a copy first with `.copy()`, for example:\r\n *      `s.copy().split(\".\")`. Try and avoid using this idiom in loops; since\r\n *      Solidity has no memory management, it will result in allocating many\r\n *      short-lived slices that are later discarded.\r\n \r\n *      Functions that return two slices come in two versions: a non-allocating\r\n *      version that takes the second slice as an argument, modifying it in\r\n *      place, and an allocating version that allocates and returns the second\r\n *      slice; see `nextRune` for example.\r\n *\r\n *      Functions that have to copy string data will return strings rather than\r\n *      slices; these can be cast back to slices for further processing if\r\n *      required.\r\n *\r\n *      For convenience, some functions are provided with non-modifying\r\n *      variants that create a new slice and return both; for instance,\r\n *      `s.splitNew('.')` leaves s unmodified, and returns two values\r\n *      corresponding to the left and right parts of the string.\r\n */\r\n\r\npragma solidity ^0.8.0;\r\n\r\nlibrary StrUtil {\r\n    struct slice {\r\n        uint256 _len;\r\n        uint256 _ptr;\r\n    }\r\n\r\n    function memcpy(uint256 dest, uint256 src, uint256 len) private pure {\r\n        // Copy word-length chunks while possible\r\n        for (; len >= 32; len -= 32) {\r\n            assembly {\r\n                mstore(dest, mload(src))\r\n            }\r\n            dest += 32;\r\n            src += 32;\r\n        }\r\n\r\n        // Copy remaining bytes\r\n        uint256 mask = type(uint256).max;\r\n        if (len > 0) {\r\n            mask = 256 ** (32 - len) - 1;\r\n        }\r\n        assembly {\r\n            let srcpart := and(mload(src), not(mask))\r\n            let destpart := and(mload(dest), mask)\r\n            mstore(dest, or(destpart, srcpart))\r\n        }\r\n    }\r\n\r\n    /*\r\n     * @dev Returns a slice containing the entire string.\r\n     * @param self The string to make a slice from.\r\n     * @return A newly allocated slice containing the entire string.\r\n     */\r\n    function toSlice(string memory self) internal pure returns (slice memory) {\r\n        uint256 ptr;\r\n        assembly {\r\n            ptr := add(self, 0x20)\r\n        }\r\n        return slice(bytes(self).length, ptr);\r\n    }\r\n\r\n    /*\r\n     * @dev Returns the length of a null-terminated bytes32 string.\r\n     * @param self The value to find the length of.\r\n     * @return The length of the string, from 0 to 32.\r\n     */\r\n    function len(bytes32 self) internal pure returns (uint256) {\r\n        uint256 ret;\r\n        if (self == 0) return 0;\r\n        if (uint256(self) & type(uint128).max == 0) {\r\n            ret += 16;\r\n            self = bytes32(uint256(self) / 0x100000000000000000000000000000000);\r\n        }\r\n        if (uint256(self) & type(uint64).max == 0) {\r\n            ret += 8;\r\n            self = bytes32(uint256(self) / 0x10000000000000000);\r\n        }\r\n        if (uint256(self) & type(uint32).max == 0) {\r\n            ret += 4;\r\n            self = bytes32(uint256(self) / 0x100000000);\r\n        }\r\n        if (uint256(self) & type(uint16).max == 0) {\r\n            ret += 2;\r\n            self = bytes32(uint256(self) / 0x10000);\r\n        }\r\n        if (uint256(self) & type(uint8).max == 0) {\r\n            ret += 1;\r\n        }\r\n        return 32 - ret;\r\n    }\r\n\r\n    /*\r\n     * @dev Returns a slice containing the entire bytes32, interpreted as a\r\n     *      null-terminated utf-8 string.\r\n     * @param self The bytes32 value to convert to a slice.\r\n     * @return A new slice containing the value of the input argument up to the\r\n     *         first null.\r\n     */\r\n    function toSliceB32(bytes32 self) internal pure returns (slice memory ret) {\r\n        // Allocate space for `self` in memory, copy it there, and point ret at it\r\n        assembly {\r\n            let ptr := mload(0x40)\r\n            mstore(0x40, add(ptr, 0x20))\r\n            mstore(ptr, self)\r\n            mstore(add(ret, 0x20), ptr)\r\n        }\r\n        ret._len = len(self);\r\n    }\r\n\r\n    /*\r\n     * @dev Returns a new slice containing the same data as the current slice.\r\n     * @param self The slice to copy.\r\n     * @return A new slice containing the same data as `self`.\r\n     */\r\n    function copy(slice memory self) internal pure returns (slice memory) {\r\n        return slice(self._len, self._ptr);\r\n    }\r\n\r\n    /*\r\n     * @dev Copies a slice to a new string.\r\n     * @param self The slice to copy.\r\n     * @return A newly allocated string containing the slice's text.\r\n     */\r\n    function toString(slice memory self) internal pure returns (string memory) {\r\n        string memory ret = new string(self._len);\r\n        uint256 retptr;\r\n        assembly {\r\n            retptr := add(ret, 32)\r\n        }\r\n\r\n        memcpy(retptr, self._ptr, self._len);\r\n        return ret;\r\n    }\r\n\r\n    /*\r\n     * @dev Returns the length in runes of the slice. Note that this operation\r\n     *      takes time proportional to the length of the slice; avoid using it\r\n     *      in loops, and call `slice.empty()` if you only need to know whether\r\n     *      the slice is empty or not.\r\n     * @param self The slice to operate on.\r\n     * @return The length of the slice in runes.\r\n     */\r\n    function len(slice memory self) internal pure returns (uint256 l) {\r\n        // Starting at ptr-31 means the LSB will be the byte we care about\r\n        uint256 ptr = self._ptr - 31;\r\n        uint256 end = ptr + self._len;\r\n        for (l = 0; ptr < end; l++) {\r\n            uint8 b;\r\n            assembly {\r\n                b := and(mload(ptr), 0xFF)\r\n            }\r\n            if (b < 0x80) {\r\n                ptr += 1;\r\n            } else if (b < 0xE0) {\r\n                ptr += 2;\r\n            } else if (b < 0xF0) {\r\n                ptr += 3;\r\n            } else if (b < 0xF8) {\r\n                ptr += 4;\r\n            } else if (b < 0xFC) {\r\n                ptr += 5;\r\n            } else {\r\n                ptr += 6;\r\n            }\r\n        }\r\n    }\r\n\r\n    /*\r\n     * @dev Returns true if the slice is empty (has a length of 0).\r\n     * @param self The slice to operate on.\r\n     * @return True if the slice is empty, False otherwise.\r\n     */\r\n    function empty(slice memory self) internal pure returns (bool) {\r\n        return self._len == 0;\r\n    }\r\n\r\n    /*\r\n     * @dev Returns a positive number if `other` comes lexicographically after\r\n     *      `self`, a negative number if it comes before, or zero if the\r\n     *      contents of the two slices are equal. Comparison is done per-rune,\r\n     *      on unicode codepoints.\r\n     * @param self The first slice to compare.\r\n     * @param other The second slice to compare.\r\n     * @return The result of the comparison.\r\n     */\r\n    function compare(\r\n        slice memory self,\r\n        slice memory other\r\n    ) internal pure returns (int256) {\r\n        uint256 shortest = self._len;\r\n        if (other._len < self._len) shortest = other._len;\r\n\r\n        uint256 selfptr = self._ptr;\r\n        uint256 otherptr = other._ptr;\r\n        for (uint256 idx = 0; idx < shortest; idx += 32) {\r\n            uint256 a;\r\n            uint256 b;\r\n            assembly {\r\n                a := mload(selfptr)\r\n                b := mload(otherptr)\r\n            }\r\n            if (a != b) {\r\n                // Mask out irrelevant bytes and check again\r\n                uint256 mask = type(uint256).max; // 0xffff...\r\n                if (shortest < 32) {\r\n                    mask = ~(2 ** (8 * (32 - shortest + idx)) - 1);\r\n                }\r\n                unchecked {\r\n                    uint256 diff = (a & mask) - (b & mask);\r\n                    if (diff != 0) return int256(diff);\r\n                }\r\n            }\r\n            selfptr += 32;\r\n            otherptr += 32;\r\n        }\r\n        return int256(self._len) - int256(other._len);\r\n    }\r\n\r\n    /*\r\n     * @dev Returns true if the two slices contain the same text.\r\n     * @param self The first slice to compare.\r\n     * @param self The second slice to compare.\r\n     * @return True if the slices are equal, false otherwise.\r\n     */\r\n    function equals(\r\n        slice memory self,\r\n        slice memory other\r\n    ) internal pure returns (bool) {\r\n        return compare(self, other) == 0;\r\n    }\r\n\r\n    /*\r\n     * @dev Extracts the first rune in the slice into `rune`, advancing the\r\n     *      slice to point to the next rune and returning `self`.\r\n     * @param self The slice to operate on.\r\n     * @param rune The slice that will contain the first rune.\r\n     * @return `rune`.\r\n     */\r\n    function nextRune(\r\n        slice memory self,\r\n        slice memory rune\r\n    ) internal pure returns (slice memory) {\r\n        rune._ptr = self._ptr;\r\n\r\n        if (self._len == 0) {\r\n            rune._len = 0;\r\n            return rune;\r\n        }\r\n\r\n        uint256 l;\r\n        uint256 b;\r\n        // Load the first byte of the rune into the LSBs of b\r\n        assembly {\r\n            b := and(mload(sub(mload(add(self, 32)), 31)), 0xFF)\r\n        }\r\n        if (b < 0x80) {\r\n            l = 1;\r\n        } else if (b < 0xE0) {\r\n            l = 2;\r\n        } else if (b < 0xF0) {\r\n            l = 3;\r\n        } else {\r\n            l = 4;\r\n        }\r\n\r\n        // Check for truncated codepoints\r\n        if (l > self._len) {\r\n            rune._len = self._len;\r\n            self._ptr += self._len;\r\n            self._len = 0;\r\n            return rune;\r\n        }\r\n\r\n        self._ptr += l;\r\n        self._len -= l;\r\n        rune._len = l;\r\n        return rune;\r\n    }\r\n\r\n    /*\r\n     * @dev Returns the first rune in the slice, advancing the slice to point\r\n     *      to the next rune.\r\n     * @param self The slice to operate on.\r\n     * @return A slice containing only the first rune from `self`.\r\n     */\r\n    function nextRune(\r\n        slice memory self\r\n    ) internal pure returns (slice memory ret) {\r\n        nextRune(self, ret);\r\n    }\r\n\r\n    /*\r\n     * @dev Returns the number of the first codepoint in the slice.\r\n     * @param self The slice to operate on.\r\n     * @return The number of the first codepoint in the slice.\r\n     */\r\n    function ord(slice memory self) internal pure returns (uint256 ret) {\r\n        if (self._len == 0) {\r\n            return 0;\r\n        }\r\n\r\n        uint256 word;\r\n        uint256 length;\r\n        uint256 divisor = 2 ** 248;\r\n\r\n        // Load the rune into the MSBs of b\r\n        assembly {\r\n            word := mload(mload(add(self, 32)))\r\n        }\r\n        uint256 b = word / divisor;\r\n        if (b < 0x80) {\r\n            ret = b;\r\n            length = 1;\r\n        } else if (b < 0xE0) {\r\n            ret = b & 0x1F;\r\n            length = 2;\r\n        } else if (b < 0xF0) {\r\n            ret = b & 0x0F;\r\n            length = 3;\r\n        } else {\r\n            ret = b & 0x07;\r\n            length = 4;\r\n        }\r\n\r\n        // Check for truncated codepoints\r\n        if (length > self._len) {\r\n            return 0;\r\n        }\r\n\r\n        for (uint256 i = 1; i < length; i++) {\r\n            divisor = divisor / 256;\r\n            b = (word / divisor) & 0xFF;\r\n            if (b & 0xC0 != 0x80) {\r\n                // Invalid UTF-8 sequence\r\n                return 0;\r\n            }\r\n            ret = (ret * 64) | (b & 0x3F);\r\n        }\r\n\r\n        return ret;\r\n    }\r\n\r\n    /*\r\n     * @dev Returns the keccak-256 hash of the slice.\r\n     * @param self The slice to hash.\r\n     * @return The hash of the slice.\r\n     */\r\n    function keccak(slice memory self) internal pure returns (bytes32 ret) {\r\n        assembly {\r\n            ret := keccak256(mload(add(self, 32)), mload(self))\r\n        }\r\n    }\r\n\r\n    /*\r\n     * @dev Returns true if `self` starts with `needle`.\r\n     * @param self The slice to operate on.\r\n     * @param needle The slice to search for.\r\n     * @return True if the slice starts with the provided text, false otherwise.\r\n     */\r\n    function startsWith(\r\n        slice memory self,\r\n        slice memory needle\r\n    ) internal pure returns (bool) {\r\n        if (self._len < needle._len) {\r\n            return false;\r\n        }\r\n\r\n        if (self._ptr == needle._ptr) {\r\n            return true;\r\n        }\r\n\r\n        bool equal;\r\n        assembly {\r\n            let length := mload(needle)\r\n            let selfptr := mload(add(self, 0x20))\r\n            let needleptr := mload(add(needle, 0x20))\r\n            equal := eq(\r\n                keccak256(selfptr, length),\r\n                keccak256(needleptr, length)\r\n            )\r\n        }\r\n        return equal;\r\n    }\r\n\r\n    /*\r\n     * @dev If `self` starts with `needle`, `needle` is removed from the\r\n     *      beginning of `self`. Otherwise, `self` is unmodified.\r\n     * @param self The slice to operate on.\r\n     * @param needle The slice to search for.\r\n     * @return `self`\r\n     */\r\n    function beyond(\r\n        slice memory self,\r\n        slice memory needle\r\n    ) internal pure returns (slice memory) {\r\n        if (self._len < needle._len) {\r\n            return self;\r\n        }\r\n\r\n        bool equal = true;\r\n        if (self._ptr != needle._ptr) {\r\n            assembly {\r\n                let length := mload(needle)\r\n                let selfptr := mload(add(self, 0x20))\r\n                let needleptr := mload(add(needle, 0x20))\r\n                equal := eq(\r\n                    keccak256(selfptr, length),\r\n                    keccak256(needleptr, length)\r\n                )\r\n            }\r\n        }\r\n\r\n        if (equal) {\r\n            self._len -= needle._len;\r\n            self._ptr += needle._len;\r\n        }\r\n\r\n        return self;\r\n    }\r\n\r\n    /*\r\n     * @dev Returns true if the slice ends with `needle`.\r\n     * @param self The slice to operate on.\r\n     * @param needle The slice to search for.\r\n     * @return True if the slice starts with the provided text, false otherwise.\r\n     */\r\n    function endsWith(\r\n        slice memory self,\r\n        slice memory needle\r\n    ) internal pure returns (bool) {\r\n        if (self._len < needle._len) {\r\n            return false;\r\n        }\r\n\r\n        uint256 selfptr = self._ptr + self._len - needle._len;\r\n\r\n        if (selfptr == needle._ptr) {\r\n            return true;\r\n        }\r\n\r\n        bool equal;\r\n        assembly {\r\n            let length := mload(needle)\r\n            let needleptr := mload(add(needle, 0x20))\r\n            equal := eq(\r\n                keccak256(selfptr, length),\r\n                keccak256(needleptr, length)\r\n            )\r\n        }\r\n\r\n        return equal;\r\n    }\r\n\r\n    /*\r\n     * @dev If `self` ends with `needle`, `needle` is removed from the\r\n     *      end of `self`. Otherwise, `self` is unmodified.\r\n     * @param self The slice to operate on.\r\n     * @param needle The slice to search for.\r\n     * @return `self`\r\n     */\r\n    function until(\r\n        slice memory self,\r\n        slice memory needle\r\n    ) internal pure returns (slice memory) {\r\n        if (self._len < needle._len) {\r\n            return self;\r\n        }\r\n\r\n        uint256 selfptr = self._ptr + self._len - needle._len;\r\n        bool equal = true;\r\n        if (selfptr != needle._ptr) {\r\n            assembly {\r\n                let length := mload(needle)\r\n                let needleptr := mload(add(needle, 0x20))\r\n                equal := eq(\r\n                    keccak256(selfptr, length),\r\n                    keccak256(needleptr, length)\r\n                )\r\n            }\r\n        }\r\n\r\n        if (equal) {\r\n            self._len -= needle._len;\r\n        }\r\n\r\n        return self;\r\n    }\r\n\r\n    // Returns the memory address of the first byte of the first occurrence of\r\n    // `needle` in `self`, or the first byte after `self` if not found.\r\n    function findPtr(\r\n        uint256 selflen,\r\n        uint256 selfptr,\r\n        uint256 needlelen,\r\n        uint256 needleptr\r\n    ) private pure returns (uint256) {\r\n        uint256 ptr = selfptr;\r\n        uint256 idx;\r\n\r\n        if (needlelen <= selflen) {\r\n            if (needlelen <= 32) {\r\n                bytes32 mask;\r\n                if (needlelen > 0) {\r\n                    mask = bytes32(~(2 ** (8 * (32 - needlelen)) - 1));\r\n                }\r\n\r\n                bytes32 needledata;\r\n                assembly {\r\n                    needledata := and(mload(needleptr), mask)\r\n                }\r\n\r\n                uint256 end = selfptr + selflen - needlelen;\r\n                bytes32 ptrdata;\r\n                assembly {\r\n                    ptrdata := and(mload(ptr), mask)\r\n                }\r\n\r\n                while (ptrdata != needledata) {\r\n                    if (ptr >= end) return selfptr + selflen;\r\n                    ptr++;\r\n                    assembly {\r\n                        ptrdata := and(mload(ptr), mask)\r\n                    }\r\n                }\r\n                return ptr;\r\n            } else {\r\n                // For long needles, use hashing\r\n                bytes32 hash;\r\n                assembly {\r\n                    hash := keccak256(needleptr, needlelen)\r\n                }\r\n\r\n                for (idx = 0; idx <= selflen - needlelen; idx++) {\r\n                    bytes32 testHash;\r\n                    assembly {\r\n                        testHash := keccak256(ptr, needlelen)\r\n                    }\r\n                    if (hash == testHash) return ptr;\r\n                    ptr += 1;\r\n                }\r\n            }\r\n        }\r\n        return selfptr + selflen;\r\n    }\r\n\r\n    // Returns the memory address of the first byte after the last occurrence of\r\n    // `needle` in `self`, or the address of `self` if not found.\r\n    function rfindPtr(\r\n        uint256 selflen,\r\n        uint256 selfptr,\r\n        uint256 needlelen,\r\n        uint256 needleptr\r\n    ) private pure returns (uint256) {\r\n        uint256 ptr;\r\n\r\n        if (needlelen <= selflen) {\r\n            if (needlelen <= 32) {\r\n                bytes32 mask;\r\n                if (needlelen > 0) {\r\n                    mask = bytes32(~(2 ** (8 * (32 - needlelen)) - 1));\r\n                }\r\n\r\n                bytes32 needledata;\r\n                assembly {\r\n                    needledata := and(mload(needleptr), mask)\r\n                }\r\n\r\n                ptr = selfptr + selflen - needlelen;\r\n                bytes32 ptrdata;\r\n                assembly {\r\n                    ptrdata := and(mload(ptr), mask)\r\n                }\r\n\r\n                while (ptrdata != needledata) {\r\n                    if (ptr <= selfptr) return selfptr;\r\n                    ptr--;\r\n                    assembly {\r\n                        ptrdata := and(mload(ptr), mask)\r\n                    }\r\n                }\r\n                return ptr + needlelen;\r\n            } else {\r\n                // For long needles, use hashing\r\n                bytes32 hash;\r\n                assembly {\r\n                    hash := keccak256(needleptr, needlelen)\r\n                }\r\n                ptr = selfptr + (selflen - needlelen);\r\n                while (ptr >= selfptr) {\r\n                    bytes32 testHash;\r\n                    assembly {\r\n                        testHash := keccak256(ptr, needlelen)\r\n                    }\r\n                    if (hash == testHash) return ptr + needlelen;\r\n                    ptr -= 1;\r\n                }\r\n            }\r\n        }\r\n        return selfptr;\r\n    }\r\n\r\n    /*\r\n     * @dev Modifies `self` to contain everything from the first occurrence of\r\n     *      `needle` to the end of the slice. `self` is set to the empty slice\r\n     *      if `needle` is not found.\r\n     * @param self The slice to search and modify.\r\n     * @param needle The text to search for.\r\n     * @return `self`.\r\n     */\r\n    function find(\r\n        slice memory self,\r\n        slice memory needle\r\n    ) internal pure returns (slice memory) {\r\n        uint256 ptr = findPtr(self._len, self._ptr, needle._len, needle._ptr);\r\n        self._len -= ptr - self._ptr;\r\n        self._ptr = ptr;\r\n        return self;\r\n    }\r\n\r\n    /*\r\n     * @dev Modifies `self` to contain the part of the string from the start of\r\n     *      `self` to the end of the first occurrence of `needle`. If `needle`\r\n     *      is not found, `self` is set to the empty slice.\r\n     * @param self The slice to search and modify.\r\n     * @param needle The text to search for.\r\n     * @return `self`.\r\n     */\r\n    function rfind(\r\n        slice memory self,\r\n        slice memory needle\r\n    ) internal pure returns (slice memory) {\r\n        uint256 ptr = rfindPtr(self._len, self._ptr, needle._len, needle._ptr);\r\n        self._len = ptr - self._ptr;\r\n        return self;\r\n    }\r\n\r\n    /*\r\n     * @dev Splits the slice, setting `self` to everything after the first\r\n     *      occurrence of `needle`, and `token` to everything before it. If\r\n     *      `needle` does not occur in `self`, `self` is set to the empty slice,\r\n     *      and `token` is set to the entirety of `self`.\r\n     * @param self The slice to split.\r\n     * @param needle The text to search for in `self`.\r\n     * @param token An output parameter to which the first token is written.\r\n     * @return `token`.\r\n     */\r\n    function split(\r\n        slice memory self,\r\n        slice memory needle,\r\n        slice memory token\r\n    ) internal pure returns (slice memory) {\r\n        uint256 ptr = findPtr(self._len, self._ptr, needle._len, needle._ptr);\r\n        token._ptr = self._ptr;\r\n        token._len = ptr - self._ptr;\r\n        if (ptr == self._ptr + self._len) {\r\n            // Not found\r\n            self._len = 0;\r\n        } else {\r\n            self._len -= token._len + needle._len;\r\n            self._ptr = ptr + needle._len;\r\n        }\r\n        return token;\r\n    }\r\n\r\n    /*\r\n     * @dev Splits the slice, setting `self` to everything after the first\r\n     *      occurrence of `needle`, and returning everything before it. If\r\n     *      `needle` does not occur in `self`, `self` is set to the empty slice,\r\n     *      and the entirety of `self` is returned.\r\n     * @param self The slice to split.\r\n     * @param needle The text to search for in `self`.\r\n     * @return The part of `self` up to the first occurrence of `delim`.\r\n     */\r\n    function split(\r\n        slice memory self,\r\n        slice memory needle\r\n    ) internal pure returns (slice memory token) {\r\n        split(self, needle, token);\r\n    }\r\n\r\n    /*\r\n     * @dev Splits the slice, setting `self` to everything before the last\r\n     *      occurrence of `needle`, and `token` to everything after it. If\r\n     *      `needle` does not occur in `self`, `self` is set to the empty slice,\r\n     *      and `token` is set to the entirety of `self`.\r\n     * @param self The slice to split.\r\n     * @param needle The text to search for in `self`.\r\n     * @param token An output parameter to which the first token is written.\r\n     * @return `token`.\r\n     */\r\n    function rsplit(\r\n        slice memory self,\r\n        slice memory needle,\r\n        slice memory token\r\n    ) internal pure returns (slice memory) {\r\n        uint256 ptr = rfindPtr(self._len, self._ptr, needle._len, needle._ptr);\r\n        token._ptr = ptr;\r\n        token._len = self._len - (ptr - self._ptr);\r\n        if (ptr == self._ptr) {\r\n            // Not found\r\n            self._len = 0;\r\n        } else {\r\n            self._len -= token._len + needle._len;\r\n        }\r\n        return token;\r\n    }\r\n\r\n    /*\r\n     * @dev Splits the slice, setting `self` to everything before the last\r\n     *      occurrence of `needle`, and returning everything after it. If\r\n     *      `needle` does not occur in `self`, `self` is set to the empty slice,\r\n     *      and the entirety of `self` is returned.\r\n     * @param self The slice to split.\r\n     * @param needle The text to search for in `self`.\r\n     * @return The part of `self` after the last occurrence of `delim`.\r\n     */\r\n    function rsplit(\r\n        slice memory self,\r\n        slice memory needle\r\n    ) internal pure returns (slice memory token) {\r\n        rsplit(self, needle, token);\r\n    }\r\n\r\n    /*\r\n     * @dev Counts the number of nonoverlapping occurrences of `needle` in `self`.\r\n     * @param self The slice to search.\r\n     * @param needle The text to search for in `self`.\r\n     * @return The number of occurrences of `needle` found in `self`.\r\n     */\r\n    function count(\r\n        slice memory self,\r\n        slice memory needle\r\n    ) internal pure returns (uint256 cnt) {\r\n        uint256 ptr = findPtr(self._len, self._ptr, needle._len, needle._ptr) +\r\n            needle._len;\r\n        while (ptr <= self._ptr + self._len) {\r\n            cnt++;\r\n            ptr =\r\n                findPtr(\r\n                    self._len - (ptr - self._ptr),\r\n                    ptr,\r\n                    needle._len,\r\n                    needle._ptr\r\n                ) +\r\n                needle._len;\r\n        }\r\n    }\r\n\r\n    /*\r\n     * @dev Returns True if `self` contains `needle`.\r\n     * @param self The slice to search.\r\n     * @param needle The text to search for in `self`.\r\n     * @return True if `needle` is found in `self`, false otherwise.\r\n     */\r\n    function contains(\r\n        slice memory self,\r\n        slice memory needle\r\n    ) internal pure returns (bool) {\r\n        return\r\n            rfindPtr(self._len, self._ptr, needle._len, needle._ptr) !=\r\n            self._ptr;\r\n    }\r\n\r\n    /*\r\n     * @dev Returns a newly allocated string containing the concatenation of\r\n     *      `self` and `other`.\r\n     * @param self The first slice to concatenate.\r\n     * @param other The second slice to concatenate.\r\n     * @return The concatenation of the two strings.\r\n     */\r\n    function concat(\r\n        slice memory self,\r\n        slice memory other\r\n    ) internal pure returns (string memory) {\r\n        string memory ret = new string(self._len + other._len);\r\n        uint256 retptr;\r\n        assembly {\r\n            retptr := add(ret, 32)\r\n        }\r\n        memcpy(retptr, self._ptr, self._len);\r\n        memcpy(retptr + self._len, other._ptr, other._len);\r\n        return ret;\r\n    }\r\n\r\n    /*\r\n     * @dev Joins an array of slices, using `self` as a delimiter, returning a\r\n     *      newly allocated string.\r\n     * @param self The delimiter to use.\r\n     * @param parts A list of slices to join.\r\n     * @return A newly allocated string containing all the slices in `parts`,\r\n     *         joined with `self`.\r\n     */\r\n    function join(\r\n        slice memory self,\r\n        slice[] memory parts\r\n    ) internal pure returns (string memory) {\r\n        if (parts.length == 0) return \"\";\r\n\r\n        uint256 length = self._len * (parts.length - 1);\r\n        for (uint256 i = 0; i < parts.length; i++) length += parts[i]._len;\r\n\r\n        string memory ret = new string(length);\r\n        uint256 retptr;\r\n        assembly {\r\n            retptr := add(ret, 32)\r\n        }\r\n\r\n        for (uint256 i = 0; i < parts.length; i++) {\r\n            memcpy(retptr, parts[i]._ptr, parts[i]._len);\r\n            retptr += parts[i]._len;\r\n            if (i < parts.length - 1) {\r\n                memcpy(retptr, self._ptr, self._len);\r\n                retptr += self._len;\r\n            }\r\n        }\r\n\r\n        return ret;\r\n    }\r\n}\r\n",
+      "keccak256": "0x79e5610258cb6140382bbff3a148cf9d698b3579c3916477e68993a77bdfc30f"
+    }
+  },
+  "version": 1
+}
