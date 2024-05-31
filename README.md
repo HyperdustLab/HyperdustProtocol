@@ -33,7 +33,7 @@ https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HyperdustChiangMaiRe
 
 ### The details of token issurence and gas price update refer to
 
-https://drive.google.com/file/d/1ZdAz1KLJFnsrNuGjJAM3kgKrAkztfQlI/view?usp=sharing
+https://docs.google.com/document/d/1tYCpw_OzKkidnQ63ijAPgMDO15jmmLcQ/edit?usp=sharing&ouid=117525248134720302581&rtpof=true&sd=true
 
 
 #### HyperAGI Smart Contracts
