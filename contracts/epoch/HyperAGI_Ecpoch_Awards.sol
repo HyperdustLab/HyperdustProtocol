@@ -24,6 +24,10 @@ import "./HyperAGI_Security_Deposit.sol";
 import "./../finance/HyperAGI_GPUMining.sol";
 import "./../node/HyperAGI_Node_Mgr.sol";
 
+import "./../HyperAGI_Wallet_Account.sol";
+
+import "hardhat/console.sol";
+
 contract HyperAGI_Ecpoch_Awards is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
@@ -38,9 +42,13 @@ contract HyperAGI_Ecpoch_Awards is OwnableUpgradeable {
 
     address public _GPUMiningAddress;
 
+    address public _walletAccountAddress;
+
     uint256 private _rand;
 
-    event eveRewards(uint256 nodeId, uint256 epochAward, uint256 rand, uint256 nonce);
+    receive() external payable {}
+
+    event eveRewards(uint256 nodeId, uint256 epochAward, uint256 rand, uint256 nonce, uint256 gasFee);
 
     function initialize(address onlyOwner) public initializer {
         _rand = 1;
@@ -67,60 +75,83 @@ contract HyperAGI_Ecpoch_Awards is OwnableUpgradeable {
         _GPUMiningAddress = GPUMiningAddress;
     }
 
+    function setWalletAccountAddress(address walletAccountAddress) public onlyOwner {
+        _walletAccountAddress = walletAccountAddress;
+    }
+
     function setContractAddress(address[] memory contractaddressArray) public onlyOwner {
         _rolesCfgAddress = contractaddressArray[0];
         _nodeMgrAddress = contractaddressArray[1];
         _securityDepositAddress = contractaddressArray[2];
         _baseRewardReleaseAddress = contractaddressArray[3];
         _GPUMiningAddress = contractaddressArray[4];
+        _walletAccountAddress = contractaddressArray[5];
     }
 
-    function rewards(bytes32[] memory nodeStatus, uint256 nonce) public {
+    function rewards(bytes32[] memory nodeStatus, uint256 nonce, uint256 gasFee) public {
         require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
 
-        (uint256[] memory activeNodes, uint256 _totalNum, uint256 _activeNum) = countActiveNode(nodeStatus);
+        (uint256[] memory activeNodes, uint256[] memory onlineNodes, uint256 _totalNum, uint256 _activeNum) = countActiveNode(nodeStatus);
 
         HyperAGI_Node_Mgr nodeMgrAddress = HyperAGI_Node_Mgr(_nodeMgrAddress);
-        HyperAGI_GPUMining GPUMiningAddress = HyperAGI_GPUMining(_GPUMiningAddress);
-        HyperAGI_Security_Deposit securityDepositAddress = HyperAGI_Security_Deposit(_securityDepositAddress);
-        HyperAGI_BaseReward_Release baseRewardReleaseAddress = HyperAGI_BaseReward_Release(_baseRewardReleaseAddress);
+        HyperAGI_GPUMining GPUMiningAddress = HyperAGI_GPUMining(payable(_GPUMiningAddress));
+        HyperAGI_Security_Deposit securityDepositAddress = HyperAGI_Security_Deposit(payable(_securityDepositAddress));
+        HyperAGI_BaseReward_Release baseRewardReleaseAddress = HyperAGI_BaseReward_Release(payable(_baseRewardReleaseAddress));
+        HyperAGI_Wallet_Account walletAccountAddress = HyperAGI_Wallet_Account(_walletAccountAddress);
+
+        address _GasFeeCollectionWallet = walletAccountAddress._GasFeeCollectionWallet();
 
         uint256 epochAward = GPUMiningAddress._epochAward();
+
+        uint256 totalNum = _totalNum;
 
         if (_totalNum < 10) {
             _totalNum = 10;
         }
 
-        if (_activeNum == 0 || epochAward == 0) {
+        if (epochAward == 0) {
             return;
         }
 
-        uint index = _getRandom(0, _activeNum);
+        uint256 nodeId;
+        uint256 index;
 
-        uint256 nodeId = activeNodes[index];
+        if (_activeNum == 0) {
+            _activeNum = 1;
+
+            index = _getRandom(0, totalNum);
+
+            nodeId = onlineNodes[index];
+        } else {
+            index = _getRandom(0, _activeNum);
+            nodeId = activeNodes[index];
+        }
 
         uint32 accuracy = 1000000;
 
         uint256 difficulty = (_totalNum * accuracy) / _activeNum;
 
-        uint256 actualEpochAward = (epochAward * accuracy) / difficulty;
+        uint256 actualEpochAward = epochAward / 2 + (epochAward * accuracy) / difficulty / 2;
+
         uint256 securityDeposit = actualEpochAward / 10;
-        uint256 baseRewardReleaseAward = actualEpochAward - securityDeposit;
+        uint256 baseRewardReleaseAward = actualEpochAward - securityDeposit - gasFee;
 
         GPUMiningAddress.mint(payable(address(this)), actualEpochAward);
 
-        transferETH(payable(_baseRewardReleaseAddress), baseRewardReleaseAward);
-        transferETH(payable(_securityDepositAddress), securityDeposit);
-        securityDepositAddress.addSecurityDeposit(nodeId, securityDeposit);
+        securityDepositAddress.addSecurityDeposit{value: securityDeposit}(nodeId, securityDeposit);
 
         (address incomeAddress, , , ) = nodeMgrAddress.getNode(nodeId);
 
-        baseRewardReleaseAddress.addBaseRewardReleaseRecord(baseRewardReleaseAward, incomeAddress);
+        baseRewardReleaseAddress.addBaseRewardReleaseRecord{value: baseRewardReleaseAward}(baseRewardReleaseAward, incomeAddress);
 
-        emit eveRewards(nodeId, actualEpochAward, index, nonce);
+        transferETH(payable(_GasFeeCollectionWallet), gasFee);
+
+        walletAccountAddress.addAmount(gasFee);
+
+        emit eveRewards(nodeId, actualEpochAward, index, nonce, gasFee);
     }
 
-    function countActiveNode(bytes32[] memory nodeStatus) private returns (uint256[] memory, uint256, uint256) {
+    function countActiveNode(bytes32[] memory nodeStatus) private returns (uint256[] memory, uint256[] memory, uint256, uint256) {
         HyperAGI_Node_Mgr nodeMgrAddress = HyperAGI_Node_Mgr(_nodeMgrAddress);
 
         uint256 activeNum = 0;
@@ -129,6 +160,7 @@ contract HyperAGI_Ecpoch_Awards is OwnableUpgradeable {
         (uint256 totalSize, , ) = nodeMgrAddress.getStatisticalIndex();
 
         uint256[] memory activeNodes = new uint256[](totalSize);
+        uint256[] memory onlineNodes = new uint256[](totalSize);
 
         uint256 index = 0;
         uint256 activeIndex = 0;
@@ -144,6 +176,8 @@ contract HyperAGI_Ecpoch_Awards is OwnableUpgradeable {
                 bytes1 status = bytes1(nodeStatus[i][j]);
 
                 if (status != 0x00) {
+                    onlineNodes[totalNum] = nodeId;
+
                     totalNum++;
 
                     if (status == 0x11) {
@@ -158,7 +192,7 @@ contract HyperAGI_Ecpoch_Awards is OwnableUpgradeable {
 
         nodeMgrAddress.setStatisticalIndex(totalNum, activeNum);
 
-        return (activeNodes, totalNum, activeNum);
+        return (activeNodes, onlineNodes, totalNum, activeNum);
     }
 
     function _getRandom(uint256 _start, uint256 _end) private returns (uint256) {

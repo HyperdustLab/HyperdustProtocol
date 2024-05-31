@@ -42,6 +42,8 @@ contract HyperAGI_GPUMining is OwnableUpgradeable, AccessControlUpgradeable {
 
     uint256 public _TGE_timestamp;
 
+    receive() external payable {}
+
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
     function initialize(address onlyOwner, uint256 GPUMiningReleaseInterval) public initializer {

@@ -3,9 +3,9 @@
 import { ethers, run, upgrades } from 'hardhat'
 
 async function main() {
-  const _Hyperdust_Miner_Service = await ethers.getContractFactory('Hyperdust_Miner_Service')
+  const _HyperAGI_Transaction_Cfg = await ethers.getContractFactory('HyperAGI_Transaction_Cfg')
 
-  await upgrades.upgradeProxy('0x579925eC652e4386d8c0B1D935C2bC3e2c548c97', _Hyperdust_Miner_Service)
+  await upgrades.upgradeProxy('0x859133fA725Cd252FD633E0Bc9ef7BbA270d6BE7', _HyperAGI_Transaction_Cfg)
 }
 
 // We recommend this pattern to be able to use async/await everywhere q

@@ -32,25 +32,39 @@ contract HyperAGI_Payment_Wallet is OwnableUpgradeable {
 
     mapping(address => User) private users;
 
-    receive() external payable {
-        users[msg.sender].balance += msg.value;
-    }
-
     function getBalance(address user) public view returns (uint256) {
         return users[user].balance;
     }
 
-    function authorize(address spender, uint256 amount) public {
+    function authorize(address spender, uint256 amount) public payable {
+        require(msg.value > 0, "HYPT required");
         users[msg.sender].allowances[spender] = amount;
+        users[msg.sender].balance += msg.value;
     }
 
+    // Function to revoke authorization and refund remaining ETH
     function revokeAuthorization(address spender) public {
+        uint256 remainingAllowance = users[msg.sender].allowances[spender];
+        require(remainingAllowance > 0, "No allowance to revoke");
+
         users[msg.sender].allowances[spender] = 0;
+
+        // Refund remaining allowance
+        if (remainingAllowance <= users[msg.sender].balance) {
+            users[msg.sender].balance -= remainingAllowance;
+            payable(msg.sender).transfer(remainingAllowance);
+        } else {
+            uint256 refundAmount = users[msg.sender].balance;
+            users[msg.sender].balance = 0;
+            payable(msg.sender).transfer(refundAmount);
+        }
     }
 
     function deduct(address from, uint256 amount) public {
         require(users[from].allowances[msg.sender] >= amount, "Not authorized or amount exceeds allowance");
         require(users[from].balance >= amount, "Insufficient balance");
+
+        require(address(this).balance >= amount, "Insufficient balance in contract");
 
         users[from].balance -= amount;
         users[from].allowances[msg.sender] -= amount;

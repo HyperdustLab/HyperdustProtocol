@@ -52,8 +52,10 @@ contract HyperAGI_Security_Deposit is OwnableUpgradeable {
         _nodeMgrAddress = contractaddressArray[2];
     }
 
-    function addSecurityDeposit(uint256 nodeId, uint256 amount) public {
+    function addSecurityDeposit(uint256 nodeId, uint256 amount) public payable {
         require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
+
+        require(amount == msg.value, "amount error");
 
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
 

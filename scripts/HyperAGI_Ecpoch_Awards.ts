@@ -7,7 +7,16 @@ async function main() {
   const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address])
   await instance.waitForDeployment()
 
-  await (await instance.setContractAddress(['0x5745090BFB28C3399223215DfbBb4e729aeF8cFD', '0x829551330A37140764573d0B3236E9Db71b4B196', '0x54C2E2f9f2233AD7d6C347739f178928673378F6', '0x502De4C5BDEC67A1ec907Ab5333dDd5094f5DBF9', '0xDAa6f0C96bbaaC78FfC37E7a4343E3D801446579'])).wait()
+  await (
+    await instance.setContractAddress([
+      '0x5745090BFB28C3399223215DfbBb4e729aeF8cFD',
+      '0x829551330A37140764573d0B3236E9Db71b4B196',
+      '0xDf3DDF0762F16cAe14aC1db4fFA78D61fADb72d0',
+      '0x5543D65CE4d38d462f8f8dc073FcBa36A4729D2C',
+      '0xDAa6f0C96bbaaC78FfC37E7a4343E3D801446579',
+      '0xb2342E1Bf4B4e0d340B97F5CdD8Fd9Cf24525D26',
+    ])
+  ).wait()
 
   const HyperAGI_Roles_Cfg = await ethers.getContractAt('HyperAGI_Roles_Cfg', '0x5745090BFB28C3399223215DfbBb4e729aeF8cFD')
 

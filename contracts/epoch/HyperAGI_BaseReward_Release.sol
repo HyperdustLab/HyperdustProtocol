@@ -61,8 +61,10 @@ contract HyperAGI_BaseReward_Release is OwnableUpgradeable {
         _storageAddress = contractaddressArray[1];
     }
 
-    function addBaseRewardReleaseRecord(uint256 amount, address account) public {
+    function addBaseRewardReleaseRecord(uint256 amount, address account) public payable {
         require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
+
+        require(amount == msg.value, "amount error");
 
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
 
