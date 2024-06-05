@@ -37,6 +37,12 @@ task('extract-metadata', 'Extracts and modifies metadata from build info')
       }
 
       if (metadataObject) {
+        // for (const key in metadataObject.sources) {
+        //   console.info(key)
+
+        //   delete metadataObject.sources[key].license
+        // }
+
         delete metadataObject.license
 
         const updatedMetadata = JSON.stringify(metadataObject, null, 2)

@@ -62,6 +62,16 @@ const config: HardhatUserConfig = {
       accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
       loggingEnabled: true,
     },
+    BOBTest: {
+      url: 'https://testnet.rpc.gobob.xyz/',
+      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
+      loggingEnabled: true,
+    },
+    RSKTest: {
+      url: 'https://public-node.testnet.rsk.co',
+      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
+      loggingEnabled: true,
+    },
   },
   etherscan: {
     apiKey: {
