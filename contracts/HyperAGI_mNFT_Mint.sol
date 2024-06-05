@@ -114,8 +114,6 @@ contract HyperAGI_mNFT_Mint is OwnableUpgradeable {
 
         require(del == 0, "not found");
 
-        string memory _tokenURI = storageAddress.getString(storageAddress.genKey("tokenURI", id));
-
         uint256 price = storageAddress.getUint(storageAddress.genKey("price", id));
 
         uint256 gasFee = HyperAGI_Transaction_Cfg(_transactionCfgAddress).getGasFee("mint_mNFT");
@@ -159,6 +157,7 @@ contract HyperAGI_mNFT_Mint is OwnableUpgradeable {
                 ERC721(contractAddress).safeMint(msg.sender, tokenURI);
             }
         } else if (contractType == 0x22) {
+            revert(contractAddress.toHexString());
             ERC1155(contractAddress).mint(msg.sender, tokenId, num, tokenURI, "");
         } else {
             revert("invalid contract type");
