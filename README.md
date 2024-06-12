@@ -76,9 +76,6 @@ The smart contracts of the HyperAGI are the core of the HyperAGI  platform, cont
 
 - `Hyperdust_Node_Type.sol`: Miner type management contract, responsible for maintaining miner node type information.
 
-Testnet video
 
-
-[![Alt text](https://ipfs.hyperdust.io/ipfs/QmSEoCq5kCJ2uMNMKKsWyibAc7HcrdYG1ssF4KJZQLJvmW?suffix=png)](https://youtu.be/8h12hFUe0dU)
 
 
