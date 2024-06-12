@@ -35,6 +35,10 @@ https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HyperdustChiangMaiRe
 
 https://docs.google.com/document/d/1tYCpw_OzKkidnQ63ijAPgMDO15jmmLcQ/edit?usp=sharing&ouid=117525248134720302581&rtpof=true&sd=true
 
+in Chinese
+
+https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HyperAGI-GPU-incentive_20240612151600.pdf
+
 
 #### HyperAGI Smart Contracts
 
