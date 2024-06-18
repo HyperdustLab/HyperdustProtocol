@@ -84,20 +84,20 @@ contract HyperAGI_Transaction_Cfg is OwnableUpgradeable {
     }
 
     function getMaxGasFee(string memory func) public view returns (uint256) {
-        (, uint256 _totalNum, uint256 _activeNum) = HyperAGI_Node_Mgr(_nodeMgrAddress).getStatisticalIndex();
+        (, , uint256 _activeNum) = HyperAGI_Node_Mgr(_nodeMgrAddress).getStatisticalIndex();
         uint256 renderPrice = _transactionProceduresMap[func];
 
         if (_activeNum == 0 || renderPrice == 0) {
             return _minGasFeeMap[func];
         }
 
-        if (_totalNum < 10) {
-            _totalNum = 10;
-        }
+        uint256 accuracy = 10000000000000;
 
-        uint256 gasPrice = renderPrice;
+        uint256 difficulty = (1 * accuracy) / 1;
 
-        uint256 gasFee = (renderPrice * gasPrice * 1 ether);
+        uint256 gasPrice = (renderPrice * accuracy) / difficulty;
+
+        uint256 gasFee = (renderPrice * gasPrice * 1 ether) / accuracy;
 
         return gasFee;
     }
