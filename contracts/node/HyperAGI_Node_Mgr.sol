@@ -69,13 +69,11 @@ contract HyperAGI_Node_Mgr is OwnableUpgradeable {
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
         HyperAGI_Miner_NFT_Pledge minerNFTPledgeAddress = HyperAGI_Miner_NFT_Pledge(_minerNFTPledgeAddress);
 
-        uint256 pledgeNum = minerNFTPledgeAddress.getAccountPledgeNum(incomeAddress);
-
         string memory accountKey = incomeAddress.toHexString();
 
         uint256 nodeNum = storageAddress.getUint(accountKey);
 
-        require(nodeNum + 1 >= pledgeNum, "The amount of pledged NFT is insufficient, please pledge the NFT first");
+        minerNFTPledgeAddress.lock(incomeAddress, 1);
 
         require(!storageAddress.getBool(ip), "ip already exists");
 
@@ -226,8 +224,6 @@ contract HyperAGI_Node_Mgr is OwnableUpgradeable {
 
         address incomeAddress = storageAddress.getAddress(storageAddress.genKey("incomeAddress", nodeId));
 
-        uint256 pledgeNum = minerNFTPledgeAddress.getAccountPledgeNum(incomeAddress);
-
         string memory accountKey = incomeAddress.toHexString();
 
         storageAddress.setBool(storageAddress.genKey("isOffline", nodeId), isOffline);
@@ -237,7 +233,7 @@ contract HyperAGI_Node_Mgr is OwnableUpgradeable {
         if (isOffline) {
             storageAddress.setUint(accountKey, nodeNum - 1);
         } else {
-            require(nodeNum + 1 >= pledgeNum, "The amount of pledged NFT is insufficient, please pledge the NFT first");
+            minerNFTPledgeAddress.lock(incomeAddress, 1);
             storageAddress.setUint(accountKey, nodeNum + 1);
         }
 

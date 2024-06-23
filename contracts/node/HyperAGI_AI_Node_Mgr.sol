@@ -124,13 +124,7 @@ contract HyperAGI_AI_Node_Mgr is OwnableUpgradeable {
 
         require(status == 0x00, "The node has been activated");
 
-        uint256 pledgeNum = minerNFTPledgeAddress.getAccountPledgeNum(account);
-
-        string memory accountKey = account.toHexString();
-
-        uint256 nodeNum = storageAddress.getUint(accountKey);
-
-        require(nodeNum + 1 >= pledgeNum, "The amount of pledged NFT is insufficient, please pledge the NFT first");
+        minerNFTPledgeAddress.lock(account, 1);
 
         storageAddress.setBytes1(storageAddress.genKey("status", id), 0x01);
 

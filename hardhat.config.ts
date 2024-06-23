@@ -64,7 +64,7 @@ const config: HardhatUserConfig = {
     },
     BOBTest: {
       url: 'https://testnet.rpc.gobob.xyz/',
-      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
+      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1, process.env.PRIVATE_KEY2],
       loggingEnabled: true,
     },
     RSKTest: {
