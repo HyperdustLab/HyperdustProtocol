@@ -10,8 +10,6 @@ import "../utils/StrUtil.sol";
 
 import "../HyperAGI_Storage.sol";
 
-import "./../node/HyperAGI_Node_Mgr.sol";
-
 import "../HyperAGI_Roles_Cfg.sol";
 
 contract HyperAGI_BaseReward_Release is OwnableUpgradeable {
