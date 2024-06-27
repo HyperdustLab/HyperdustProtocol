@@ -38,22 +38,6 @@
         "type": "error"
       },
       {
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "value",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "length",
-            "type": "uint256"
-          }
-        ],
-        "name": "StringsInsufficientHexLength",
-        "type": "error"
-      },
-      {
         "anonymous": false,
         "inputs": [
           {
@@ -91,23 +75,37 @@
           {
             "indexed": false,
             "internalType": "uint256",
-            "name": "nodeId",
-            "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "totalSecurityAmount",
-            "type": "uint256"
-          },
-          {
-            "indexed": false,
-            "internalType": "uint256",
-            "name": "amount",
+            "name": "difficulty",
             "type": "uint256"
           }
         ],
-        "name": "eveSave",
+        "name": "eveDifficulty",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256",
+            "name": "id",
+            "type": "uint256"
+          }
+        ],
+        "name": "eveEpochTransactionSave",
+        "type": "event"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "internalType": "uint256[]",
+            "name": "success",
+            "type": "uint256[]"
+          }
+        ],
+        "name": "eveUpdateEpoch",
         "type": "event"
       },
       {
@@ -151,12 +149,25 @@
       },
       {
         "inputs": [],
-        "name": "_withdrawalInterval",
+        "name": "_transactionCfgAddress",
         "outputs": [
           {
-            "internalType": "uint32",
+            "internalType": "address",
             "name": "",
-            "type": "uint32"
+            "type": "address"
+          }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [],
+        "name": "_walletAccountAddress",
+        "outputs": [
+          {
+            "internalType": "address",
+            "name": "",
+            "type": "address"
           }
         ],
         "stateMutability": "view",
@@ -171,12 +182,18 @@
           },
           {
             "internalType": "uint256",
-            "name": "amount",
+            "name": "epoch",
             "type": "uint256"
           }
         ],
-        "name": "addSecurityDeposit",
-        "outputs": [],
+        "name": "createEpochTransaction",
+        "outputs": [
+          {
+            "internalType": "uint256",
+            "name": "",
+            "type": "uint256"
+          }
+        ],
         "stateMutability": "payable",
         "type": "function"
       },
@@ -184,74 +201,49 @@
         "inputs": [
           {
             "internalType": "uint256",
-            "name": "nodeId",
+            "name": "id",
             "type": "uint256"
           }
         ],
-        "name": "applyWithdrawal",
-        "outputs": [],
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "inputs": [
+        "name": "getEpochTransaction",
+        "outputs": [
           {
-            "internalType": "uint256",
-            "name": "nodeId",
-            "type": "uint256"
+            "internalType": "address",
+            "name": "",
+            "type": "address"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "bytes1",
+            "name": "",
+            "type": "bytes1"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "",
+            "type": "uint256[]"
+          },
+          {
+            "internalType": "uint256[]",
+            "name": "",
+            "type": "uint256[]"
           }
         ],
-        "name": "cancelWithdrawal",
-        "outputs": [],
-        "stateMutability": "nonpayable",
+        "stateMutability": "view",
         "type": "function"
       },
       {
         "inputs": [],
-        "name": "getIncomeAddressList",
+        "name": "getRunningEpochTransactions",
         "outputs": [
           {
-            "internalType": "address[]",
+            "internalType": "uint256[]",
             "name": "",
-            "type": "address[]"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "nodeId",
-            "type": "uint256"
-          }
-        ],
-        "name": "getNodeSecurityDeposit",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
-          }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-      },
-      {
-        "inputs": [
-          {
-            "internalType": "address",
-            "name": "account",
-            "type": "address"
-          }
-        ],
-        "name": "getSecurityDeposit",
-        "outputs": [
-          {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
+            "type": "uint256[]"
           }
         ],
         "stateMutability": "view",
@@ -281,6 +273,24 @@
           }
         ],
         "stateMutability": "view",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "uint256",
+            "name": "orderId",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "epochNum",
+            "type": "uint256"
+          }
+        ],
+        "name": "renewal",
+        "outputs": [],
+        "stateMutability": "payable",
         "type": "function"
       },
       {
@@ -345,12 +355,25 @@
       {
         "inputs": [
           {
-            "internalType": "uint32",
-            "name": "withdrawalInterval",
-            "type": "uint32"
+            "internalType": "address",
+            "name": "transactionCfgAddress",
+            "type": "address"
           }
         ],
-        "name": "setWithdrawalInterval",
+        "name": "setTransactionCfgAddress",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+      },
+      {
+        "inputs": [
+          {
+            "internalType": "address",
+            "name": "walletAccountAddress",
+            "type": "address"
+          }
+        ],
+        "name": "setWalletAccountAddress",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -369,14 +392,8 @@
         "type": "function"
       },
       {
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "nodeId",
-            "type": "uint256"
-          }
-        ],
-        "name": "withdrawal",
+        "inputs": [],
+        "name": "updateEpoch",
         "outputs": [],
         "stateMutability": "nonpayable",
         "type": "function"
@@ -402,11 +419,6 @@
         "OwnableUnauthorizedAccount(address)": [
           {
             "details": "The caller account is not authorized to perform an operation."
-          }
-        ],
-        "StringsInsufficientHexLength(uint256,uint256)": [
-          {
-            "details": "The `value` string doesn't fit in the specified `length`."
           }
         ]
       },
@@ -437,7 +449,7 @@
   },
   "settings": {
     "compilationTarget": {
-      "contracts/epoch/HyperAGI_Security_Deposit.sol": "HyperAGI_Security_Deposit"
+      "contracts/epoch/HyperAGI_Epoch_Transaction.sol": "HyperAGI_Epoch_Transaction"
     },
     "evmVersion": "paris",
     "libraries": {},
@@ -491,6 +503,11 @@
       "keccak256": "0x6caffc9cfdc623eca9f87a686071708af5d5c17454d65022843fdddbc53c0cce",
       "license": "MIT"
     },
+    "@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts (last updated v5.0.0) (token/ERC20/IERC20.sol)\n\npragma solidity ^0.8.20;\n\n/**\n * @dev Interface of the ERC20 standard as defined in the EIP.\n */\ninterface IERC20 {\n    /**\n     * @dev Emitted when `value` tokens are moved from one account (`from`) to\n     * another (`to`).\n     *\n     * Note that `value` may be zero.\n     */\n    event Transfer(address indexed from, address indexed to, uint256 value);\n\n    /**\n     * @dev Emitted when the allowance of a `spender` for an `owner` is set by\n     * a call to {approve}. `value` is the new allowance.\n     */\n    event Approval(address indexed owner, address indexed spender, uint256 value);\n\n    /**\n     * @dev Returns the value of tokens in existence.\n     */\n    function totalSupply() external view returns (uint256);\n\n    /**\n     * @dev Returns the value of tokens owned by `account`.\n     */\n    function balanceOf(address account) external view returns (uint256);\n\n    /**\n     * @dev Moves a `value` amount of tokens from the caller's account to `to`.\n     *\n     * Returns a boolean value indicating whether the operation succeeded.\n     *\n     * Emits a {Transfer} event.\n     */\n    function transfer(address to, uint256 value) external returns (bool);\n\n    /**\n     * @dev Returns the remaining number of tokens that `spender` will be\n     * allowed to spend on behalf of `owner` through {transferFrom}. This is\n     * zero by default.\n     *\n     * This value changes when {approve} or {transferFrom} are called.\n     */\n    function allowance(address owner, address spender) external view returns (uint256);\n\n    /**\n     * @dev Sets a `value` amount of tokens as the allowance of `spender` over the\n     * caller's tokens.\n     *\n     * Returns a boolean value indicating whether the operation succeeded.\n     *\n     * IMPORTANT: Beware that changing an allowance with this method brings the risk\n     * that someone may use both the old and the new allowance by unfortunate\n     * transaction ordering. One possible solution to mitigate this race\n     * condition is to first reduce the spender's allowance to 0 and set the\n     * desired value afterwards:\n     * https://github.com/ethereum/EIPs/issues/20#issuecomment-263524729\n     *\n     * Emits an {Approval} event.\n     */\n    function approve(address spender, uint256 value) external returns (bool);\n\n    /**\n     * @dev Moves a `value` amount of tokens from `from` to `to` using the\n     * allowance mechanism. `value` is then deducted from the caller's\n     * allowance.\n     *\n     * Returns a boolean value indicating whether the operation succeeded.\n     *\n     * Emits a {Transfer} event.\n     */\n    function transferFrom(address from, address to, uint256 value) external returns (bool);\n}\n",
+      "keccak256": "0xc6a8ff0ea489379b61faa647490411b80102578440ab9d84e9a957cc12164e70",
+      "license": "MIT"
+    },
     "@openzeppelin/contracts/token/ERC721/IERC721.sol": {
       "content": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts (last updated v5.0.0) (token/ERC721/IERC721.sol)\n\npragma solidity ^0.8.20;\n\nimport {IERC165} from \"../../utils/introspection/IERC165.sol\";\n\n/**\n * @dev Required interface of an ERC721 compliant contract.\n */\ninterface IERC721 is IERC165 {\n    /**\n     * @dev Emitted when `tokenId` token is transferred from `from` to `to`.\n     */\n    event Transfer(address indexed from, address indexed to, uint256 indexed tokenId);\n\n    /**\n     * @dev Emitted when `owner` enables `approved` to manage the `tokenId` token.\n     */\n    event Approval(address indexed owner, address indexed approved, uint256 indexed tokenId);\n\n    /**\n     * @dev Emitted when `owner` enables or disables (`approved`) `operator` to manage all of its assets.\n     */\n    event ApprovalForAll(address indexed owner, address indexed operator, bool approved);\n\n    /**\n     * @dev Returns the number of tokens in ``owner``'s account.\n     */\n    function balanceOf(address owner) external view returns (uint256 balance);\n\n    /**\n     * @dev Returns the owner of the `tokenId` token.\n     *\n     * Requirements:\n     *\n     * - `tokenId` must exist.\n     */\n    function ownerOf(uint256 tokenId) external view returns (address owner);\n\n    /**\n     * @dev Safely transfers `tokenId` token from `from` to `to`.\n     *\n     * Requirements:\n     *\n     * - `from` cannot be the zero address.\n     * - `to` cannot be the zero address.\n     * - `tokenId` token must exist and be owned by `from`.\n     * - If the caller is not `from`, it must be approved to move this token by either {approve} or {setApprovalForAll}.\n     * - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon\n     *   a safe transfer.\n     *\n     * Emits a {Transfer} event.\n     */\n    function safeTransferFrom(address from, address to, uint256 tokenId, bytes calldata data) external;\n\n    /**\n     * @dev Safely transfers `tokenId` token from `from` to `to`, checking first that contract recipients\n     * are aware of the ERC721 protocol to prevent tokens from being forever locked.\n     *\n     * Requirements:\n     *\n     * - `from` cannot be the zero address.\n     * - `to` cannot be the zero address.\n     * - `tokenId` token must exist and be owned by `from`.\n     * - If the caller is not `from`, it must have been allowed to move this token by either {approve} or\n     *   {setApprovalForAll}.\n     * - If `to` refers to a smart contract, it must implement {IERC721Receiver-onERC721Received}, which is called upon\n     *   a safe transfer.\n     *\n     * Emits a {Transfer} event.\n     */\n    function safeTransferFrom(address from, address to, uint256 tokenId) external;\n\n    /**\n     * @dev Transfers `tokenId` token from `from` to `to`.\n     *\n     * WARNING: Note that the caller is responsible to confirm that the recipient is capable of receiving ERC721\n     * or else they may be permanently lost. Usage of {safeTransferFrom} prevents loss, though the caller must\n     * understand this adds an external call which potentially creates a reentrancy vulnerability.\n     *\n     * Requirements:\n     *\n     * - `from` cannot be the zero address.\n     * - `to` cannot be the zero address.\n     * - `tokenId` token must be owned by `from`.\n     * - If the caller is not `from`, it must be approved to move this token by either {approve} or {setApprovalForAll}.\n     *\n     * Emits a {Transfer} event.\n     */\n    function transferFrom(address from, address to, uint256 tokenId) external;\n\n    /**\n     * @dev Gives permission to `to` to transfer `tokenId` token to another account.\n     * The approval is cleared when the token is transferred.\n     *\n     * Only a single account can be approved at a time, so approving the zero address clears previous approvals.\n     *\n     * Requirements:\n     *\n     * - The caller must own the token or be an approved operator.\n     * - `tokenId` must exist.\n     *\n     * Emits an {Approval} event.\n     */\n    function approve(address to, uint256 tokenId) external;\n\n    /**\n     * @dev Approve or remove `operator` as an operator for the caller.\n     * Operators can call {transferFrom} or {safeTransferFrom} for any token owned by the caller.\n     *\n     * Requirements:\n     *\n     * - The `operator` cannot be the address zero.\n     *\n     * Emits an {ApprovalForAll} event.\n     */\n    function setApprovalForAll(address operator, bool approved) external;\n\n    /**\n     * @dev Returns the account approved for `tokenId` token.\n     *\n     * Requirements:\n     *\n     * - `tokenId` must exist.\n     */\n    function getApproved(uint256 tokenId) external view returns (address operator);\n\n    /**\n     * @dev Returns if the `operator` is allowed to manage all of the assets of `owner`.\n     *\n     * See {setApprovalForAll}\n     */\n    function isApprovedForAll(address owner, address operator) external view returns (bool);\n}\n",
       "keccak256": "0x5ef46daa3b58ef2702279d514780316efaa952915ee1aa3396f041ee2982b0b4",
@@ -499,6 +516,11 @@
     "@openzeppelin/contracts/utils/Context.sol": {
       "content": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts (last updated v5.0.1) (utils/Context.sol)\n\npragma solidity ^0.8.20;\n\n/**\n * @dev Provides information about the current execution context, including the\n * sender of the transaction and its data. While these are generally available\n * via msg.sender and msg.data, they should not be accessed in such a direct\n * manner, since when dealing with meta-transactions the account sending and\n * paying for execution may not be the actual sender (as far as an application\n * is concerned).\n *\n * This contract is only required for intermediate, library-like contracts.\n */\nabstract contract Context {\n    function _msgSender() internal view virtual returns (address) {\n        return msg.sender;\n    }\n\n    function _msgData() internal view virtual returns (bytes calldata) {\n        return msg.data;\n    }\n\n    function _contextSuffixLength() internal view virtual returns (uint256) {\n        return 0;\n    }\n}\n",
       "keccak256": "0x493033a8d1b176a037b2cc6a04dad01a5c157722049bbecf632ca876224dd4b2",
+      "license": "MIT"
+    },
+    "@openzeppelin/contracts/utils/StorageSlot.sol": {
+      "content": "// SPDX-License-Identifier: MIT\n// OpenZeppelin Contracts (last updated v5.0.0) (utils/StorageSlot.sol)\n// This file was procedurally generated from scripts/generate/templates/StorageSlot.js.\n\npragma solidity ^0.8.20;\n\n/**\n * @dev Library for reading and writing primitive types to specific storage slots.\n *\n * Storage slots are often used to avoid storage conflict when dealing with upgradeable contracts.\n * This library helps with reading and writing to such slots without the need for inline assembly.\n *\n * The functions in this library return Slot structs that contain a `value` member that can be used to read or write.\n *\n * Example usage to set ERC1967 implementation slot:\n * ```solidity\n * contract ERC1967 {\n *     bytes32 internal constant _IMPLEMENTATION_SLOT = 0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc;\n *\n *     function _getImplementation() internal view returns (address) {\n *         return StorageSlot.getAddressSlot(_IMPLEMENTATION_SLOT).value;\n *     }\n *\n *     function _setImplementation(address newImplementation) internal {\n *         require(newImplementation.code.length > 0);\n *         StorageSlot.getAddressSlot(_IMPLEMENTATION_SLOT).value = newImplementation;\n *     }\n * }\n * ```\n */\nlibrary StorageSlot {\n    struct AddressSlot {\n        address value;\n    }\n\n    struct BooleanSlot {\n        bool value;\n    }\n\n    struct Bytes32Slot {\n        bytes32 value;\n    }\n\n    struct Uint256Slot {\n        uint256 value;\n    }\n\n    struct StringSlot {\n        string value;\n    }\n\n    struct BytesSlot {\n        bytes value;\n    }\n\n    /**\n     * @dev Returns an `AddressSlot` with member `value` located at `slot`.\n     */\n    function getAddressSlot(bytes32 slot) internal pure returns (AddressSlot storage r) {\n        /// @solidity memory-safe-assembly\n        assembly {\n            r.slot := slot\n        }\n    }\n\n    /**\n     * @dev Returns an `BooleanSlot` with member `value` located at `slot`.\n     */\n    function getBooleanSlot(bytes32 slot) internal pure returns (BooleanSlot storage r) {\n        /// @solidity memory-safe-assembly\n        assembly {\n            r.slot := slot\n        }\n    }\n\n    /**\n     * @dev Returns an `Bytes32Slot` with member `value` located at `slot`.\n     */\n    function getBytes32Slot(bytes32 slot) internal pure returns (Bytes32Slot storage r) {\n        /// @solidity memory-safe-assembly\n        assembly {\n            r.slot := slot\n        }\n    }\n\n    /**\n     * @dev Returns an `Uint256Slot` with member `value` located at `slot`.\n     */\n    function getUint256Slot(bytes32 slot) internal pure returns (Uint256Slot storage r) {\n        /// @solidity memory-safe-assembly\n        assembly {\n            r.slot := slot\n        }\n    }\n\n    /**\n     * @dev Returns an `StringSlot` with member `value` located at `slot`.\n     */\n    function getStringSlot(bytes32 slot) internal pure returns (StringSlot storage r) {\n        /// @solidity memory-safe-assembly\n        assembly {\n            r.slot := slot\n        }\n    }\n\n    /**\n     * @dev Returns an `StringSlot` representation of the string storage pointer `store`.\n     */\n    function getStringSlot(string storage store) internal pure returns (StringSlot storage r) {\n        /// @solidity memory-safe-assembly\n        assembly {\n            r.slot := store.slot\n        }\n    }\n\n    /**\n     * @dev Returns an `BytesSlot` with member `value` located at `slot`.\n     */\n    function getBytesSlot(bytes32 slot) internal pure returns (BytesSlot storage r) {\n        /// @solidity memory-safe-assembly\n        assembly {\n            r.slot := slot\n        }\n    }\n\n    /**\n     * @dev Returns an `BytesSlot` representation of the bytes storage pointer `store`.\n     */\n    function getBytesSlot(bytes storage store) internal pure returns (BytesSlot storage r) {\n        /// @solidity memory-safe-assembly\n        assembly {\n            r.slot := store.slot\n        }\n    }\n}\n",
+      "keccak256": "0x32ba59b4b7299237c8ba56319110989d7978a039faf754793064e967e5894418",
       "license": "MIT"
     },
     "@openzeppelin/contracts/utils/Strings.sol": {
@@ -529,9 +551,17 @@
       "content": "pragma solidity ^0.8.0;\r\n\r\nimport \"@openzeppelin/contracts/access/Ownable.sol\";\r\n\r\nimport \"./utils/StrUtil.sol\";\r\n\r\nimport \"@openzeppelin/contracts/utils/Strings.sol\";\r\n\r\nimport \"@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol\";\r\n\r\nimport \"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol\";\r\n\r\ncontract HyperAGI_Storage is OwnableUpgradeable {\r\n    using Strings for *;\r\n    using StrUtil for *;\r\n\r\n    function initialize(address ownable) public initializer {\r\n        __Ownable_init(ownable);\r\n    }\r\n\r\n    mapping(string => uint256) public uintStorage;\r\n    mapping(string => address) public addressStorage;\r\n    mapping(string => string) public stringStorage;\r\n    mapping(string => bytes) public bytesStorage;\r\n    mapping(string => bytes1) public bytes1Storage;\r\n    mapping(string => bytes32) public bytes32Storage;\r\n\r\n    mapping(string => bool) public boolStorage;\r\n\r\n    mapping(string => uint256[]) public uintArrayStorage;\r\n    mapping(string => address[]) public addressArrayStorage;\r\n    mapping(string => string[]) public stringArrayStorage;\r\n    mapping(string => bytes[]) public bytesArrayStorage;\r\n    mapping(string => bool[]) public boolArrayStorage;\r\n    mapping(bytes32 => uint256) public bytes32UintStorage;\r\n    mapping(bytes32 => string) public bytes32StringStorage;\r\n\r\n    uint256 public _id;\r\n\r\n    address public _serviceAddress;\r\n\r\n    function setServiceAddress(address serviceAddress) public onlyOwner {\r\n        _serviceAddress = serviceAddress;\r\n    }\r\n\r\n    function setUint(string memory key, uint256 value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        uintStorage[key] = value;\r\n    }\r\n\r\n    function getUint(string memory key) public view returns (uint256) {\r\n        return uintStorage[key];\r\n    }\r\n\r\n    function setAddress(string memory key, address value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        addressStorage[key] = value;\r\n    }\r\n\r\n    function getAddress(string memory key) public view returns (address) {\r\n        return addressStorage[key];\r\n    }\r\n\r\n    function setString(string memory key, string memory value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        stringStorage[key] = value;\r\n    }\r\n\r\n    function getString(string memory key) public view returns (string memory) {\r\n        return stringStorage[key];\r\n    }\r\n\r\n    function setBytes(string memory key, bytes memory value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        bytesStorage[key] = value;\r\n    }\r\n\r\n    function getBytes(string memory key) public view returns (bytes memory) {\r\n        return bytesStorage[key];\r\n    }\r\n\r\n    function setBool(string memory key, bool value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        boolStorage[key] = value;\r\n    }\r\n\r\n    function getBool(string memory key) public view returns (bool) {\r\n        return boolStorage[key];\r\n    }\r\n\r\n    function getNextId() public returns (uint256) {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        _id++;\r\n        return _id;\r\n    }\r\n\r\n    function setUintArray(string memory key, uint256[] memory uint256Array) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        uintArrayStorage[key] = uint256Array;\r\n    }\r\n\r\n    function setUintArray(string memory key, uint256 value) public returns (uint256) {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        uintArrayStorage[key].push(value);\r\n        return uintArrayStorage[key].length - 1;\r\n    }\r\n\r\n    function setUintArray(string memory key, uint256 index, uint256 value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        require(index < uintArrayStorage[key].length, \"Index out of bounds\");\r\n        uintArrayStorage[key][index] = value;\r\n    }\r\n\r\n    function removeUintArray(string memory key, uint256 index) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n\r\n        require(index < uintArrayStorage[key].length, \"Index out of bounds\");\r\n\r\n        uintArrayStorage[key][index] = uintArrayStorage[key][uintArrayStorage[key].length - 1];\r\n\r\n        uintArrayStorage[key].pop();\r\n    }\r\n\r\n    function setBytes32(string memory key, bytes32 value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        bytes32Storage[key] = value;\r\n    }\r\n\r\n    function getBytes32(string memory key) public view returns (bytes32) {\r\n        return bytes32Storage[key];\r\n    }\r\n\r\n    function getUintArray(string memory key) public view returns (uint256[] memory) {\r\n        return uintArrayStorage[key];\r\n    }\r\n\r\n    function setAddressArray(string memory key, address[] memory addressArray) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        addressArrayStorage[key] = addressArray;\r\n    }\r\n\r\n    function setAddressArray(string memory key, address value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        addressArrayStorage[key].push(value);\r\n    }\r\n\r\n    function setAddressArray(string memory key, uint256 index, address value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n\r\n        require(index < addressArrayStorage[key].length, \"Index out of bounds\");\r\n        addressArrayStorage[key][index] = value;\r\n    }\r\n\r\n    function removeAddressArray(string memory key, uint256 index) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n\r\n        require(index < addressArrayStorage[key].length, \"Index out of bounds\");\r\n\r\n        addressArrayStorage[key][index] = addressArrayStorage[key][addressArrayStorage[key].length - 1];\r\n\r\n        addressArrayStorage[key].pop();\r\n    }\r\n\r\n    function getAddressArray(string memory key) public view returns (address[] memory) {\r\n        return addressArrayStorage[key];\r\n    }\r\n\r\n    function setStringArray(string memory key, string[] memory stringArray) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        stringArrayStorage[key] = stringArray;\r\n    }\r\n\r\n    function setStringArray(string memory key, string memory value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        stringArrayStorage[key].push(value);\r\n    }\r\n\r\n    function setStringArray(string memory key, uint256 index, string memory value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        require(index < stringArrayStorage[key].length, \"Index out of bounds\");\r\n        stringArrayStorage[key][index] = value;\r\n    }\r\n\r\n    function removeStringArray(string memory key, uint256 index) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n\r\n        require(index < stringArrayStorage[key].length, \"Index out of bounds\");\r\n\r\n        stringArrayStorage[key][index] = stringArrayStorage[key][stringArrayStorage[key].length - 1];\r\n\r\n        stringArrayStorage[key].pop();\r\n    }\r\n\r\n    function getStringArray(string memory key) public view returns (string[] memory) {\r\n        return stringArrayStorage[key];\r\n    }\r\n\r\n    function setBytesArray(string memory key, bytes[] memory bytesArray) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        bytesArrayStorage[key] = bytesArray;\r\n    }\r\n\r\n    function setBytesArray(string memory key, bytes memory value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        bytesArrayStorage[key].push(value);\r\n    }\r\n\r\n    function setBytesArray(string memory key, uint256 index, bytes memory value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        require(index < bytesArrayStorage[key].length, \"Index out of bounds\");\r\n        bytesArrayStorage[key][index] = value;\r\n    }\r\n\r\n    function removeBytesArray(string memory key, uint256 index) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n\r\n        require(index < bytesArrayStorage[key].length, \"Index out of bounds\");\r\n\r\n        bytesArrayStorage[key][index] = bytesArrayStorage[key][bytesArrayStorage[key].length - 1];\r\n\r\n        bytesArrayStorage[key].pop();\r\n    }\r\n\r\n    function getBytesArray(string memory key) public view returns (bytes[] memory) {\r\n        return bytesArrayStorage[key];\r\n    }\r\n\r\n    function setBoolArray(string memory key, bool[] memory boolArray) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        boolArrayStorage[key] = boolArray;\r\n    }\r\n\r\n    function setBoolArray(string memory key, bool value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        boolArrayStorage[key].push(value);\r\n    }\r\n\r\n    function setBoolArray(string memory key, uint256 index, bool value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        require(index < boolArrayStorage[key].length, \"Index out of bounds\");\r\n        boolArrayStorage[key][index] = value;\r\n    }\r\n\r\n    function removeBoolArray(string memory key, uint256 index) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n\r\n        require(index < boolArrayStorage[key].length, \"Index out of bounds\");\r\n\r\n        boolArrayStorage[key][index] = boolArrayStorage[key][boolArrayStorage[key].length - 1];\r\n\r\n        boolArrayStorage[key].pop();\r\n    }\r\n\r\n    function getBoolArray(string memory key) public view returns (bool[] memory) {\r\n        return boolArrayStorage[key];\r\n    }\r\n\r\n    function setBytes1(string memory key, bytes1 value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        bytes1Storage[key] = value;\r\n    }\r\n\r\n    function getBytes1(string memory key) public view returns (bytes1) {\r\n        return bytes1Storage[key];\r\n    }\r\n\r\n    function genKey(string memory key, uint256 id) public pure returns (string memory) {\r\n        return string(abi.encodePacked(key, \"_\", id.toString()));\r\n    }\r\n\r\n    function setBytes32Uint(bytes32 key, uint256 value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        bytes32UintStorage[key] = value;\r\n    }\r\n\r\n    function getBytes32Uint(bytes32 key) public view returns (uint256) {\r\n        return bytes32UintStorage[key];\r\n    }\r\n\r\n    function setBytes32String(bytes32 key, string memory value) public {\r\n        require(msg.sender == _serviceAddress, \"only service can set\");\r\n        bytes32StringStorage[key] = value;\r\n    }\r\n\r\n    function getBytes32String(bytes32 key) public view returns (string memory) {\r\n        return bytes32StringStorage[key];\r\n    }\r\n}\r\n",
       "keccak256": "0x1489bd332aca0852cccc0588784b7bdf8eaf872b32d9741eac5b6bd22b9731eb"
     },
-    "contracts/epoch/HyperAGI_Security_Deposit.sol": {
-      "content": "pragma solidity ^0.8.0;\r\n\r\nimport \"@openzeppelin/contracts/utils/Strings.sol\";\r\n\r\nimport \"@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol\";\r\n\r\nimport \"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol\";\r\n\r\nimport \"../utils/StrUtil.sol\";\r\n\r\nimport \"../HyperAGI_Storage.sol\";\r\n\r\nimport \"../node/HyperAGI_Node_Mgr.sol\";\r\n\r\nimport \"../HyperAGI_Roles_Cfg.sol\";\r\n\r\ncontract HyperAGI_Security_Deposit is OwnableUpgradeable {\r\n    using Strings for *;\r\n    using StrUtil for *;\r\n\r\n    address public _rolesCfgAddress;\r\n    address public _storageAddress;\r\n    address public _nodeMgrAddress;\r\n    uint32 public _withdrawalInterval;\r\n\r\n    function initialize(address onlyOwner) public initializer {\r\n        __Ownable_init(onlyOwner);\r\n        _withdrawalInterval = 30 days;\r\n    }\r\n\r\n    event eveSave(uint256 nodeId, uint256 totalSecurityAmount, uint256 amount);\r\n\r\n    function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {\r\n        _rolesCfgAddress = rolesCfgAddress;\r\n    }\r\n\r\n    function setStorageAddress(address storageAddress) public onlyOwner {\r\n        _storageAddress = storageAddress;\r\n    }\r\n\r\n    function setNodeMgrAddress(address nodeMgrAddress) public onlyOwner {\r\n        _nodeMgrAddress = nodeMgrAddress;\r\n    }\r\n\r\n    function setWithdrawalInterval(uint32 withdrawalInterval) public onlyOwner {\r\n        _withdrawalInterval = withdrawalInterval;\r\n    }\r\n\r\n    function setContractAddress(address[] memory contractaddressArray) public onlyOwner {\r\n        _rolesCfgAddress = contractaddressArray[0];\r\n        _storageAddress = contractaddressArray[1];\r\n        _nodeMgrAddress = contractaddressArray[2];\r\n    }\r\n\r\n    function addSecurityDeposit(uint256 nodeId, uint256 amount) public payable {\r\n        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), \"not admin role\");\r\n\r\n        require(amount == msg.value, \"amount error\");\r\n\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        HyperAGI_Node_Mgr nodeMgrAddress = HyperAGI_Node_Mgr(_nodeMgrAddress);\r\n\r\n        (, address incomeAddress, , ) = nodeMgrAddress.getNode(nodeId);\r\n\r\n        string memory key = nodeId.toString();\r\n\r\n        uint256 _amount = storageAddress.getUint(key) + amount;\r\n\r\n        storageAddress.setUint(key, _amount);\r\n\r\n        storageAddress.setUint(incomeAddress.toHexString(), storageAddress.getUint(incomeAddress.toHexString()) + amount);\r\n\r\n        string memory incomeAddressIndexKey = incomeAddress.toHexString().toSlice().concat(\"_index\".toSlice());\r\n\r\n        uint256 incomeAddressIndex = storageAddress.getUint(incomeAddressIndexKey);\r\n\r\n        if (incomeAddressIndex == 0) {\r\n            storageAddress.setAddressArray(\"incomeAddressList\", incomeAddress);\r\n\r\n            uint256 incomeAddressListTotal = storageAddress.getUint(\"incomeAddressListTotal\");\r\n\r\n            storageAddress.setUint(incomeAddressIndexKey, incomeAddressListTotal);\r\n\r\n            incomeAddressListTotal++;\r\n\r\n            storageAddress.setUint(\"incomeAddressListTotal\", incomeAddressListTotal + 1);\r\n        }\r\n\r\n        emit eveSave(nodeId, _amount, amount);\r\n    }\r\n\r\n    function applyWithdrawal(uint256 nodeId) public {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n        HyperAGI_Node_Mgr nodeMgrAddress = HyperAGI_Node_Mgr(_nodeMgrAddress);\r\n\r\n        (, address incomeAddress, , ) = nodeMgrAddress.getNode(nodeId);\r\n\r\n        require(incomeAddress == msg.sender, \"not income address\");\r\n\r\n        string memory key = storageAddress.genKey(\"applyWithdrawal_\", nodeId);\r\n\r\n        uint256 time = storageAddress.getUint(key);\r\n\r\n        require(time == 0, \"already apply\");\r\n\r\n        storageAddress.setUint(key, block.timestamp);\r\n    }\r\n\r\n    function cancelWithdrawal(uint256 nodeId) public {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        HyperAGI_Node_Mgr nodeMgrAddress = HyperAGI_Node_Mgr(_nodeMgrAddress);\r\n        (, address incomeAddress, , ) = nodeMgrAddress.getNode(nodeId);\r\n\r\n        require(incomeAddress == msg.sender, \"not income address\");\r\n\r\n        string memory key = storageAddress.genKey(\"applyWithdrawal_\", nodeId);\r\n\r\n        storageAddress.setUint(key, 0);\r\n    }\r\n\r\n    function withdrawal(uint256 nodeId) public {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        HyperAGI_Node_Mgr nodeMgrAddress = HyperAGI_Node_Mgr(_nodeMgrAddress);\r\n\r\n        (, address incomeAddress, , ) = nodeMgrAddress.getNode(nodeId);\r\n\r\n        require(incomeAddress == msg.sender, \"not income address\");\r\n\r\n        uint256 amount = storageAddress.getUint(nodeId.toString());\r\n\r\n        require(amount > 0, \"There is no amount to withdraw\");\r\n\r\n        string memory applyWithdrawalKey = storageAddress.genKey(\"applyWithdrawal_\", nodeId);\r\n\r\n        uint256 applyWithdrawalTime = storageAddress.getUint(applyWithdrawalKey);\r\n\r\n        require(applyWithdrawalTime > 0 && applyWithdrawalTime + _withdrawalInterval < block.timestamp, \"not apply withdrawal or not reach withdrawal time\");\r\n\r\n        storageAddress.setUint(applyWithdrawalKey, 0);\r\n\r\n        storageAddress.setUint(nodeId.toString(), 0);\r\n\r\n        string memory incomeAddressKey = incomeAddress.toHexString();\r\n\r\n        uint256 incomeAddressAmount = storageAddress.getUint(incomeAddressKey);\r\n\r\n        incomeAddressAmount -= amount;\r\n\r\n        storageAddress.setUint(incomeAddressKey, incomeAddressAmount);\r\n\r\n        if (incomeAddressAmount == 0) {\r\n            uint256 incomeAddressListTotal = storageAddress.getUint(\"incomeAddressListTotal\");\r\n\r\n            incomeAddressListTotal--;\r\n\r\n            string memory incomeAddressIndexKey = incomeAddress.toHexString().toSlice().concat(\"_index\".toSlice());\r\n\r\n            uint256 incomeAddressIndex = storageAddress.getUint(incomeAddressIndexKey);\r\n\r\n            storageAddress.removeAddressArray(\"incomeAddressList\", incomeAddressIndex);\r\n\r\n            if (incomeAddressListTotal > 0 || incomeAddressIndex != incomeAddressListTotal) {\r\n                address newAddress = storageAddress.getAddressArray(\"incomeAddressList\")[incomeAddressIndex];\r\n\r\n                storageAddress.setAddress(incomeAddressIndexKey, newAddress);\r\n            }\r\n\r\n            storageAddress.setUint(\"incomeAddressListTotal\", incomeAddressListTotal);\r\n        }\r\n\r\n        transferETH(payable(incomeAddress), amount);\r\n    }\r\n\r\n    function getNodeSecurityDeposit(uint256 nodeId) public view returns (uint256) {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n        return storageAddress.getUint(nodeId.toString());\r\n    }\r\n\r\n    function getIncomeAddressList() public view returns (address[] memory) {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        return storageAddress.getAddressArray(\"incomeAddressList\");\r\n    }\r\n\r\n    function getSecurityDeposit(address account) public view returns (uint256) {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        return storageAddress.getUint(account.toHexString());\r\n    }\r\n\r\n    function transferETH(address payable recipient, uint256 amount) private {\r\n        require(address(this).balance >= amount, \"Insufficient balance in contract\");\r\n        recipient.transfer(amount);\r\n    }\r\n}\r\n",
-      "keccak256": "0x940851236b08b124293d2c53a4b131308e39e6cbf652202c93499d78dce1388b"
+    "contracts/HyperAGI_Transaction_Cfg.sol": {
+      "content": "pragma solidity ^0.8.0;\r\n\r\nimport \"@openzeppelin/contracts/utils/Strings.sol\";\r\n\r\nimport \"@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol\";\r\n\r\nimport \"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol\";\r\n\r\nimport \"./utils/StrUtil.sol\";\r\n\r\nimport \"./HyperAGI_Roles_Cfg.sol\";\r\nimport \"./node/HyperAGI_Node_Mgr.sol\";\r\n\r\ncontract HyperAGI_Transaction_Cfg is OwnableUpgradeable {\r\n    address public _rolesCfgAddress;\r\n\r\n    address public _nodeMgrAddress;\r\n\r\n    mapping(string => uint256) public _minGasFeeMap;\r\n\r\n    using Strings for *;\r\n    using StrUtil for *;\r\n\r\n    function initialize(address onlyOwner) public initializer {\r\n        __Ownable_init(onlyOwner);\r\n    }\r\n\r\n    function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {\r\n        _rolesCfgAddress = rolesCfgAddress;\r\n    }\r\n\r\n    function setNodeMgrAddress(address nodeMgrAddress) public onlyOwner {\r\n        _nodeMgrAddress = nodeMgrAddress;\r\n    }\r\n\r\n    function setContractAddress(address[] memory contractaddressArray) public onlyOwner {\r\n        _rolesCfgAddress = contractaddressArray[0];\r\n        _nodeMgrAddress = contractaddressArray[1];\r\n    }\r\n\r\n    mapping(string => uint256) public _transactionProceduresMap;\r\n\r\n    function add(string memory func, uint256 rate) public {\r\n        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), \"not admin role\");\r\n        _transactionProceduresMap[func] = rate;\r\n    }\r\n\r\n    function del(string memory func) public {\r\n        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), \"not admin role\");\r\n        delete _transactionProceduresMap[func];\r\n    }\r\n\r\n    function get(string memory func) public view returns (uint256) {\r\n        return _transactionProceduresMap[func];\r\n    }\r\n\r\n    function getGasFee(string memory func) public view returns (uint256) {\r\n        (uint256 _totalNum, uint256 _activeNum) = HyperAGI_Node_Mgr(_nodeMgrAddress).getStatisticalIndex();\r\n        uint256 renderPrice = _transactionProceduresMap[func];\r\n\r\n        if (_activeNum == 0 || renderPrice == 0) {\r\n            return _minGasFeeMap[func];\r\n        }\r\n\r\n        if (_totalNum < 10) {\r\n            _totalNum = 10;\r\n        }\r\n\r\n        uint256 accuracy = 10000000000000;\r\n\r\n        uint256 difficulty = (_totalNum * accuracy) / _activeNum;\r\n\r\n        uint256 gasPrice = (renderPrice * accuracy) / difficulty;\r\n\r\n        uint256 gasFee = (renderPrice * gasPrice * 1 ether) / accuracy;\r\n\r\n        return gasFee;\r\n    }\r\n\r\n    function setMinGasFee(string memory key, uint256 minGasFee) public {\r\n        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), \"not admin role\");\r\n\r\n        _minGasFeeMap[key] = minGasFee;\r\n    }\r\n\r\n    function getMaxGasFee(string memory func) public view returns (uint256) {\r\n        (, uint256 _activeNum) = HyperAGI_Node_Mgr(_nodeMgrAddress).getStatisticalIndex();\r\n        uint256 renderPrice = _transactionProceduresMap[func];\r\n\r\n        if (_activeNum == 0 || renderPrice == 0) {\r\n            return _minGasFeeMap[func];\r\n        }\r\n\r\n        uint256 accuracy = 10000000000000;\r\n\r\n        uint256 difficulty = (1 * accuracy) / 1;\r\n\r\n        uint256 gasPrice = (renderPrice * accuracy) / difficulty;\r\n\r\n        uint256 gasFee = (renderPrice * gasPrice * 1 ether) / accuracy;\r\n\r\n        return gasFee;\r\n    }\r\n}\r\n",
+      "keccak256": "0x43a2740e064ce39462e3454243791dbad2c84b5f7cbbdd8b9d0f19e856bb65fa"
+    },
+    "contracts/HyperAGI_Wallet_Account.sol": {
+      "content": "pragma solidity ^0.8.0;\r\n\r\nimport \"@openzeppelin/contracts/utils/Strings.sol\";\r\n\r\nimport \"@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol\";\r\n\r\nimport \"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol\";\r\n\r\nimport \"@openzeppelin/contracts/token/ERC20/IERC20.sol\";\r\n\r\nimport \"./utils/StrUtil.sol\";\r\nimport \"./HyperAGI_Roles_Cfg.sol\";\r\n\r\ncontract HyperAGI_Wallet_Account is OwnableUpgradeable {\r\n    using Strings for *;\r\n    using StrUtil for *;\r\n\r\n    address public _rolesCfgAddress;\r\n    address public _GasFeeCollectionWallet;\r\n\r\n    event eveGasFee(uint256 amount, uint256 time);\r\n\r\n    function initialize(address onlyOwner) public initializer {\r\n        __Ownable_init(onlyOwner);\r\n    }\r\n\r\n    function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {\r\n        _rolesCfgAddress = rolesCfgAddress;\r\n    }\r\n\r\n    function setGasFeeCollectionWallet(address gasFeeCollectionWallet) public onlyOwner {\r\n        _GasFeeCollectionWallet = gasFeeCollectionWallet;\r\n    }\r\n\r\n    function setContractAddress(address[] memory contractaddressArray) public onlyOwner {\r\n        _rolesCfgAddress = contractaddressArray[0];\r\n        _GasFeeCollectionWallet = contractaddressArray[1];\r\n    }\r\n\r\n    function addAmount(uint256 amount) public {\r\n        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), \"not admin role\");\r\n        emit eveGasFee(amount, block.timestamp);\r\n    }\r\n}\r\n",
+      "keccak256": "0x454a7438e6966a3194bd1e3910149ff503b1ba7a7047d721798461d7d32c9267"
+    },
+    "contracts/epoch/HyperAGI_Epoch_Transaction.sol": {
+      "content": "pragma solidity ^0.8.0;\r\n\r\nimport \"@openzeppelin/contracts/token/ERC20/IERC20.sol\";\r\n\r\nimport \"@openzeppelin/contracts/utils/Strings.sol\";\r\n\r\nimport \"@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol\";\r\n\r\nimport \"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol\";\r\n\r\nimport \"@openzeppelin/contracts/utils/StorageSlot.sol\";\r\n\r\nimport {StrUtil} from \"../utils/StrUtil.sol\";\r\n\r\nimport \"../HyperAGI_Storage.sol\";\r\nimport \"../HyperAGI_Wallet_Account.sol\";\r\nimport \"../HyperAGI_Transaction_Cfg.sol\";\r\nimport \"./../node/HyperAGI_Node_Mgr.sol\";\r\n\r\nimport \"./../HyperAGI_Roles_Cfg.sol\";\r\n\r\ncontract HyperAGI_Epoch_Transaction is OwnableUpgradeable {\r\n    using Strings for *;\r\n    using StrUtil for *;\r\n\r\n    address public _rolesCfgAddress;\r\n    address public _nodeMgrAddress;\r\n    address public _transactionCfgAddress;\r\n    address public _walletAccountAddress;\r\n    address public _storageAddress;\r\n\r\n    event eveEpochTransactionSave(uint256 id);\r\n\r\n    event eveUpdateEpoch(uint256[] success);\r\n\r\n    event eveDifficulty(uint256 difficulty);\r\n\r\n    function initialize(address onlyOwner) public initializer {\r\n        __Ownable_init(onlyOwner);\r\n    }\r\n\r\n    function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {\r\n        _rolesCfgAddress = rolesCfgAddress;\r\n    }\r\n\r\n    function setNodeMgrAddress(address nodeMgrAddress) public onlyOwner {\r\n        _nodeMgrAddress = nodeMgrAddress;\r\n    }\r\n\r\n    function setTransactionCfgAddress(address transactionCfgAddress) public onlyOwner {\r\n        _transactionCfgAddress = transactionCfgAddress;\r\n    }\r\n\r\n    function setWalletAccountAddress(address walletAccountAddress) public onlyOwner {\r\n        _walletAccountAddress = walletAccountAddress;\r\n    }\r\n\r\n    function setStorageAddress(address storageAddress) public onlyOwner {\r\n        _storageAddress = storageAddress;\r\n    }\r\n\r\n    function setContractAddress(address[] memory contractaddressArray) public onlyOwner {\r\n        _rolesCfgAddress = contractaddressArray[0];\r\n        _nodeMgrAddress = contractaddressArray[1];\r\n        _transactionCfgAddress = contractaddressArray[2];\r\n        _walletAccountAddress = contractaddressArray[3];\r\n        _storageAddress = contractaddressArray[4];\r\n    }\r\n\r\n    function createEpochTransaction(uint256 nodeId, uint256 epoch) public payable returns (uint256) {\r\n        require(epoch > 0, \"epoch must be greater than 0\");\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        HyperAGI_Wallet_Account walletAccountAddress = HyperAGI_Wallet_Account(_walletAccountAddress);\r\n        HyperAGI_Node_Mgr nodeMgrAddress = HyperAGI_Node_Mgr(_nodeMgrAddress);\r\n        HyperAGI_Transaction_Cfg transactionCfgAddress = HyperAGI_Transaction_Cfg(_transactionCfgAddress);\r\n\r\n        address _GasFeeCollectionWallet = walletAccountAddress._GasFeeCollectionWallet();\r\n\r\n        require(_GasFeeCollectionWallet != address(0), \"not set GasFeeCollectionWallet\");\r\n\r\n        uint256 commission = transactionCfgAddress.getGasFee(\"epoch\");\r\n\r\n        uint256 maxCommission = transactionCfgAddress.getMaxGasFee(\"epoch\");\r\n\r\n        uint256 payAmount = maxCommission * epoch;\r\n\r\n        uint256 id = storageAddress.getNextId();\r\n\r\n        require(msg.value == maxCommission * epoch, \"Invalid payment amount\");\r\n\r\n        (uint256 totalNum, uint256 activeNum) = nodeMgrAddress.getStatisticalIndex();\r\n\r\n        if (activeNum == 0) {\r\n            emit eveDifficulty(0);\r\n        } else {\r\n            emit eveDifficulty((totalNum * 10 ** 6) / activeNum);\r\n        }\r\n\r\n        transferETH(payable(_GasFeeCollectionWallet), commission);\r\n\r\n        walletAccountAddress.addAmount(commission);\r\n\r\n        uint256 createTime = block.timestamp;\r\n\r\n        bytes1 status = 0x11;\r\n\r\n        if (epoch > 1) {\r\n            status = 0x00;\r\n        } else {\r\n            if (maxCommission > commission) {\r\n                uint256 returnAmount = maxCommission - commission;\r\n                transferETH(payable(msg.sender), returnAmount);\r\n                storageAddress.setUint(storageAddress.genKey(\"returnAmount\", id), returnAmount);\r\n            }\r\n        }\r\n\r\n        storageAddress.setAddress(storageAddress.genKey(\"account\", id), msg.sender);\r\n\r\n        storageAddress.setUint(storageAddress.genKey(\"nodeId\", id), nodeId);\r\n\r\n        storageAddress.setUint(storageAddress.genKey(\"epoch\", id), epoch);\r\n        storageAddress.setUint(storageAddress.genKey(\"useEpoch\", id), 1);\r\n        storageAddress.setUint(storageAddress.genKey(\"commission\", id), commission);\r\n\r\n        storageAddress.setUint(storageAddress.genKey(\"amount\", id), commission);\r\n\r\n        storageAddress.setUint(storageAddress.genKey(\"payAmount\", id), payAmount);\r\n\r\n        storageAddress.setUint(storageAddress.genKey(\"createTime\", id), createTime);\r\n\r\n        storageAddress.setUint(storageAddress.genKey(\"endTime\", id), createTime + (epoch * 60 * 64) / 10);\r\n\r\n        storageAddress.setUint(storageAddress.genKey(\"nextEndTime\", id), createTime + (60 * 64) / 10);\r\n\r\n        storageAddress.setUint(storageAddress.genKey(\"nodeId\", id), nodeId);\r\n\r\n        storageAddress.setBytes1(storageAddress.genKey(\"status\", id), status);\r\n        uint256[] memory epochAmounts = new uint256[](epoch);\r\n        uint256[] memory epochTimes = new uint256[](epoch);\r\n\r\n        epochAmounts[0] = commission;\r\n        epochTimes[0] = createTime;\r\n\r\n        storageAddress.setUintArray(storageAddress.genKey(\"epochAmounts\", id), epochAmounts);\r\n\r\n        storageAddress.setUintArray(storageAddress.genKey(\"epochTimes\", id), epochTimes);\r\n\r\n        if (epoch > 1) {\r\n            storageAddress.setUintArray(\"runningEpochTransactions\", id);\r\n            storageAddress.setBool(storageAddress.genKey(\"running\", id), true);\r\n        }\r\n\r\n        emit eveEpochTransactionSave(id);\r\n\r\n        return id;\r\n    }\r\n\r\n    function updateEpoch() public {\r\n        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), \"not admin role\");\r\n\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        HyperAGI_Wallet_Account walletAccountAddress = HyperAGI_Wallet_Account(_walletAccountAddress);\r\n        HyperAGI_Node_Mgr nodeMgrAddress = HyperAGI_Node_Mgr(_nodeMgrAddress);\r\n        HyperAGI_Transaction_Cfg transactionCfgAddress = HyperAGI_Transaction_Cfg(_transactionCfgAddress);\r\n\r\n        uint256[] memory _runningEpochTransactions = storageAddress.getUintArray(\"runningEpochTransactions\");\r\n\r\n        uint256 last = _runningEpochTransactions.length;\r\n\r\n        address GasFeeCollectionWalletAddress = walletAccountAddress._GasFeeCollectionWallet();\r\n\r\n        if (last == 0) {\r\n            return;\r\n        }\r\n\r\n        uint256 commission = transactionCfgAddress.getGasFee(\"epoch\");\r\n\r\n        (uint256 totalNum, uint256 activeNum) = nodeMgrAddress.getStatisticalIndex();\r\n\r\n        if (activeNum == 0) {\r\n            emit eveDifficulty(0);\r\n        } else {\r\n            emit eveDifficulty((totalNum * 10 ** 6) / activeNum);\r\n        }\r\n\r\n        uint256[] memory runningEpochTransactions = storageAddress.getUintArray(\"runningEpochTransactions\");\r\n\r\n        uint256[] memory success = storageAddress.getUintArray(\"runningEpochTransactions\");\r\n\r\n        uint256 totalAmount = commission * runningEpochTransactions.length;\r\n\r\n        for (uint i = 0; i < runningEpochTransactions.length; i++) {\r\n            uint256 id = runningEpochTransactions[i];\r\n\r\n            uint256 epoch = storageAddress.getUint(storageAddress.genKey(\"epoch\", id));\r\n\r\n            uint256 useEpoch = storageAddress.getUint(storageAddress.genKey(\"useEpoch\", id));\r\n\r\n            useEpoch++;\r\n\r\n            storageAddress.setUint(storageAddress.genKey(\"useEpoch\", id), useEpoch);\r\n\r\n            string memory amountKey = storageAddress.genKey(\"amount\", id);\r\n\r\n            uint256 amount = storageAddress.getUint(amountKey);\r\n\r\n            amount += commission;\r\n\r\n            storageAddress.setUint(amountKey, amount);\r\n\r\n            if (useEpoch >= epoch) {\r\n                uint256 payAmount = storageAddress.getUint(storageAddress.genKey(\"payAmount\", id));\r\n\r\n                if (payAmount > amount) {\r\n                    address account = storageAddress.getAddress(storageAddress.genKey(\"account\", id));\r\n\r\n                    transferETH(payable(account), payAmount - amount);\r\n\r\n                    storageAddress.setUint(storageAddress.genKey(\"returnAmount\", id), payAmount - amount);\r\n                }\r\n\r\n                storageAddress.setBytes1(storageAddress.genKey(\"status\", id), 0x11);\r\n\r\n                cleanRunningTransactions(id, _runningEpochTransactions, last);\r\n\r\n                last--;\r\n            }\r\n        }\r\n\r\n        if (totalAmount > 0) {\r\n            walletAccountAddress.addAmount(totalAmount);\r\n            transferETH(payable(GasFeeCollectionWalletAddress), totalAmount);\r\n        }\r\n\r\n        emit eveUpdateEpoch(success);\r\n    }\r\n\r\n    function cleanRunningTransactions(uint256 id, uint256[] memory runningEpochTransactions, uint256 last) private {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n        storageAddress.setBytes1(storageAddress.genKey(\"status\", id), 0x11);\r\n\r\n        storageAddress.setBool(storageAddress.genKey(\"running\", id), false);\r\n\r\n        for (uint i = 0; i < last; i++) {\r\n            if (runningEpochTransactions[i] == id) {\r\n                runningEpochTransactions[i] = runningEpochTransactions[last - 1];\r\n\r\n                storageAddress.removeUintArray(\"runningEpochTransactions\", i);\r\n            }\r\n        }\r\n    }\r\n\r\n    function getEpochTransaction(uint256 id) public view returns (address, uint256[] memory, bytes1, uint256[] memory, uint256[] memory) {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        uint256 createTime = storageAddress.getUint(storageAddress.genKey(\"createTime\", id));\r\n\r\n        require(createTime > 0, \"not found\");\r\n\r\n        uint256[] memory uint256Array = new uint256[](10);\r\n        uint256Array[0] = id;\r\n        uint256Array[1] = storageAddress.getUint(storageAddress.genKey(\"amount\", id));\r\n        uint256Array[2] = createTime;\r\n        uint256Array[3] = storageAddress.getUint(storageAddress.genKey(\"endTime\", id));\r\n        uint256Array[4] = storageAddress.getUint(storageAddress.genKey(\"nextEndTime\", id));\r\n        uint256Array[5] = storageAddress.getUint(storageAddress.genKey(\"nodeId\", id));\r\n\r\n        uint256Array[6] = storageAddress.getUint(storageAddress.genKey(\"epoch\", id));\r\n\r\n        uint256Array[7] = storageAddress.getUint(storageAddress.genKey(\"useEpoch\", id));\r\n        uint256Array[8] = storageAddress.getUint(storageAddress.genKey(\"payAmount\", id));\r\n        uint256Array[9] = storageAddress.getUint(storageAddress.genKey(\"returnAmount\", id));\r\n\r\n        return (storageAddress.getAddress(storageAddress.genKey(\"account\", id)), uint256Array, storageAddress.getBytes1(storageAddress.genKey(\"status\", id)), storageAddress.getUintArray(storageAddress.genKey(\"epochAmounts\", id)), storageAddress.getUintArray(storageAddress.genKey(\"epochTimes\", id)));\r\n    }\r\n\r\n    function getRunningEpochTransactions() public view returns (uint256[] memory) {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        return storageAddress.getUintArray(\"runningEpochTransactions\");\r\n    }\r\n\r\n    function renewal(uint256 orderId, uint256 epochNum) public payable {\r\n        require(epochNum > 0, \"epoch must be greater than 0\");\r\n\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        HyperAGI_Transaction_Cfg transactionCfgAddress = HyperAGI_Transaction_Cfg(_transactionCfgAddress);\r\n\r\n        uint256 maxCommission = transactionCfgAddress.getMaxGasFee(\"epoch\");\r\n\r\n        uint256 payAmount = maxCommission * epochNum;\r\n\r\n        require(msg.value == payAmount, \"Invalid payment amount\");\r\n\r\n        address account = storageAddress.getAddress(storageAddress.genKey(\"account\", orderId));\r\n\r\n        uint256 createTime = storageAddress.getUint(storageAddress.genKey(\"createTime\", orderId));\r\n\r\n        require(createTime > 0, \"not found\");\r\n\r\n        require(msg.sender == account, \"not owner\");\r\n\r\n        uint256 endTime = storageAddress.getUint(storageAddress.genKey(\"endTime\", orderId));\r\n\r\n        require(block.timestamp < endTime, \"order expired\");\r\n\r\n        storageAddress.setUint(storageAddress.genKey(\"endTime\", orderId), endTime + (epochNum * 60 * 64) / 10);\r\n\r\n        uint256 epoch = storageAddress.getUint(storageAddress.genKey(\"epoch\", orderId));\r\n\r\n        epoch += epochNum;\r\n\r\n        storageAddress.setUint(storageAddress.genKey(\"epoch\", orderId), epoch);\r\n\r\n        bool running = storageAddress.getBool(storageAddress.genKey(\"running\", orderId));\r\n\r\n        string memory payAmountKey = storageAddress.genKey(\"payAmount\", orderId);\r\n\r\n        storageAddress.setUint(payAmountKey, storageAddress.getUint(payAmountKey) + payAmount);\r\n\r\n        if (!running) {\r\n            storageAddress.setUintArray(\"runningEpochTransactions\", orderId);\r\n            storageAddress.setBool(storageAddress.genKey(\"running\", orderId), true);\r\n        }\r\n\r\n        uint256[] memory epochAmounts = new uint256[](epoch);\r\n        uint256[] memory epochTimes = new uint256[](epoch);\r\n\r\n        uint256[] memory _epochAmounts = storageAddress.getUintArray(storageAddress.genKey(\"epochAmounts\", orderId));\r\n        uint256[] memory _epochTimes = storageAddress.getUintArray(storageAddress.genKey(\"epochTimes\", orderId));\r\n\r\n        for (uint i = 0; i < _epochAmounts.length; i++) {\r\n            epochAmounts[i] = _epochAmounts[i];\r\n            epochTimes[i] = _epochTimes[i];\r\n        }\r\n\r\n        storageAddress.setUintArray(storageAddress.genKey(\"epochAmounts\", orderId), epochAmounts);\r\n\r\n        storageAddress.setUintArray(storageAddress.genKey(\"epochTimes\", orderId), epochTimes);\r\n\r\n        emit eveEpochTransactionSave(orderId);\r\n    }\r\n\r\n    function transferETH(address payable recipient, uint256 amount) private {\r\n        require(address(this).balance >= amount, \"Insufficient balance in contract\");\r\n        recipient.transfer(amount);\r\n    }\r\n}\r\n",
+      "keccak256": "0x35cd317e067520830b2d8bf64c1f00c5a28a5a70f21862c8289ae9741c008b01"
     },
     "contracts/node/HyperAGI_Miner_NFT_Pledge.sol": {
       "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.1;\r\nimport \"@openzeppelin/contracts/utils/Strings.sol\";\r\n\r\nimport \"@openzeppelin/contracts/token/ERC721/IERC721.sol\";\r\n\r\nimport \"@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol\";\r\n\r\nimport \"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol\";\r\n\r\nimport \"../HyperAGI_Roles_Cfg.sol\";\r\n\r\nimport \"../utils/StrUtil.sol\";\r\n\r\nimport \"./../HyperAGI_Storage.sol\";\r\n\r\ncontract HyperAGI_Miner_NFT_Pledge is OwnableUpgradeable {\r\n    using Strings for *;\r\n    using StrUtil for *;\r\n\r\n    address public _rolesCfgAddress;\r\n    address public _storageAddress;\r\n    address public _721Address;\r\n    uint256 public _pledgeTime;\r\n\r\n    function initialize(address onlyOwner) public initializer {\r\n        __Ownable_init(onlyOwner);\r\n        _pledgeTime = 365 days;\r\n    }\r\n\r\n    function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {\r\n        _rolesCfgAddress = rolesCfgAddress;\r\n    }\r\n\r\n    function setStorageAddress(address storageAddress) public onlyOwner {\r\n        _storageAddress = storageAddress;\r\n    }\r\n\r\n    function set721Address(address address721) public onlyOwner {\r\n        _721Address = address721;\r\n    }\r\n\r\n    function setPledgeTime(uint256 pledgeTime) public onlyOwner {\r\n        _pledgeTime = pledgeTime;\r\n    }\r\n\r\n    function setContractAddress(address[] memory contractaddressArray) public onlyOwner {\r\n        _rolesCfgAddress = contractaddressArray[0];\r\n        _storageAddress = contractaddressArray[1];\r\n        _721Address = contractaddressArray[2];\r\n    }\r\n\r\n    event evePledge(address account, address tokenAddress, uint256 tokenId, uint256 allowedRedemptionTime);\r\n    event eveRedemption(address account, address tokenAddress, uint256 tokenId);\r\n\r\n    function pledge(uint256 tokenId) public {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n        IERC721 erc721 = IERC721(_721Address);\r\n        require(erc721.ownerOf(tokenId) == msg.sender, \"not owner\");\r\n        string memory key = storageAddress.genKey(_721Address.toHexString(), tokenId);\r\n        storageAddress.setAddress(key, msg.sender);\r\n\r\n        string memory allowedRedemptionTimeKey = string(abi.encodePacked(key, \"allowedRedemptionTime\"));\r\n\r\n        uint256 allowedRedemptionTime = storageAddress.getUint(allowedRedemptionTimeKey);\r\n\r\n        if (allowedRedemptionTime == 0) {\r\n            storageAddress.setUint(allowedRedemptionTimeKey, block.timestamp + _pledgeTime);\r\n            allowedRedemptionTime = block.timestamp + _pledgeTime;\r\n        }\r\n        erc721.transferFrom(msg.sender, address(this), tokenId);\r\n\r\n        string memory accountKey = msg.sender.toHexString();\r\n\r\n        string memory pledgeNumKey = string(abi.encodePacked(accountKey, \"_pledgeNum\"));\r\n\r\n        uint256 pledgeNum = storageAddress.getUint(pledgeNumKey);\r\n\r\n        storageAddress.setUint(pledgeNumKey, pledgeNum + 1);\r\n\r\n        emit evePledge(msg.sender, _721Address, tokenId, allowedRedemptionTime);\r\n    }\r\n\r\n    function redemption(uint256 tokenId) public {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        IERC721 erc721 = IERC721(_721Address);\r\n        string memory key = storageAddress.genKey(_721Address.toHexString(), tokenId);\r\n        address ownerAddress = storageAddress.getAddress(key);\r\n        require(ownerAddress == msg.sender, \"not owner\");\r\n\r\n        string memory allowedRedemptionTimeKey = string(abi.encodePacked(key, \"allowedRedemptionTime\"));\r\n\r\n        uint256 allowedRedemptionTime = storageAddress.getUint(allowedRedemptionTimeKey);\r\n\r\n        require(block.timestamp > allowedRedemptionTime, \"not allowed time\");\r\n\r\n        erc721.transferFrom(address(this), msg.sender, tokenId);\r\n\r\n        string memory accountKey = msg.sender.toHexString();\r\n\r\n        uint256 pledgeNum = storageAddress.getUint(accountKey);\r\n\r\n        string memory lockNumKey = string(abi.encodePacked(accountKey, \"_lockNum\"));\r\n\r\n        uint256 lockNum = storageAddress.getUint(lockNumKey);\r\n\r\n        require(lockNum + 1 <= pledgeNum, \"The node must be offline before NFT assets can be redeemed\");\r\n\r\n        storageAddress.setUint(accountKey, pledgeNum - 1);\r\n\r\n        emit eveRedemption(msg.sender, _721Address, tokenId);\r\n    }\r\n\r\n    function getAccountPledgeNum(address account) public view returns (uint256[] memory) {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n\r\n        string memory accountKey = account.toHexString();\r\n\r\n        string memory pledgeNumKey = string(abi.encodePacked(accountKey, \"_pledgeNum\"));\r\n        string memory lockNumKey = string(abi.encodePacked(accountKey, \"_lockNum\"));\r\n\r\n        uint256[] memory uint256Array = new uint256[](2);\r\n\r\n        uint256Array[0] = storageAddress.getUint(pledgeNumKey);\r\n        uint256Array[1] = storageAddress.getUint(lockNumKey);\r\n\r\n        return uint256Array;\r\n    }\r\n\r\n    function lock(address account, uint256 num) public {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), \"not admin role\");\r\n\r\n        uint256[] memory uint256Array = getAccountPledgeNum(account);\r\n\r\n        uint256 lockNum = uint256Array[1] + num;\r\n\r\n        require(uint256Array[0] >= lockNum, \"The amount of pledged NFT is insufficient, please pledge the NFT first\");\r\n\r\n        string memory accountKey = account.toHexString();\r\n\r\n        string memory lockNumKey = string(abi.encodePacked(accountKey, \"_lockNum\"));\r\n\r\n        storageAddress.setUint(lockNumKey, lockNum);\r\n    }\r\n\r\n    function release(address account, uint256 num) public {\r\n        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);\r\n        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), \"not admin role\");\r\n\r\n        uint256[] memory uint256Array = getAccountPledgeNum(account);\r\n\r\n        require(uint256Array[1] >= num, \"not enough lock num\");\r\n\r\n        uint256 lockNum = uint256Array[1] - num;\r\n\r\n        string memory accountKey = account.toHexString();\r\n\r\n        string memory lockNumKey = string(abi.encodePacked(accountKey, \"_lockNum\"));\r\n\r\n        storageAddress.setUint(lockNumKey, lockNum);\r\n    }\r\n}\r\n",

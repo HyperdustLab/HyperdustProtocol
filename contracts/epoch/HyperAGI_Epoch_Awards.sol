@@ -28,7 +28,7 @@ import "./../HyperAGI_Wallet_Account.sol";
 
 import "hardhat/console.sol";
 
-contract HyperAGI_Ecpoch_Awards is OwnableUpgradeable {
+contract HyperAGI_Epoch_Awards is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 
@@ -140,7 +140,7 @@ contract HyperAGI_Ecpoch_Awards is OwnableUpgradeable {
 
         securityDepositAddress.addSecurityDeposit{value: securityDeposit}(nodeId, securityDeposit);
 
-        (address incomeAddress, , , ) = nodeMgrAddress.getNode(nodeId);
+        (, address incomeAddress, , ) = nodeMgrAddress.getNode(nodeId);
 
         baseRewardReleaseAddress.addBaseRewardReleaseRecord{value: baseRewardReleaseAward}(baseRewardReleaseAward, incomeAddress);
 
@@ -157,7 +157,8 @@ contract HyperAGI_Ecpoch_Awards is OwnableUpgradeable {
         uint256 activeNum = 0;
         uint256 totalNum = 0;
 
-        (uint256 totalSize, , ) = nodeMgrAddress.getStatisticalIndex();
+        uint256[] memory ids = nodeMgrAddress.getAllNodeList();
+        uint256 totalSize = ids.length;
 
         uint256[] memory activeNodes = new uint256[](totalSize);
         uint256[] memory onlineNodes = new uint256[](totalSize);
@@ -167,7 +168,7 @@ contract HyperAGI_Ecpoch_Awards is OwnableUpgradeable {
 
         for (uint i = 0; i < nodeStatus.length; i++) {
             for (uint j = 0; j < 32; j++) {
-                uint256 nodeId = nodeMgrAddress.getIdByIndex(index);
+                uint256 nodeId = ids[index];
 
                 if (nodeId == 0) {
                     break;

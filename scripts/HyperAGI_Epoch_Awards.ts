@@ -3,14 +3,14 @@
 import { ethers, run, upgrades } from 'hardhat'
 
 async function main() {
-  const contract = await ethers.getContractFactory('HyperAGI_Ecpoch_Awards')
+  const contract = await ethers.getContractFactory('HyperAGI_Epoch_Awards')
   const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address])
   await instance.waitForDeployment()
 
   await (
     await instance.setContractAddress([
       '0x5745090BFB28C3399223215DfbBb4e729aeF8cFD',
-      '0x829551330A37140764573d0B3236E9Db71b4B196',
+      '0xb5965619C95373587444DaAd217157624545C58b',
       '0xDf3DDF0762F16cAe14aC1db4fFA78D61fADb72d0',
       '0x5543D65CE4d38d462f8f8dc073FcBa36A4729D2C',
       '0xDAa6f0C96bbaaC78FfC37E7a4343E3D801446579',

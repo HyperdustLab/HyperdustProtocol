@@ -61,7 +61,7 @@ contract HyperAGI_Security_Deposit is OwnableUpgradeable {
 
         HyperAGI_Node_Mgr nodeMgrAddress = HyperAGI_Node_Mgr(_nodeMgrAddress);
 
-        (address incomeAddress, , , ) = nodeMgrAddress.getNode(nodeId);
+        (, address incomeAddress, , ) = nodeMgrAddress.getNode(nodeId);
 
         string memory key = nodeId.toString();
 
@@ -94,7 +94,7 @@ contract HyperAGI_Security_Deposit is OwnableUpgradeable {
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
         HyperAGI_Node_Mgr nodeMgrAddress = HyperAGI_Node_Mgr(_nodeMgrAddress);
 
-        (address incomeAddress, , , ) = nodeMgrAddress.getNode(nodeId);
+        (, address incomeAddress, , ) = nodeMgrAddress.getNode(nodeId);
 
         require(incomeAddress == msg.sender, "not income address");
 
@@ -105,23 +105,19 @@ contract HyperAGI_Security_Deposit is OwnableUpgradeable {
         require(time == 0, "already apply");
 
         storageAddress.setUint(key, block.timestamp);
-
-        nodeMgrAddress.updateStatus(nodeId, true);
     }
 
     function cancelWithdrawal(uint256 nodeId) public {
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
 
         HyperAGI_Node_Mgr nodeMgrAddress = HyperAGI_Node_Mgr(_nodeMgrAddress);
-        (address incomeAddress, , , ) = nodeMgrAddress.getNode(nodeId);
+        (, address incomeAddress, , ) = nodeMgrAddress.getNode(nodeId);
 
         require(incomeAddress == msg.sender, "not income address");
 
         string memory key = storageAddress.genKey("applyWithdrawal_", nodeId);
 
         storageAddress.setUint(key, 0);
-
-        nodeMgrAddress.updateStatus(nodeId, false);
     }
 
     function withdrawal(uint256 nodeId) public {
@@ -129,7 +125,7 @@ contract HyperAGI_Security_Deposit is OwnableUpgradeable {
 
         HyperAGI_Node_Mgr nodeMgrAddress = HyperAGI_Node_Mgr(_nodeMgrAddress);
 
-        (address incomeAddress, , , ) = nodeMgrAddress.getNode(nodeId);
+        (, address incomeAddress, , ) = nodeMgrAddress.getNode(nodeId);
 
         require(incomeAddress == msg.sender, "not income address");
 

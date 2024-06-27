@@ -19,9 +19,7 @@ import "./../node/HyperAGI_Node_Mgr.sol";
 
 import "./../HyperAGI_Roles_Cfg.sol";
 
-import "./HyperAGI_Payment_Wallet.sol";
-
-contract HyperAGI_Ecpoch_Transaction is OwnableUpgradeable {
+contract HyperAGI_Epoch_Transaction is OwnableUpgradeable {
     using Strings for *;
     using StrUtil for *;
 
@@ -91,7 +89,7 @@ contract HyperAGI_Ecpoch_Transaction is OwnableUpgradeable {
 
         require(msg.value == maxCommission * epoch, "Invalid payment amount");
 
-        (, uint256 totalNum, uint256 activeNum) = nodeMgrAddress.getStatisticalIndex();
+        (uint256 totalNum, uint256 activeNum) = nodeMgrAddress.getStatisticalIndex();
 
         if (activeNum == 0) {
             emit eveDifficulty(0);
@@ -179,7 +177,7 @@ contract HyperAGI_Ecpoch_Transaction is OwnableUpgradeable {
 
         uint256 commission = transactionCfgAddress.getGasFee("epoch");
 
-        (, uint256 totalNum, uint256 activeNum) = nodeMgrAddress.getStatisticalIndex();
+        (uint256 totalNum, uint256 activeNum) = nodeMgrAddress.getStatisticalIndex();
 
         if (activeNum == 0) {
             emit eveDifficulty(0);

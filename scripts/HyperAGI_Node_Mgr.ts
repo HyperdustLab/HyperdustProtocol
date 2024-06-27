@@ -15,11 +15,7 @@ async function main() {
 
   await (await HyperAGI_Storage.setServiceAddress(instance.target)).wait()
 
-  await (await instance.setContractAddress(['0x5745090BFB28C3399223215DfbBb4e729aeF8cFD', '0xdeFC8022e6151ac596ab4136D902c988a8560679', HyperAGI_Storage.target, '0x85C8362C20D9dC240400D232A69d340aF717b611'])).wait()
-
-  const HyperAGI_Miner_NFT_Pledge = await ethers.getContractAt('HyperAGI_Miner_NFT_Pledge', '0x85C8362C20D9dC240400D232A69d340aF717b611')
-
-  await (await HyperAGI_Miner_NFT_Pledge.setNodeMgrAddress(instance.target)).wait()
+  await (await instance.setContractAddress(['0x5745090BFB28C3399223215DfbBb4e729aeF8cFD', HyperAGI_Storage.target, '0x85C8362C20D9dC240400D232A69d340aF717b611'])).wait()
 
   console.info('contractFactory address:', instance.target)
 }

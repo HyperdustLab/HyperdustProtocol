@@ -23,7 +23,7 @@ contract HyperAGI_Node_Mgr is OwnableUpgradeable {
     address public _minerNFTPledgeAddress;
 
     event eveSave(uint256[] idList, string[] ipList, string[] portList, uint256 fee);
-    event eveActive(uint256 id);
+    event eveActive(uint256 id, uint256 index);
 
     event eveSave(uint256 id);
 
@@ -47,8 +47,8 @@ contract HyperAGI_Node_Mgr is OwnableUpgradeable {
 
     function setContractAddress(address[] memory contractaddressArray) public onlyOwner {
         _rolesCfgAddress = contractaddressArray[0];
-        _storageAddress = contractaddressArray[2];
-        _minerNFTPledgeAddress = contractaddressArray[3];
+        _storageAddress = contractaddressArray[1];
+        _minerNFTPledgeAddress = contractaddressArray[2];
     }
 
     function addNode(string[] memory ipList, string[] memory portList, string[] memory serviceNameList, address[] memory accountList, uint256 gasFee) public {
@@ -82,7 +82,7 @@ contract HyperAGI_Node_Mgr is OwnableUpgradeable {
             idList[i] = id;
         }
 
-        emit eveSave(idList, ipList, portList, fee);
+        emit eveSave(idList, ipList, portList, 0);
     }
 
     function getNode(uint256 id) public view returns (string[] memory stringArray, address, bytes1, uint256) {
@@ -128,18 +128,29 @@ contract HyperAGI_Node_Mgr is OwnableUpgradeable {
 
         storageAddress.setBytes1(storageAddress.genKey("status", id), 0x01);
 
-        storageAddress.setUintArray("ids", id);
+        uint256 index = storageAddress.setUintArray("ids", id);
 
-        emit eveActive(id);
+        emit eveActive(id, index);
     }
 
-    function getStatisticalIndex() public view returns (uint256, uint256, uint256) {
+    function getStatisticalIndex() public view returns (uint256, uint256) {
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
-        uint256[] memory ids = storageAddress.getUintArray("ids");
-        uint256 count = ids.length;
         uint256 totalNum = storageAddress.getUint("totalNum");
         uint256 activeNum = storageAddress.getUint("activeNum");
 
-        return (count, totalNum, activeNum);
+        return (totalNum, activeNum);
+    }
+
+    function getAllNodeList() public view returns (uint256[] memory) {
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
+        uint256[] memory ids = storageAddress.getUintArray("ids");
+        return ids;
+    }
+
+    function setStatisticalIndex(uint256 totalNum, uint256 activeNum) public {
+        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
+        storageAddress.setUint("totalNum", totalNum);
+        storageAddress.setUint("activeNum", activeNum);
     }
 }
