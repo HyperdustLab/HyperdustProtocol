@@ -1,4 +1,7 @@
 {
   "cSpell.enableFiletypes": ["solidity"],
-  "cSpell.words": ["contractaddress"]
+  "cSpell.words": ["contractaddress"],
+  "search.exclude": {
+    "**/node_modules": false
+  }
 }

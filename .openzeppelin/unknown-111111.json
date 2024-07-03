@@ -2,33 +2,185 @@
   "manifestVersion": "3.2",
   "proxies": [
     {
-      "address": "0x2D2a3648D73BE67ac8e6a3a925E33E94c029679F",
-      "txHash": "0xaefd449a8660f86cdf7a6d46eb68888d99a0fd8c3c4f94ef3bee2336e1880344",
+      "address": "0x01FC04D2fB8a733959F8219F163b2016e2AF1549",
+      "txHash": "0x38d4314dcc6bbed4332899e71e1855cae800712e13e3f04bb829022c1252f0b8",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x32D068a9955891C25311aeA4194E6658E67249Fc",
+      "txHash": "0x34fa6b57b1ad70c59012daa1f6712652364d21fe64bbad851ba2e84af4b332bb",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xb2342E1Bf4B4e0d340B97F5CdD8Fd9Cf24525D26",
+      "txHash": "0xdd426480d8fee4917e15664c0422e59dcf083bc6fe16896fb441c2f3d5d81d66",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xf69bB4AC3E919793a719d4D167f0502d42F15Bda",
+      "txHash": "0xc2244594666b5747d06f1605f39d2f22a3212305967e7c7d6db3fbd9dcd56010",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xb7EEA03dcc393f69fD277C0fFB0EE233f2488F47",
+      "txHash": "0xa74f197b3ac29eb8dc7c2bd318c5a94fd152a747a905a73da7271eb66c501662",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x4FA6dDEc350fb494131AEB84fA5A65fc85867797",
+      "txHash": "0xc5c68fed391eef448df6007760b951630bf8da23edc91eb6bf15997a28fb97da",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x3212Ef195c7322fe618f62AA147D40090A89ef22",
+      "txHash": "0x06cb9b97a951373961ae4adb85430dfb50f727826100a1e3ee8712301c47603e",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xF2c195384572644B0DF21Fb7156aEf20067b91ba",
+      "txHash": "0xc2e306d8d0abb093a79a9d18f0de29a14cb32c9a0353b4c7b294aada570b44f8",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x282f09990D6699a710B59E05AB9077F8c782dAaA",
+      "txHash": "0x1e882381842cdea379ea7e6885da1a61eb2009dd196803ebafbced9ce1863826",
       "kind": "transparent"
     }
   ],
   "impls": {
-    "525d7994b843b828578fa03448afed10107bb22d378b51dfcd07235f1ca6b9fd": {
-      "address": "0x6599575D2e350786f9D93C2342f7115708b46552",
-      "txHash": "0x69f7a616a708d8b3bb10c9811405c3270edbd4b71ab633b3a87adf48326a8f0f",
+    "d6f97ce81e13015d31839d1290326af7f3dc7563f8fba9664c2aa77aa7a162ec": {
+      "address": "0xd7102c4261BF192550139111aDc5fb60ef89dBdB",
+      "txHash": "0xf10d71613a4df431348dc5958723518f19b38cc78707b7b95658380da97b45ab",
       "layout": {
         "solcVersion": "0.8.20",
         "storage": [
           {
-            "label": "_adminRole",
+            "label": "uintStorage",
             "offset": 0,
             "slot": "0",
-            "type": "t_mapping(t_address,t_bool)",
-            "contract": "HyperAGI_Roles_Cfg",
-            "src": "contracts\\HyperAGI_Roles_Cfg.sol:12"
+            "type": "t_mapping(t_string_memory_ptr,t_uint256)",
+            "contract": "HyperAGI_Storage",
+            "src": "contracts\\HyperAGI_Storage.sol:21"
           },
           {
-            "label": "_superAdminRole",
+            "label": "addressStorage",
             "offset": 0,
             "slot": "1",
-            "type": "t_mapping(t_address,t_bool)",
-            "contract": "HyperAGI_Roles_Cfg",
-            "src": "contracts\\HyperAGI_Roles_Cfg.sol:13"
+            "type": "t_mapping(t_string_memory_ptr,t_address)",
+            "contract": "HyperAGI_Storage",
+            "src": "contracts\\HyperAGI_Storage.sol:22"
+          },
+          {
+            "label": "stringStorage",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_mapping(t_string_memory_ptr,t_string_storage)",
+            "contract": "HyperAGI_Storage",
+            "src": "contracts\\HyperAGI_Storage.sol:23"
+          },
+          {
+            "label": "bytesStorage",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_mapping(t_string_memory_ptr,t_bytes_storage)",
+            "contract": "HyperAGI_Storage",
+            "src": "contracts\\HyperAGI_Storage.sol:24"
+          },
+          {
+            "label": "bytes1Storage",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_mapping(t_string_memory_ptr,t_bytes1)",
+            "contract": "HyperAGI_Storage",
+            "src": "contracts\\HyperAGI_Storage.sol:25"
+          },
+          {
+            "label": "bytes32Storage",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_mapping(t_string_memory_ptr,t_bytes32)",
+            "contract": "HyperAGI_Storage",
+            "src": "contracts\\HyperAGI_Storage.sol:26"
+          },
+          {
+            "label": "boolStorage",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_mapping(t_string_memory_ptr,t_bool)",
+            "contract": "HyperAGI_Storage",
+            "src": "contracts\\HyperAGI_Storage.sol:28"
+          },
+          {
+            "label": "uintArrayStorage",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_mapping(t_string_memory_ptr,t_array(t_uint256)dyn_storage)",
+            "contract": "HyperAGI_Storage",
+            "src": "contracts\\HyperAGI_Storage.sol:30"
+          },
+          {
+            "label": "addressArrayStorage",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_mapping(t_string_memory_ptr,t_array(t_address)dyn_storage)",
+            "contract": "HyperAGI_Storage",
+            "src": "contracts\\HyperAGI_Storage.sol:31"
+          },
+          {
+            "label": "stringArrayStorage",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_mapping(t_string_memory_ptr,t_array(t_string_storage)dyn_storage)",
+            "contract": "HyperAGI_Storage",
+            "src": "contracts\\HyperAGI_Storage.sol:32"
+          },
+          {
+            "label": "bytesArrayStorage",
+            "offset": 0,
+            "slot": "10",
+            "type": "t_mapping(t_string_memory_ptr,t_array(t_bytes_storage)dyn_storage)",
+            "contract": "HyperAGI_Storage",
+            "src": "contracts\\HyperAGI_Storage.sol:33"
+          },
+          {
+            "label": "boolArrayStorage",
+            "offset": 0,
+            "slot": "11",
+            "type": "t_mapping(t_string_memory_ptr,t_array(t_bool)dyn_storage)",
+            "contract": "HyperAGI_Storage",
+            "src": "contracts\\HyperAGI_Storage.sol:34"
+          },
+          {
+            "label": "bytes32UintStorage",
+            "offset": 0,
+            "slot": "12",
+            "type": "t_mapping(t_bytes32,t_uint256)",
+            "contract": "HyperAGI_Storage",
+            "src": "contracts\\HyperAGI_Storage.sol:35"
+          },
+          {
+            "label": "bytes32StringStorage",
+            "offset": 0,
+            "slot": "13",
+            "type": "t_mapping(t_bytes32,t_string_storage)",
+            "contract": "HyperAGI_Storage",
+            "src": "contracts\\HyperAGI_Storage.sol:36"
+          },
+          {
+            "label": "_id",
+            "offset": 0,
+            "slot": "14",
+            "type": "t_uint256",
+            "contract": "HyperAGI_Storage",
+            "src": "contracts\\HyperAGI_Storage.sol:38"
+          },
+          {
+            "label": "_serviceAddress",
+            "offset": 0,
+            "slot": "15",
+            "type": "t_address",
+            "contract": "HyperAGI_Storage",
+            "src": "contracts\\HyperAGI_Storage.sol:40"
           }
         ],
         "types": {
@@ -74,9 +226,449 @@
             "label": "uint64",
             "numberOfBytes": "8"
           },
-          "t_mapping(t_address,t_bool)": {
-            "label": "mapping(address => bool)",
+          "t_array(t_address)dyn_storage": {
+            "label": "address[]",
             "numberOfBytes": "32"
+          },
+          "t_array(t_bool)dyn_storage": {
+            "label": "bool[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_bytes_storage)dyn_storage": {
+            "label": "bytes[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_string_storage)dyn_storage": {
+            "label": "string[]",
+            "numberOfBytes": "32"
+          },
+          "t_array(t_uint256)dyn_storage": {
+            "label": "uint256[]",
+            "numberOfBytes": "32"
+          },
+          "t_bytes1": {
+            "label": "bytes1",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_bytes_storage": {
+            "label": "bytes",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_string_storage)": {
+            "label": "mapping(bytes32 => string)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_uint256)": {
+            "label": "mapping(bytes32 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_address)": {
+            "label": "mapping(string => address)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_array(t_address)dyn_storage)": {
+            "label": "mapping(string => address[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_array(t_bool)dyn_storage)": {
+            "label": "mapping(string => bool[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_array(t_bytes_storage)dyn_storage)": {
+            "label": "mapping(string => bytes[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_array(t_string_storage)dyn_storage)": {
+            "label": "mapping(string => string[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_array(t_uint256)dyn_storage)": {
+            "label": "mapping(string => uint256[])",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_bool)": {
+            "label": "mapping(string => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_bytes1)": {
+            "label": "mapping(string => bytes1)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_bytes32)": {
+            "label": "mapping(string => bytes32)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_bytes_storage)": {
+            "label": "mapping(string => bytes)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_string_storage)": {
+            "label": "mapping(string => string)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_string_memory_ptr,t_uint256)": {
+            "label": "mapping(string => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_string_memory_ptr": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_string_storage": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "04a4226bf0c84d27eb9da5e524d6532e73911e1ca706a6e8f024743102ddd1ec": {
+      "address": "0x6567a36fE357F1c71C3F8e469Bce411e7Ad599Ae",
+      "txHash": "0xa0111253966d659eebb3d4921913fd44cff8688722924affec88485b180bc44e",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_Node_Mgr",
+            "src": "contracts\\node\\HyperAGI_Node_Mgr.sol:21"
+          },
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_Node_Mgr",
+            "src": "contracts\\node\\HyperAGI_Node_Mgr.sol:22"
+          },
+          {
+            "label": "_minerNFTPledgeAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_Node_Mgr",
+            "src": "contracts\\node\\HyperAGI_Node_Mgr.sol:23"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)178_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)128_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "e5fd2851d14d2d91ff424cbb5ac8c72be6b335fe8a461f8b6966771710234b19": {
+      "address": "0x6dec7AAAD1137dA8D1d195dE7BD7DE437e4F4785",
+      "txHash": "0xb05d645efa83dc3ab64facef674f2421e48ae0c7b0f68451b824929621cd2d32",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_Node_Mgr",
+            "src": "contracts\\node\\HyperAGI_Node_Mgr.sol:21"
+          },
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_Node_Mgr",
+            "src": "contracts\\node\\HyperAGI_Node_Mgr.sol:22"
+          },
+          {
+            "label": "_minerNFTPledgeAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_Node_Mgr",
+            "src": "contracts\\node\\HyperAGI_Node_Mgr.sol:23"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)178_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)128_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "53ac1a8d606ccc6b4bf49687434924fe85cff320bef2477b1991f1793d4e2482": {
+      "address": "0x97e947d47650defa46Ec11d0a5DE83c2B5b38a1E",
+      "txHash": "0x355fefbae8f250dfee7d5d7c2fe4d5dd20deee3eba2a6bcdecc158b209d20b11",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_Transaction_Cfg",
+            "src": "contracts\\HyperAGI_Transaction_Cfg.sol:15"
+          },
+          {
+            "label": "_nodeMgrAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_Transaction_Cfg",
+            "src": "contracts\\HyperAGI_Transaction_Cfg.sol:17"
+          },
+          {
+            "label": "_minGasFeeMap",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_mapping(t_string_memory_ptr,t_uint256)",
+            "contract": "HyperAGI_Transaction_Cfg",
+            "src": "contracts\\HyperAGI_Transaction_Cfg.sol:19"
+          },
+          {
+            "label": "_transactionProceduresMap",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_mapping(t_string_memory_ptr,t_uint256)",
+            "contract": "HyperAGI_Transaction_Cfg",
+            "src": "contracts\\HyperAGI_Transaction_Cfg.sol:41"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)178_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)128_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_mapping(t_string_memory_ptr,t_uint256)": {
+            "label": "mapping(string => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_string_memory_ptr": {
+            "label": "string",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_string_storage": {
+            "label": "string"
           }
         },
         "namespaces": {

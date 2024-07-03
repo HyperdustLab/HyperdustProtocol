@@ -35,7 +35,6 @@ const config: HardhatUserConfig = {
     dev: {
       url: 'HTTP://127.0.0.1:8545',
       loggingEnabled: true,
-      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY_PROD],
     },
     sepolia: {
       url: process.env.SEPOLIA_RPC_URL,
@@ -62,24 +61,20 @@ const config: HardhatUserConfig = {
       accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
       loggingEnabled: true,
     },
-    BOBTest: {
-      url: 'https://testnet.rpc.gobob.xyz/',
-      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1, process.env.PRIVATE_KEY2],
-      loggingEnabled: true,
-    },
-    RSKTest: {
-      url: 'https://public-node.testnet.rsk.co',
-      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
+    nova: {
+      url: 'https://nova.arbitrum.io/rpc',
+      accounts: [process.env.PRIVATE_KEY_PROD],
       loggingEnabled: true,
     },
   },
   etherscan: {
+    solidity: true,
     apiKey: {
       sepolia: process.env.ETHERSCAN_API_KEY,
       optimismSepolia: process.env.Optimism_Sepolia_KEY,
       arbitrumSepolia: process.env.Arbitrum_Sepolia_KEY,
       arbitrumMainnet: process.env.Arbitrum_Mainnet_KEY,
-      BEVMTest: '123',
+      bvmTest: '123',
     },
     customChains: [
       {
@@ -115,17 +110,24 @@ const config: HardhatUserConfig = {
         },
       },
       {
-        network: 'BEVMTest',
-        chainId: 11503,
+        network: 'bvmTest',
+        chainId: 111111,
         urls: {
-          apiURL: 'https://scan-testnet-api.bevm.io/api',
-          browserURL: 'https://scan-testnet.bevm.io/',
+          apiURL: 'https://block-testnet.hyperagi.network/api',
+          browserURL: 'https://block-testnet.hyperagi.network/',
         },
       },
     ],
+    timeout: 60000,
   },
   sourcify: {
-    enabled: true,
+    enabled: false,
+  },
+  verify: {
+    etherscan: {
+      apiKey: '',
+      apiTimeout: 60 * 1000, // 设置超时时间为300秒
+    },
   },
 }
 
