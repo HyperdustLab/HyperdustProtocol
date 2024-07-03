@@ -13,11 +13,13 @@ describe('Hyperdust_HYDT_Price', () => {
 
       // const HyperAGI_Node_Mgr = await upgrades.upgradeProxy('0x3212Ef195c7322fe618f62AA147D40090A89ef22', _HyperAGI_Node_Mgr)
 
-      // const HyperAGI_Node_Mgr = await ethers.getContractAt('HyperAGI_Node_Mgr', '0x3212Ef195c7322fe618f62AA147D40090A89ef22')
+      const HyperAGI_Node_Mgr = await ethers.getContractAt('HyperAGI_Node_Mgr', '0xE39E20A5c54e0342201BBAd3dc322e79BA54a8CF')
+
+      await (await HyperAGI_Node_Mgr.active(1, { value: 179332050000000 })).wait()
 
       // const a = await HyperAGI_Node_Mgr.getNode(1)
 
-      // console.info(a)
+      //  console.info(a)
     })
   })
 })

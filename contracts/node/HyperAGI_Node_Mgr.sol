@@ -82,7 +82,7 @@ contract HyperAGI_Node_Mgr is OwnableUpgradeable {
             idList[i] = id;
         }
 
-        emit eveSave(idList, ipList, portList, gasFee);
+        emit eveSave(idList, ipList, portList, fee);
     }
 
     function getNode(uint256 id) public view returns (string[] memory stringArray, address, bytes1, uint256) {

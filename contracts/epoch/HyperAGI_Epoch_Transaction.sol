@@ -31,7 +31,7 @@ contract HyperAGI_Epoch_Transaction is OwnableUpgradeable {
 
     event eveEpochTransactionSave(uint256 id);
 
-    event eveUpdateEpoch(uint256[] success);
+    event eveUpdateEpoch(uint256[] ids, uint256 time, uint256 amount);
 
     event eveDifficulty(uint256 difficulty);
 
@@ -136,15 +136,9 @@ contract HyperAGI_Epoch_Transaction is OwnableUpgradeable {
         storageAddress.setUint(storageAddress.genKey("nodeId", id), nodeId);
 
         storageAddress.setBytes1(storageAddress.genKey("status", id), status);
-        uint256[] memory epochAmounts = new uint256[](epoch);
-        uint256[] memory epochTimes = new uint256[](epoch);
 
-        epochAmounts[0] = commission;
-        epochTimes[0] = createTime;
-
-        storageAddress.setUintArray(storageAddress.genKey("epochAmounts", id), epochAmounts);
-
-        storageAddress.setUintArray(storageAddress.genKey("epochTimes", id), epochTimes);
+        storageAddress.setUintArray(storageAddress.genKey("epochAmounts", id), commission);
+        storageAddress.setUintArray(storageAddress.genKey("epochTimes", id), createTime);
 
         if (epoch > 1) {
             storageAddress.setUintArray("runningEpochTransactions", id);
@@ -187,8 +181,6 @@ contract HyperAGI_Epoch_Transaction is OwnableUpgradeable {
 
         uint256[] memory runningEpochTransactions = storageAddress.getUintArray("runningEpochTransactions");
 
-        uint256[] memory success = storageAddress.getUintArray("runningEpochTransactions");
-
         uint256 totalAmount = commission * runningEpochTransactions.length;
 
         for (uint i = 0; i < runningEpochTransactions.length; i++) {
@@ -228,13 +220,11 @@ contract HyperAGI_Epoch_Transaction is OwnableUpgradeable {
                 last--;
             }
         }
-
         if (totalAmount > 0) {
             walletAccountAddress.addAmount(totalAmount);
             transferETH(payable(GasFeeCollectionWalletAddress), totalAmount);
         }
-
-        emit eveUpdateEpoch(success);
+        emit eveUpdateEpoch(runningEpochTransactions, block.timestamp, commission);
     }
 
     function cleanRunningTransactions(uint256 id, uint256[] memory runningEpochTransactions, uint256 last) private {
@@ -280,68 +270,6 @@ contract HyperAGI_Epoch_Transaction is OwnableUpgradeable {
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
 
         return storageAddress.getUintArray("runningEpochTransactions");
-    }
-
-    function renewal(uint256 orderId, uint256 epochNum) public payable {
-        require(epochNum > 0, "epoch must be greater than 0");
-
-        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
-
-        HyperAGI_Transaction_Cfg transactionCfgAddress = HyperAGI_Transaction_Cfg(_transactionCfgAddress);
-
-        uint256 maxCommission = transactionCfgAddress.getMaxGasFee("epoch");
-
-        uint256 payAmount = maxCommission * epochNum;
-
-        require(msg.value == payAmount, "Invalid payment amount");
-
-        address account = storageAddress.getAddress(storageAddress.genKey("account", orderId));
-
-        uint256 createTime = storageAddress.getUint(storageAddress.genKey("createTime", orderId));
-
-        require(createTime > 0, "not found");
-
-        require(msg.sender == account, "not owner");
-
-        uint256 endTime = storageAddress.getUint(storageAddress.genKey("endTime", orderId));
-
-        require(block.timestamp < endTime, "order expired");
-
-        storageAddress.setUint(storageAddress.genKey("endTime", orderId), endTime + (epochNum * 60 * 64) / 10);
-
-        uint256 epoch = storageAddress.getUint(storageAddress.genKey("epoch", orderId));
-
-        epoch += epochNum;
-
-        storageAddress.setUint(storageAddress.genKey("epoch", orderId), epoch);
-
-        bool running = storageAddress.getBool(storageAddress.genKey("running", orderId));
-
-        string memory payAmountKey = storageAddress.genKey("payAmount", orderId);
-
-        storageAddress.setUint(payAmountKey, storageAddress.getUint(payAmountKey) + payAmount);
-
-        if (!running) {
-            storageAddress.setUintArray("runningEpochTransactions", orderId);
-            storageAddress.setBool(storageAddress.genKey("running", orderId), true);
-        }
-
-        uint256[] memory epochAmounts = new uint256[](epoch);
-        uint256[] memory epochTimes = new uint256[](epoch);
-
-        uint256[] memory _epochAmounts = storageAddress.getUintArray(storageAddress.genKey("epochAmounts", orderId));
-        uint256[] memory _epochTimes = storageAddress.getUintArray(storageAddress.genKey("epochTimes", orderId));
-
-        for (uint i = 0; i < _epochAmounts.length; i++) {
-            epochAmounts[i] = _epochAmounts[i];
-            epochTimes[i] = _epochTimes[i];
-        }
-
-        storageAddress.setUintArray(storageAddress.genKey("epochAmounts", orderId), epochAmounts);
-
-        storageAddress.setUintArray(storageAddress.genKey("epochTimes", orderId), epochTimes);
-
-        emit eveEpochTransactionSave(orderId);
     }
 
     function transferETH(address payable recipient, uint256 amount) private {

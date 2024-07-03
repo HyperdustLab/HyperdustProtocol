@@ -13,7 +13,7 @@ async function main() {
 
   console.info('HyperAGI_Storage:', HyperAGI_Storage.target)
 
-  await (await instance.setContractAddress(['0xF13842B9E794A0970DCbCa245B963d3d0d804317', '0xad20ce3a9dce85708074BD7a0E6F4b355151e040', '0x8373Bd7e299F6d61490993EDadfF8D61357964E1', '0x7a798E8eC045f911684dAa28B38a54b883b9523C', HyperAGI_Storage.target])).wait()
+  await (await instance.setContractAddress(['0xF13842B9E794A0970DCbCa245B963d3d0d804317', '0xE39E20A5c54e0342201BBAd3dc322e79BA54a8CF', '0x8373Bd7e299F6d61490993EDadfF8D61357964E1', '0x7a798E8eC045f911684dAa28B38a54b883b9523C', HyperAGI_Storage.target])).wait()
 
   await (await HyperAGI_Storage.setServiceAddress(instance.target)).wait()
 
