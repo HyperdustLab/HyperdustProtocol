@@ -31,7 +31,7 @@ contract HyperAGI_Epoch_Transaction is OwnableUpgradeable {
 
     event eveEpochTransactionSave(uint256 id);
 
-    event eveUpdateEpoch(uint256[] ids, uint256 time, uint256 amount);
+    event eveUpdateEpoch(uint256[] ids, uint256[] epochs, uint256 time, uint256 amount);
 
     event eveDifficulty(uint256 difficulty);
 
@@ -147,6 +147,14 @@ contract HyperAGI_Epoch_Transaction is OwnableUpgradeable {
 
         emit eveEpochTransactionSave(id);
 
+        uint256[] memory ids = new uint256[](1);
+        ids[0] = id;
+
+        uint256[] memory epochs = new uint256[](1);
+        epochs[0] = 1;
+
+        emit eveUpdateEpoch(ids, epochs, block.timestamp, commission);
+
         return id;
     }
 
@@ -183,6 +191,8 @@ contract HyperAGI_Epoch_Transaction is OwnableUpgradeable {
 
         uint256 totalAmount = commission * runningEpochTransactions.length;
 
+        uint256[] memory epochs = new uint256[](runningEpochTransactions.length);
+
         for (uint i = 0; i < runningEpochTransactions.length; i++) {
             uint256 id = runningEpochTransactions[i];
 
@@ -191,6 +201,8 @@ contract HyperAGI_Epoch_Transaction is OwnableUpgradeable {
             uint256 useEpoch = storageAddress.getUint(storageAddress.genKey("useEpoch", id));
 
             useEpoch++;
+
+            epochs[i] = useEpoch;
 
             storageAddress.setUint(storageAddress.genKey("useEpoch", id), useEpoch);
 
@@ -224,7 +236,10 @@ contract HyperAGI_Epoch_Transaction is OwnableUpgradeable {
             walletAccountAddress.addAmount(totalAmount);
             transferETH(payable(GasFeeCollectionWalletAddress), totalAmount);
         }
-        emit eveUpdateEpoch(runningEpochTransactions, block.timestamp, commission);
+
+        if (runningEpochTransactions.length > 0) {
+            emit eveUpdateEpoch(runningEpochTransactions, epochs, block.timestamp, commission);
+        }
     }
 
     function cleanRunningTransactions(uint256 id, uint256[] memory runningEpochTransactions, uint256 last) private {
@@ -242,7 +257,7 @@ contract HyperAGI_Epoch_Transaction is OwnableUpgradeable {
         }
     }
 
-    function getEpochTransaction(uint256 id) public view returns (address, uint256[] memory, bytes1, uint256[] memory, uint256[] memory) {
+    function getEpochTransaction(uint256 id) public view returns (address, uint256[] memory, bytes1) {
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
 
         uint256 createTime = storageAddress.getUint(storageAddress.genKey("createTime", id));
@@ -263,7 +278,10 @@ contract HyperAGI_Epoch_Transaction is OwnableUpgradeable {
         uint256Array[8] = storageAddress.getUint(storageAddress.genKey("payAmount", id));
         uint256Array[9] = storageAddress.getUint(storageAddress.genKey("returnAmount", id));
 
-        return (storageAddress.getAddress(storageAddress.genKey("account", id)), uint256Array, storageAddress.getBytes1(storageAddress.genKey("status", id)), storageAddress.getUintArray(storageAddress.genKey("epochAmounts", id)), storageAddress.getUintArray(storageAddress.genKey("epochTimes", id)));
+        address account = storageAddress.getAddress(storageAddress.genKey("account", id));
+        bytes1 status = storageAddress.getBytes1(storageAddress.genKey("status", id));
+
+        return (account, uint256Array, status);
     }
 
     function getRunningEpochTransactions() public view returns (uint256[] memory) {

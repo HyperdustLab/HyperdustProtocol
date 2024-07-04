@@ -9,7 +9,7 @@ async function main() {
   await db.connect()
   const rows = await db.query('SELECT * FROM mgn_platform_nft', [])
 
-  const HyperAGI_mNFT_Mint = await ethers.getContractAt('HyperAGI_mNFT_Mint', '0x7028141A2BCc684f2204cE7DE4f5C0806b86F987')
+  const HyperAGI_mNFT_Mint = await ethers.getContractAt('HyperAGI_mNFT_Mint', '0x3aB9F8653de37265dAB8776467d590543729f017')
 
   for (const item of rows) {
     console.info(item)
