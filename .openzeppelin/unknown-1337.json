@@ -4,6 +4,10 @@
     {
       "address": "0x3212Ef195c7322fe618f62AA147D40090A89ef22",
       "kind": "transparent"
+    },
+    {
+      "address": "0x3aB9F8653de37265dAB8776467d590543729f017",
+      "kind": "transparent"
     }
   ],
   "impls": {
@@ -65,6 +69,120 @@
             "numberOfBytes": "32"
           },
           "t_struct(OwnableStorage)128_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "e78521c630e3c49ecaf38f386823018fd5b682507c98b2e3b94b2a6e999b3ff4": {
+      "address": "0x7f2B1731b86b06d240b25253F08d3b13116b18E7",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:31"
+          },
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:32"
+          },
+          {
+            "label": "_walletAccountAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:33"
+          },
+          {
+            "label": "_transactionCfgAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:34"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
             "label": "struct OwnableUpgradeable.OwnableStorage",
             "members": [
               {

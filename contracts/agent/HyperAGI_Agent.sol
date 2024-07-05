@@ -45,9 +45,9 @@ contract HyperAGI_Agent is OwnableUpgradeable {
     }
 
     function setContractAddress(address[] memory contractaddressArray) public onlyOwner {
-        _rolesCfgAddress = contractaddressArray[2];
-        _storageAddress = contractaddressArray[3];
-        _agentPOPNFTAddress = contractaddressArray[5];
+        _rolesCfgAddress = contractaddressArray[0];
+        _storageAddress = contractaddressArray[1];
+        _agentPOPNFTAddress = contractaddressArray[2];
     }
 
     function mint(uint256 tokenId, string memory avatar, string memory nickName, string memory personalization) public {

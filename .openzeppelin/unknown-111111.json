@@ -106,8 +106,17 @@
       "kind": "transparent"
     },
     {
+      "address": "0xBb23f3692fD4f897ddD42fA2426E8b4E32403549",
+      "txHash": "0xe79fe7762e50f267c4a8aedf37c624feb7c55d0280f7a2f0aab8239e19e19175",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x1EE72f442C8270f721C08927B7F9bfF86B4e6211",
+      "txHash": "0x446b8c764c72b806aa25711b226a2983f1eac7c81785f64160690deed0d4b095",
+      "kind": "transparent"
+    },
+    {
       "address": "0x3aB9F8653de37265dAB8776467d590543729f017",
-      "txHash": "0x22fd5627b2a31e4715bf4c6744a6b6f3810a7b32acf0e4e78fff363e3c4e74e7",
       "kind": "transparent"
     }
   ],
@@ -1397,7 +1406,7 @@
             "label": "bool",
             "numberOfBytes": "1"
           },
-          "t_struct(InitializableStorage)178_storage": {
+          "t_struct(InitializableStorage)64_storage": {
             "label": "struct Initializable.InitializableStorage",
             "members": [
               {
@@ -1415,7 +1424,2179 @@
             ],
             "numberOfBytes": "32"
           },
-          "t_struct(OwnableStorage)128_storage": {
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "d9248cd1b13c697cabd4d0aa877e588fc953a2b87b236fe41e17de8b07a0facf": {
+      "address": "0xb775baf0D99aC4aba1a175Fc738b621753dC3F5d",
+      "txHash": "0x41e4f7b5b36a6582df9141770632f3c33f269d525d229bb33b70f13e77402a4c",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent",
+            "src": "contracts\\agent\\HyperAGI_Agent.sol:25"
+          },
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent",
+            "src": "contracts\\agent\\HyperAGI_Agent.sol:26"
+          },
+          {
+            "label": "_agentPOPNFTAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_Agent",
+            "src": "contracts\\agent\\HyperAGI_Agent.sol:27"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "573fd5abff4782649105828da88cdff201d53020a4aa083a264be937f45c28de": {
+      "address": "0x7f2B1731b86b06d240b25253F08d3b13116b18E7",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:31"
+          },
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:32"
+          },
+          {
+            "label": "_walletAccountAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:33"
+          },
+          {
+            "label": "_transactionCfgAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:34"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "444d42806b2a60bd8016d5bc5ecdc1477b02f365338c2ddc523ffed3b7feecb6": {
+      "address": "0x7f2B1731b86b06d240b25253F08d3b13116b18E7",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:31"
+          },
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:32"
+          },
+          {
+            "label": "_walletAccountAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:33"
+          },
+          {
+            "label": "_transactionCfgAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:34"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "0641228cf3789d637da45f6114dc88fd1c58e1a3cfcd9c87cb2605d9968880d3": {
+      "address": "0x7f2B1731b86b06d240b25253F08d3b13116b18E7",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:31"
+          },
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:32"
+          },
+          {
+            "label": "_walletAccountAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:33"
+          },
+          {
+            "label": "_transactionCfgAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:34"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "286a2d29459739a0944bfb3d624eed4c68dd5748c636644af433837c97a6b033": {
+      "address": "0x7f2B1731b86b06d240b25253F08d3b13116b18E7",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:31"
+          },
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:32"
+          },
+          {
+            "label": "_walletAccountAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:33"
+          },
+          {
+            "label": "_transactionCfgAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:34"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "e78521c630e3c49ecaf38f386823018fd5b682507c98b2e3b94b2a6e999b3ff4": {
+      "address": "0x7f2B1731b86b06d240b25253F08d3b13116b18E7",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:31"
+          },
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:32"
+          },
+          {
+            "label": "_walletAccountAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:33"
+          },
+          {
+            "label": "_transactionCfgAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:34"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "f6d8c70bd546e88980809c5596f1791e7a4d36bd24cd24fbaa41d0ee6b5f6282": {
+      "address": "0x2E115a98896F255c425EacF032FBE5C15eFD005E",
+      "txHash": "0xee9ae2db9f14d375aa3d762cb6f0623eb37ff3b549abc88b908a2bf0028f4c60",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:31"
+          },
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:32"
+          },
+          {
+            "label": "_walletAccountAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:33"
+          },
+          {
+            "label": "_transactionCfgAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:34"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "226f5e21332591f657807333d3f946950d30520cbdabfe6f5453151365246c97": {
+      "address": "0x0d620C8816069b364F5dc7634Fc81C145A2eA067",
+      "txHash": "0x5f6b6d904e7b6355deab43fa246abcb89f767f73a04261a5fbd51ac3c985c6f5",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:31"
+          },
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:32"
+          },
+          {
+            "label": "_walletAccountAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:33"
+          },
+          {
+            "label": "_transactionCfgAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:34"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "bcf619cf44519d18158a578b4aa17d01e6e6c6bbfb2fe29dac0a41c7076ffebb": {
+      "address": "0x26aB7299D5D41217ECcc913AA71ffeEdAedbF3C6",
+      "txHash": "0x731bc99b706cbdb3d6828ed3cee71fba1830a7ba0b334629bafe785ccefb4511",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:31"
+          },
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:32"
+          },
+          {
+            "label": "_walletAccountAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:33"
+          },
+          {
+            "label": "_transactionCfgAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:34"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "b102c645d4e49027e7e3d5f44f60e83a8cf7b7a1ee542fa109409cf456ba8946": {
+      "address": "0xb3c030C26cBE5D7aCBd73fb7E4Fb9B9cb82C2fAA",
+      "txHash": "0xcc7a22212c4a6771cd3140f220638e2b607b3b0b6d467b54e24f31a22b96513f",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:31"
+          },
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:32"
+          },
+          {
+            "label": "_walletAccountAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:33"
+          },
+          {
+            "label": "_transactionCfgAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:34"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "5ba138535df47648dd0e373bdc69dbfe262905209ffaf1ea375fc1895a0e9b2c": {
+      "address": "0x6bd212D656D68809Fef68367Ce3540456aDD7c2e",
+      "txHash": "0x3c23b71a4653e8417d9d4c35c3a33299d0001ec96b639edb156bee15fbc32d04",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:31"
+          },
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:32"
+          },
+          {
+            "label": "_walletAccountAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:33"
+          },
+          {
+            "label": "_transactionCfgAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:34"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "69c451849cf73cbb9c9c800d2b4305035447ee65116c7723c506630281e93f37": {
+      "address": "0xdF1734F7a4D7880EF3955D18FFe362f998AE1ade",
+      "txHash": "0x6e80cf52a986a2ce8675883c34e3cb0f55cf9a0e2fa6d7fa39d1c208ed63ddd5",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:31"
+          },
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:32"
+          },
+          {
+            "label": "_walletAccountAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:33"
+          },
+          {
+            "label": "_transactionCfgAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:34"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "b99c165bb8e87f3d2586f75d7c0ba1e7bfa93b06bf84a172c41cb3d7929f535a": {
+      "address": "0xEBa484b94545A80A752072Aa638cE0f8fE7Da37c",
+      "txHash": "0x7a95c88f36f334af7eb6c50083471dc2135a3a21bda7faabfc7a73b10a24fa94",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:31"
+          },
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:32"
+          },
+          {
+            "label": "_walletAccountAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:33"
+          },
+          {
+            "label": "_transactionCfgAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:34"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "c56d25fa9ed94994fa0b614253882001c7d45480ad04f152b1731955552d2354": {
+      "address": "0x34C98f500469d36f26a0c181c260D71Be467dc05",
+      "txHash": "0xbcffbb5589f6a81c992e66a5f6e757851ab778af894af3f009f24b12d5971de4",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:31"
+          },
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:32"
+          },
+          {
+            "label": "_walletAccountAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:33"
+          },
+          {
+            "label": "_transactionCfgAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:34"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "246539f0d7b9bb6e35739836369dd7d4864fe227cca105e86de61e5dea3c1e0d": {
+      "address": "0xEB5cd1f2169DA6969D9059ED86eacd67E682aA06",
+      "txHash": "0x6098fa560e42376b60a0f4f373753e100a216dafa7df75c6def9aa3db78a946d",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:31"
+          },
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:32"
+          },
+          {
+            "label": "_walletAccountAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:33"
+          },
+          {
+            "label": "_transactionCfgAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:34"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "a594a10550865fb6ea5d3d8c1e09d44163749084bc5e083f6ec6658237ece2a2": {
+      "address": "0x86D299698d791541FF67Df857a0499e4C411a194",
+      "txHash": "0xa949e3a0c0848129ce7b46307cd8da4d4306e6254c2c31c9fcd879fc22dc2d62",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:31"
+          },
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:32"
+          },
+          {
+            "label": "_walletAccountAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:33"
+          },
+          {
+            "label": "_transactionCfgAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:34"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "985cee8c298b8fe2ca19bca3785b332d4027e5eb69881252828216db6bc8f678": {
+      "address": "0x332C9E9844627A28eb90FF0389614a5159C05B16",
+      "txHash": "0x00bc9ae4f3693f3c2edc3f4bde7854d37b8a6a31de86db380d7b0768dcf53319",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:31"
+          },
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:32"
+          },
+          {
+            "label": "_walletAccountAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:33"
+          },
+          {
+            "label": "_transactionCfgAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:34"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "f5edd010f8664df6ebe7550b6394e8f816a68791f0eadce389b25302dd2ef277": {
+      "address": "0xac8b791B24be1f66cabE61559bA927E8C4892612",
+      "txHash": "0x79ee93fe127423e78010f874a96f3c8af6a6ff195857df43fa36329ce20aaa47",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:31"
+          },
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:32"
+          },
+          {
+            "label": "_walletAccountAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:33"
+          },
+          {
+            "label": "_transactionCfgAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:34"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "f694d4778080397eb6666bc1dfffa33c099289b4f6aaf57435a71663728bbd8e": {
+      "address": "0x6C3Ad8328545b7117A4D51BADf65Ed719da3402F",
+      "txHash": "0xe92b9c3f2db16d1f900094dd66fb1c7df1235ea8cb105bc96972f5e255f17f8e",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_storageAddress",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:31"
+          },
+          {
+            "label": "_rolesCfgAddress",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:32"
+          },
+          {
+            "label": "_walletAccountAddress",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:33"
+          },
+          {
+            "label": "_transactionCfgAddress",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_address",
+            "contract": "HyperAGI_mNFT_Mint",
+            "src": "contracts\\HyperAGI_mNFT_Mint.sol:34"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
             "label": "struct OwnableUpgradeable.OwnableStorage",
             "members": [
               {
