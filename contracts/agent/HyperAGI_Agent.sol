@@ -14,8 +14,8 @@ import "../HyperAGI_Storage.sol";
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-abstract contract IAgentFactory {
-    function deploy(address account, string memory name, string memory symbol) public returns (address) {}
+abstract contract IERC1155 {
+    function burn(address account, uint256 id, uint256 value) public {}
 }
 
 contract HyperAGI_Agent is OwnableUpgradeable {
@@ -25,8 +25,13 @@ contract HyperAGI_Agent is OwnableUpgradeable {
     address public _rolesCfgAddress;
     address public _storageAddress;
     address public _agentPOPNFTAddress;
+    address public _groundRodAddress;
+
+    uint256[] private groundRodLevelKeys;
+    mapping(uint256 => uint256) public _groundRodLevels;
 
     event eveSaveAgent(bytes32 sid);
+    event eveRechargeEnergy(bytes32 sid, uint256 groundRodLevelId);
 
     function initialize(address onlyOwner) public initializer {
         __Ownable_init(onlyOwner);
@@ -44,10 +49,27 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         _agentPOPNFTAddress = agentPOPNFTAddress;
     }
 
+    function setGroundRodAddress(address groundRodAddress) public onlyOwner {
+        _groundRodAddress = groundRodAddress;
+    }
+
     function setContractAddress(address[] memory contractaddressArray) public onlyOwner {
         _rolesCfgAddress = contractaddressArray[0];
         _storageAddress = contractaddressArray[1];
         _agentPOPNFTAddress = contractaddressArray[2];
+        _groundRodAddress = contractaddressArray[3];
+    }
+
+    function setGroundRodLevels(uint256[] memory tokenIds, uint256[] memory levels) public onlyOwner {
+        for (uint i = 0; i < groundRodLevelKeys.length; i++) {
+            delete _groundRodLevels[groundRodLevelKeys[i]];
+        }
+
+        groundRodLevelKeys = tokenIds;
+
+        for (uint i = 0; i < tokenIds.length; i++) {
+            _groundRodLevels[tokenIds[i]] = levels[i];
+        }
     }
 
     function mint(uint256 tokenId, string memory avatar, string memory nickName, string memory personalization) public {
@@ -95,14 +117,40 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         emit eveSaveAgent(sid);
     }
 
-    function getAgent(bytes32 sid) public view returns (uint256, string memory, string memory, string memory) {
+    function getAgent(bytes32 sid) public view returns (uint256, string memory, string memory, string memory, uint256) {
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
 
         uint256 id = storageAddress.getBytes32Uint(sid);
 
         require(id > 0, "not found");
 
-        return (storageAddress.getUint(storageAddress.genKey("tokenId", id)), storageAddress.getString(storageAddress.genKey("avatar", id)), storageAddress.getString(storageAddress.genKey("nickName", id)), storageAddress.getString(storageAddress.genKey("personalization", id)));
+        return (
+            storageAddress.getUint(storageAddress.genKey("tokenId", id)),
+            storageAddress.getString(storageAddress.genKey("avatar", id)),
+            storageAddress.getString(storageAddress.genKey("nickName", id)),
+            storageAddress.getString(storageAddress.genKey("personalization", id)),
+            storageAddress.getUint(storageAddress.genKey("groundRodLevel", id))
+        );
+    }
+
+    function rechargeEnergy(uint256 tokenId, bytes32 sid) public {
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
+
+        (uint256 agentTokenId, , , , ) = getAgent(sid);
+
+        uint256 id = storageAddress.getBytes32Uint(sid);
+
+        require(IERC721(_agentPOPNFTAddress).ownerOf(agentTokenId) == msg.sender, "not owner");
+
+        uint256 groundRodLevel = _groundRodLevels[tokenId];
+
+        require(groundRodLevel > 0, "not found");
+
+        IERC1155(_groundRodAddress).burn(msg.sender, tokenId, 1);
+
+        storageAddress.setUint(storageAddress.genKey("groundRodLevel", id), groundRodLevel);
+
+        emit eveRechargeEnergy(sid, groundRodLevel);
     }
 
     function generateUniqueHash(uint256 nextId) private view returns (bytes32) {

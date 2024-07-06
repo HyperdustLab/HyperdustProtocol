@@ -57,7 +57,7 @@ const config: HardhatUserConfig = {
       loggingEnabled: true,
     },
     bvmTest: {
-      url: 'https://rpc-testnet.hyperagi.network',
+      url: 'http://rpc-testnet.hyperagi.network',
       accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
       loggingEnabled: true,
     },
