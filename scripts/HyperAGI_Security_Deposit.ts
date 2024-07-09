@@ -13,9 +13,9 @@ async function main() {
 
   await (await HyperAGI_Storage.setServiceAddress(instance.target)).wait()
 
-  await (await instance.setContractAddress(['0x5745090BFB28C3399223215DfbBb4e729aeF8cFD', HyperAGI_Storage.target, '0x829551330A37140764573d0B3236E9Db71b4B196'])).wait()
+  await (await instance.setContractAddress(['0xF13842B9E794A0970DCbCa245B963d3d0d804317', HyperAGI_Storage.target, '0xE39E20A5c54e0342201BBAd3dc322e79BA54a8CF'])).wait()
 
-  const HyperAGI_Roles_Cfg = await ethers.getContractAt('HyperAGI_Roles_Cfg', '0x5745090BFB28C3399223215DfbBb4e729aeF8cFD')
+  const HyperAGI_Roles_Cfg = await ethers.getContractAt('HyperAGI_Roles_Cfg', '0xF13842B9E794A0970DCbCa245B963d3d0d804317')
   await (await HyperAGI_Roles_Cfg.addAdmin(instance.target)).wait()
 
   console.info('HyperAGI_Storage:', HyperAGI_Storage.target)

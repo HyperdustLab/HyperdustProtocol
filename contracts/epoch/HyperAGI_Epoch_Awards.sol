@@ -113,7 +113,7 @@ contract HyperAGI_Epoch_Awards is OwnableUpgradeable {
             return;
         }
 
-        uint256 nodeId;
+        uint256 nodeId = 1;
         uint256 index;
 
         if (_activeNum == 0) {
@@ -168,11 +168,11 @@ contract HyperAGI_Epoch_Awards is OwnableUpgradeable {
 
         for (uint i = 0; i < nodeStatus.length; i++) {
             for (uint j = 0; j < 32; j++) {
-                uint256 nodeId = ids[index];
-
-                if (nodeId == 0) {
+                if (index + 1 >= totalSize) {
                     break;
                 }
+
+                uint256 nodeId = ids[index];
 
                 bytes1 status = bytes1(nodeStatus[i][j]);
 

