@@ -134,14 +134,19 @@ contract HyperAGI_Storage is OwnableUpgradeable {
         return uintArrayStorage[key];
     }
 
+    function getUintArray(string memory key, uint256 index) public view returns (uint256) {
+        return uintArrayStorage[key][index];
+    }
+
     function setAddressArray(string memory key, address[] memory addressArray) public {
         require(msg.sender == _serviceAddress, "only service can set");
         addressArrayStorage[key] = addressArray;
     }
 
-    function setAddressArray(string memory key, address value) public {
+    function setAddressArray(string memory key, address value) public returns (uint256) {
         require(msg.sender == _serviceAddress, "only service can set");
         addressArrayStorage[key].push(value);
+        return addressArrayStorage[key].length;
     }
 
     function setAddressArray(string memory key, uint256 index, address value) public returns (uint256) {
@@ -164,6 +169,14 @@ contract HyperAGI_Storage is OwnableUpgradeable {
 
     function getAddressArray(string memory key) public view returns (address[] memory) {
         return addressArrayStorage[key];
+    }
+
+    function getAddressArray(string memory key, uint256 index) public view returns (address) {
+        return addressArrayStorage[key][index];
+    }
+
+    function getAddressArrayLen(string memory key) public view returns (uint256) {
+        return addressArrayStorage[key].length;
     }
 
     function setStringArray(string memory key, string[] memory stringArray) public {
@@ -194,6 +207,14 @@ contract HyperAGI_Storage is OwnableUpgradeable {
 
     function getStringArray(string memory key) public view returns (string[] memory) {
         return stringArrayStorage[key];
+    }
+
+    function getStringArray(string memory key, uint256 index) public view returns (string memory) {
+        return stringArrayStorage[key][index];
+    }
+
+    function getStringArrayLen(string memory key) public view returns (uint256) {
+        return stringArrayStorage[key].length;
     }
 
     function setBytesArray(string memory key, bytes[] memory bytesArray) public {
@@ -227,6 +248,16 @@ contract HyperAGI_Storage is OwnableUpgradeable {
         return bytesArrayStorage[key];
     }
 
+    function getBytesArray(string memory key, uint256 index) public view returns (bytes memory) {
+        return bytesArrayStorage[key][index];
+    }
+
+    function getBytesArrayLen(string memory key, uint256 index) public view returns (uint256) {
+        return bytesArrayStorage[key].length;
+    }
+
+
+
     function setBoolArray(string memory key, bool[] memory boolArray) public {
         require(msg.sender == _serviceAddress, "only service can set");
         boolArrayStorage[key] = boolArray;
@@ -256,6 +287,14 @@ contract HyperAGI_Storage is OwnableUpgradeable {
 
     function getBoolArray(string memory key) public view returns (bool[] memory) {
         return boolArrayStorage[key];
+    }
+
+    function getBoolArray(string memory key, uint256 index) public view returns (bool) {
+        return boolArrayStorage[key][index];
+    }
+
+    function getBoolArrayLen(string memory key, uint256 index) public view returns (uint256) {
+        return boolArrayStorage[key].length;
     }
 
     function setBytes1(string memory key, bytes1 value) public {

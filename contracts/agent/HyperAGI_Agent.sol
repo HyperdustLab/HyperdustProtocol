@@ -32,6 +32,7 @@ contract HyperAGI_Agent is OwnableUpgradeable {
 
     event eveSaveAgent(bytes32 sid);
     event eveRechargeEnergy(bytes32 sid, uint256 groundRodLevelId);
+    event eveAccountRechargeEnergy(address account, uint256 groundRodLevelId);
     event eveAgentAccount(address account, uint256 index);
 
     function initialize(address onlyOwner) public initializer {
@@ -98,7 +99,9 @@ contract HyperAGI_Agent is OwnableUpgradeable {
 
         if (!storageAddress.getBool(msg.sender.toHexString())) {
             storageAddress.setBool(msg.sender.toHexString(), true);
-            storageAddress.setAddressArray("agentAccountList", address(this));
+            uint256 index = storageAddress.setAddressArray("agentAccountList", msg.sender);
+
+            emit eveAgentAccount(msg.sender, index);
         }
 
         emit eveSaveAgent(sid);
@@ -119,6 +122,13 @@ contract HyperAGI_Agent is OwnableUpgradeable {
 
         storageAddress.setString(storageAddress.genKey("nickName", id), nickName);
         storageAddress.setString(storageAddress.genKey("personalization", id), personalization);
+
+        if (!storageAddress.getBool(msg.sender.toHexString())) {
+            storageAddress.setBool(msg.sender.toHexString(), true);
+            uint256 index = storageAddress.setAddressArray("agentAccountList", msg.sender);
+
+            emit eveAgentAccount(msg.sender, index);
+        }
 
         emit eveSaveAgent(sid);
     }
@@ -156,10 +166,31 @@ contract HyperAGI_Agent is OwnableUpgradeable {
 
         storageAddress.setUint(storageAddress.genKey("groundRodLevel", id), groundRodLevel);
 
+        storageAddress.setUint(string(abi.encodePacked("groundRodLevel", "_", msg.sender.toHexString())), groundRodLevel);
+        emit eveAccountRechargeEnergy(msg.sender, groundRodLevel);
         emit eveRechargeEnergy(sid, groundRodLevel);
     }
 
     function generateUniqueHash(uint256 nextId) private view returns (bytes32) {
         return keccak256(abi.encodePacked(block.timestamp, block.difficulty, nextId));
+    }
+
+    function getAgentAccount(uint256 index) public view returns (address) {
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
+
+        return storageAddress.getAddressArray("agentAccountList", index);
+    }
+
+    function getAgentAccountLen() public view returns (uint256) {
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
+
+        return storageAddress.getAddressArrayLen("agentAccountList");
+    }
+
+    function getGroundRodLevel(address account) public view returns (uint256) {
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
+        string memory key = string(abi.encodePacked("groundRodLevel", "_", account.toHexString()));
+
+        return storageAddress.getUint(key);
     }
 }
