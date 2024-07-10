@@ -144,11 +144,12 @@ contract HyperAGI_Storage is OwnableUpgradeable {
         addressArrayStorage[key].push(value);
     }
 
-    function setAddressArray(string memory key, uint256 index, address value) public {
+    function setAddressArray(string memory key, uint256 index, address value) public returns (uint256) {
         require(msg.sender == _serviceAddress, "only service can set");
 
         require(index < addressArrayStorage[key].length, "Index out of bounds");
         addressArrayStorage[key][index] = value;
+        return addressArrayStorage[key].length;
     }
 
     function removeAddressArray(string memory key, uint256 index) public {
@@ -205,10 +206,11 @@ contract HyperAGI_Storage is OwnableUpgradeable {
         bytesArrayStorage[key].push(value);
     }
 
-    function setBytesArray(string memory key, uint256 index, bytes memory value) public {
+    function setBytesArray(string memory key, uint256 index, bytes memory value) public returns (uint256) {
         require(msg.sender == _serviceAddress, "only service can set");
         require(index < bytesArrayStorage[key].length, "Index out of bounds");
         bytesArrayStorage[key][index] = value;
+        return bytesArrayStorage[key].length;
     }
 
     function removeBytesArray(string memory key, uint256 index) public {
@@ -230,9 +232,10 @@ contract HyperAGI_Storage is OwnableUpgradeable {
         boolArrayStorage[key] = boolArray;
     }
 
-    function setBoolArray(string memory key, bool value) public {
+    function setBoolArray(string memory key, bool value) public returns (uint256) {
         require(msg.sender == _serviceAddress, "only service can set");
         boolArrayStorage[key].push(value);
+        return boolArrayStorage[key].length;
     }
 
     function setBoolArray(string memory key, uint256 index, bool value) public {

@@ -32,6 +32,7 @@ contract HyperAGI_Agent is OwnableUpgradeable {
 
     event eveSaveAgent(bytes32 sid);
     event eveRechargeEnergy(bytes32 sid, uint256 groundRodLevelId);
+    event eveAgentAccount(address account, uint256 index);
 
     function initialize(address onlyOwner) public initializer {
         __Ownable_init(onlyOwner);
@@ -94,6 +95,11 @@ contract HyperAGI_Agent is OwnableUpgradeable {
         storageAddress.setString(storageAddress.genKey("personalization", id), personalization);
 
         storageAddress.setBytes32(storageAddress.genKey("sid", id), sid);
+
+        if (!storageAddress.getBool(msg.sender.toHexString())) {
+            storageAddress.setBool(msg.sender.toHexString(), true);
+            storageAddress.setAddressArray("agentAccountList", address(this));
+        }
 
         emit eveSaveAgent(sid);
     }
