@@ -7,11 +7,11 @@ const xlsx = require('node-xlsx')
 describe('Hyperdust_HYDT_Price', () => {
   describe('sendRequest', () => {
     it('sendRequest', async () => {
-      const _HyperAGI_BaseReward_Release = await ethers.getContractFactory('HyperAGI_BaseReward_Release')
+      const _HyperAGI_Agent_Epoch_Awards = await ethers.getContractFactory('HyperAGI_Agent_Epoch_Awards')
 
-      const HyperAGI_BaseReward_Release = await upgrades.upgradeProxy('0x222Cc33Ed67877C195DE0D8347DDE4D0ebE8bBC7', _HyperAGI_BaseReward_Release)
+      const HyperAGI_Agent_Epoch_Awards = await upgrades.upgradeProxy('0x78Be0b13c10519C112789FD401D4C04d8F3c23Bd', _HyperAGI_Agent_Epoch_Awards)
 
-      await (await HyperAGI_BaseReward_Release.addBaseRewardReleaseRecord(102283105022831050n, '0x61Ce9e4A31bFEe62e100Ef128f757EeE9012786f', { value: 102283105022831050n })).wait()
+      //   await (await HyperAGI_Agent_Epoch_Awards.rewards(['0x1100000000000000000000000000000000000000000000000000000000000000'], 1, 227365900000000)).wait()
     })
   })
 })
