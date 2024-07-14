@@ -22,7 +22,7 @@ contract HyperAGI_Node_Mgr is OwnableUpgradeable {
     address public _storageAddress;
     address public _minerNFTPledgeAddress;
 
-    event eveSave(uint256[] idList, string[] ipList, string[] portList, uint256 fee);
+    event eveSave(uint256[] idList, string[] portList, uint256 fee);
     event eveActive(uint256 id, uint256 index);
 
     event eveSave(uint256 id);
@@ -51,7 +51,7 @@ contract HyperAGI_Node_Mgr is OwnableUpgradeable {
         _minerNFTPledgeAddress = contractaddressArray[2];
     }
 
-    function addNode(string[] memory ipList, string[] memory portList, string[] memory serviceNameList, address[] memory accountList, uint256 gasFee) public {
+    function addNode(string[] memory ipList, string[] memory serviceNameList, address[] memory accountList, uint256 gasFee) public {
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
         require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
 
@@ -60,7 +60,7 @@ contract HyperAGI_Node_Mgr is OwnableUpgradeable {
         uint256 fee = gasFee / ipList.length;
 
         for (uint256 i = 0; i < ipList.length; i++) {
-            string memory ipKey = string(abi.encodePacked(ipList[i], "_", portList[i]));
+            string memory ipKey = ipList[i];
 
             if (storageAddress.getBool(ipKey)) {
                 idList[i] = 0;
@@ -73,7 +73,6 @@ contract HyperAGI_Node_Mgr is OwnableUpgradeable {
             storageAddress.setBool(ipKey, true);
 
             storageAddress.setString(storageAddress.genKey("ip", id), ipList[i]);
-            storageAddress.setString(storageAddress.genKey("port", id), portList[i]);
             storageAddress.setString(storageAddress.genKey("serviceName", id), serviceNameList[i]);
             storageAddress.setAddress(storageAddress.genKey("account", id), accountList[i]);
             storageAddress.setBytes1(storageAddress.genKey("status", id), 0x00);
@@ -82,7 +81,7 @@ contract HyperAGI_Node_Mgr is OwnableUpgradeable {
             idList[i] = id;
         }
 
-        emit eveSave(idList, ipList, portList, fee);
+        emit eveSave(idList, ipList, fee);
     }
 
     function getNode(uint256 id) public view returns (string[] memory stringArray, address, bytes1, uint256) {
@@ -97,8 +96,7 @@ contract HyperAGI_Node_Mgr is OwnableUpgradeable {
         string[] memory stringArray = new string[](3);
 
         stringArray[0] = ip;
-        stringArray[1] = storageAddress.getString(storageAddress.genKey("port", id));
-        stringArray[2] = storageAddress.getString(storageAddress.genKey("serviceName", id));
+        stringArray[1] = storageAddress.getString(storageAddress.genKey("serviceName", id));
 
         bytes1 status = storageAddress.getBytes1(storageAddress.genKey("status", id));
 

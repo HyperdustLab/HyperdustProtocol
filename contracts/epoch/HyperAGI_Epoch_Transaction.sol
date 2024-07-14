@@ -80,7 +80,7 @@ contract HyperAGI_Epoch_Transaction is OwnableUpgradeable {
 
         require(nodeStatus == 0x01, "node not active");
 
-        require(StrUtil.equals(nodeStringArray[2].toSlice(), "hyperAGI-Render-Node".toSlice()), "node type error");
+        require(StrUtil.equals(nodeStringArray[1].toSlice(), "hyperAGI-Render-Node".toSlice()), "node type error");
 
         uint256 orderId = storageAddress.getUint(msg.sender.toHexString());
 
