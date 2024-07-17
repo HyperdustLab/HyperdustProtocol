@@ -142,23 +142,22 @@ contract HyperAGI_Agent_Epoch_Awards is OwnableUpgradeable {
 
         for (uint i = 0; i < agentStatus.length; i++) {
             for (uint j = 0; j < 32; j++) {
-                if (index + 1 > totalSize) {
+                if (index >= totalSize) {
                     break;
                 }
 
-                bytes1 status = bytes1(agentStatus[i][j]);
+                bytes1 status = agentStatus[i][j];
 
                 if (status == 0x11) {
+                    activeAgents[activeIndex] = agentAddress.getAgentAccount(index);
                     activeIndex++;
-
-                    activeAgents[activeIndex - 1] = agentAddress.getAgentAccount(index);
                 }
 
                 index++;
             }
         }
 
-        return (activeAgents, activeIndex == 0 ? activeIndex : activeIndex - 1, totalSize);
+        return (activeAgents, activeIndex, totalSize);
     }
 
     function _getRandom(uint256 _start, uint256 _end) private returns (uint256) {
