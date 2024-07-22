@@ -194,7 +194,7 @@ contract HyperAGI_Epoch_Awards is OwnableUpgradeable {
             }
         }
 
-        nodeMgrAddress.setStatisticalIndex(totalNum, activeNum);
+        nodeMgrAddress.setStatisticalIndex(totalNum, activeNum == 0 ? 1 : activeNum);
 
         return (activeNodes, onlineNodes, totalNum, activeNum);
     }

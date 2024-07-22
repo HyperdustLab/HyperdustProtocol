@@ -50,6 +50,8 @@ contract HyperAGI_Agent_Epoch_Awards is OwnableUpgradeable {
 
     event eveRewards(address agentAccount, uint256 epochAward, uint256 rand, uint256 nonce, uint256 gasFee, uint256 groundRodLevel);
 
+    event eveDifficulty(uint256 totalNum, uint256 activeNum);
+
     function initialize(address onlyOwner) public initializer {
         _rand = 1;
         __Ownable_init(onlyOwner);
@@ -109,13 +111,15 @@ contract HyperAGI_Agent_Epoch_Awards is OwnableUpgradeable {
             return;
         }
 
-        uint256 index = _getRandom(0, activeNumIndex);
+        uint256 index = _getRandom(0, activeNumIndex - 1);
 
         address account = activeAgent[index];
 
         uint256 groundRodLevel = agentAddress.getGroundRodLevel(account);
 
-        uint256 actualEpochAward = Math.mulDiv(groundRodLevel, epochAward, 5).mulDiv(1, Math.mulDiv(_totalNum, 1, activeNumIndex + 1));
+        uint256 actualEpochAward = Math.mulDiv(groundRodLevel, epochAward, 5).mulDiv(1, Math.mulDiv(_totalNum, 1, activeNumIndex));
+
+        emit eveDifficulty(_totalNum, activeNumIndex);
 
         agentWalletAddress.mint(payable(address(this)), actualEpochAward);
 
