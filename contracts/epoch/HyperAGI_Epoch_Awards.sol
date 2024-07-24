@@ -93,7 +93,7 @@ contract HyperAGI_Epoch_Awards is OwnableUpgradeable {
     function rewards(bytes32[] memory nodeStatus, uint256 nonce, uint256 gasFee) public {
         require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
 
-        (uint256[] memory activeNodes, uint256[] memory onlineNodes, uint256 _totalNum, uint256 _activeNum) = countActiveNode(nodeStatus);
+        (uint256[] memory activeNodes, , uint256 _totalNum, uint256 _activeNum) = countActiveNode(nodeStatus);
 
         HyperAGI_Node_Mgr nodeMgrAddress = HyperAGI_Node_Mgr(_nodeMgrAddress);
         HyperAGI_GPUMining GPUMiningAddress = HyperAGI_GPUMining(payable(_GPUMiningAddress));
@@ -104,8 +104,6 @@ contract HyperAGI_Epoch_Awards is OwnableUpgradeable {
         address _GasFeeCollectionWallet = walletAccountAddress._GasFeeCollectionWallet();
 
         uint256 epochAward = GPUMiningAddress._epochAward();
-
-        uint256 totalNum = _totalNum;
 
         if (_totalNum < 10) {
             _totalNum = 10;
@@ -119,21 +117,17 @@ contract HyperAGI_Epoch_Awards is OwnableUpgradeable {
         uint256 index;
 
         if (_activeNum == 0) {
-            _activeNum = 1;
-
-            index = _getRandom(0, totalNum);
-
-            nodeId = onlineNodes[index];
-        } else {
-            index = _getRandom(0, _activeNum);
-            nodeId = activeNodes[index];
+            return;
         }
+
+        index = _getRandom(0, _activeNum);
+        nodeId = activeNodes[index];
 
         uint32 accuracy = 1000000;
 
         uint256 difficulty = (_totalNum * accuracy) / _activeNum;
 
-        uint256 actualEpochAward = epochAward / 2 + (epochAward * accuracy) / difficulty / 2;
+        uint256 actualEpochAward = (epochAward * accuracy) / difficulty;
 
         uint256 securityDeposit = actualEpochAward / 10;
         uint256 baseRewardReleaseAward = actualEpochAward - securityDeposit - gasFee;

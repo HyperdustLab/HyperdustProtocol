@@ -28,6 +28,7 @@ contract HyperAGI_Epoch_Transaction is OwnableUpgradeable {
     address public _transactionCfgAddress;
     address public _walletAccountAddress;
     address public _storageAddress;
+    uint256 public _basicCoefficient;
 
     event eveEpochTransactionSave(uint256 id);
 
@@ -59,6 +60,10 @@ contract HyperAGI_Epoch_Transaction is OwnableUpgradeable {
         _storageAddress = storageAddress;
     }
 
+    function setBasicCoefficient(uint256 basicCoefficient) public onlyOwner {
+        _basicCoefficient = basicCoefficient;
+    }
+
     function setContractAddress(address[] memory contractaddressArray) public onlyOwner {
         _rolesCfgAddress = contractaddressArray[0];
         _nodeMgrAddress = contractaddressArray[1];
@@ -70,6 +75,11 @@ contract HyperAGI_Epoch_Transaction is OwnableUpgradeable {
     function createEpochTransaction(uint256 nodeId, uint256 epoch) public payable returns (uint256) {
         require(nodeId > 0, "Invalid nodeId");
         require(epoch > 0, "Epoch must be greater than 0");
+
+        uint256 maxEpochNum = getEpochMaxNum();
+
+        require(epoch <= maxEpochNum, "epoch too large");
+
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
 
         HyperAGI_Wallet_Account walletAccountAddress = HyperAGI_Wallet_Account(_walletAccountAddress);
@@ -180,6 +190,18 @@ contract HyperAGI_Epoch_Transaction is OwnableUpgradeable {
         emit eveUpdateEpoch(ids, epochs, block.timestamp, commission, returnAmounts);
 
         return id;
+    }
+
+    function getEpochMaxNum() public view returns (uint256) {
+        HyperAGI_Node_Mgr nodeMgrAddress = HyperAGI_Node_Mgr(_nodeMgrAddress);
+
+        (uint256 totalNum, uint256 activeNum) = nodeMgrAddress.getStatisticalIndex();
+
+        uint256 difficulty = (totalNum * 10 ** 6) / activeNum;
+
+        uint256 epochNum = (_basicCoefficient * 10 ** 6) / difficulty;
+
+        return epochNum;
     }
 
     function updateEpoch() public {
