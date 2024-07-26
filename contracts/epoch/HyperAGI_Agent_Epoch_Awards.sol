@@ -111,11 +111,15 @@ contract HyperAGI_Agent_Epoch_Awards is OwnableUpgradeable {
             return;
         }
 
-        uint256 index = _getRandom(0, activeNumIndex - 1);
+        uint256 index = _getRandom(0, activeNumIndex);
 
         address account = activeAgent[index];
 
         uint256 groundRodLevel = agentAddress.getGroundRodLevel(account);
+
+        if (groundRodLevel == 0) {
+            groundRodLevel = 1;
+        }
 
         uint256 actualEpochAward = Math.mulDiv(groundRodLevel, epochAward, 5).mulDiv(1, Math.mulDiv(_totalNum, 1, activeNumIndex));
 

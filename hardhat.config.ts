@@ -33,7 +33,7 @@ const config: HardhatUserConfig = {
   },
   networks: {
     dev: {
-      url: 'HTTP://172.30.204.42:8545',
+      url: 'HTTP://127.0.0.1:8545',
       loggingEnabled: true,
     },
     sepolia: {

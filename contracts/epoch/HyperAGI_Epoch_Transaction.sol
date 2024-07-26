@@ -124,6 +124,10 @@ contract HyperAGI_Epoch_Transaction is OwnableUpgradeable {
 
         (uint256 totalNum, uint256 activeNum) = nodeMgrAddress.getStatisticalIndex();
 
+        if (totalNum < 10) {
+            totalNum = 10;
+        }
+
         if (activeNum == 0) {
             emit eveDifficulty(0);
         } else {
@@ -197,9 +201,11 @@ contract HyperAGI_Epoch_Transaction is OwnableUpgradeable {
 
         (uint256 totalNum, uint256 activeNum) = nodeMgrAddress.getStatisticalIndex();
 
-        uint256 difficulty = (totalNum * 10 ** 6) / activeNum;
+        if (totalNum < 10) {
+            totalNum = 10;
+        }
 
-        uint256 epochNum = (_basicCoefficient * 10 ** 6) / difficulty;
+        uint256 epochNum = _basicCoefficient - ((((activeNum - 1) * 10 ** 6) / (totalNum - 1)) * (_basicCoefficient - 1)) / (10 ** 6);
 
         return epochNum;
     }
