@@ -52,6 +52,8 @@ contract HyperAGI_Epoch_Awards is OwnableUpgradeable {
 
     event eveDifficulty(uint256 totalNum, uint256 activeNum, uint256 securityDeposit, uint256 baseRewardReleaseAward);
 
+    event eveActiveNodes(uint256[] nodeIds);
+
     function initialize(address onlyOwner) public initializer {
         _rand = 1;
         __Ownable_init(onlyOwner);
@@ -139,6 +141,8 @@ contract HyperAGI_Epoch_Awards is OwnableUpgradeable {
         (, address incomeAddress, , ) = nodeMgrAddress.getNode(nodeId);
 
         emit eveDifficulty(_totalNum, _activeNum, securityDeposit, baseRewardReleaseAward);
+
+        emit eveActiveNodes(activeNodes);
 
         baseRewardReleaseAddress.addBaseRewardReleaseRecord{value: baseRewardReleaseAward}(baseRewardReleaseAward, incomeAddress);
 
