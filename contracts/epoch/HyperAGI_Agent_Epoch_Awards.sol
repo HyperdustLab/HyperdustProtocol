@@ -168,14 +168,14 @@ contract HyperAGI_Agent_Epoch_Awards is OwnableUpgradeable {
         return (activeAgents, activeIndex, totalSize);
     }
 
-    function _getRandom(uint256 _start, uint256 _end) private returns (uint256) {
+    function _getRandom(uint256 _start, uint256 _end) private view returns (uint256) {
+        require(_start < _end, "Invalid range");
         if (_start == _end) {
             return _start;
         }
         uint256 _length = _end - _start;
-        uint256 random = uint256(keccak256(abi.encodePacked(block.difficulty, block.timestamp, _rand)));
+        uint256 random = uint256(keccak256(abi.encodePacked(block.difficulty, block.timestamp, blockhash(block.number - 1), msg.sender, _rand)));
         random = (random % _length) + _start;
-        _rand++;
         return random;
     }
 

@@ -89,7 +89,7 @@ contract HyperAGI_Node_Mgr is OwnableUpgradeable {
 
         string memory ip = storageAddress.getString(storageAddress.genKey("ip", id));
 
-        require(bytes(ip).length > 0, "not found");
+        require(bytes(ip).length > 0, string(abi.encodePacked("Error: nodeId is not found ", id.toString())));
 
         address account = storageAddress.getAddress(storageAddress.genKey("account", id));
 

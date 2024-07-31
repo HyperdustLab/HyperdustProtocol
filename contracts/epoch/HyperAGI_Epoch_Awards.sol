@@ -125,6 +125,10 @@ contract HyperAGI_Epoch_Awards is OwnableUpgradeable {
         index = _getRandom(0, _activeNum);
         nodeId = activeNodes[index];
 
+        if (nodeId == 0) {
+            revert(string(abi.encodePacked("Error: nodeId is 0 at index ", index.toString())));
+        }
+
         uint32 accuracy = 1000000;
 
         uint256 difficulty = (_totalNum * accuracy) / _activeNum;
