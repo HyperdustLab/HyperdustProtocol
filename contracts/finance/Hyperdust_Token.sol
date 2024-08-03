@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
-    uint256 private _totalSupply = 200000000 ether;
+    uint256 private _totalSupply = 210000000 ether;
 
     uint256 public _mintNum = 0;
 
@@ -22,7 +22,12 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
     mapping(address => bytes32) private _bytes32Address;
 
     uint256 public _lastGPU_MINING_mint_time;
+    uint256 public _last_UBAI_mint_time;
     uint256 public _maxMININGMintNum = 1133334 ether;
+    uint256 public _maxUBAIMintNum = 700000 ether;
+    uint256  public _intervals = 10000;
+
+
 
     constructor(string memory name_, string memory symbol_, address onlyOwner) ERC20(name_, symbol_) Ownable(onlyOwner) {
         _totalAward[GPU_MINING] = (_totalSupply * 57) / 100;
@@ -50,11 +55,17 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
         require(_totalAward[name] >= _currAward[name], "totalAward is not enough");
 
         if (name == GPU_MINING) {
-            require(block.timestamp >= _lastGPU_MINING_mint_time + 30 days, "GPU_MINING mint time is not enough");
+            require(block.timestamp >= _lastGPU_MINING_mint_time + _intervals, "GPU_MINING mint time is not enough");
 
             require(mintNum <= _maxMININGMintNum, "mintNum is not enough");
 
             _lastGPU_MINING_mint_time = block.timestamp;
+        } else if (name == UBAI) {
+            require(block.timestamp >= _last_UBAI_mint_time + _intervals, "UBAI mint time is not enough");
+
+            require(mintNum <= _maxUBAIMintNum, "mintNum is not enough");
+
+            _last_UBAI_mint_time = block.timestamp;
         }
 
         _mintNum += mintNum;

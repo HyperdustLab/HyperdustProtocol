@@ -13,6 +13,5 @@ artifacts
 test/Test*.ts
 contracts/Test*.sol
 
-
-
-
+.vscode
+.idea

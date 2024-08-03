@@ -26,6 +26,8 @@ contract HyperAGI_BaseReward_Release is OwnableUpgradeable {
 
     uint256 public _dayTime;
 
+    receive() external payable {}
+
     event eveSave(uint256[] amounts, uint256[] releaseAmounts, uint256[] releaseTimes, address account);
 
     function initialize(address onlyOwner) public initializer {
