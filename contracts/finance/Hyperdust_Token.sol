@@ -23,9 +23,9 @@ contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
 
     uint256 public _lastGPU_MINING_mint_time;
     uint256 public _last_UBAI_mint_time;
-    uint256 public _maxMININGMintNum = 1133334 ether;
+    uint256 public _maxMININGMintNum = 997500 ether;
     uint256 public _maxUBAIMintNum = 700000 ether;
-    uint256  public _intervals = 10000;
+    uint256  public _intervals = 600;
 
 
 
