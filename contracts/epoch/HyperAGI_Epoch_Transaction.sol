@@ -86,7 +86,7 @@ contract HyperAGI_Epoch_Transaction is OwnableUpgradeable {
         HyperAGI_Node_Mgr nodeMgrAddress = HyperAGI_Node_Mgr(_nodeMgrAddress);
         HyperAGI_Transaction_Cfg transactionCfgAddress = HyperAGI_Transaction_Cfg(_transactionCfgAddress);
 
-        (string[] memory nodeStringArray, address serviceAccount, bytes1 nodeStatus, ) = nodeMgrAddress.getNode(nodeId);
+            (string[] memory nodeStringArray, address serviceAccount, bytes1 nodeStatus,) = nodeMgrAddress.getNode(nodeId);
 
         require(nodeStatus == 0x01, "node not active");
 
@@ -201,14 +201,36 @@ contract HyperAGI_Epoch_Transaction is OwnableUpgradeable {
 
         (uint256 totalNum, uint256 activeNum) = nodeMgrAddress.getStatisticalIndex();
 
+        // Ensure totalNum is at least 10
         if (totalNum < 10) {
             totalNum = 10;
         }
 
-        uint256 epochNum = _basicCoefficient - ((((activeNum - 1) * 10 ** 6) / (totalNum - 1)) * (_basicCoefficient - 1)) / (10 ** 6);
+        // Check for potential underflow or overflow conditions
+        uint256 denominator = totalNum - 1;
+        if (denominator == 0) {
+            denominator = 1;
+        }
+
+        uint256 coefficientDiff = _basicCoefficient > 1 ? (_basicCoefficient - 1) : 0;
+
+        uint256 epochNum = _basicCoefficient;
+
+        // Avoid overflow by ensuring activeNum does not exceed totalNum
+        if (activeNum <= totalNum) {
+
+            if (activeNum == 1) {
+                activeNum = 2;
+            }
+
+
+            uint256 adjustment = (((activeNum - 1) * 10 ** 6) / denominator) * coefficientDiff / (10 ** 6);
+            epochNum = _basicCoefficient - adjustment;
+        }
 
         return epochNum;
     }
+
 
     function updateEpoch() public {
         require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
