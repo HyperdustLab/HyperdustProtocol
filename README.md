@@ -1,14 +1,15 @@
 ## HyperAGI
 
-HyperAGI (was Hyperdust) is a Layer 2 solution on Bitcoin, focusing on decentralized AGI applications and fostering an autonomous cryptocurrency economy, with the ultimate goal of establishing Unconditional Basic Agent Income (UBAI). It inherits Bitcoin's robust security and decentralization, enhanced by the innovative Proof of Useful Work (PoUW) consensus mechanism.
+HyperAGI is the world's first blockchain designed to realise Unconditional Basic Income (UBI) through AGI. It features a robust GPU DePin infrastructure, a decentralised embodied AI computing framework, and personal agents based on exclusive aspect-oriented artificial neural programming.
 
-Consumer-grade GPU nodes are invited to join the network without permission, enabling them to mine the native token, $HYPT, by performing PoUW tasks such as AI inference and 3D rendering.
+HyperAGI offers a comprehensive technical and product stack for decentralized AGI, including PoUW GPU DePIN for 3D rendering and AI inference, decentralized AI microservices, peer-to-peer 3D AI Gym space, and an LLM-driven AGI agent framework and application.
 
-Users can utilize various tools to develop their LLM-driven Proof of Personhood (PoP) AGI agents. These agents can be configured as chatbots or as 3D/XR entities within the metaverse. AI developers can instantly utilize or deploy LLM AI microservices, facilitating the creation of programmable, autonomous on-chain agents.
+Consumer-grade GPU nodes are invited to join our network without permission, enabling them to mine the native token, $HYPT, by performing PoUW tasks such as AI inference and 3D rendering. These programmable agents can issue or own cryptocurrency assets, continuously operate, and trade, contributing to a vibrant, autonomous crypto economy that supports the realization of UBAI.
 
-These programmable agents are capable of issuing or owning cryptocurrency assets, and can continuously operate or trade, contributing to a vibrant, autonomous crypto economy that supports the realization of UBAI.
+Users can utilize various tools to develop their LLM-driven Proof of Personhood (PoP) agents or utility agents and train these embodied agents in 3D simulation space. These agents can be configured as chatbots, embodied avatars within the metaverse, or even downloaded to real-world robots, drones, or other autonomous vehicles.
 
-Owners of at least one Hyper•AGI•Agent runes token on Bitcoin Layer 1 qualify to create a PoP agent on Hyper Chain and may soon be eligible for UBAI benefits.
+AI developers can instantly utilize or deploy LLM AI microservices, facilitating the creation of programmable, autonomous on-chain agents.
+
 
 ![image](https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HYPERDUST.svg)
 
@@ -33,7 +34,11 @@ https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HyperdustChiangMaiRe
 
 ### The details of token issurence and gas price update refer to
 
-https://drive.google.com/file/d/1ZdAz1KLJFnsrNuGjJAM3kgKrAkztfQlI/view?usp=sharing
+https://docs.google.com/document/d/1tYCpw_OzKkidnQ63ijAPgMDO15jmmLcQ/edit?usp=sharing&ouid=117525248134720302581&rtpof=true&sd=true
+
+in Chinese
+
+https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HyperAGI-GPU-incentive_20240612151600.pdf
 
 
 #### HyperAGI Smart Contracts
@@ -72,9 +77,6 @@ The smart contracts of the HyperAGI are the core of the HyperAGI  platform, cont
 
 - `Hyperdust_Node_Type.sol`: Miner type management contract, responsible for maintaining miner node type information.
 
-Testnet video
 
-
-[![Alt text](https://ipfs.hyperdust.io/ipfs/QmSEoCq5kCJ2uMNMKKsWyibAc7HcrdYG1ssF4KJZQLJvmW?suffix=png)](https://youtu.be/8h12hFUe0dU)
 
 
