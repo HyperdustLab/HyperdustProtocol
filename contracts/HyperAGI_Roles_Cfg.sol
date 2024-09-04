@@ -3,19 +3,10 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
-<<<<<<<< HEAD:contracts/Hyperdust_Roles_Cfg.sol
-
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-========
->>>>>>>> dev:contracts/HyperAGI_Roles_Cfg.sol
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-<<<<<<<< HEAD:contracts/Hyperdust_Roles_Cfg.sol
-contract Hyperdust_Roles_Cfg is OwnableUpgradeable {
-========
 contract HyperAGI_Roles_Cfg is OwnableUpgradeable {
->>>>>>>> dev:contracts/HyperAGI_Roles_Cfg.sol
     using Strings for *;
 
     mapping(address => bool) public _adminRole;

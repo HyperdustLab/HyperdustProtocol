@@ -5,9 +5,11 @@ import '@nomicfoundation/hardhat-toolbox'
 import 'hardhat-gas-reporter'
 import '@openzeppelin/hardhat-upgrades'
 
-const { ProxyAgent, setGlobalDispatcher } = require('undici')
-const proxyAgent = new ProxyAgent('http://127.0.0.1:7890')
-setGlobalDispatcher(proxyAgent)
+require('./tasks/extract-metadata')
+
+// const { ProxyAgent, setGlobalDispatcher } = require('undici')
+// const proxyAgent = new ProxyAgent('http://127.0.0.1:7890')
+// setGlobalDispatcher(proxyAgent)
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -34,7 +36,6 @@ const config: HardhatUserConfig = {
     dev: {
       url: 'HTTP://127.0.0.1:8545',
       loggingEnabled: true,
-      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY_PROD],
     },
     sepolia: {
       url: process.env.SEPOLIA_RPC_URL,
@@ -56,34 +57,27 @@ const config: HardhatUserConfig = {
       accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
       loggingEnabled: true,
     },
-    BEVMTest: {
-      url: 'https://testnet.bevm.io',
+    bvmTest: {
+      url: 'http://rpc-testnet.hyperagi.network',
       accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
       loggingEnabled: true,
     },
-    rootstockTest: {
-      url: process.env.RootstockTest_RPC_URL,
-      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
+    nova: {
+      url: 'https://nova.arbitrum.io/rpc',
+      accounts: [process.env.PRIVATE_KEY_PROD],
       loggingEnabled: true,
     },
   },
   etherscan: {
+    solidity: true,
     apiKey: {
       sepolia: process.env.ETHERSCAN_API_KEY,
       optimismSepolia: process.env.Optimism_Sepolia_KEY,
       arbitrumSepolia: process.env.Arbitrum_Sepolia_KEY,
       arbitrumMainnet: process.env.Arbitrum_Mainnet_KEY,
-      BEVMTest: '123',
+      bvmTest: '123',
     },
     customChains: [
-      {
-        network: 'arbitrumSepolia',
-        chainId: 421614,
-        urls: {
-          apiURL: 'https://api-sepolia.arbiscan.io/api',
-          browserURL: 'https://sepolia.arbiscan.io/',
-        },
-      },
       {
         network: 'arbitrumSepolia',
         chainId: 421614,
@@ -109,17 +103,24 @@ const config: HardhatUserConfig = {
         },
       },
       {
-        network: 'BEVMTest',
-        chainId: 11503,
+        network: 'bvmTest',
+        chainId: 111111,
         urls: {
-          apiURL: 'https://scan-testnet-api.bevm.io/api',
-          browserURL: 'https://scan-testnet.bevm.io/',
+          apiURL: 'https://block-testnet.hyperagi.network/api',
+          browserURL: 'https://block-testnet.hyperagi.network/',
         },
       },
     ],
+    timeout: 60000,
   },
   sourcify: {
-    enabled: true,
+    enabled: false,
+  },
+  verify: {
+    etherscan: {
+      apiKey: '',
+      apiTimeout: 60 * 1000, // 设置超时时间为300秒
+    },
   },
 }
 
