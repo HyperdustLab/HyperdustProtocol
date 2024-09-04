@@ -24,6 +24,21 @@ contract HyperAGI_721 is ERC721, ERC721URIStorage, ERC721Burnable, AccessControl
         return tokenId;
     }
 
+
+    function batchSafeMint(address to, string memory uri, uint256 num) public onlyRole(MINTER_ROLE) returns (uint256[]  memory) {
+
+
+        uint256[] memory tokenIds = new uint256[](num);
+        for (uint256 i = 0; i < num; i++) {
+            uint256 tokenId = safeMint(to, uri);
+            tokenIds[i] = tokenId;
+        }
+
+        return tokenIds;
+
+
+    }
+
     function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {
         return super.tokenURI(tokenId);
     }

@@ -99,8 +99,8 @@ contract HyperAGI_Agent_Epoch_Awards is OwnableUpgradeable {
 
         uint256 epochAward = agentWalletAddress._epochAward();
 
-        if (_totalNum < 1000) {
-            _totalNum = 1000;
+        if (_totalNum < 350) {
+            _totalNum = 350;
         }
 
         if (epochAward == 0) {

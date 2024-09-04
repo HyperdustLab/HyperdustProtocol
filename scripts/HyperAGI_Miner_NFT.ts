@@ -5,7 +5,7 @@ import { ethers, run } from 'hardhat'
 async function main() {
   const abiCoder = new ethers.AbiCoder()
 
-  const contract = await ethers.deployContract('HyperAGI_721', ['HyperAGI Miner NFT', ' ', process.env.ADMIN_Wallet_Address])
+  const contract = await ethers.deployContract('HyperAGI_721', ['HyperAGI Miner NFT', 'HMN', process.env.ADMIN_Wallet_Address])
   await contract.waitForDeployment()
 
   console.info('contractFactory address:', contract.target)

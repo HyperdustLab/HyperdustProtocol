@@ -4,11 +4,12 @@ import { HardhatUserConfig } from 'hardhat/config'
 import '@nomicfoundation/hardhat-toolbox'
 import 'hardhat-gas-reporter'
 import '@openzeppelin/hardhat-upgrades'
+
 require('./tasks/extract-metadata')
 
-const { ProxyAgent, setGlobalDispatcher } = require('undici')
-const proxyAgent = new ProxyAgent('http://127.0.0.1:7890')
-setGlobalDispatcher(proxyAgent)
+// const { ProxyAgent, setGlobalDispatcher } = require('undici')
+// const proxyAgent = new ProxyAgent('http://127.0.0.1:7890')
+// setGlobalDispatcher(proxyAgent)
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -77,14 +78,6 @@ const config: HardhatUserConfig = {
       bvmTest: '123',
     },
     customChains: [
-      {
-        network: 'arbitrumSepolia',
-        chainId: 421614,
-        urls: {
-          apiURL: 'https://api-sepolia.arbiscan.io/api',
-          browserURL: 'https://sepolia.arbiscan.io/',
-        },
-      },
       {
         network: 'arbitrumSepolia',
         chainId: 421614,
