@@ -62,14 +62,14 @@ contract HyperAGI_Epoch_Awards_Test {
 
         for (uint i = 0; i < nodeStatus.length; i++) {
             for (uint j = 0; j < 32; j++) {
-                if (index + 1 >= totalSize) {
+                if (index >= totalSize) {
                     break;
                 }
 
                 bytes1 status = bytes1(nodeStatus[i][j]);
 
                 if (status != 0x00) {
-                    uint256 nodeId = ids[index + 1];
+                    uint256 nodeId = ids[index];
 
                     onlineNodes[totalNum] = nodeId;
                     totalNum++;

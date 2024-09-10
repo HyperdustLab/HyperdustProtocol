@@ -70,7 +70,7 @@ contract HyperAGI_VestingWallet is OwnableUpgradeable, AccessControlUpgradeable 
         uint256 start = _start;
         uint256 end = _end;
 
-        uint256 TGE_timestamp = hyperdust_Token.TGE_timestamp();
+        uint256 TGE_timestamp = hyperdust_Token.tgeTimestamp();
 
         if (TGE_timestamp == 0) {
             return 0;
@@ -120,7 +120,7 @@ contract HyperAGI_VestingWallet is OwnableUpgradeable, AccessControlUpgradeable 
             return 0;
         }
 
-        uint256 TGE_timestamp = hyperdust_Token.TGE_timestamp();
+        uint256 TGE_timestamp = hyperdust_Token.tgeTimestamp();
 
         if (TGE_timestamp == 0) {
             return 0;
@@ -174,7 +174,7 @@ contract HyperAGI_VestingWallet is OwnableUpgradeable, AccessControlUpgradeable 
     function release() public {
         Hyperdust_Token hyperdust_Token = Hyperdust_Token(_HyperdustTokenAddress);
 
-        uint256 TGE_timestamp = hyperdust_Token.TGE_timestamp();
+        uint256 TGE_timestamp = hyperdust_Token.tgeTimestamp();
 
         require(TGE_timestamp > 0, "TGE_timestamp is not started");
 
@@ -228,7 +228,7 @@ contract HyperAGI_VestingWallet is OwnableUpgradeable, AccessControlUpgradeable 
 
         Hyperdust_Token hyperdust_Token = Hyperdust_Token(_HyperdustTokenAddress);
 
-        uint256 totalAward = hyperdust_Token.totalAward(_businessName);
+        uint256 totalAward = hyperdust_Token.getTotalAward(_businessName);
 
         require(_totalAllocation <= totalAward, "totalAward is not enough");
 
