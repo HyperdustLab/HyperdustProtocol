@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 
-import "./Hyperdust_Token.sol";
+import "./HyperAGI_Token.sol";
 import "../utils/StrUtil.sol";
 
 contract HyperAGI_VestingWallet is OwnableUpgradeable, AccessControlUpgradeable {
@@ -65,7 +65,7 @@ contract HyperAGI_VestingWallet is OwnableUpgradeable, AccessControlUpgradeable 
             return 0;
         }
 
-        Hyperdust_Token hyperdust_Token = Hyperdust_Token(_HyperdustTokenAddress);
+        HyperAGI_Token hyperdust_Token = HyperAGI_Token(_HyperdustTokenAddress);
 
         uint256 start = _start;
         uint256 end = _end;
@@ -109,7 +109,7 @@ contract HyperAGI_VestingWallet is OwnableUpgradeable, AccessControlUpgradeable 
     }
 
     function releasable(address account) public view returns (uint256) {
-        Hyperdust_Token hyperdust_Token = Hyperdust_Token(_HyperdustTokenAddress);
+        HyperAGI_Token hyperdust_Token = HyperAGI_Token(_HyperdustTokenAddress);
 
         uint256 start = _start;
         uint256 end = _end;
@@ -172,7 +172,7 @@ contract HyperAGI_VestingWallet is OwnableUpgradeable, AccessControlUpgradeable 
     }
 
     function release() public {
-        Hyperdust_Token hyperdust_Token = Hyperdust_Token(_HyperdustTokenAddress);
+        HyperAGI_Token hyperdust_Token = HyperAGI_Token(_HyperdustTokenAddress);
 
         uint256 TGE_timestamp = hyperdust_Token.tgeTimestamp();
 
@@ -226,7 +226,7 @@ contract HyperAGI_VestingWallet is OwnableUpgradeable, AccessControlUpgradeable 
             releaseds[i] = _accountReleased[account];
         }
 
-        Hyperdust_Token hyperdust_Token = Hyperdust_Token(_HyperdustTokenAddress);
+        HyperAGI_Token hyperdust_Token = HyperAGI_Token(_HyperdustTokenAddress);
 
         uint256 totalAward = hyperdust_Token.getTotalAward(_businessName);
 

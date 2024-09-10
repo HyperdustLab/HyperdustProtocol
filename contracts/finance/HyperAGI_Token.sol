@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Hyperdust_Token is ERC20, ERC20Burnable, Ownable {
+contract HyperAGI_Token is ERC20, ERC20Burnable, Ownable {
     // Constants in uppercase
     uint256 private constant TOTAL_SUPPLY = 210_000_000 ether;
     uint256 public constant MAX_MINING_MINT_NUM = 997_500 ether;
