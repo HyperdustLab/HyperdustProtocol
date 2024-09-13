@@ -7,7 +7,7 @@ async function main() {
   const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address])
   await instance.waitForDeployment()
 
-  await (await instance.setContractAddress(['0xF13842B9E794A0970DCbCa245B963d3d0d804317', '0x61Ce9e4A31bFEe62e100Ef128f757EeE9012786f'])).wait()
+  await (await instance.setContractAddress(['0x60a9DF7d242842b5ed2692391a725359b27a35E5', '0x61Ce9e4A31bFEe62e100Ef128f757EeE9012786f'])).wait()
 
   console.info('contractFactory address:', instance.target)
 }

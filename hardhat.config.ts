@@ -67,6 +67,11 @@ const config: HardhatUserConfig = {
       accounts: [process.env.PRIVATE_KEY_PROD],
       loggingEnabled: true,
     },
+    hyperAGITest: {
+      url: 'http://rpc.hyperagi.network',
+      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
+      loggingEnabled: true,
+    },
   },
   etherscan: {
     solidity: true,
@@ -76,6 +81,7 @@ const config: HardhatUserConfig = {
       arbitrumSepolia: process.env.Arbitrum_Sepolia_KEY,
       arbitrumMainnet: process.env.Arbitrum_Mainnet_KEY,
       bvmTest: '123',
+      hyperAGITest: '123',
     },
     customChains: [
       {
@@ -108,6 +114,14 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: 'https://block-testnet.hyperagi.network/api',
           browserURL: 'https://block-testnet.hyperagi.network/',
+        },
+      },
+      {
+        network: 'hyperAGITest',
+        chainId: 21985375584,
+        urls: {
+          apiURL: 'https://block.hyperagi.network/api',
+          browserURL: 'https://block.hyperagi.network/',
         },
       },
     ],

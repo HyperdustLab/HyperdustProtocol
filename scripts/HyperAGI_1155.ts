@@ -10,7 +10,9 @@ async function main() {
 
   const MINTER_ROLE = await contract.MINTER_ROLE()
 
-  await (await contract.grantRole(MINTER_ROLE, '0x4C7f6fF2Ba231086B75028042a9f7E7FD812Ea87')).wait()
+  await (await contract.grantRole(MINTER_ROLE, '0x01453C1Df8C4f9558B8a23aA27a818A606F609B5')).wait()
+
+  console.info('contractFactory address:', contract.target)
 }
 
 // We recommend this pattern to be able to use async/await everywhere q

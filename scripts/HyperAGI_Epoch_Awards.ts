@@ -9,20 +9,20 @@ async function main() {
 
   await (
     await instance.setContractAddress([
-      '0xF13842B9E794A0970DCbCa245B963d3d0d804317',
-      '0xE39E20A5c54e0342201BBAd3dc322e79BA54a8CF',
-      '0x19f8B191a1112629D729307FC29e4436C7E2EFF5',
-      '0x9D665ee3229Ad9ebBD1022E13Ae460E3c8dD1f24',
-      '0xE297ce296D00381b2341c7e78662BF18eDD683d2',
-      '0x7a798E8eC045f911684dAa28B38a54b883b9523C',
+      '0x250a7629d076581d3713f016727204341865920C',
+      '0xB3da86845e2B02fEB0744B32aC1E60E48CC9f7b3',
+      '0x961A59f044944d887B538f03F43CBb52ebd46504',
+      '0x7cAC636AE16eC74679E6c56fE6436c0D1fd27bdE',
+      '0x60B33AD3A9912cf7281D1Ef345C9E3c690858c7e',
+      '0x141333a8797db93C217Fb12D9dDd01A255d0fF77',
     ])
   ).wait()
 
-  const HyperAGI_Roles_Cfg = await ethers.getContractAt('HyperAGI_Roles_Cfg', '0xF13842B9E794A0970DCbCa245B963d3d0d804317')
+  const HyperAGI_Roles_Cfg = await ethers.getContractAt('HyperAGI_Roles_Cfg', '0x250a7629d076581d3713f016727204341865920C')
 
   await (await HyperAGI_Roles_Cfg.addAdmin(instance.target)).wait()
 
-  const HyperAGI_GPUMining = await ethers.getContractAt('HyperAGI_GPUMining', '0xE297ce296D00381b2341c7e78662BF18eDD683d2')
+  const HyperAGI_GPUMining = await ethers.getContractAt('HyperAGI_GPUMining', '0x60B33AD3A9912cf7281D1Ef345C9E3c690858c7e')
 
   await (await HyperAGI_GPUMining.grantRole('0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6', instance.target)).wait()
 

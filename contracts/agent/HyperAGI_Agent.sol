@@ -17,7 +17,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 abstract contract IERC1155 {
     function burn(address account, uint256 id, uint256 value) public {}
 
-    function balanceOf(address account, uint256 id) public view returns (uint256){}
+    function balanceOf(address account, uint256 id) public view returns (uint256) {}
 }
 
 contract HyperAGI_Agent is OwnableUpgradeable {
@@ -160,7 +160,7 @@ contract HyperAGI_Agent is OwnableUpgradeable {
     function rechargeEnergy(uint256 tokenId, bytes32 sid) public {
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
 
-        (uint256 agentTokenId,,,,) = getAgent(sid);
+        (uint256 agentTokenId, , , , ) = getAgent(sid);
 
         uint256 id = storageAddress.getBytes32Uint(sid);
 
@@ -170,11 +170,11 @@ contract HyperAGI_Agent is OwnableUpgradeable {
 
         require(groundRodLevel > 0, "not found");
 
-// Check if the user has enough ERC-1155 tokens to burn
+        // Check if the user has enough ERC-1155 tokens to burn
         uint256 userBalance = IERC1155(_groundRodAddress).balanceOf(msg.sender, tokenId);
         require(userBalance >= 1, "insufficient token balance");
 
-// Burn the token
+        // Burn the token
         IERC1155(_groundRodAddress).burn(msg.sender, tokenId, 1);
 
         storageAddress.setUint(storageAddress.genKey("groundRodLevel", id), groundRodLevel);
