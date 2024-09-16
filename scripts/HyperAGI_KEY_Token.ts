@@ -3,9 +3,12 @@
 import { ethers, run, upgrades } from 'hardhat'
 
 async function main() {
-  const contract = await ethers.deployContract('HyperAGI_Token', ['Test Token', 'TestToken0914', '0xC619a8e80F485f5cCCb87041BAd2D2b0aCC843e2'])
-  await contract.waitForDeployment()
-  console.info('contractFactory address:', contract.target)
+  const contract = await ethers.getContractFactory('HyperAGI_KEY_Token')
+  const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address])
+
+  await instance.waitForDeployment()
+
+  console.info('contractFactory address:', instance.target)
 }
 
 // We recommend this pattern to be able to use async/await everywhere q
