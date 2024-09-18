@@ -1,6 +1,6 @@
 ## HyperAGI
 
-HyperAGI (was Hyperdust) is a Layer 2 solution on Bitcoin, focusing on decentralized AGI applications and fostering an autonomous cryptocurrency economy, with the ultimate goal of establishing Unconditional Basic Agent Income (UBAI). It inherits Bitcoin's robust security and decentralization, enhanced by the innovative Proof of Useful Work (PoUW) consensus mechanism.
+HyperAGI (was Hyperdust) is a Layer 3 AI solution Arbitrum One, focusing on decentralized AGI applications and fostering an autonomous cryptocurrency economy, with the ultimate goal of establishing Unconditional Basic Agent Income (UBAI). It inherits Ethereum's robust security and decentralization, enhanced by the innovative Proof of Useful Work (PoUW) consensus mechanism.
 
 Consumer-grade GPU nodes are invited to join the network without permission, enabling them to mine the native token, $HYPT, by performing PoUW tasks such as AI inference and 3D rendering.
 
