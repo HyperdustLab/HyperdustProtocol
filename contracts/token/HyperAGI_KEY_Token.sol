@@ -96,12 +96,13 @@ contract HyperAGI_KEY_Token is Initializable, ERC1155Upgradeable, ERC1155Burnabl
 
     function burn(address account, uint256 id, uint256 amount) public virtual override {
         require(_transferWhitelist[_msgSender()], "HyperAGI_KEY_Token: burn not allowed");
+        require(account == _msgSender() || isApprovedForAll(account, _msgSender()), "HyperAGI_KEY_Token: caller is not owner nor approved");
         _burn(account, id, amount);
     }
 
     function burnBatch(address account, uint256[] memory ids, uint256[] memory amounts) public virtual override {
         require(_transferWhitelist[_msgSender()], "HyperAGI_KEY_Token: burn not allowed");
-
+        require(account == _msgSender() || isApprovedForAll(account, _msgSender()), "HyperAGI_KEY_Token: caller is not owner nor approved");
         _burnBatch(account, ids, amounts);
     }
 }

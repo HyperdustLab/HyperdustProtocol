@@ -72,6 +72,11 @@ const config: HardhatUserConfig = {
       accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
       loggingEnabled: true,
     },
+    TagtalOrbitDevnet: {
+      url: 'https://tagtal-rpc.hyperagi.network',
+      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
+      loggingEnabled: true,
+    },
   },
   etherscan: {
     solidity: true,
@@ -82,6 +87,7 @@ const config: HardhatUserConfig = {
       arbitrumMainnet: process.env.Arbitrum_Mainnet_KEY,
       bvmTest: '123',
       hyperAGITest: '123',
+      TagtalOrbitDevnet: '123',
     },
     customChains: [
       {
@@ -122,6 +128,14 @@ const config: HardhatUserConfig = {
         urls: {
           apiURL: 'https://block.hyperagi.network/api',
           browserURL: 'https://block.hyperagi.network/',
+        },
+      },
+      {
+        network: 'TagtalOrbitDevnet',
+        chainId: 73871202146,
+        urls: {
+          apiURL: 'https://tagtal.hyperagi.network/api',
+          browserURL: 'https://tagtal.hyperagi.network',
         },
       },
     ],
