@@ -10,7 +10,7 @@ async function main() {
 
   const MINTER_ROLE = await contract.MINTER_ROLE()
 
-  await (await contract.grantRole(MINTER_ROLE, '0x01453C1Df8C4f9558B8a23aA27a818A606F609B5')).wait()
+  await (await contract.grantRole(MINTER_ROLE, '0x3A20dF9Daa3fcfD131C7348E1366965b304D1a43')).wait()
 
   console.info('contractFactory address:', contract.target)
 }

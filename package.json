@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@arbitrum/sdk": "^3.3.0",
+    "@arbitrum/orbit-sdk": "^0.8.3",
     "@brucelei/kaspa-wasm": "^0.14.1",
     "@chainlink/contracts": "^0.8.0",
     "@coinbase/coinbase-sdk": "^0.0.13",

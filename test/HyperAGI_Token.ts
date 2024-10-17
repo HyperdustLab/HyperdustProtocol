@@ -16,26 +16,35 @@ describe('Hyperdust_HYDT_Price', () => {
 
       const UBAI = await contract.UBAI()
       const GPU_MINING = await contract.GPU_MINING()
-      const PUBLIC_SALE = await contract.PUBLIC_SALE()
 
       await (await contract.setMinterAddress(UBAI, accounts[0].address)).wait()
-      let UBAI_availableMintAmount = await contract.getAvailableMintAmount(UBAI)
-      let GPU_MINING_availableMintAmount = await contract.getAvailableMintAmount(GPU_MINING)
-      let PUBLIC_SALE_availableMintAmount = await contract.getAvailableMintAmount(PUBLIC_SALE)
+      await (await contract.setMinterAddress(GPU_MINING, accounts[1].address)).wait()
+      const fs = require('fs')
+      const xlsx = require('xlsx')
+      const workbook = xlsx.utils.book_new()
+      const worksheetData = [['UBAI_availableMintAmount_last_time', 'UBAI_availableMintAmount', 'UBAI_CurrAward', 'GPU_MINING_availableMintAmount_last_time', 'GPU_MINING_availableMintAmount', 'GPU_MINING_CurrAward']]
 
-      console.info('UBAI_availableMintAmount', ethers.formatEther(UBAI_availableMintAmount))
-      console.info('GPU_MINING_availableMintAmount', ethers.formatEther(GPU_MINING_availableMintAmount))
-      console.info('PUBLIC_SALE_availableMintAmount', ethers.formatEther(PUBLIC_SALE_availableMintAmount))
+      for (let i = 0; i < 100; i++) {
+        const lastGpuMiningMintTime = new Date(Number(await contract.lastGpuMiningMintTime()) * 1000).toISOString()
+        const lastUbaiMintTime = new Date(Number(await contract.lastUbaiMintTime()) * 1000).toISOString()
 
-      await (await contract.mint(ethers.parseEther('700000'))).wait()
+        const UBAI_availableMintAmount = await contract.getAvailableMintAmount(UBAI)
+        const GPU_MINING_availableMintAmount = await contract.getAvailableMintAmount(GPU_MINING)
 
-      // 增加区块时间10分钟
-      await ethers.provider.send('evm_increaseTime', [600])
-      await ethers.provider.send('evm_mine', [])
+        const UBAI_CurrAward = await contract.getCurrAward(UBAI)
+        const GPU_MINING_CurrAward = await contract.getCurrAward(GPU_MINING)
 
-      UBAI_availableMintAmount = await contract.getAvailableMintAmount(UBAI)
+        worksheetData.push([lastGpuMiningMintTime, ethers.formatEther(UBAI_availableMintAmount[0]), ethers.formatEther(UBAI_CurrAward), lastUbaiMintTime, ethers.formatEther(GPU_MINING_availableMintAmount[0]), ethers.formatEther(GPU_MINING_CurrAward)])
 
-      console.info('UBAI_availableMintAmount2', ethers.formatEther(UBAI_availableMintAmount))
+        await (await contract.mint(UBAI_availableMintAmount[0])).wait()
+        await (await contract.connect(accounts[1]).mint(GPU_MINING_availableMintAmount[0])).wait()
+        await ethers.provider.send('evm_increaseTime', [600])
+        await ethers.provider.send('evm_mine', [])
+      }
+
+      const worksheet = xlsx.utils.aoa_to_sheet(worksheetData)
+      xlsx.utils.book_append_sheet(workbook, worksheet, 'Minting Data')
+      xlsx.writeFile(workbook, 'MintingData.xlsx')
     })
   })
 })

@@ -3,7 +3,7 @@
 import { ethers, run, upgrades } from 'hardhat'
 
 async function main() {
-  const contract = await ethers.deployContract('HyperAGI_Token', ['Test Token', 'TestToken0925', '0xC619a8e80F485f5cCCb87041BAd2D2b0aCC843e2'])
+  const contract = await ethers.deployContract('HyperAGIToken', ['0xD21B836E74109022c3f37676485E479EECce55db'])
   await contract.waitForDeployment()
   console.info('contractFactory address:', contract.target)
 }

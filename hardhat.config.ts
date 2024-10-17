@@ -52,29 +52,14 @@ const config: HardhatUserConfig = {
       accounts: [process.env.PRIVATE_KEY_PROD],
       loggingEnabled: true,
     },
-    optimismSepolia: {
-      url: process.env.Optimism_Sepolia_Testnet_RPC_URL,
-      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
-      loggingEnabled: true,
-    },
-    bvmTest: {
-      url: 'http://rpc-testnet.hyperagi.network',
-      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
-      loggingEnabled: true,
-    },
     nova: {
       url: 'https://nova.arbitrum.io/rpc',
       accounts: [process.env.PRIVATE_KEY_PROD],
       loggingEnabled: true,
     },
-    hyperAGITest: {
-      url: 'http://rpc.hyperagi.network',
-      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
-      loggingEnabled: true,
-    },
-    TagtalOrbitDevnet: {
-      url: 'https://tagtal-rpc.hyperagi.network',
-      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
+    hyperAGI: {
+      url: 'https://rpc.hyperagi.network',
+      accounts: [process.env.PRIVATE_KEY_PROD, process.env.PRIVATE_KEY1],
       loggingEnabled: true,
     },
   },
@@ -85,9 +70,7 @@ const config: HardhatUserConfig = {
       optimismSepolia: process.env.Optimism_Sepolia_KEY,
       arbitrumSepolia: process.env.Arbitrum_Sepolia_KEY,
       arbitrumMainnet: process.env.Arbitrum_Mainnet_KEY,
-      bvmTest: '123',
-      hyperAGITest: '123',
-      TagtalOrbitDevnet: '123',
+      hyperAGI: '123',
     },
     customChains: [
       {
@@ -115,27 +98,11 @@ const config: HardhatUserConfig = {
         },
       },
       {
-        network: 'bvmTest',
-        chainId: 111111,
+        network: 'hyperAGI',
+        chainId: 2868,
         urls: {
-          apiURL: 'https://block-testnet.hyperagi.network/api',
-          browserURL: 'https://block-testnet.hyperagi.network/',
-        },
-      },
-      {
-        network: 'hyperAGITest',
-        chainId: 21985375584,
-        urls: {
-          apiURL: 'https://block.hyperagi.network/api',
-          browserURL: 'https://block.hyperagi.network/',
-        },
-      },
-      {
-        network: 'TagtalOrbitDevnet',
-        chainId: 73871202146,
-        urls: {
-          apiURL: 'https://tagtal.hyperagi.network/api',
-          browserURL: 'https://tagtal.hyperagi.network',
+          apiURL: 'https://explorer.hyperagi.network/api',
+          browserURL: 'https://explorer.hyperagi.network/',
         },
       },
     ],
