@@ -106,10 +106,10 @@ contract HyperAGI_Agent is OwnableUpgradeable {
             emit eveAgentAccount(msg.sender, index);
         }
 
-        storageAddress.setUint(storageAddress.genKey("groundRodLevel", id), 1);
+        storageAddress.setUint(storageAddress.genKey("groundRodLevel", id), 5);
 
-        storageAddress.setUint(string(abi.encodePacked("groundRodLevel", "_", msg.sender.toHexString())), 1);
-        emit eveAccountRechargeEnergy(msg.sender, 1);
+        storageAddress.setUint(string(abi.encodePacked("groundRodLevel", "_", msg.sender.toHexString())), 5);
+        emit eveAccountRechargeEnergy(msg.sender, 5);
         emit eveRechargeEnergy(sid, 1);
 
         emit eveSaveAgent(sid);
