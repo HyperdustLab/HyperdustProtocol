@@ -174,15 +174,15 @@ contract HyperAGI_Epoch_Awards is OwnableUpgradeable {
 
         for (uint i = 0; i < nodeStatus.length; i++) {
             for (uint j = 0; j < 32; j++) {
-                if (index >= totalSize) {
+                if (index > totalSize) {
                     break;
                 }
-
-                uint256 nodeId = ids[index];
 
                 bytes1 status = bytes1(nodeStatus[i][j]);
 
                 if (status != 0x00) {
+                    uint256 nodeId = ids[index];
+
                     onlineNodes[totalNum] = nodeId;
                     totalNum++;
 

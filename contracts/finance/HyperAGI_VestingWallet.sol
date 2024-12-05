@@ -8,251 +8,211 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 
-import "./Hyperdust_Token.sol";
 import "../utils/StrUtil.sol";
+
+import "hardhat/console.sol";
 
 contract HyperAGI_VestingWallet is OwnableUpgradeable, AccessControlUpgradeable {
     using Strings for *;
 
+    receive() external payable {}
+
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-    mapping(address => uint256) private _accountTotalAllocation;
-    mapping(address => uint256) private _accountReleased;
+    bytes32 public constant RELEASED_AMOUNT = keccak256("RELEASED_AMOUNT");
+    bytes32 public constant TOTAL_RELEASED_AMOUNT = keccak256("TOTAL_RELEASED_AMOUNT");
+    bytes32 public constant PENDING_RELEASE_AMOUNT = keccak256("PENDING_RELEASE_AMOUNT");
 
-    address public _HyperdustTokenAddress;
+    mapping(bytes32 => uint256) private _amountStorage;
 
-    uint256 public _releaseInterval;
+    event eveUpdate(string[] dates, address[] wallets, uint256[] totalReleasedAmounts, uint256[] pendingReleaseAmounts, uint256[] releaseAmounts);
 
-    uint256 public _start;
-    uint256 public _end;
-
-    uint256 public _totalAllocation;
-    uint256 public _totalReleased;
-
-    uint256 public _delayVestingNum;
-
-    uint256 public _firestRate;
-
-    uint256 public _linearVestingNum;
-
-    bytes32 public _businessName;
-
-    event eveUpdate(bytes32 businessName, address[] accounts, uint256[] totalAllocations, uint256[] releaseds);
-
-    function initialize(address onlyOwner, uint256 releaseInterval, uint256 delayVestingNum, uint256 firestRate, uint256 linearVestingNum, bytes32 businessName) public initializer {
+    function initialize(address onlyOwner) public initializer {
         __Ownable_init(onlyOwner);
         _grantRole(MINTER_ROLE, onlyOwner);
         _grantRole(DEFAULT_ADMIN_ROLE, onlyOwner);
-        _releaseInterval = releaseInterval;
-        _delayVestingNum = delayVestingNum;
-        _firestRate = firestRate;
-        _linearVestingNum = linearVestingNum;
-        _businessName = businessName;
     }
 
-    function totalAllocation(address account) public view returns (uint256) {
-        return _accountTotalAllocation[account];
+    function _getKey(string memory date, address wallet, bytes32 businessName) private pure returns (bytes32) {
+        return keccak256(abi.encodePacked(date, wallet, businessName));
     }
 
-    function released(address account) public view returns (uint256) {
-        return _accountReleased[account];
+    function storeAmount(string memory date, address wallet, bytes32 businessName, uint256 amount) private {
+        bytes32 key = _getKey(date, wallet, businessName);
+        _amountStorage[key] += amount;
     }
 
-    function releasableTime(address account) public view returns (uint256) {
-        uint256 accountTotalAllocation = totalAllocation(account);
-
-        if (accountTotalAllocation == 0) {
-            return 0;
-        }
-
-        Hyperdust_Token hyperdust_Token = Hyperdust_Token(_HyperdustTokenAddress);
-
-        uint256 start = _start;
-        uint256 end = _end;
-
-        uint256 TGE_timestamp = hyperdust_Token.TGE_timestamp();
-
-        if (TGE_timestamp == 0) {
-            return 0;
-        } else {
-            if (start == 0) {
-                start = TGE_timestamp + _delayVestingNum * _releaseInterval;
-                end = start + _linearVestingNum * _releaseInterval;
-            }
-        }
-
-        uint256 _released = released(account);
-
-        if (_released == 0) {
-            return start;
-        }
-
-        if (accountTotalAllocation == _released) {
-            return 0;
-        }
-
-        if (block.timestamp >= end) {
-            return end;
-        }
-
-        uint256 _releasable = releasable(account);
-
-        if (_releasable > 0) {
-            uint256 elapsed = (block.timestamp - start) % _releaseInterval;
-
-            return block.timestamp - elapsed;
-        } else {
-            uint256 elapsed = (block.timestamp - start) % _releaseInterval;
-
-            return block.timestamp + _releaseInterval - elapsed;
-        }
+    function _reduceAmount(string memory date, address wallet, bytes32 businessName, uint256 amount) private {
+        bytes32 key = _getKey(date, wallet, businessName);
+        require(_amountStorage[key] >= amount, "Insufficient amount to reduce");
+        _amountStorage[key] -= amount;
     }
 
-    function releasable(address account) public view returns (uint256) {
-        Hyperdust_Token hyperdust_Token = Hyperdust_Token(_HyperdustTokenAddress);
-
-        uint256 start = _start;
-        uint256 end = _end;
-
-        uint256 accountTotalAllocation = totalAllocation(account);
-
-        if (accountTotalAllocation == 0) {
-            return 0;
-        }
-
-        uint256 TGE_timestamp = hyperdust_Token.TGE_timestamp();
-
-        if (TGE_timestamp == 0) {
-            return 0;
-        } else {
-            if (start == 0) {
-                start = TGE_timestamp + _delayVestingNum * _releaseInterval;
-                end = start + _linearVestingNum * _releaseInterval;
-            }
-        }
-
-        uint256 _released = released(account);
-
-        if (block.timestamp < start) {
-            return 0;
-        }
-
-        if (block.timestamp >= end) {
-            return accountTotalAllocation - _released;
-        }
-
-        uint256 elapsed = block.timestamp - start;
-
-        uint256 active = elapsed / _releaseInterval;
-        if (elapsed % _releaseInterval > 0) {
-            active += 1;
-        } else {
-            active++;
-        }
-
-        if (active == 0) {
-            return 0;
-        }
-
-        uint256 firestRateAmount = 0;
-
-        uint256 linearVestingNum = _linearVestingNum;
-
-        if (_firestRate > 0) {
-            active--;
-            linearVestingNum--;
-            firestRateAmount = (accountTotalAllocation * _firestRate) / 10000;
-        }
-
-        uint256 releaseIntervalAmount = (accountTotalAllocation - firestRateAmount) / linearVestingNum;
-
-        uint256 activeAmount = releaseIntervalAmount * active + firestRateAmount;
-
-        return activeAmount - _released;
+    function getAmount(string memory date, address wallet, bytes32 businessName) public view returns (uint256) {
+        bytes32 key = _getKey(date, wallet, businessName);
+        return _amountStorage[key];
     }
 
-    function release() public {
-        Hyperdust_Token hyperdust_Token = Hyperdust_Token(_HyperdustTokenAddress);
+    function getCurrentTimestamp(uint256 timestamp) private pure returns (string memory) {
+        uint256 year = (timestamp / 31556926) + 1970;
 
-        uint256 TGE_timestamp = hyperdust_Token.TGE_timestamp();
+        // Calculate month
+        uint256 month = ((timestamp % 31556926) / 2629743) + 1;
 
-        require(TGE_timestamp > 0, "TGE_timestamp is not started");
+        // Calculate day, completely remove +1 adjustment
+        uint256 day = (timestamp % 2629743) / 86400;
 
-        if (_start == 0) {
-            _start = TGE_timestamp + _delayVestingNum * _releaseInterval;
-            _end = _start + _linearVestingNum * _releaseInterval;
-        }
+        // Add zero-padding logic
+        string memory monthStr = month < 10 ? string(abi.encodePacked("0", month.toString())) : month.toString();
+        string memory dayStr = day < 10 ? string(abi.encodePacked("0", day.toString())) : day.toString();
 
-        uint256 amount = releasable(msg.sender);
-
-        require(amount > 0, "amount is 0");
-
-        hyperdust_Token.mint(amount);
-
-        _totalReleased += amount;
-
-        _accountReleased[msg.sender] += amount;
-
-        IERC20(hyperdust_Token).transfer(msg.sender, amount);
-
-        address[] memory accounts = new address[](1);
-        uint256[] memory totalAllocations = new uint256[](1);
-        uint256[] memory releaseds = new uint256[](1);
-
-        accounts[0] = msg.sender;
-        totalAllocations[0] = _accountTotalAllocation[msg.sender];
-        releaseds[0] = _accountReleased[msg.sender];
-
-        emit eveUpdate(_businessName, accounts, totalAllocations, releaseds);
+        return string(abi.encodePacked(year.toString(), "-", monthStr, "-", dayStr));
     }
 
-    function setHyperdustTokenAddress(address HyperdustTokenAddress) public onlyOwner {
-        _HyperdustTokenAddress = HyperdustTokenAddress;
+    function parseDateToTimestamp(string memory date) private pure returns (uint256) {
+        bytes memory dateBytes = bytes(date);
+        uint256 year = (uint8(dateBytes[0]) - 48) * 1000 + (uint8(dateBytes[1]) - 48) * 100 + (uint8(dateBytes[2]) - 48) * 10 + (uint8(dateBytes[3]) - 48);
+        uint256 month = (uint8(dateBytes[5]) - 48) * 10 + (uint8(dateBytes[6]) - 48);
+        uint256 day = (uint8(dateBytes[8]) - 48) * 10 + (uint8(dateBytes[9]) - 48);
+
+        // Basic validation
+        require(year >= 1970, "Year must be >= 1970");
+        require(month >= 1 && month <= 12, "Month must be between 1 and 12");
+        require(day >= 1 && day <= 31, "Day must be between 1 and 31");
+
+        // Calculate timestamp
+        uint256 timestamp = (year - 1970) *
+            31556926 + // Year
+            (month - 1) *
+            2629743 + // Month
+            (day - 1) *
+            86400; // Day
+
+        return timestamp;
     }
 
-    function appendAccountTotalAllocation(address[] memory accounts, uint256[] memory amounts) public onlyRole(MINTER_ROLE) {
+    /**
+     * @param accounts Array of addresses to receive tokens
+     * @param amounts Amount of tokens corresponding to each address
+     * @param releaseConfiguration The current array respectively contains: uint256 releaseInterval, uint256 delayVestingNum, uint256 firstRate, uint256 linearVestingNum
+     */
+
+    function appendAccountTotalAllocation(address[] memory accounts, uint256[] memory amounts, uint256[] memory releaseConfiguration) public payable onlyRole(MINTER_ROLE) {
         require(accounts.length == amounts.length, "accounts.length != amounts.length");
-        uint256[] memory totalAllocations = new uint256[](accounts.length);
-        uint256[] memory releaseds = new uint256[](accounts.length);
+        require(releaseConfiguration.length == 4, "Invalid release configuration");
 
-        for (uint256 i = 0; i < accounts.length; i++) {
-            address account = accounts[i];
-            uint256 amount = amounts[i];
-
-            _accountTotalAllocation[account] = _accountTotalAllocation[account] + amount;
-            _totalAllocation = _totalAllocation + amount;
-
-            totalAllocations[i] = _accountTotalAllocation[account];
-            releaseds[i] = _accountReleased[account];
+        // Calculate the total of amounts
+        uint256 totalAmount = 0;
+        for (uint256 i = 0; i < amounts.length; i++) {
+            totalAmount += amounts[i];
         }
 
-        Hyperdust_Token hyperdust_Token = Hyperdust_Token(_HyperdustTokenAddress);
+        // Ensure the received amount matches the total of amounts
+        require(msg.value == totalAmount, "Received amount does not match the total of amounts");
 
-        uint256 totalAward = hyperdust_Token.totalAward(_businessName);
+        // Deconstruct release configuration
+        uint256 releaseInterval = releaseConfiguration[0]; // Release interval (seconds)
+        uint256 delayVestingNum = releaseConfiguration[1]; // Number of delay vesting periods
+        uint256 firstRate = releaseConfiguration[2]; // First release rate
+        uint256 linearVestingNum = releaseConfiguration[3]; // Number of linear vesting periods
 
-        require(_totalAllocation <= totalAward, "totalAward is not enough");
+        uint256 currentTimestamp = block.timestamp;
 
-        emit eveUpdate(_businessName, accounts, totalAllocations, releaseds);
+        uint256 delayTimestamp = currentTimestamp + delayVestingNum * releaseInterval;
+
+        uint256 totalLength = accounts.length * linearVestingNum;
+
+        string[] memory dates = new string[](totalLength);
+        address[] memory wallets = new address[](totalLength);
+        uint256[] memory totalReleasedAmounts = new uint256[](totalLength);
+        uint256[] memory pendingReleaseAmounts = new uint256[](totalLength);
+        uint256[] memory releaseAmounts = new uint256[](totalLength);
+
+        uint256 index = 0;
+
+        for (uint256 j = 0; j < linearVestingNum; j++) {
+            string memory data = getCurrentTimestamp(delayTimestamp);
+
+            for (uint256 i = 0; i < accounts.length; i++) {
+                dates[index] = data;
+
+                wallets[index] = accounts[i];
+
+                address account = accounts[i];
+
+                uint256 amount = amounts[i];
+
+                uint256 firstAmount = 0;
+                uint256 avgAmount = 0;
+
+                if (firstRate > 0) {
+                    firstAmount = (amount * firstRate) / 100;
+
+                    avgAmount = (amount - firstAmount) / (linearVestingNum - 1);
+                } else {
+                    avgAmount = amount / linearVestingNum;
+                }
+
+                if (j == 0 && firstRate > 0) {
+                    storeAmount(data, account, TOTAL_RELEASED_AMOUNT, firstAmount);
+                    storeAmount(data, account, PENDING_RELEASE_AMOUNT, firstAmount);
+                } else {
+                    storeAmount(data, account, TOTAL_RELEASED_AMOUNT, avgAmount);
+                    storeAmount(data, account, PENDING_RELEASE_AMOUNT, avgAmount);
+                }
+
+                totalReleasedAmounts[index] = getAmount(data, account, TOTAL_RELEASED_AMOUNT);
+                pendingReleaseAmounts[index] = getAmount(data, account, PENDING_RELEASE_AMOUNT);
+                releaseAmounts[index] = getAmount(data, account, RELEASED_AMOUNT);
+
+                index++;
+            }
+
+            delayTimestamp += releaseInterval;
+        }
+
+        emit eveUpdate(dates, wallets, totalReleasedAmounts, pendingReleaseAmounts, releaseAmounts);
     }
 
-    function revokeAccountTotalAllocation(address account, uint256 amount) public onlyRole(MINTER_ROLE) {
-        uint256 accountReleased = released(account);
-        uint256 accountTotalAllocation = totalAllocation(account);
+    function withdraw(string[] memory withdrawDates) public {
+        string[] memory dates = new string[](withdrawDates.length);
+        address[] memory wallets = new address[](withdrawDates.length);
+        uint256[] memory totalReleasedAmounts = new uint256[](withdrawDates.length);
+        uint256[] memory pendingReleaseAmounts = new uint256[](withdrawDates.length);
+        uint256[] memory releaseAmounts = new uint256[](withdrawDates.length);
 
-        require(accountTotalAllocation >= accountReleased + amount, "accountTotalAllocation is not enough");
+        for (uint256 i = 0; i < withdrawDates.length; i++) {
+            string memory date = withdrawDates[i];
 
-        _accountTotalAllocation[account] = accountTotalAllocation - amount;
+            uint256 dateTimestamp = parseDateToTimestamp(date);
+            require(block.timestamp >= dateTimestamp, "Current timestamp must be greater than or equal to date");
 
-        _totalAllocation -= amount;
+            uint256 pendingReleaseAmount = getAmount(date, msg.sender, PENDING_RELEASE_AMOUNT);
 
-        address[] memory accounts = new address[](1);
-        uint256[] memory totalAllocations = new uint256[](1);
-        uint256[] memory releaseds = new uint256[](1);
+            require(pendingReleaseAmount > 0, "Pending release amount is zero");
 
-        accounts[0] = account;
-        totalAllocations[0] = _accountTotalAllocation[account];
-        releaseds[0] = _accountReleased[account];
+            storeAmount(date, msg.sender, RELEASED_AMOUNT, pendingReleaseAmount);
+            _reduceAmount(date, msg.sender, PENDING_RELEASE_AMOUNT, pendingReleaseAmount);
 
-        emit eveUpdate(_businessName, accounts, totalAllocations, releaseds);
+            payable(msg.sender).transfer(pendingReleaseAmount);
+
+            dates[i] = date;
+            wallets[i] = msg.sender;
+            totalReleasedAmounts[i] = getAmount(date, msg.sender, TOTAL_RELEASED_AMOUNT);
+            pendingReleaseAmounts[i] = getAmount(date, msg.sender, PENDING_RELEASE_AMOUNT);
+            releaseAmounts[i] = getAmount(date, msg.sender, RELEASED_AMOUNT);
+        }
+
+        emit eveUpdate(dates, wallets, totalReleasedAmounts, pendingReleaseAmounts, releaseAmounts);
+    }
+
+    event ReleaseAmountIncreased(address indexed account, uint256 additionalAmount, uint256 newReleasedAmount);
+
+    function substring(bytes memory str, uint256 startIndex, uint256 endIndex) private pure returns (bytes memory) {
+        bytes memory result = new bytes(endIndex - startIndex);
+        for (uint256 i = startIndex; i < endIndex; i++) {
+            result[i - startIndex] = str[i];
+        }
+        return result;
     }
 }

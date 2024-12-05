@@ -16,9 +16,9 @@ async function main() {
 
   await (await HyperAGI_Storage.setServiceAddress(instance.target)).wait()
 
-  await (await instance.setContractAddress(['0xF13842B9E794A0970DCbCa245B963d3d0d804317', HyperAGI_Storage.target, '0xA8a113Ba8ac32882E7136a331de7814DAb6904cd', '0xA6Fbe0E781cc85435E5A491Afcb877c6b600cAa0'])).wait()
+  await (await instance.setContractAddress(['0x7B33C8D43C52d0c575eACaEcFdAd68487bfB28Ea', HyperAGI_Storage.target, '0x709722ed57452a5B25860e4C8D1F7BB5275ac00B', '0x615f77318Ff5C101ff513e673c937C71ffDed5B3'])).wait()
 
-  await (await instance.setGroundRodLevels([1720753076763, 1720753124865, 1720753540303, 1720753582471, 1720753602937], [1, 2, 3, 4, 5])).wait()
+  // await (await instance.setGroundRodLevels([1720753076763, 1720753124865, 1720753540303, 1720753582471, 1720753602937], [1, 2, 3, 4, 5])).wait()
 
   console.info('contractFactory address:', instance.target)
 }

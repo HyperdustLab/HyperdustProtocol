@@ -1,14 +1,12 @@
 ## HyperAGI
 
-HyperAGI (was Hyperdust) is a Layer 2 solution on Bitcoin, focusing on decentralized AGI applications and fostering an autonomous cryptocurrency economy, with the ultimate goal of establishing Unconditional Basic Agent Income (UBAI). It inherits Bitcoin's robust security and decentralization, enhanced by the innovative Proof of Useful Work (PoUW) consensus mechanism.
+HyperAGI (was Hyperdust) is a Layer 3 AI solution Arbitrum One, focusing on decentralized AGI applications and fostering an autonomous cryptocurrency economy, with the ultimate goal of establishing Unconditional Basic Agent Income (UBAI). It inherits Ethereum's robust security and decentralization, enhanced by the innovative Proof of Useful Work (PoUW) consensus mechanism.
 
 Consumer-grade GPU nodes are invited to join the network without permission, enabling them to mine the native token, $HYPT, by performing PoUW tasks such as AI inference and 3D rendering.
 
 Users can utilize various tools to develop their LLM-driven Proof of Personhood (PoP) AGI agents. These agents can be configured as chatbots or as 3D/XR entities within the metaverse. AI developers can instantly utilize or deploy LLM AI microservices, facilitating the creation of programmable, autonomous on-chain agents.
 
 These programmable agents are capable of issuing or owning cryptocurrency assets, and can continuously operate or trade, contributing to a vibrant, autonomous crypto economy that supports the realization of UBAI.
-
-Owners of at least one Hyper•AGI•Agent runes token on Bitcoin Layer 1 qualify to create a PoP agent on Hyper Chain and may soon be eligible for UBAI benefits.
 
 ![image](https://github.com/HyperdustLab/HyperdustProtocol/blob/main/HYPERDUST.svg)
 
@@ -72,7 +70,6 @@ The smart contracts of the HyperAGI are the core of the HyperAGI  platform, cont
 
 - `Hyperdust_Node_Type.sol`: Miner type management contract, responsible for maintaining miner node type information.
 
-Testnet video
 
 
 [![Alt text](https://ipfs.hyperdust.io/ipfs/QmSEoCq5kCJ2uMNMKKsWyibAc7HcrdYG1ssF4KJZQLJvmW?suffix=png)](https://youtu.be/8h12hFUe0dU)

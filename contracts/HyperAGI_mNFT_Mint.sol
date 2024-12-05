@@ -138,14 +138,6 @@ contract HyperAGI_mNFT_Mint is OwnableUpgradeable {
         emit eveMint(id, msg.sender, num, price, payAmount, gasFee);
     }
 
-    function mint2(uint256 id, uint256 num) public {
-        revert("error");
-    }
-
-    function mint3(uint256 id, uint256 num) public payable {
-        revert("error");
-    }
-
     function updateNFT(uint256 id, string memory tokenURI, uint256 price, address contractAddress, uint256 tokenId, bytes1 contractType, uint256 allowNum, uint256 allowBuyNum) public {
         require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
 

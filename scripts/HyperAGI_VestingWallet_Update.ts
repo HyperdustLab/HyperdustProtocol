@@ -3,13 +3,13 @@
 import { ethers, run, upgrades } from 'hardhat'
 
 async function main() {
-  const _HyperAGI_Epoch_Awards = await ethers.getContractFactory('HyperAGI_Epoch_Awards')
+  const _HyperAGI_VestingWallet = await ethers.getContractFactory('HyperAGI_VestingWallet')
 
-  const HyperAGI_Epoch_Awards = await upgrades.upgradeProxy('0x36c08046833F7B2E2E938B0855d3C16F7CF66E96', _HyperAGI_Epoch_Awards)
+  const instance = await upgrades.upgradeProxy('0x24BC301057A61405C7b1Ab19F3f51cA985255117', _HyperAGI_VestingWallet)
 
-  // 验证实现合约
-  const implementationAddress = await upgrades.erc1967.getImplementationAddress(HyperAGI_Epoch_Awards.target)
+  console.info('contractFactory address:', instance.target)
 
+  const implementationAddress = await upgrades.erc1967.getImplementationAddress(instance.target)
   await run('verify:verify', {
     address: implementationAddress,
     constructorArguments: [],

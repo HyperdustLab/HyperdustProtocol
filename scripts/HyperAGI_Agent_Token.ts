@@ -3,11 +3,10 @@
 import { ethers, run, upgrades } from 'hardhat'
 
 async function main() {
-  const contract = await ethers.getContractFactory('HyperAGI_Faucet')
-  const instance = await upgrades.deployProxy(contract, [process.env.ADMIN_Wallet_Address])
-  await instance.waitForDeployment()
+  const contract = await ethers.getContractFactory('HyperAGI_Agent_Token')
+  const instance = await upgrades.deployProxy(contract, ['Agent Token', 'Agent', process.env.ADMIN_Wallet_Address])
 
-  await(await instance.setRolesCfgAddress('0x7B33C8D43C52d0c575eACaEcFdAd68487bfB28Ea')).wait()
+  await instance.waitForDeployment()
 
   console.info('contractFactory address:', instance.target)
 }

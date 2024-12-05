@@ -15,7 +15,7 @@ contract HyperAGI_AgentWallet is OwnableUpgradeable, AccessControlUpgradeable {
     using StrUtil for *;
 
     using Math for uint256;
-
+ 
     uint256 public _GPUMiningTotalAward;
 
     uint256 private _GPUMiningCurrMiningRatio;

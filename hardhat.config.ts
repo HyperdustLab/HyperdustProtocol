@@ -52,19 +52,14 @@ const config: HardhatUserConfig = {
       accounts: [process.env.PRIVATE_KEY_PROD],
       loggingEnabled: true,
     },
-    optimismSepolia: {
-      url: process.env.Optimism_Sepolia_Testnet_RPC_URL,
-      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
-      loggingEnabled: true,
-    },
-    bvmTest: {
-      url: 'http://rpc-testnet.hyperagi.network',
-      accounts: [process.env.PRIVATE_KEY, process.env.PRIVATE_KEY1],
-      loggingEnabled: true,
-    },
     nova: {
       url: 'https://nova.arbitrum.io/rpc',
       accounts: [process.env.PRIVATE_KEY_PROD],
+      loggingEnabled: true,
+    },
+    hyperAGI: {
+      url: 'https://rpc.hyperagi.network',
+      accounts: [process.env.PRIVATE_KEY_PROD, process.env.PRIVATE_KEY1],
       loggingEnabled: true,
     },
   },
@@ -75,7 +70,7 @@ const config: HardhatUserConfig = {
       optimismSepolia: process.env.Optimism_Sepolia_KEY,
       arbitrumSepolia: process.env.Arbitrum_Sepolia_KEY,
       arbitrumMainnet: process.env.Arbitrum_Mainnet_KEY,
-      bvmTest: '123',
+      hyperAGI: '123',
     },
     customChains: [
       {
@@ -103,11 +98,11 @@ const config: HardhatUserConfig = {
         },
       },
       {
-        network: 'bvmTest',
-        chainId: 111111,
+        network: 'hyperAGI',
+        chainId: 2868,
         urls: {
-          apiURL: 'https://block-testnet.hyperagi.network/api',
-          browserURL: 'https://block-testnet.hyperagi.network/',
+          apiURL: 'https://explorer.hyperagi.network/api',
+          browserURL: 'https://explorer.hyperagi.network/',
         },
       },
     ],

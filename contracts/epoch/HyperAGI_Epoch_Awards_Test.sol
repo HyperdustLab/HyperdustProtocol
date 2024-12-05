@@ -122,10 +122,8 @@ contract HyperAGI_Epoch_Awards_Test is OwnableUpgradeable {
             return;
         }
 
-
         index = _getRandom(0, _activeNum);
         nodeId = activeNodes[index];
-
 
         if (nodeId == 0) {
             revert(string(abi.encodePacked("Error: nodeId is 0 at index ", index.toString())));
@@ -139,22 +137,38 @@ contract HyperAGI_Epoch_Awards_Test is OwnableUpgradeable {
 
         uint256 securityDeposit = actualEpochAward / 10;
         uint256 baseRewardReleaseAward = actualEpochAward - securityDeposit - gasFee;
-        (, address incomeAddress, ,) = nodeMgrAddress.getNode(nodeId);
+
+        GPUMiningAddress.mint(payable(address(this)), actualEpochAward);
+
+        securityDepositAddress.addSecurityDeposit{value: securityDeposit}(nodeId, securityDeposit);
+
+        (, address incomeAddress, , ) = nodeMgrAddress.getNode(nodeId);
 
         emit eveDifficulty(_totalNum, _activeNum, securityDeposit, baseRewardReleaseAward);
 
         emit eveActiveNodes(activeNodes);
 
+        baseRewardReleaseAddress.addBaseRewardReleaseRecord{value: baseRewardReleaseAward}(baseRewardReleaseAward, incomeAddress);
+
+        transferETH(payable(_GasFeeCollectionWallet), gasFee);
+
+        walletAccountAddress.addAmount(gasFee);
+
         emit eveRewards(nodeId, actualEpochAward, index, nonce, gasFee);
     }
 
-    function countActiveNode(bytes32[] memory nodeStatus) private returns (uint256[] memory, uint256[] memory, uint256, uint256) {
-        HyperAGI_Node_Mgr nodeMgrAddress = HyperAGI_Node_Mgr(_nodeMgrAddress);
-
+    function countActiveNode(bytes32[] memory nodeStatus) public view returns (uint256[] memory, uint256[] memory, uint256, uint256) {
         uint256 activeNum = 0;
         uint256 totalNum = 0;
 
-        uint256[] memory ids = nodeMgrAddress.getAllNodeList();
+        uint256[] memory ids = new uint256[](7);
+        ids[0] = 2;
+        ids[1] = 3;
+        ids[2] = 8;
+        ids[3] = 10;
+        ids[4] = 7;
+        ids[5] = 6;
+        ids[6] = 5;
         uint256 totalSize = ids.length;
 
         uint256[] memory activeNodes = new uint256[](totalSize);
@@ -169,11 +183,11 @@ contract HyperAGI_Epoch_Awards_Test is OwnableUpgradeable {
                     break;
                 }
 
-                uint256 nodeId = ids[index];
-
                 bytes1 status = bytes1(nodeStatus[i][j]);
 
                 if (status != 0x00) {
+                    uint256 nodeId = ids[index];
+
                     onlineNodes[totalNum] = nodeId;
                     totalNum++;
 
