@@ -72,6 +72,6 @@ The smart contracts of the HyperAGI are the core of the HyperAGI  platform, cont
 
 
 
-[![Alt text](https://ipfs.hyperdust.io/ipfs/QmSEoCq5kCJ2uMNMKKsWyibAc7HcrdYG1ssF4KJZQLJvmW?suffix=png)](https://youtu.be/8h12hFUe0dU)
+[![Alt text](https://ipfs.hyperdust.io/ipfs/QmSEoCq5kCJ2uMNMKKsWyibAc7HcrdYG1ssF4KJZQLJvmW?suffix=png)](https://youtu.be/YZRhmqcBAcs)
 
 
