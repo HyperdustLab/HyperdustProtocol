@@ -114,7 +114,7 @@ contract HyperAGI_AgentWallet is OwnableUpgradeable, AccessControlUpgradeable {
 
             _epochAward = _GPUMiningCurrYearTotalSupply / 365 / 225;
         }
-
+    
         require(_GPUMiningCurrYearTotalSupply - _GPUMiningCurrYearTotalAward - mintNum >= 0, "currYearTotalSupply is not enough");
 
         require(_GPUMiningTotalAward - _GPUMiningCurrAward - mintNum >= 0, "GPUMiningTotalAward is not enough");

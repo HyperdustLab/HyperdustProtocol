@@ -10,6 +10,12 @@ async function main() {
   await (await instance.startTGE(1715827656)).wait()
 
   console.info('contractFactory address:', instance.target)
+
+  const implementationAddress = await upgrades.erc1967.getImplementationAddress(instance.target)
+  await run('verify:verify', {
+    address: implementationAddress,
+    constructorArguments: [],
+  })
 }
 
 // We recommend this pattern to be able to use async/await everywhere q

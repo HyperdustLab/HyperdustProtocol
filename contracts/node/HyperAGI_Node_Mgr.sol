@@ -8,11 +8,13 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 
+import "../HyperAGI_Roles_Cfg.sol";
+
 import {StrUtil} from "../utils/StrUtil.sol";
 
 import "./../HyperAGI_Storage.sol";
 
-import "./HyperAGI_Miner_NFT_Pledge.sol";
+import "./HyperAGI_Node_Pool.sol";
 
 contract HyperAGI_Node_Mgr is OwnableUpgradeable {
     using Strings for *;
@@ -20,7 +22,7 @@ contract HyperAGI_Node_Mgr is OwnableUpgradeable {
 
     address public _rolesCfgAddress;
     address public _storageAddress;
-    address public _minerNFTPledgeAddress;
+    address public _nodePoolAddress;
 
     event eveSave(uint256[] idList, string[] portList, uint256 fee);
     event eveActive(uint256 id, uint256 index);
@@ -41,14 +43,14 @@ contract HyperAGI_Node_Mgr is OwnableUpgradeable {
         _storageAddress = storageAddress;
     }
 
-    function setMinerNFTPledgeAddress(address minerNFTPledgeAddress) public onlyOwner {
-        _minerNFTPledgeAddress = minerNFTPledgeAddress;
+    function setNodePoolAddress(address nodePoolAddress) public onlyOwner {
+        _nodePoolAddress = nodePoolAddress;
     }
 
     function setContractAddress(address[] memory contractaddressArray) public onlyOwner {
         _rolesCfgAddress = contractaddressArray[0];
         _storageAddress = contractaddressArray[1];
-        _minerNFTPledgeAddress = contractaddressArray[2];
+        _nodePoolAddress = contractaddressArray[2];
     }
 
     function addNode(string[] memory ipList, string[] memory serviceNameList, address[] memory accountList, uint256 gasFee) public {
@@ -105,16 +107,18 @@ contract HyperAGI_Node_Mgr is OwnableUpgradeable {
         return (stringArray, account, status, fee);
     }
 
-    function active(uint256 id) public payable {
+    function active(uint256 id, uint256 pledgeAmount, uint256 pledgeKeyNum) public payable {
+        require(pledgeAmount > 0, "pledgeAmount must be greater than 0");
+
         HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
 
-        HyperAGI_Miner_NFT_Pledge minerNFTPledgeAddress = HyperAGI_Miner_NFT_Pledge(_minerNFTPledgeAddress);
+        HyperAGI_Node_Pool nodePoolAddress = HyperAGI_Node_Pool(_nodePoolAddress);
 
         address account = storageAddress.getAddress(storageAddress.genKey("account", id));
 
         uint256 fee = storageAddress.getUint(storageAddress.genKey("fee", id));
 
-        require(msg.value == fee, "Invalid amount");
+        require(msg.value == fee + pledgeAmount, "Invalid amount");
 
         require(msg.sender == account, "not the owner");
 
@@ -122,9 +126,9 @@ contract HyperAGI_Node_Mgr is OwnableUpgradeable {
 
         require(status == 0x00, "The node has been activated");
 
-        minerNFTPledgeAddress.lock(account, 1);
-
         storageAddress.setBytes1(storageAddress.genKey("status", id), 0x01);
+
+        nodePoolAddress.create{value: pledgeAmount}(id, account, pledgeAmount, pledgeKeyNum);
 
         uint256 index = storageAddress.setUintArray("ids", id);
 

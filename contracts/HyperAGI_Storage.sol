@@ -34,10 +34,42 @@ contract HyperAGI_Storage is OwnableUpgradeable {
     mapping(string => bool[]) public boolArrayStorage;
     mapping(bytes32 => uint256) public bytes32UintStorage;
     mapping(bytes32 => string) public bytes32StringStorage;
+    mapping(bytes32 => address) public bytes32AddressStorage;
+    mapping(bytes32 => bytes32) public bytes32Bytes32Storage;
+    mapping(bytes32 => bool) public bytes32BoolStorage;
+    mapping(bytes32 => bytes) public bytes32BytesStorage;
+
+    mapping(bytes32 => uint256[]) public bytes32UintArrayStorage;
+    mapping(bytes32 => address[]) public bytes32AddressArrayStorage;
+    mapping(bytes32 => string[]) public bytes32StringArrayStorage;
+    mapping(bytes32 => bytes32[]) public bytes32Bytes32ArrayStorage;
+    mapping(bytes32 => bool[]) public bytes32BoolArrayStorage;
+    mapping(bytes32 => bytes[]) public bytes32BytesArrayStorage;
 
     uint256 public _id;
 
     address public _serviceAddress;
+
+    function setBytes32UintArray(bytes32 key, uint256[] memory value) public {
+        require(msg.sender == _serviceAddress, "only service can set");
+        bytes32UintArrayStorage[key] = value;
+    }
+
+    function getBytes32UintArray(bytes32 key) public view returns (uint256[] memory) {
+        return bytes32UintArrayStorage[key];
+    }
+
+    function addToBytes32UintArray(bytes32 key, uint256 value) public {
+        require(msg.sender == _serviceAddress, "only service can set");
+        bytes32UintArrayStorage[key].push(value);
+    }
+
+    function removeFromBytes32UintArray(bytes32 key, uint256 index) public {
+        require(msg.sender == _serviceAddress, "only service can set");
+        require(index < bytes32UintArrayStorage[key].length, "Index out of bounds");
+        bytes32UintArrayStorage[key][index] = bytes32UintArrayStorage[key][bytes32UintArrayStorage[key].length - 1];
+        bytes32UintArrayStorage[key].pop();
+    }
 
     function setServiceAddress(address serviceAddress) public onlyOwner {
         _serviceAddress = serviceAddress;
@@ -256,8 +288,6 @@ contract HyperAGI_Storage is OwnableUpgradeable {
         return bytesArrayStorage[key].length;
     }
 
-
-
     function setBoolArray(string memory key, bool[] memory boolArray) public {
         require(msg.sender == _serviceAddress, "only service can set");
         boolArrayStorage[key] = boolArray;
@@ -293,7 +323,7 @@ contract HyperAGI_Storage is OwnableUpgradeable {
         return boolArrayStorage[key][index];
     }
 
-    function getBoolArrayLen(string memory key, uint256 index) public view returns (uint256) {
+    function getBoolArrayLen(string memory key) public view returns (uint256) {
         return boolArrayStorage[key].length;
     }
 
@@ -319,12 +349,166 @@ contract HyperAGI_Storage is OwnableUpgradeable {
         return bytes32UintStorage[key];
     }
 
-    function setBytes32String(bytes32 key, string memory value) public {
+    function setBytes32Address(bytes32 key, address value) public {
         require(msg.sender == _serviceAddress, "only service can set");
-        bytes32StringStorage[key] = value;
+        bytes32AddressStorage[key] = value;
     }
 
-    function getBytes32String(bytes32 key) public view returns (string memory) {
-        return bytes32StringStorage[key];
+    function getBytes32Address(bytes32 key) public view returns (address) {
+        return bytes32AddressStorage[key];
+    }
+
+    function setBytes32Bytes(bytes32 key, bytes memory value) public {
+        require(msg.sender == _serviceAddress, "only service can set");
+        bytes32BytesStorage[key] = value;
+    }
+
+    function getBytes32Bytes(bytes32 key) public view returns (bytes memory) {
+        return bytes32BytesStorage[key];
+    }
+
+    function setBytes32Bool(bytes32 key, bool value) public {
+        require(msg.sender == _serviceAddress, "only service can set");
+        bytes32BoolStorage[key] = value;
+    }
+
+    function getBytes32Bool(bytes32 key) public view returns (bool) {
+        return bytes32BoolStorage[key];
+    }
+
+    function setBytes32AddressArray(bytes32 key, address[] memory value) public {
+        require(msg.sender == _serviceAddress, "only service can set");
+        bytes32AddressArrayStorage[key] = value;
+    }
+
+    function getBytes32AddressArray(bytes32 key) public view returns (address[] memory) {
+        return bytes32AddressArrayStorage[key];
+    }
+
+    function addToBytes32AddressArray(bytes32 key, address value) public returns (uint256) {
+        require(msg.sender == _serviceAddress, "only service can set");
+        bytes32AddressArrayStorage[key].push(value);
+        return bytes32AddressArrayStorage[key].length;
+    }
+
+    function removeFromBytes32AddressArray(bytes32 key, uint256 index) public {
+        require(msg.sender == _serviceAddress, "only service can set");
+        require(index < bytes32AddressArrayStorage[key].length, "Index out of bounds");
+        bytes32AddressArrayStorage[key][index] = bytes32AddressArrayStorage[key][bytes32AddressArrayStorage[key].length - 1];
+        bytes32AddressArrayStorage[key].pop();
+    }
+
+    function setBytes32StringArray(bytes32 key, string[] memory value) public {
+        require(msg.sender == _serviceAddress, "only service can set");
+        bytes32StringArrayStorage[key] = value;
+    }
+
+    function getBytes32StringArray(bytes32 key) public view returns (string[] memory) {
+        return bytes32StringArrayStorage[key];
+    }
+
+    function addToBytes32StringArray(bytes32 key, string memory value) public returns (uint256) {
+        require(msg.sender == _serviceAddress, "only service can set");
+        bytes32StringArrayStorage[key].push(value);
+        return bytes32StringArrayStorage[key].length;
+    }
+
+    function removeFromBytes32StringArray(bytes32 key, uint256 index) public {
+        require(msg.sender == _serviceAddress, "only service can set");
+        require(index < bytes32StringArrayStorage[key].length, "Index out of bounds");
+        bytes32StringArrayStorage[key][index] = bytes32StringArrayStorage[key][bytes32StringArrayStorage[key].length - 1];
+        bytes32StringArrayStorage[key].pop();
+    }
+
+    function setBytes32BytesArray(bytes32 key, bytes32[] memory value) public {
+        require(msg.sender == _serviceAddress, "only service can set");
+        bytes32Bytes32ArrayStorage[key] = value;
+    }
+
+    function addToBytes32BytesArray(bytes32 key, bytes32 value) public returns (uint256) {
+        require(msg.sender == _serviceAddress, "only service can set");
+        bytes32Bytes32ArrayStorage[key].push(value);
+        return bytes32Bytes32ArrayStorage[key].length;
+    }
+
+    function setBytes32BoolArray(bytes32 key, bool[] memory value) public {
+        require(msg.sender == _serviceAddress, "only service can set");
+        bytes32BoolArrayStorage[key] = value;
+    }
+
+    function getBytes32BoolArray(bytes32 key) public view returns (bool[] memory) {
+        return bytes32BoolArrayStorage[key];
+    }
+
+    function addToBytes32BoolArray(bytes32 key, bool value) public returns (uint256) {
+        require(msg.sender == _serviceAddress, "only service can set");
+        bytes32BoolArrayStorage[key].push(value);
+        return bytes32BoolArrayStorage[key].length;
+    }
+
+    function removeFromBytes32BoolArray(bytes32 key, uint256 index) public {
+        require(msg.sender == _serviceAddress, "only service can set");
+        require(index < bytes32BoolArrayStorage[key].length, "Index out of bounds");
+        bytes32BoolArrayStorage[key][index] = bytes32BoolArrayStorage[key][bytes32BoolArrayStorage[key].length - 1];
+        bytes32BoolArrayStorage[key].pop();
+    }
+
+    function setBytes32BytesArray(bytes32 key, bytes[] memory value) public {
+        require(msg.sender == _serviceAddress, "only service can set");
+        bytes32BytesArrayStorage[key] = value;
+    }
+
+    function getBytes32BytesArray(bytes32 key) public view returns (bytes[] memory) {
+        return bytes32BytesArrayStorage[key];
+    }
+
+    function addToBytes32BytesArray(bytes32 key, bytes memory value) public returns (uint256) {
+        require(msg.sender == _serviceAddress, "only service can set");
+        bytes32BytesArrayStorage[key].push(value);
+        return bytes32BytesArrayStorage[key].length;
+    }
+
+    function removeFromBytes32BytesArray(bytes32 key, uint256 index) public {
+        require(msg.sender == _serviceAddress, "only service can set");
+        require(index < bytes32BytesArrayStorage[key].length, "Index out of bounds");
+        bytes32BytesArrayStorage[key][index] = bytes32BytesArrayStorage[key][bytes32BytesArrayStorage[key].length - 1];
+        bytes32BytesArrayStorage[key].pop();
+    }
+
+    function setBytes32Bytes32Array(bytes32 key, uint256 index, bytes32 value) public {
+        require(msg.sender == _serviceAddress, "only service can set");
+        require(index < bytes32Bytes32ArrayStorage[key].length, "Index out of bounds");
+        bytes32Bytes32ArrayStorage[key][index] = value;
+    }
+
+    function getBytes32Bytes32Array(bytes32 key, uint256 index) public view returns (bytes32) {
+        require(index < bytes32Bytes32ArrayStorage[key].length, "Index out of bounds");
+        return bytes32Bytes32ArrayStorage[key][index];
+    }
+
+    function setBytes32BoolArray(bytes32 key, uint256 index, bool value) public {
+        require(msg.sender == _serviceAddress, "only service can set");
+        require(index < bytes32BoolArrayStorage[key].length, "Index out of bounds");
+        bytes32BoolArrayStorage[key][index] = value;
+    }
+
+    function setBytes32BytesArray(bytes32 key, uint256 index, bytes memory value) public {
+        require(msg.sender == _serviceAddress, "only service can set");
+        require(index < bytes32BytesArrayStorage[key].length, "Index out of bounds");
+        bytes32BytesArrayStorage[key][index] = value;
+    }
+
+    function getBytes32BytesArray(bytes32 key, uint256 index) public view returns (bytes memory) {
+        require(index < bytes32BytesArrayStorage[key].length, "Index out of bounds");
+        return bytes32BytesArrayStorage[key][index];
+    }
+
+    function setBytes32Bytes32(bytes32 key, bytes32 value) public {
+        require(msg.sender == _serviceAddress, "only service can set");
+        bytes32Bytes32Storage[key] = value;
+    }
+
+    function getBytes32Bytes32(bytes32 key) public view returns (bytes32) {
+        return bytes32Bytes32Storage[key];
     }
 }

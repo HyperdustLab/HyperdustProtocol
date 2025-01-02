@@ -46,15 +46,20 @@ contract HyperAGI_Agent_Epoch_Awards is OwnableUpgradeable {
 
     uint256 private _rand;
 
+    uint256 public _difficulty;
+
+    uint256 public _epochCount;
+
     receive() external payable {}
 
-    event eveRewards(address agentAccount, uint256 epochAward, uint256 rand, uint256 nonce, uint256 gasFee, uint256 groundRodLevel);
+    event eveRewards(address agentAccount, uint256 epochAward, uint256 rand, uint256 epochCount);
 
-    event eveDifficulty(uint256 totalNum, uint256 activeNum);
+    event eveDifficulty(uint256 difficulty, uint256 epochCount, uint256 inferenceTokenNum);
 
-    function initialize(address onlyOwner) public initializer {
+    function initialize(address onlyOwner, uint256 difficulty) public initializer {
         _rand = 1;
         __Ownable_init(onlyOwner);
+        _difficulty = difficulty;
     }
 
     function setRolesCfgAddress(address rolesCfgAddress) public onlyOwner {
@@ -87,55 +92,6 @@ contract HyperAGI_Agent_Epoch_Awards is OwnableUpgradeable {
 
     function rewards(bytes32[] memory agentStatus, uint256 nonce, uint256 gasFee) public {
         require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
-
-        (address[] memory activeAgent, uint256 activeNumIndex, uint256 _totalNum) = countActiveAgent(agentStatus);
-
-        HyperAGI_AgentWallet agentWalletAddress = HyperAGI_AgentWallet(payable(_agentWalletAddress));
-        HyperAGI_BaseReward_Release baseRewardReleaseAddress = HyperAGI_BaseReward_Release(payable(_baseRewardReleaseAddress));
-        HyperAGI_Wallet_Account walletAccountAddress = HyperAGI_Wallet_Account(_walletAccountAddress);
-        HyperAGI_Agent agentAddress = HyperAGI_Agent(_agentAddress);
-
-        address _GasFeeCollectionWallet = walletAccountAddress._GasFeeCollectionWallet();
-
-        uint256 epochAward = agentWalletAddress._epochAward();
-
-        if (_totalNum < 350) {
-            _totalNum = 350;
-        }
-
-        if (epochAward == 0) {
-            return;
-        }
-
-        if (_totalNum == 0) {
-            return;
-        }
-
-        uint256 index = _getRandom(0, activeNumIndex);
-
-        address account = activeAgent[index];
-
-        uint256 groundRodLevel = agentAddress.getGroundRodLevel(account);
-
-        if (groundRodLevel == 0) {
-            groundRodLevel = 1;
-        }
-
-        uint256 actualEpochAward = Math.mulDiv(groundRodLevel, epochAward, 5).mulDiv(1, Math.mulDiv(_totalNum, 1, activeNumIndex));
-
-        emit eveDifficulty(_totalNum, activeNumIndex);
-
-        agentWalletAddress.mint(payable(address(this)), actualEpochAward);
-
-        uint256 baseRewardReleaseAward = actualEpochAward - gasFee;
-
-        baseRewardReleaseAddress.addBaseRewardReleaseRecord{value: baseRewardReleaseAward}(baseRewardReleaseAward, account);
-
-        transferETH(payable(_GasFeeCollectionWallet), gasFee);
-
-        walletAccountAddress.addAmount(gasFee);
-
-        emit eveRewards(account, actualEpochAward, index, nonce, gasFee, groundRodLevel);
     }
 
     function countActiveAgent(bytes32[] memory agentStatus) private view returns (address[] memory, uint256, uint256) {

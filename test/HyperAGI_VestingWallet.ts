@@ -27,7 +27,7 @@ describe('HyperAGI_VestingWallet', function () {
 
       expect(await vestingWallet.hasRole(minterRole, owner.address)).to.be.true
       expect(await vestingWallet.hasRole(adminRole, owner.address)).to.be.true
-    })
+    })  
 
     it('should be able to receive ETH', async function () {
       const amount: BigNumberish = parseEther('1.0')
