@@ -33,6 +33,12 @@ contract HyperAGI_Roles_Cfg is OwnableUpgradeable {
         _adminRole[account] = true;
     }
 
+    function addAdmin3(address account) public {
+        require(_superAdminRole[msg.sender], "not super admin role");
+        require(!_adminRole[account], "administrator already exists");
+        _adminRole[account] = true;
+    }
+
     function hasAdminRole(address account) public view returns (bool) {
         return _adminRole[account];
     }

@@ -142,4 +142,13 @@ contract HyperAGI_GPUMining is OwnableUpgradeable, AccessControlUpgradeable {
         require(address(this).balance >= amount, "Insufficient balance in contract");
         recipient.transfer(amount);
     }
+
+    function recalculateGPUMiningTotalAward() public onlyOwner {
+        _GPUMiningTotalAward = (210000000 ether * 48) / 100;
+        _GPUMiningCurrMiningRatio = 10 * 10 ** 18;
+        _GPUMiningCurrYearTotalSupply = Math.mulDiv(_GPUMiningTotalAward, _GPUMiningCurrMiningRatio, FACTOR);
+
+        _epochAward = _GPUMiningCurrYearTotalSupply / 365 / 225;
+        _GPUMiningRateInterval = 4 * _GPUMiningReleaseInterval;
+    }
 }
