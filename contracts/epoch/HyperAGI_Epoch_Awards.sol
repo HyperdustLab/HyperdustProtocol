@@ -108,7 +108,7 @@ contract HyperAGI_Epoch_Awards is OwnableUpgradeable {
         uint256 epochAward = GPUMiningAddress._epochAward();
 
         if (_totalNum < 10) {
-            _totalNum = 10;
+            _totalNum = 20;
         }
 
         if (epochAward == 0) {
