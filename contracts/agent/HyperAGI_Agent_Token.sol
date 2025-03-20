@@ -26,7 +26,6 @@ contract HyperAGI_Agent_Token is Initializable, ERC721Upgradeable, ERC721URIStor
     }
 
     function safeMint(address to, string memory uri) public onlyRole(MINTER_ROLE) returns (uint256) {
-        require(balanceOf(to) == 0, "Address already owns an NFT");
         _tokenIdCounter++;
         uint256 tokenId = _tokenIdCounter;
         _safeMint(to, tokenId);
@@ -52,8 +51,6 @@ contract HyperAGI_Agent_Token is Initializable, ERC721Upgradeable, ERC721URIStor
         if (to == address(0)) {
             revert ERC721InvalidReceiver(address(0));
         }
-
-        require(balanceOf(to) == 0, "Address already owns an NFT");
 
         // Setting an "auth" arguments enables the `_isAuthorized` check which verifies that the token exists
         // (from != 0). Therefore, it is not needed to verify that the return value is not 0 here.

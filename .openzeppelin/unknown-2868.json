@@ -3752,7 +3752,7 @@
             "label": "bool",
             "numberOfBytes": "1"
           },
-          "t_struct(InitializableStorage)231_storage": {
+          "t_struct(InitializableStorage)273_storage": {
             "label": "struct Initializable.InitializableStorage",
             "members": [
               {
@@ -3770,7 +3770,7 @@
             ],
             "numberOfBytes": "32"
           },
-          "t_struct(OwnableStorage)164_storage": {
+          "t_struct(OwnableStorage)206_storage": {
             "label": "struct OwnableUpgradeable.OwnableStorage",
             "members": [
               {
