@@ -3,11 +3,11 @@
 import { ethers, run, upgrades } from 'hardhat'
 
 async function main() {
-  const _HyperAGI_GPUMining = await ethers.getContractFactory('HyperAGI_GPUMining')
+  // const _HyperAGI_AgentWallet = await ethers.getContractFactory('HyperAGI_AgentWallet')
 
-  const instance = await upgrades.upgradeProxy('0x00B0f90d44AFa75E9e83Bed557A94a4bC7F2e222', _HyperAGI_GPUMining)
+  // const instance = await upgrades.upgradeProxy('0x6759Aa64749b8fE3E294E7A73Ce6ee14eBF4270d', _HyperAGI_AgentWallet)
 
-  const implementationAddress = await upgrades.erc1967.getImplementationAddress(instance.target)
+  const implementationAddress = await upgrades.erc1967.getImplementationAddress('0x6759Aa64749b8fE3E294E7A73Ce6ee14eBF4270d')
   await run('verify:verify', {
     address: implementationAddress,
     constructorArguments: [],

@@ -15,7 +15,7 @@ contract HyperAGI_AgentWallet is OwnableUpgradeable, AccessControlUpgradeable {
     using StrUtil for *;
 
     using Math for uint256;
- 
+
     uint256 public _GPUMiningTotalAward;
 
     uint256 private _GPUMiningCurrMiningRatio;
@@ -141,5 +141,15 @@ contract HyperAGI_AgentWallet is OwnableUpgradeable, AccessControlUpgradeable {
     function transferETH(address payable recipient, uint256 amount) private {
         require(address(this).balance >= amount, "Insufficient balance in contract");
         recipient.transfer(amount);
+    }
+
+    function recalculateGPUMiningTotalAward() public onlyOwner {
+        _GPUMiningTotalAward = (210000000 ether * 20) / 100;
+        _GPUMiningCurrMiningRatio = 10 * 10 ** 18;
+        _GPUMiningCurrYearTotalSupply = Math.mulDiv(_GPUMiningTotalAward, _GPUMiningCurrMiningRatio, FACTOR);
+
+        _epochAward = _GPUMiningCurrYearTotalSupply / 365 / 225;
+
+        _GPUMiningRateInterval = 4 * _GPUMiningReleaseInterval;
     }
 }
