@@ -151,4 +151,23 @@ contract HyperAGI_Node_Mgr is OwnableUpgradeable {
         storageAddress.setUint("totalNum", totalNum);
         storageAddress.setUint("activeNum", activeNum);
     }
+
+    function updateNodeIp(uint256 id, string memory ip) public {
+        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
+        require(!storageAddress.getBool(ip), "The ip has been used");
+        storageAddress.setString(storageAddress.genKey("ip", id), ip);
+        storageAddress.setBool(ip, true);
+    }
+
+    function updateNodeIp(uint256 id, string memory ip, bool isWrite) public {
+        revert("not used");
+    }
+
+    function forceUpdateNodeIp(uint256 id, string memory ip) public {
+        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
+        storageAddress.setString(storageAddress.genKey("ip", id), ip);
+        storageAddress.setBool(ip, true);
+    }
 }
