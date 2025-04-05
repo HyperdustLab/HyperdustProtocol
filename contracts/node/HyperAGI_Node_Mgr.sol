@@ -170,4 +170,10 @@ contract HyperAGI_Node_Mgr is OwnableUpgradeable {
         storageAddress.setString(storageAddress.genKey("ip", id), ip);
         storageAddress.setBool(ip, true);
     }
+
+    function forceUpdateServiceName(uint256 id, string memory serviceName) public {
+        require(HyperAGI_Roles_Cfg(_rolesCfgAddress).hasAdminRole(msg.sender), "not admin role");
+        HyperAGI_Storage storageAddress = HyperAGI_Storage(_storageAddress);
+        storageAddress.setString(storageAddress.genKey("serviceName", id), serviceName);
+    }
 }

@@ -94,7 +94,7 @@ contract HyperAGI_Storage is OwnableUpgradeable {
         return _id;
     }
 
-    function 23(string memory key, uint256[] memory uint256Array) public {
+    function setUintArray(string memory key, uint256[] memory uint256Array) public {
         require(msg.sender == _serviceAddress, "only service can set");
         uintArrayStorage[key] = uint256Array;
     }
@@ -255,8 +255,6 @@ contract HyperAGI_Storage is OwnableUpgradeable {
     function getBytesArrayLen(string memory key, uint256 index) public view returns (uint256) {
         return bytesArrayStorage[key].length;
     }
-
-
 
     function setBoolArray(string memory key, bool[] memory boolArray) public {
         require(msg.sender == _serviceAddress, "only service can set");
